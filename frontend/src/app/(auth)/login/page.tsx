@@ -50,7 +50,7 @@ export default function LoginPage() {
             {/* Header Section with Logo and Title */}
             <div className="flex items-center justify-center mb-3">
               <Image
-                src="/images/logo.png"
+                src="/assets/logo.png"
                 alt="IELTSSprint Logo"
                 width={50}
                 height={50}

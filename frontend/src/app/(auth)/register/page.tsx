@@ -50,7 +50,7 @@ export default function RegisterPage() {
             {/* Header Section with Logo and Title */}
             <div className="flex items-center justify-center mb-3">
               <Image
-                src="/images/logo.png"
+                src="/assets/logo.png"
                 alt="IELTSSprint Logo"
                 width={50}
                 height={50}
@@ -96,7 +96,7 @@ export default function RegisterPage() {
                 <FormControl>
                   <Input 
                     placeholder="kudoskibidi@gmail.com" 
-                    {...field}
+                    
                     className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                   />
                 </FormControl>
