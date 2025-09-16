@@ -23,7 +23,7 @@ export default function NavBar() {
               quality={100}
               className="mr-2"
             />
-            <h1 className="text-3xl font-bold italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8] bg-clip-text text-transparent mr-4">
+            <h1 className="text-2xl font-bold italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8] bg-clip-text text-transparent mr-4">
               <Link href={''}>IELTSSprint</Link>
             </h1>
           </div>
@@ -76,7 +76,7 @@ export default function NavBar() {
               </NavigationMenuItem>
 
             </NavigationMenuList>
-          </NavigationMenu>
+          </NavigationMenu>  
         </div>
       </div>
     </header>
