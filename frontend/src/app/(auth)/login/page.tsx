@@ -16,6 +16,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 export default function LoginPage() {
   const formSchema = z.object({
@@ -57,7 +59,7 @@ export default function LoginPage() {
                 quality={100}
                 className="mr-3"
               />
-              <h1 className="text-5xl font-bold italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8] bg-clip-text text-transparent">
+              <h1 className="text-4xl font-extrabold italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8] bg-clip-text text-transparent">
                 IELTSSprint
               </h1>
             </div>
@@ -67,7 +69,7 @@ export default function LoginPage() {
               <h2 className="text-3xl font-bold text-gray-900 mb-2">
                 Sign In
               </h2>
-              <p className="text-gray-600 text-sm">
+              <p className="text-gray-900 text-sm">
                 Welcome back! Please enter your details to sign in.
               </p>
             </div>
@@ -76,7 +78,7 @@ export default function LoginPage() {
             <div className="space-y-6">
               {/* Email or Username Field */}
               <div>
-                <FormLabel className="block text-sm font-medium text-gray-700 mb-2">
+                <FormLabel className="block text-sm font-medium text-gray-900 mb-2">
                   Email or Username
                 </FormLabel>
                 <FormControl>
@@ -90,7 +92,7 @@ export default function LoginPage() {
 
               {/* Password Field */}
               <div>
-                <FormLabel className="block text-sm font-medium text-gray-700 mb-2">
+                <FormLabel className="block text-sm font-medium text-gray-900 mb-2">
                   Password
                 </FormLabel>
                 <FormControl>
@@ -104,15 +106,9 @@ export default function LoginPage() {
 
               {/* Remember Me and Forgot Password */}
               <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input 
-                    type="checkbox" 
-                    id="remember-me"
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  />
-                  <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
-                    Remember me
-                  </label>
+                <div className="flex items-center gap-2">
+                  <Checkbox id ='rememberMe'/>
+                  <Label htmlFor="rememberMe">Remember me</Label>
                 </div>
                 <a 
                   href="/forgot-password" 
@@ -135,7 +131,7 @@ export default function LoginPage() {
 
               {/* Sign Up Link */}
               <div className="text-center">
-                <span className="text-sm text-gray-600">Dont have an account? </span>
+                <span className="text-sm text-gray-900">Dont have an account? </span>
                 <a 
                   href="/register" 
                   className="text-sm text-blue-500 hover:text-blue-500 font-medium"

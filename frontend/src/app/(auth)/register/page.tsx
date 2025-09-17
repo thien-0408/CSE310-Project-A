@@ -16,6 +16,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function RegisterPage() {
   const formSchema = z.object({
@@ -46,7 +48,7 @@ export default function RegisterPage() {
         control={form.control}
         name="username"
         render={({ field }) => (
-          <FormItem className="bg-white border-2 border-gray-200 rounded-2xl p-11 shadow-sm">
+          <FormItem className="bg-white border-2 border-gray-200 rounded-2xl p-9 shadow-sm">
             {/* Header Section with Logo and Title */}
             <div className="flex items-center justify-center mb-3">
               <Image
@@ -65,7 +67,7 @@ export default function RegisterPage() {
               <h2 className="text-3xl font-bold text-gray-900 mb-2">
                 Create Your Account
               </h2>
-              <p className="text-gray-600 text-sm">
+              <p className="text-gray-900 text-sm">
                 Join IELTS Sprint today and start your journey
               </p>
               <p className="text-gray-600 text-sm">
@@ -77,7 +79,7 @@ export default function RegisterPage() {
             <div className="space-y-6">
               {/* Register information */}
               <div>
-                <FormLabel className="block text-sm font-medium text-gray-700 mb-2">
+                <FormLabel className="block text-sm font-medium text-gray-900 mb-2">
                   Full Name
                 </FormLabel>
                 <FormControl>
@@ -90,7 +92,7 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <FormLabel className="block text-sm font-medium text-gray-700 mb-2">
+                <FormLabel className="block text-sm font-medium text-gray-900 mb-2">
                   Email
                 </FormLabel>
                 <FormControl>
@@ -103,7 +105,7 @@ export default function RegisterPage() {
               </div>
               {/*Pass and confirm pass */}
               <div>
-                <FormLabel className="block text-sm font-medium text-gray-700 mb-2">
+                <FormLabel className="block text-sm font-medium text-gray-900 mb-2">
                   Password
                 </FormLabel>
                 <FormControl>
@@ -115,7 +117,7 @@ export default function RegisterPage() {
                 </FormControl>
               </div>
               <div>
-                <FormLabel className="block text-sm font-medium text-gray-700 mb-2">
+                <FormLabel className="block text-sm font-medium text-gray-900 mb-2">
                   Confirm Password
                 </FormLabel>
                 <FormControl>
@@ -129,16 +131,9 @@ export default function RegisterPage() {
 
               {/* term and conditions */}
               <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input 
-                    type="checkbox"
-                     
-                    id="remember-me"
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  />
-                  <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
-                    I accept the terms and condition
-                  </label>
+                <div className="flex items-center gap-2">
+                  <Checkbox id='terms'/>
+                  <Label htmlFor="terms">I accept the terms and condition</Label>
                 </div>
               </div>
 
@@ -155,7 +150,7 @@ export default function RegisterPage() {
 
               {/* Sign Up Link */}
               <div className="text-center">
-                <span className="text-sm text-gray-600">Already have an account? </span>
+                <span className="text-sm text-gray-900">Already have an account? </span>
                 <a 
                   href="/login" 
                   className="text-sm text-blue-500 hover:text-blue-500 font-medium"

@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Link from "next/link";
 
 export default function HomePage() {
   return (
@@ -48,7 +49,7 @@ export default function HomePage() {
                   size="lg"
                   className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                 >
-                  Start Practicing
+                  <Link href={'/login'}>Start Practicing</Link>
                 </Button>
                 <Button
                   variant="outline"
@@ -221,7 +222,29 @@ export default function HomePage() {
 
         {/*Success path*/}
         <section>
-          <div className="w-full bg-amber-50"></div>
+          <div className="w-full bg-gray-50 flex items-center px-70 py-30">
+            <div className="flex-1">
+              {/**Image section */}
+              <Image src='/assets/success-path.jpg' alt="" width={450} height={350} quality={100} className="rounded-md"></Image>
+            </div>
+
+            <div className="flex-1">
+              {/**Caption */}
+              <div className="pb-4">
+                <h1 className="text-3xl font-extrabold">Your Path to IELTS</h1>
+                <span className="text-3xl font-extrabold">Success </span>
+                <span className="text-3xl font-extrabold bg-gradient-to-r from-[#0b8ff4] to-[#02f0c8] bg-clip-text text-transparent">Starts Here</span>
+              </div>
+
+              <div>
+                <p>
+                  Prepare with the best resources, designed by experts, 
+                  to ensure you are fully ready for every section of the IELTS exam. 
+                  Our platform adapts to your learning style, providing a truly personalized experience.
+                </p>
+              </div>
+            </div>
+          </div>
         </section>
       </main>
     </>
