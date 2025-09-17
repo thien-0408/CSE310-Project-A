@@ -34,7 +34,7 @@ export default function HomePage() {
                   </span>
                 </h1>
 
-                <p className="text-gray-700  text-xl leading-relaxed max-w-2xl">
+                <p className="text-gray-700 leading-relaxed max-w-2xl">
                   IELTS Sprint provides comprehensive practice tests, study
                   materials, and personalized feedback to help you achieve your
                   desired band score. Start your journey to global opportunities
@@ -85,107 +85,144 @@ export default function HomePage() {
         <div className="absolute bottom-20 right-10 w-40 h-40 bg-cyan-400/10 rounded-full blur-xl"></div>
       </section>
 
-      <main>
-        {/* Main container to center*/}
-        <div className="container mx-auto py-8 px-30 mt-20 mb-20">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold">What IELTS Sprint Offers</h1>
+      <main >
+        {/*Benefit section*/}
+        <section className="py-20 px-40">
+          <div className="container mx-auto px-6 lg:px-8 ">
+          <div className="text-center mb-16">
+            <h1 className="text-4xl font-extrabold text-gray-900">
+              What IELTS Sprint Offers
+            </h1>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Card 1 */}
             <div>
-              <Card className="text-center flex flex-col min-h-60 rounded-2xl border-0 shadow-md">
-                <div className="flex justify-center items-center pt-6 pb-4">
-                  <i className="fa-solid fa-book-open text-[#4b91e2] text-5xl"></i>
+              <Card className="h-full text-center flex flex-col rounded-2xl border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
+                <div className="flex justify-center items-center mb-6">
+                  <div className="w-16 h-16 flex items-center justify-center">
+                    <i className="fa-solid fa-book-open text-[#4b91e2] text-5xl"></i>
+                  </div>
                 </div>
-                <CardHeader className="flex-1">
-                  <CardTitle className="text-xl font-bold leading-tight">
+                <div className="flex-1 flex flex-col justify-between">
+                  <CardTitle className="text-2xl font-semibold mb-4 leading-tight text-gray-900">
                     Full-Length Mock Tests
                   </CardTitle>
-                  <CardDescription className="text-sm leading-relaxed">
+                  <CardDescription className="text-sm leading-relaxed text-gray-600">
                     Practice with realistic mock tests designed to simulate the
                     actual IELTS exam environment for all modules.
                   </CardDescription>
-                </CardHeader>
+                </div>
               </Card>
             </div>
 
+            {/* Card 2 */}
             <div>
-              <Card className="min-h-60 text-center flex flex-col rounded-2xl border-0 shadow-md">
-                <div className="flex justify-center items-center pt-6 pb-4">
-                  <i className="fa-solid fa-award text-[#4b91e2] text-5xl"></i>
+              <Card className="h-full text-center flex flex-col rounded-2xl border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
+                <div className="flex justify-center items-center mb-6">
+                  <div className="w-16 h-16 flex items-center justify-center">
+                    <i className="fa-solid fa-award text-[#4b91e2] text-5xl"></i>
+                  </div>
                 </div>
-                <CardHeader className="flex-1">
-                  <CardTitle className="text-xl font-bold leading-tight">Comprehensive Study Materials</CardTitle>
-                  <CardDescription>
+                <div className="flex-1 flex flex-col justify-between">
+                  <CardTitle className="text-2xl font-semibold mb-4 leading-tight text-gray-900">
+                    Comprehensive Study Materials
+                  </CardTitle>
+                  <CardDescription className="text-sm leading-relaxed text-gray-600">
                     Access a rich library of study guides, vocabulary lists, and
                     grammar exercises tailored for IELTS success.
                   </CardDescription>
-                </CardHeader>
+                </div>
               </Card>
             </div>
 
+            {/* Card 3 */}
             <div>
-              <Card className="min-h-60 text-center flex flex-col rounded-2xl border-0 shadow-md">
-                <div className="flex justify-center items-center pt-6 pb-4">
-                  <i className="fa-solid fa-user-tie text-[#4b91e2] text-5xl"></i>
+              <Card className="h-full text-center flex flex-col rounded-2xl border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
+                <div className="flex justify-center items-center mb-6">
+                  <div className="w-16 h-16 flex items-center justify-center">
+                    <i className="fa-solid fa-user-tie text-[#4b91e2] text-5xl"></i>
+                  </div>
                 </div>
-                <CardHeader className="flex-1">
-                  <CardTitle className="text-xl font-bold leading-tight">Personalized Feedback</CardTitle>
-                  <CardDescription>
+                <div className="flex-1 flex flex-col justify-between">
+                  <CardTitle className="text-2xl font-semibold mb-4 leading-tight text-gray-900">
+                    Personalized Feedback
+                  </CardTitle>
+                  <CardDescription className="text-sm leading-relaxed text-gray-600">
                     Receive detailed, actionable feedback on your writing and
                     speaking to identify areas for improvement.
                   </CardDescription>
-                </CardHeader>
+                </div>
               </Card>
             </div>
 
+            {/* Card 4 */}
             <div>
-              <Card className="min-h-60 text-center flex flex-col rounded-2xl border-0 shadow-md">
-                <div className="flex justify-center items-center pt-6 pb-4">
-                  <i className="fa-solid fa-bullseye text-[#4b91e2] text-5xl"></i>
+              <Card className="h-full text-center flex flex-col rounded-2xl border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
+                <div className="flex justify-center items-center mb-6">
+                  <div className="w-16 h-16 flex items-center justify-center">
+                    <i className="fa-solid fa-bullseye text-[#4b91e2] text-5xl"></i>
+                  </div>
                 </div>
-                <CardHeader className="flex-1">
-                  <CardTitle className="text-xl font-bold leading-tight">Progress Tracking & Analytics</CardTitle>
-                  <CardDescription>
+                <div className="flex-1 flex flex-col justify-between">
+                  <CardTitle className="text-2xl font-semibold mb-4 leading-tight text-gray-900">
+                    Progress Tracking & Analytics
+                  </CardTitle>
+                  <CardDescription className="text-sm leading-relaxed text-gray-600">
                     Monitor your performance with insightful analytics and track
                     your progress across different skills over time.
                   </CardDescription>
-                </CardHeader>
+                </div>
               </Card>
             </div>
 
+            {/* Card 5 */}
             <div>
-              <Card className="min-h-60 text-center flex flex-col rounded-2xl border-0 shadow-md">
-                <div className="flex justify-center items-center pt-6 pb-4">
-                  <i className="fa-solid fa-graduation-cap text-[#4b91e2] text-5xl"></i>
+              <Card className="h-full text-center flex flex-col rounded-2xl border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
+                <div className="flex justify-center items-center mb-6">
+                  <div className="w-16 h-16 flex items-center justify-center">
+                    <i className="fa-solid fa-graduation-cap text-[#4b91e2] text-5xl"></i>
+                  </div>
                 </div>
-                <CardHeader className="flex-1">
-                  <CardTitle className="text-xl font-bold leading-tight">Expert Tips & Strategies</CardTitle>
-                  <CardDescription>
+                <div className="flex-1 flex flex-col justify-between">
+                  <CardTitle className="text-2xl font-semibold mb-4 leading-tight text-gray-900">
+                    Expert Tips & Strategies
+                  </CardTitle>
+                  <CardDescription className="text-sm leading-relaxed text-gray-600">
                     Learn proven techniques and strategies from experienced
                     IELTS instructors to maximize your score.
                   </CardDescription>
-                </CardHeader>
+                </div>
               </Card>
             </div>
 
+            {/* Card 6 */}
             <div>
-              <Card className="min-h-60 text-center flex flex-col rounded-2xl border-0 shadow-md">
-                <div className="flex justify-center items-center pt-6 pb-4">
-                  <i className="fa-solid fa-lightbulb text-[#4b91e2] text-5xl"></i>
-                </div> 
-                <CardHeader className="flex-1">
-                  <CardTitle className="text-xl font-bold leading-tight">Interactive Learning Modules</CardTitle>
-                  <CardDescription>
+              <Card className="h-full text-center flex flex-col rounded-2xl border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
+                <div className="flex justify-center items-center mb-6">
+                  <div className="w-16 h-16 flex items-center justify-center">
+                    <i className="fa-solid fa-lightbulb text-[#4b91e2] text-5xl"></i>
+                  </div>
+                </div>
+                <div className="flex-1 flex flex-col justify-between">
+                  <CardTitle className="text-2xl font-semibold mb-4 leading-tight text-gray-900">
+                    Interactive Learning Modules
+                  </CardTitle>
+                  <CardDescription className="text-sm leading-relaxed text-gray-600">
                     Engage with interactive lessons and quizzes that make
                     learning fun and effective for all levels.
                   </CardDescription>
-                </CardHeader>
+                </div>
               </Card>
             </div>
           </div>
         </div>
+        </section>
+
+        {/*Success path*/}
+        <section>
+          <div className="w-full bg-amber-50"></div>
+        </section>
       </main>
     </>
   );
