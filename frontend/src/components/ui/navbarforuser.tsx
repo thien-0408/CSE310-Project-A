@@ -8,9 +8,8 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Bell } from "lucide-react";
 
-export default function NavBar() {
+export default function NavBarUser() {
   return (
     <header className="w-full bg-white shadow-sm border-b">
       <div className="container mx-auto px-4 py-3">
@@ -47,12 +46,11 @@ export default function NavBar() {
                   </NavigationMenuLink>
                 </NavigationMenuItem>
 
-            
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
                     <Link 
-                      href="" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
+                      href="/practice" 
+                      className=" font-medium px-3 py-2" 
                     >
                       Practice
                     </Link>
@@ -62,10 +60,10 @@ export default function NavBar() {
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
                     <Link 
-                      href="/login" 
+                      href="/tests" 
                       className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
                     >
-                      Sign In
+                      Tests
                     </Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
@@ -73,20 +71,47 @@ export default function NavBar() {
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
                     <Link 
-                      href="/register" 
+                      href="/progress" 
                       className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
                     >
-                      Sign Up
+                      Progress
                     </Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
 
-                
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <Link 
+                      href="/profile" 
+                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
+                    >
+                      Profile
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <Link 
+                      href="/settings" 
+                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
+                    >
+                      Settings
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
           </div>
 
-          
+          {/* Right Side: avatar */}
+          <div className="flex items-center space-x-4">
+            {/* Avatar */}
+            <Avatar className="cursor-pointer hover:ring-2 hover:ring-blue-500 hover:ring-offset-1 transition-all">
+              <AvatarImage src="/demo/avatar.jpg" />
+              <AvatarFallback className="bg-blue-100 text-blue-700">CN</AvatarFallback>
+            </Avatar>
+          </div>
         </div>
       </div>
     </header>
