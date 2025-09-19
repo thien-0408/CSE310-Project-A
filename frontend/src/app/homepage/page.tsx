@@ -20,7 +20,7 @@ export default function HomePage() {
       </div>
       {/* Hero Banner Section */}
       <section className="w-full  bg-gradient-to-br from-[#dfe9fa] via-[#c8daf8] to-[#85acef] relative overflow-hidden p-40">
-        <div className="container mx-auto">
+        <div className=" mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Content Section */}
             <div className="flex flex-col space-y-8 text-left">
@@ -99,7 +99,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Card 1 */}
             <div>
-              <Card className="h-full text-center flex flex-col rounded-2xl border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
+              <Card className="h-full text-center flex flex-col rounded-md border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
                 <div className="flex justify-center items-center mb-6">
                   <div className="w-16 h-16 flex items-center justify-center">
                     <i className="fa-solid fa-book-open text-[#4b91e2] text-5xl"></i>
@@ -119,7 +119,7 @@ export default function HomePage() {
 
             {/* Card 2 */}
             <div>
-              <Card className="h-full text-center flex flex-col rounded-2xl border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
+              <Card className="h-full text-center flex flex-col rounded-md border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
                 <div className="flex justify-center items-center mb-6">
                   <div className="w-16 h-16 flex items-center justify-center">
                     <i className="fa-solid fa-award text-[#4b91e2] text-5xl"></i>
@@ -139,7 +139,7 @@ export default function HomePage() {
 
             {/* Card 3 */}
             <div>
-              <Card className="h-full text-center flex flex-col rounded-2xl border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
+              <Card className="h-full text-center flex flex-col rounded-md border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
                 <div className="flex justify-center items-center mb-6">
                   <div className="w-16 h-16 flex items-center justify-center">
                     <i className="fa-solid fa-user-tie text-[#4b91e2] text-5xl"></i>
@@ -159,7 +159,7 @@ export default function HomePage() {
 
             {/* Card 4 */}
             <div>
-              <Card className="h-full text-center flex flex-col rounded-2xl border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
+              <Card className="h-full text-center flex flex-col rounded-md border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
                 <div className="flex justify-center items-center mb-6">
                   <div className="w-16 h-16 flex items-center justify-center">
                     <i className="fa-solid fa-bullseye text-[#4b91e2] text-5xl"></i>
@@ -179,7 +179,7 @@ export default function HomePage() {
 
             {/* Card 5 */}
             <div>
-              <Card className="h-full text-center flex flex-col rounded-2xl border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
+              <Card className="h-full text-center flex flex-col rounded-md border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
                 <div className="flex justify-center items-center mb-6">
                   <div className="w-16 h-16 flex items-center justify-center">
                     <i className="fa-solid fa-graduation-cap text-[#4b91e2] text-5xl"></i>
@@ -199,7 +199,7 @@ export default function HomePage() {
 
             {/* Card 6 */}
             <div>
-              <Card className="h-full text-center flex flex-col rounded-2xl border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
+              <Card className="h-full text-center flex flex-col rounded-md border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
                 <div className="flex justify-center items-center mb-6">
                   <div className="w-16 h-16 flex items-center justify-center">
                     <i className="fa-solid fa-lightbulb text-[#4b91e2] text-5xl"></i>
