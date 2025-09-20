@@ -23,6 +23,11 @@ export default function Home() {
               <Link href={"/homepage"}>Home</Link>
             </Button>
           </li>
+          <li>
+            <Button>
+              <Link href={"/landingpage"}>Landing page</Link>
+            </Button> 
+          </li>
         </ul>
       </div>
     </main>
