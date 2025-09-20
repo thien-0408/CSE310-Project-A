@@ -133,7 +133,7 @@ export default function UserDashBoard() {
           <div className=" mx-auto px-10">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {/* Card 1 - Personalized Learning */}
-              <div className="text-center px-7 rounded-md shadow-sm hover:shadow-xl transition-all">
+              <div className="text-center px-7 rounded-lg hover:shadow-sm transition-all border-3 border-gray-100">
                 <div className="p-8 mb-6 flex items-center justify-center h-60">
                   <div className="relative w-60 h-36  overflow-hidden">
                     <Image
@@ -154,7 +154,7 @@ export default function UserDashBoard() {
               </div>
 
               {/* Card 2 - Extensive Resources */}
-              <div className="text-center px-7 rounded-md shadow-sm hover:shadow-xl transition-all">
+              <div className="text-center px-7 rounded-lg hover:shadow-sm transition-all border-3 border-gray-100">
                 <div className=" p-8 mb-6 flex items-center justify-center h-60">
                   <div className="relative w-60 h-36  overflow-hidden">
                     <Image
@@ -175,7 +175,7 @@ export default function UserDashBoard() {
               </div>
 
               {/* Card 3 - Track Your Progress */}
-              <div className="text-center px-7 rounded-md shadow-sm hover:shadow-xl transition-all">
+              <div className="text-center px-7 rounded-lg hover:shadow-sm transition-all border-3 border-gray-100">
                 <div className="p-8 mb-6 flex items-center justify-center h-60">
                   <div className="relative w-60 h-36 bg-gray-100 px-7 overflow-hidden">
                     <Image
@@ -209,7 +209,7 @@ export default function UserDashBoard() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-6xl mx-auto">
               {/*Listening skill*/}
               <div className="rounded-lg border-2 border-gray-100">
-                <Card className=" text-center flex flex-col rounded-sm border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
+                <Card className=" text-center flex flex-col rounded-sm border-1 shadow-sm hover:shadow-md transition-shadow p-6">
                   <div className="flex justify-center items-center">
                     <div className="w-16 h-16 flex items-center justify-center">
                       <i className="fa-solid fa-headphones text-[#4b91e2] text-5xl "></i>
@@ -233,7 +233,7 @@ export default function UserDashBoard() {
 
               {/*Reading */}
               <div className="rounded-lg border-2 border-gray-100">
-                <Card className=" text-center flex flex-col rounded-sm border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
+                <Card className=" text-center flex flex-col rounded-sm border-1 shadow-sm hover:shadow-md transition-shadow p-6">
                   <div className="flex justify-center items-center ">
                     <div className="w-16 h-16 flex items-center justify-center">
                       <i className="fa-solid fa-book text-[#4b91e2] text-5xl "></i>
@@ -257,7 +257,7 @@ export default function UserDashBoard() {
 
               {/*Writing */}
               <div className="rounded-lg border-2 border-gray-100">
-                <Card className=" text-center flex flex-col rounded-sm border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
+                <Card className=" text-center flex flex-col rounded-sm border-1 shadow-sm hover:shadow-md transition-shadow p-6">
                   <div className="flex justify-center items-center ">
                     <div className="w-16 h-16 flex items-center justify-center">
                       <i className="fa-solid fa-pencil text-[#4b91e2] text-5xl "></i>
@@ -281,7 +281,7 @@ export default function UserDashBoard() {
 
               {/*Speaking */}
               <div className="rounded-lg border-2 border-gray-100">
-                <Card className=" text-center flex flex-col rounded-sm border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
+                <Card className=" text-center flex flex-col rounded-sm border-1 shadow-sm hover:shadow-md transition-shadow p-6">
                   <div className="flex justify-center items-center ">
                     <div className="w-16 h-16 flex items-center justify-center">
                       <i className="fa-solid fa-comments text-[#4b91e2] text-5xl "></i>
