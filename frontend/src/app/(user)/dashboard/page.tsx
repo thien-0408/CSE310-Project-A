@@ -91,7 +91,7 @@ export default function UserDashBoard() {
       <div className="sticky top-0 z-50">
         <NavBarUser></NavBarUser>
       </div>
-      <main className="p-10">
+      <main className="p-10 lg:px-30">
         {/*First section */}
         <section>
           {/**Big div for text & button */}
