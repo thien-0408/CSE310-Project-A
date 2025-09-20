@@ -68,16 +68,7 @@ export default function NavBarUser() {
                   </NavigationMenuLink>
                 </NavigationMenuItem>
 
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <Link 
-                      href="/progress" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
-                    >
-                      Progress
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
+                
 
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
