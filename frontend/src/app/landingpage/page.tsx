@@ -2,42 +2,38 @@ import NavBar from "@/components/ui/navbar";
 import Footer from "@/components/ui/footer";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
+import { Separator } from "@/components/ui/separator";
 
 export default function LandingPage() {
   return (
     <>
-      <header>
-        {/*Navigation section*/}
-        <section className="navigation sticky top-0 z-50">
-          <NavBar />
-        </section>
+      <div className="sticky top-0 z-50">
+        <NavBar></NavBar>
+      </div>
+      <header className="w">
         {/*Hero banner section*/}
-        <section className="banner w-full pt-10 pb-10 bg-gradient-to-br from-[#dfe9fa] via-[#c8daf8] to-[#85acef] relative overflow-hidden">
-          <div className="container ml-auto mr-auto">
+        <section className="w-full bg-gradient-to-br from-[#dfe9fa] via-[#c8daf8] to-[#85acef] relative overflow-hidden lg:p-40 p-10">
+          <div className="container mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               {/* Content Section */}
               <div className="flex flex-col space-y-8">
                 <div className="space-y-6">
-                  <h1 className="text-4xl md:text-5xl lg:text-5xl font-extrabold tracking-tighter">
-                    <span className="text-gray-900">Master Your IELTS Exam with</span>
+                  <h1 className="text-4xl md:text-5xl lg:text-5xl font-extrabold tracking-tight">
+                    <span className="text-gray-900">
+                      Master Your IELTS Exam with
+                    </span>
                     <br />
                     <span className="bg-gradient-to-r font-extrabold from-blue-600 to-cyan-500 bg-clip-text text-transparent sm:text-center">
                       Confidence
                     </span>
                   </h1>
 
-                  <p className="text-gray-700 leading-relaxed max-w-2xl">
-                    IELTS Sprint provides tailored practice, personalized feedback, and expert resources to help you achieve your desired band score. Start your journey to success today!
+                  <p className="text-gray-700 leading-relaxed max-w-2xl tracking-tighter">
+                    IELTS Sprint provides tailored practice, personalized
+                    feedback, and expert resources to help you achieve your
+                    desired band score. Start your journey to success today!
                   </p>
                 </div>
 
@@ -47,7 +43,7 @@ export default function LandingPage() {
                     size="lg"
                     className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                   >
-                    <Link href={'/login'}>Start Your IELTS Journey</Link>
+                    <Link href={"/login"}>Start Your IELTS Journey</Link>
                   </Button>
                   <Button
                     variant="outline"
@@ -77,27 +73,30 @@ export default function LandingPage() {
                 </div>
               </div>
             </div>
+            <div className="absolute top-20 left-10 w-32 h-32 bg-blue-400/10 rounded-full blur-xl"></div>
+            <div className="absolute bottom-20 right-10 w-40 h-40 bg-cyan-400/10 rounded-full blur-xl"></div>
           </div>
         </section>
       </header>
       <main>
         {/*Reason section*/}
-        <section className="reason-section mt-20 sm:py-20 sm:px-20">
+        <section className="reason-section py-20 px-10 lg:px-20 tracking-tight">
           <div className="container mx-auto px-6 lg:px-8">
             {/*Heading*/}
             <div className="heading-holder text-center mb-16">
-              <h1 className="text-4xl font-extrabold text-gray-900">
+              <h1 className="text-3xl lg:text-4xl font-extrabold text-gray-900">
                 Why Choose IELTS Sprint?
               </h1>
-              <h5 className="text-[18px] font-normal text-gray-500 pt-[20px] md:pl-75 md:pr-75">
-                Our platform is engineered to deliver results, offering a unique blend of comprehensive practice and personalized support.
+              <h5 className="text-[18px] font-normal text-gray-700 pt-[20px] tracking-tighter">
+                Our platform is engineered to deliver results, offering a unique
+                blend of comprehensive practice and personalized support.
               </h5>
             </div>
             {/*Card holder*/}
             <div className="card-holder grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-8">
               {/*Card 1*/}
               <div>
-                <Card className="h-full text-center flex flex-col rounded-2xl border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
+                <Card className="h-full text-center flex flex-col rounded-md border-1 border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6">
                   <div className="flex justify-center items-center mb-6">
                     <div className="icon-holder w-16 h-16 flex items-center justify-center">
                       <i className="fa-solid fa-circle-check text-[#4b91e2] text-5xl"></i>
@@ -108,7 +107,10 @@ export default function LandingPage() {
                       Comprehensive Practice Modules
                     </CardTitle>
                     <CardDescription className="text-sm leading-relaxed text-gray-600">
-                      Access a wide array of practice tests covering all sections: Listening, Reading, Writing, and Speaking. Each module is designed to mirror the actual IELTS exam format, ensuring you are well-prepared for test day.
+                      Access a wide array of practice tests covering all
+                      sections: Listening, Reading, Writing, and Speaking. Each
+                      module is designed to mirror the actual IELTS exam format,
+                      ensuring you are well-prepared for test day.
                     </CardDescription>
                   </div>
                 </Card>
@@ -116,7 +118,7 @@ export default function LandingPage() {
 
               {/*Card 2*/}
               <div>
-                <Card className="h-full text-center flex flex-col rounded-2xl border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
+                <Card className="h-full text-center flex flex-col rounded-md border-1 border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6">
                   <div className="flex justify-center items-center mb-6">
                     <div className="icon-holder w-16 h-16 flex items-center justify-center">
                       <i className="fa-solid fa-flask text-[#4b91e2] text-5xl"></i>
@@ -127,7 +129,10 @@ export default function LandingPage() {
                       Personalized Performance Analytics
                     </CardTitle>
                     <CardDescription className="text-sm leading-relaxed text-gray-600">
-                      Track your progress with detailed analytics that highlight your strengths and pinpoint areas needing improvement. Our intelligent system adapts to your learning pace, offering tailored recommendations.
+                      Track your progress with detailed analytics that highlight
+                      your strengths and pinpoint areas needing improvement. Our
+                      intelligent system adapts to your learning pace, offering
+                      tailored recommendations.
                     </CardDescription>
                   </div>
                 </Card>
@@ -135,7 +140,7 @@ export default function LandingPage() {
 
               {/*Card 3*/}
               <div>
-                <Card className="h-full text-center flex flex-col rounded-2xl border-0 shadow-sm hover:shadow-lg transition-shadow p-6">
+                <Card className="h-full text-center flex flex-col rounded-md border-1 border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6">
                   <div className="flex justify-center items-center mb-6">
                     <div className="icon-holder w-16 h-16 flex items-center justify-center">
                       <i className="fa-solid fa-book-open text-[#4b91e2] text-5xl"></i>
@@ -146,7 +151,10 @@ export default function LandingPage() {
                       Expert Study Resources & Tips
                     </CardTitle>
                     <CardDescription className="text-sm leading-relaxed text-gray-600">
-                      Dive into a rich library of expert-curated study materials, grammar guides, vocabulary builders, and proven strategies to maximize your score. Learn from the best, at your own pace.
+                      Dive into a rich library of expert-curated study
+                      materials, grammar guides, vocabulary builders, and proven
+                      strategies to maximize your score. Learn from the best, at
+                      your own pace.
                     </CardDescription>
                   </div>
                 </Card>
@@ -156,31 +164,45 @@ export default function LandingPage() {
         </section>
 
         {/*Student Opinion Section*/}
-        <section className="student-opinion-section mt-20 bg-gray-100 sm:py-20 sm:px-20">
+        <section className="student-opinion-section mt-20 bg-gray-100 py-20 px-10 lg:px-30 tracking-tight">
           <div className="container ml-auto mr-auto lg:px-8">
             {/*Heading*/}
             <div className="heading-holder text-center mb-16">
-              <h1 className="text-4xl font-extrabold text-gray-900">
+              <h1 className="text-3xl lg:text-4xl font-extrabold text-gray-900">
                 What Our Students Say
               </h1>
-              <h5 className="text-[18px] font-normal text-gray-500 pt-[20px]">
-                Hear what our successful students have to say about their IELTS Sprint experience.
+              <h5 className="text-[18px] font-normal text-gray-700 pt-[20px] tracking-tighter">
+                Hear what our successful students have to say about their IELTS
+                Sprint experience.
               </h5>
             </div>
             {/*Card Holder*/}
             <div className="card-holder grid lg:grid-cols-2 sm:grid-cols-1 gap-10">
               {/*Card 1*/}
               <div>
-                <Card className="h-full text-center flex flex-col gap-3 rounded-2xl border-0 shadow-sm hover:shadow-lg transition-shadow">
+                <Card className="h-full text-center flex flex-col gap-3 rounded-md border-1 border-gray-100 shadow-sm hover:shadow-lg transition-shadow">
                   <div className="student-opinion px-10">
-                    <p className="italic">
-                      “IELTS Sprint was instrumental in helping me achieve a Band 8.0! The practice modules were incredibly realistic, and the personalized feedback helped me fine-tune my writing skills. Highly recommended for anyone serious about their IELTS score.”
+                    <p className="italic leading-relaxed font-medium">
+                      “IELTS Sprint was instrumental in helping me achieve a
+                      Band 8.0! The practice modules were incredibly realistic,
+                      and the personalized feedback helped me fine-tune my
+                      writing skills. Highly recommended for anyone serious
+                      about their IELTS score.”
                     </p>
                   </div>
-                  <br />
+                  <br/>
+                  <div className="flex justify-center">
+                    <Separator className="w-1/2 mb-8"></Separator>
+                  </div>
                   <div className="student-information-holder flex flex-row justify-center gap-3 mt-auto">
                     <div className="student-icon">
-                      <img src="/assets/avatar-landing-page.jpg" alt="" className="inline-block size-15 rounded-full outline -outline-offset-1 outline-white/10" />
+                      <Image
+                        src="/assets/avatar-landing-page.jpg"
+                        alt="User avatar"
+                        width={60}
+                        height={60}
+                        className="inline-block rounded-full outline -outline-offset-1 outline-white/10"
+                      />
                     </div>
                     <div className="student-information flex flex-col text-left mt-auto mb-auto">
                       <h5 className="name font-bold">Aisha Khan</h5>
@@ -192,16 +214,29 @@ export default function LandingPage() {
 
               {/*Card 2*/}
               <div>
-                <Card className="h-full text-center flex flex-col gap-3 rounded-2xl border-0 shadow-sm hover:shadow-lg transition-shadow">
+                <Card className="h-full text-center flex flex-col gap-3 rounded-md border-1 border-gray-100 shadow-sm hover:shadow-lg transition-shadow">
                   <div className="student-opinion px-10">
-                    <p className="italic">
-                      “As a working professional, time is precious. IELTS Sprint allowed me to study efficiently with its well-structured courses and flexible schedule. I improved my score significantly and gained admission to my desired program abroad.”
+                    <p className="italic leading-relaxed font-medium">
+                      “As a working professional, time is precious. IELTS Sprint
+                      allowed me to study efficiently with its well-structured
+                      courses and flexible schedule. I improved my score
+                      significantly and gained admission to my desired program
+                      abroad.”
                     </p>
                   </div>
                   <br />
+                  <div className="flex justify-center">
+                    <Separator className="w-1/2 mb-8"></Separator>
+                  </div>
                   <div className="student-information-holder flex flex-row justify-center gap-3 mt-auto">
                     <div className="student-icon">
-                      <img src="/assets/avatar-landing-page.jpg" alt="" className="inline-block size-15 rounded-full outline -outline-offset-1 outline-white/10" />
+                      <Image
+                        src="/assets/avatar-landing-page.jpg"
+                        alt="User avatar"
+                        width={60}
+                        height={60}
+                        className="inline-block rounded-full outline -outline-offset-1 outline-white/10"
+                      />
                     </div>
                     <div className="student-information flex flex-col text-left mt-auto mb-auto">
                       <h5 className="name font-bold">David Miller</h5>
@@ -213,16 +248,29 @@ export default function LandingPage() {
 
               {/*Card 3*/}
               <div>
-                <Card className="h-full text-center flex flex-col gap-3 rounded-2xl border-0 shadow-sm hover:shadow-lg transition-shadow">
+                <Card className="h-full text-center flex flex-col gap-3 rounded-md border-1 border-gray-100 shadow-sm hover:shadow-lg transition-shadow">
                   <div className="student-opinion px-10">
-                    <p className="italic">
-                      “The speaking practice sessions on IELTS Sprint were a game-changer. The detailed feedback and sample answers helped me overcome my nervousness and speak confidently. I scored Band 7.5 and am now ready for my immigration journey!”
+                    <p className="italic leading-relaxed font-medium">
+                      “The speaking practice sessions on IELTS Sprint were a
+                      game-changer. The detailed feedback and sample answers
+                      helped me overcome my nervousness and speak confidently. I
+                      scored Band 7.5 and am now ready for my immigration
+                      journey!”
                     </p>
                   </div>
                   <br />
+                  <div className="flex justify-center">
+                    <Separator className="w-1/2 mb-8"></Separator>
+                  </div>
                   <div className="student-information-holder flex flex-row justify-center gap-3 mt-auto">
                     <div className="student-icon">
-                      <img src="/assets/avatar-landing-page.jpg" alt="" className="inline-block size-15 rounded-full outline -outline-offset-1 outline-white/10" />
+                      <Image
+                        src="/assets/avatar-landing-page.jpg"
+                        alt="User avatar"
+                        width={60}
+                        height={60}
+                        className="inline-block rounded-full outline -outline-offset-1 outline-white/10"
+                      />
                     </div>
                     <div className="student-information flex flex-col text-left mt-auto mb-auto">
                       <h5 className="name font-bold">Chen Wei</h5>
@@ -234,16 +282,28 @@ export default function LandingPage() {
 
               {/*Card 4*/}
               <div>
-                <Card className="h-full text-center flex flex-col gap-3 rounded-2xl border-0 shadow-sm hover:shadow-lg transition-shadow">
+                <Card className="h-full text-center flex flex-col gap-3 rounded-md border-1 border-gray-100 shadow-sm hover:shadow-lg transition-shadow">
                   <div className="student-opinion px-10">
-                    <p className="italic">
-                      “I needed to pass IELTS for a teaching position abroad. IELTS Sprint's writing tutorials broke down complex tasks into manageable steps, and the grammar resources were invaluable. I passed with flying colors!”
+                    <p className="italic leading-relaxed font-medium">
+                      “I needed to pass IELTS for a teaching position abroad.
+                      IELTS Sprint&apos;s writing tutorials broke down complex
+                      tasks into manageable steps, and the grammar resources
+                      were invaluable. I passed with flying colors!”
                     </p>
                   </div>
                   <br />
+                  <div className="flex justify-center">
+                    <Separator className="w-1/2 mb-8"></Separator>
+                  </div>
                   <div className="student-information-holder flex flex-row justify-center gap-3 mt-auto">
                     <div className="student-icon">
-                      <img src="/assets/avatar-landing-page.jpg" alt="" className="inline-block size-15 rounded-full outline -outline-offset-1 outline-white/10" />
+                      <Image
+                        src="/assets/avatar-landing-page.jpg"
+                        alt="User avatar"
+                        width={60}
+                        height={60}
+                        className="inline-block rounded-full outline -outline-offset-1 outline-white/10"
+                      />
                     </div>
                     <div className="student-information flex flex-col text-left mt-auto mb-auto">
                       <h5 className="name font-bold">Maria Rodriguez</h5>
@@ -258,5 +318,5 @@ export default function LandingPage() {
       </main>
       <Footer />
     </>
-  )
+  );
 }
