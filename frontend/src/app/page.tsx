@@ -28,6 +28,11 @@ export default function Home() {
               <Link href={"/practice"}>User Practice</Link>
             </Button>
           </li>
+          <li className="mb-3">
+            <Button>
+              <Link href={"/landingpage"}>Landing Page</Link>
+            </Button>
+          </li>
         </ul>
       </div>
     </main>
