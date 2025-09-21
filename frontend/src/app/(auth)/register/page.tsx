@@ -48,7 +48,7 @@ export default function RegisterPage() {
         control={form.control}
         name="username"
         render={({ field }) => (
-          <FormItem className="bg-white border-2 border-gray-200 rounded-2xl px-9 py-7 shadow-sm">
+          <FormItem className="bg-white border-2 border-gray-200 rounded-2xl p-9 shadow-sm">
             {/* Header Section with Logo and Title */}
             <div className="flex items-center justify-center mb-3">
               <Image
@@ -63,7 +63,7 @@ export default function RegisterPage() {
             </div>
             
             {/* Sign In Title and Subtitle */}
-            <div className="text-center ">
+            <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-gray-900 mb-2">
                 Create Your Account
               </h2>

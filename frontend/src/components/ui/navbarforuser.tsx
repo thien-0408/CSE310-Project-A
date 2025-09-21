@@ -39,7 +39,7 @@ export default function NavBarUser() {
                   <NavigationMenuLink asChild>
                     <Link 
                       href="/" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
+                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
                     >
                       Home
                     </Link>
@@ -61,7 +61,7 @@ export default function NavBarUser() {
                   <NavigationMenuLink asChild>
                     <Link 
                       href="/tests" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
+                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
                     >
                       Tests
                     </Link>
@@ -74,7 +74,7 @@ export default function NavBarUser() {
                   <NavigationMenuLink asChild>
                     <Link 
                       href="/profile" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
+                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
                     >
                       Profile
                     </Link>
@@ -85,7 +85,7 @@ export default function NavBarUser() {
                   <NavigationMenuLink asChild>
                     <Link 
                       href="/settings" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
+                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
                     >
                       Settings
                     </Link>

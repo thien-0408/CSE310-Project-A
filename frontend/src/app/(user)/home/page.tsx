@@ -1,0 +1,211 @@
+"use client";
+import { Button } from "@/components/ui/button";
+import NavBarUser from "@/components/ui/navbarforuser";
+import * as React from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import Image from "next/image";
+import { Progress } from "@/components/ui/progress";
+import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import { PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from "recharts";
+import TestHistorySection from "@/components/ui/testhistory";
+import Footer from "@/components/ui/footer";
+
+const COLORS = ["#3b82f6", "#e5e7eb", "#1f2937", "#f59e0b"];
+const stats = [
+    {
+        icon: "fa-medal",
+        label: "Above average",
+        subtext: "Overall Band Score",
+        value: "7.5",
+    },
+    {
+        icon: "fa-circle-check",
+        label: "Keep up the great work!",
+        subtext: "Practice Completion",
+        value: "85%",
+    },
+    {
+        icon: "fa-bullseye",
+        label: "Based on last 5 tests",
+        subtext: "Average Test Score",
+        value: "7.0",
+    },
+];
+
+const moduleProgressData = [
+    { module: "Listening", current: 9.0 },
+    { module: "Reading", current: 8.5 },
+    { module: "Writing", current: 6.5 },
+    { module: "Speaking", current: 6.0 },
+];
+
+const milestones = [
+    { date: "July 15, 2024", location: "British Council" },
+    { date: "August 17, 2024", location: "IDP" },
+    { date: "October 20, 2024", location: "British Council" },
+];
+
+const modules = [
+    {
+        img: "/demo/reading-picture.jpg",
+        title: "Advanced Reading Strategies",
+        desc: "Techniques for skimming, scanning, and understanding complex texts quickly.",
+        tags: ["Reading", "Advanced"],
+    },
+    {
+        img: "/demo/writing-picture.jpg",
+        title: "Essay Structure for Task 2",
+        desc: "Master the argumentative and discursive essay structures for IELTS Writing Task 2.",
+        tags: ["Writing", "Intermediate"],
+    },
+    {
+        img: "/demo/speaking-picture.jpg",
+        title: "Pronunciation Practice",
+        desc: "Improve your English pronunciation and intonation for higher speaking scores.",
+        tags: ["Speaking", "Beginner"],
+    },
+    {
+        img: "/demo/listening-picture.jpg",
+        title: "Listening for Specific Information",
+        desc: "Develop your ability to identify key details in spoken English conversations and lectures.",
+        tags: ["Listening", "Intermediate"],
+    },
+];
+
+export default function UserHomeDashBoard() {
+    return (
+        <>
+            <div className="sticky top-0 z-50">
+                <NavBarUser></NavBarUser>
+            </div>
+            <main className="p-10 lg:px-30 pt-1">
+                {/* Section 1: Hero */}
+                <section className="p-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 py-5">
+                        {/* Left */}
+                        <div className="p-8 bg-white rounded-l-2xl shadow-sm">
+                            <div className="mb-8">
+                                <h1 className="text-4xl font-extrabold mb-4">
+                                    Good Morning, <span className="text-blue-500">Jane</span>
+                                </h1>
+                                <p>Ready to master your IELTS with confidence?</p>
+                            </div>
+                            <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">Continue Practice</button>
+                        </div>
+                        {/* Right */}
+                        <div className="relative overflow-hidden w-full h-full shadow-sm rounded-r-2xl ">
+                            <Image src="/demo/user-home-dashboard.jpg" alt="Study Picture" fill className="object-contain bg-gray-10" />{" "}
+                        </div>
+                    </div>
+                </section>
+
+                {/* Section 2: Stats */}
+                <section className="p-4">
+                    <h1 className="text-2xl font-extrabold">
+                        Your <span className="text-blue-500">Performance</span> Snapshot
+                    </h1>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-5">
+                        {stats.map((card, index) => (
+                            <div key={index} className="p-4 bg-white shadow-sm py-8">
+                                <div className="grid grid-cols-1 md:grid-cols-2 items-center">
+                                    <div className="text-center pb-2">
+                                        <i className={`fa-solid ${card.icon} text-[#4b91e2] text-5xl`}></i>
+                                        <p className="text-center pt-4">{card.label}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-center pb-3">{card.subtext}</p>
+                                        <h1 className="text-4xl font-extrabold text-center">{card.value}</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                {/* Section 3 */}
+                <section className="p-4">
+                    <div className="p-8 shadow-sm rounded-2xl">
+                        <h1 className="text-2xl font-extrabold pb-4">
+                            Skill <span className="text-blue-500">Performance</span>
+                        </h1>
+                        <p>Your current performance across key IELTS skills.</p>
+                        <div className="grid grid-cols-1 lg:grid-cols-1 gap-8 pt-8 px-8">
+                            <Card>
+                                <CardContent>
+                                    <ResponsiveContainer width="100%" height={300}>
+                                        <BarChart data={moduleProgressData}>
+                                            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                                            <XAxis dataKey="module" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "#666" }} />
+                                            <YAxis domain={[0, 9]} axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "#666" }} />
+                                            <Tooltip />
+                                            <Bar dataKey="current" fill="#3b82f6" name="Score" radius={[4, 4, 0, 0]} />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                </CardContent>
+                            </Card>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Section 4 */}
+                <section className="p-4">
+                    <h1 className="text-2xl font-extrabold">
+                        Upcoming <span className="text-blue-500">Milestones</span>
+                    </h1>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-6">
+                        {milestones.map((item, i) => (
+                            <div key={i} className="p-3">
+                                <h1 className="text-lg font-bold">IELTS Academic Test</h1>
+                                <p className="pb-4">
+                                    <i className="fa-regular fa-calendar-check"></i> {item.date}
+                                </p>
+                                <p className="pb-4">Your next scheduled IELTS academic test at {item.location}.</p>
+                                <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">View Details</button>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                {/* Section 5 */}
+                <section className="p-4">
+                    <h1 className="text-2xl font-extrabold">
+                        Recommended <span className="text-blue-500">Practice</span>
+                    </h1>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-5 mx-40">
+                        {modules.map(({ img, title, desc, tags }, i) => (
+                            <div key={i} className="rounded-2xl shadow-sm overflow-hidden">
+                                <div className="relative w-full h-40">
+                                    <Image src={img} fill alt={title} className="object-cover" />
+                                </div>
+                                <div className="px-4">
+                                    <h1 className="mt-4 text-lg font-semibold py-3">{title}</h1>
+                                    <p className="pb-4">{desc}</p>
+                                    <div>
+                                        {tags.map((tag, j) => (
+                                            <span key={j} className={`mr-1 py-1 px-2 rounded-2xl ${j === 0 ? "bg-blue-100" : "bg-gray-100"}`}>
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
+                                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 my-6 w-full rounded-md">Start Module</button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                {/* Section 6 */}
+                <section className="p-4">
+                    <h1 className="text-2xl font-extrabold">
+                        Recent <span className="text-blue-500">Activity</span>
+                    </h1>
+                </section>
+            </main>
+            <Footer></Footer>
+        </>
+    );
+}
