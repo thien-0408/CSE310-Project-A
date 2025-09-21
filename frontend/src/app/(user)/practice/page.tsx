@@ -98,11 +98,11 @@ export default function UserDashBoard() {
           <div className="mb-1">
             {/*Text div */}
             <div className="mb-8">
-              <h1 className="text-4xl font-extrabold mb-4">
+              <h1 className="text-4xl font-extrabold mb-4 tracking-tighter">
                 Master IELTS with
                 <span className="text-blue-500"> Confidence</span>
               </h1>
-              <p className="">
+              <p className="tracking-tight">
                 IELTS Sprint provides comprehensive practice tests, study
                 materials, and <br /> personalized feedback to help you achieve
                 your desired band score. Start your <br /> journey to global
@@ -110,7 +110,7 @@ export default function UserDashBoard() {
               </p>
             </div>
             {/*Buttons div */}
-            <div className="flex gap-4">
+            <div className="flex gap-4 tracking-tight" >
               <Button
                 type="submit"
                 className=" bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md  "
@@ -129,7 +129,7 @@ export default function UserDashBoard() {
         </section>
 
         {/*Second section*/}
-        <section className="py-10 bg-white mb-5">
+        <section className="py-10 bg-white mb-5 tracking-tighter">
           <div className=" mx-auto px-10">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {/* Card 1 - Personalized Learning */}
@@ -147,7 +147,7 @@ export default function UserDashBoard() {
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">
                   Personalized Learning
                 </h3>
-                <p className="text-gray-600 leading-relaxed max-w-sm mx-auto mb-4">
+                <p className="font-medium text-gray-600 leading-relaxed max-w-sm mx-auto mb-4">
                   Tailored study plans and content based on your strengths and
                   weaknesses for maximum progress.
                 </p>
@@ -200,7 +200,7 @@ export default function UserDashBoard() {
 
         {/*Practice */}
         <section className="mb-20">
-          <h1 className="text-3xl font-bold mb-20">
+          <h1 className="text-3xl font-bold mb-20 tracking-tighter">
             Practice <span className="text-blue-500">Modules</span>
           </h1>
 
@@ -308,7 +308,7 @@ export default function UserDashBoard() {
 
         {/*Third section : Full mock test */}
         <section className="mb-20">
-          <h1 className="text-3xl font-bold mb-20">
+          <h1 className="text-3xl font-bold mb-20 tracking-tighter">
             Full Mock <span className="text-blue-500">Tests</span>
           </h1>
           <div className="mx-auto">
@@ -382,7 +382,7 @@ export default function UserDashBoard() {
 
         <section>
           {/*Performance section*/}
-          <h1 className="text-3xl font-bold ">
+          <h1 className="text-3xl font-bold tracking-tighter">
             Your Performance <span className="text-blue-500">Overview</span>
           </h1>
           <div className="py-16">
@@ -661,7 +661,7 @@ export default function UserDashBoard() {
         {/*Test history */}
         <section>
           <div className="">
-            <h2 className="text-3xl font-bold text-gray-900">
+            <h2 className="text-3xl font-bold text-gray-900 tracking-tighter">
               Test <span className="text-blue-500">History</span>
             </h2>
           </div>

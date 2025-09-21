@@ -38,7 +38,7 @@ export default function NavBar() {
                   <NavigationMenuLink asChild>
                     <Link 
                       href="/" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
+                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
                     >
                       Home
                     </Link>
@@ -49,8 +49,8 @@ export default function NavBar() {
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
                     <Link 
-                      href="" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
+                      href="/landingpage" 
+                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
                     >
                       Practice
                     </Link>
@@ -61,7 +61,7 @@ export default function NavBar() {
                   <NavigationMenuLink asChild>
                     <Link 
                       href="/login" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
+                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
                     >
                       Sign In
                     </Link>
@@ -72,7 +72,7 @@ export default function NavBar() {
                   <NavigationMenuLink asChild>
                     <Link 
                       href="/register" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
+                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
                     >
                       Sign Up
                     </Link>

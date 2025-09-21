@@ -25,7 +25,7 @@ export default function Home() {
           </li>
           <li className="mb-3">
             <Button>
-              <Link href={"/dashboard"}>DashBoard</Link>
+              <Link href={"/practice"}>User Practice</Link>
             </Button>
           </li>
         </ul>

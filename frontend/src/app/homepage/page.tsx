@@ -12,14 +12,14 @@ export default function HomePage() {
         <NavBar />
       </div>
       {/* Hero Banner Section */}
-      <header className="container mx-auto">
+      <header className="container mx-auto tracking-tight">
         <div className="w-full bg-gradient-to-br from-[#dfe9fa] via-[#c8daf8] to-[#85acef] relative overflow-hidden lg:p-40 p-10">
           <div className="container mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               {/* Content Section */}
               <div className="flex flex-col space-y-8 text-left">
                 <div className="space-y-6">
-                  <h1 className="text-4xl md:text-5xl lg:text-5xl font-extrabold leading-tight">
+                  <h1 className="text-4xl md:text-5xl lg:text-5xl font-extrabold tracking-tight">
                     <span className="text-gray-900">Master IELTS</span>
                     <br />
                     <span className="text-gray-900">with</span>
@@ -29,7 +29,7 @@ export default function HomePage() {
                     </span>
                   </h1>
 
-                  <p className="text-gray-700 leading-relaxed max-w-2xl">
+                  <p className="text-gray-700 leading-relaxed max-w-2xl tracking-tighter">
                     IELTS Sprint provides comprehensive practice tests, study
                     materials, and personalized feedback to help you achieve
                     your desired band score. Start your journey to global
@@ -82,7 +82,7 @@ export default function HomePage() {
 
       <main>
         {/*Benefit section*/}
-        <section className="py-20 px-10 lg:px-40">
+        <section className="py-20 px-10 lg:px-40 tracking-tight">
           <div className="container mx-auto px-6 lg:px-8 ">
             <div className="text-center mb-16">
               <h1 className="text-4xl font-extrabold text-gray-900">
@@ -103,7 +103,7 @@ export default function HomePage() {
                     <CardTitle className="text-2xl font-semibold mb-4 leading-tight text-gray-900">
                       Full-Length Mock Tests
                     </CardTitle>
-                    <CardDescription className="text-sm leading-relaxed text-gray-600">
+                    <CardDescription className=" font-medium leading-relaxed text-gray-600">
                       Practice with realistic mock tests designed to simulate
                       the actual IELTS exam environment for all modules.
                     </CardDescription>
@@ -123,7 +123,7 @@ export default function HomePage() {
                     <CardTitle className="text-2xl font-semibold mb-4 leading-tight text-gray-900">
                       Comprehensive Study Materials
                     </CardTitle>
-                    <CardDescription className="text-sm leading-relaxed text-gray-600">
+                    <CardDescription className="font-medium leading-relaxed text-gray-600">
                       Access a rich library of study guides, vocabulary lists,
                       and grammar exercises tailored for IELTS success.
                     </CardDescription>
@@ -143,7 +143,7 @@ export default function HomePage() {
                     <CardTitle className="text-2xl font-semibold mb-4 leading-tight text-gray-900">
                       Personalized Feedback
                     </CardTitle>
-                    <CardDescription className="text-sm leading-relaxed text-gray-600">
+                    <CardDescription className="font-medium leading-relaxed text-gray-600">
                       Receive detailed, actionable feedback on your writing and
                       speaking to identify areas for improvement.
                     </CardDescription>
@@ -163,7 +163,7 @@ export default function HomePage() {
                     <CardTitle className="text-2xl font-semibold mb-4 leading-tight text-gray-900">
                       Progress Tracking & Analytics
                     </CardTitle>
-                    <CardDescription className="text-sm leading-relaxed text-gray-600">
+                    <CardDescription className="font-medium leading-relaxed text-gray-600">
                       Monitor your performance with insightful analytics and
                       track your progress across different skills over time.
                     </CardDescription>
@@ -183,7 +183,7 @@ export default function HomePage() {
                     <CardTitle className="text-2xl font-semibold mb-4 leading-tight text-gray-900">
                       Expert Tips & Strategies
                     </CardTitle>
-                    <CardDescription className="text-sm leading-relaxed text-gray-600">
+                    <CardDescription className="font-medium leading-relaxed text-gray-600">
                       Learn proven techniques and strategies from experienced
                       IELTS instructors to maximize your score.
                     </CardDescription>
@@ -203,7 +203,7 @@ export default function HomePage() {
                     <CardTitle className="text-2xl font-semibold mb-4 leading-tight text-gray-900">
                       Interactive Learning Modules
                     </CardTitle>
-                    <CardDescription className="text-sm leading-relaxed text-gray-600">
+                    <CardDescription className="font-medium leading-relaxed text-gray-600">
                       Engage with interactive lessons and quizzes that make
                       learning fun and effective for all levels.
                     </CardDescription>
@@ -216,7 +216,7 @@ export default function HomePage() {
 
         {/*Success path*/}
         <section>
-          <div className="w-full bg-gray-50 flex flex-col items-center py-30 sm:flex-row lg:px-60 lg:py-30 p-10">
+          <div className="w-full bg-gray-50 flex flex-col items-center py-30 sm:flex-row lg:px-60 lg:py-30 p-10 tracking-tight">
             <div className="flex-1">
               {/**Image section */}
               <Image
