@@ -30,6 +30,7 @@ import {
 } from "recharts";
 import TestHistorySection from "@/components/ui/testhistory";
 import Footer from "@/components/ui/footer";
+import FooterUser from "@/components/ui/footeruser";
 
 {
   /*Score */
@@ -668,7 +669,7 @@ export default function UserDashBoard() {
           <TestHistorySection></TestHistorySection>
         </section>
       </main>
-      <Footer></Footer>
+      <FooterUser></FooterUser>
     </>
   );
 }
