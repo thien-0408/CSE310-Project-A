@@ -1,15 +1,16 @@
+
 import { Facebook, Instagram, Linkedin, Mail, Phone, Twitter } from "lucide-react";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 
-export default function Footer(){
-    return(
-        <>
-        <footer className="bg-gray-900 text-white">
+export default function Footer() {
+  return (
+    <>
+      <footer className="bg-gray-900 text-white">
         <div className=" mx-auto px-12 py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            
+
             {/* Company Info */}
             <div className="md:col-span-1">
               <div className="flex items-center mb-6">
@@ -19,7 +20,7 @@ export default function Footer(){
                 </h3>
               </div>
               <p className="text-gray-400 text-sm leading-relaxed mb-6">
-                Master your IELTS exam with comprehensive practice tests, study materials, 
+                Master your IELTS exam with comprehensive practice tests, study materials,
                 and personalized feedback designed to help you achieve your target band score.
               </p>
               <div className="flex space-x-4">
@@ -155,6 +156,6 @@ export default function Footer(){
           </div>
         </div>
       </footer>
-        </>
-    )
+    </>
+  )
 }
