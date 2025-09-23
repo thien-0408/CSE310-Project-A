@@ -2,16 +2,10 @@ import NavBar from "@/components/ui/navbar";
 import Footer from "@/components/ui/footer";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
+import { Separator } from "@/components/ui/separator";
+import ScrollTop from "@/components/ui/scroll-top"; 
 
 export default function LandingPage() {
   return (
@@ -128,6 +122,10 @@ export default function LandingPage() {
                     </CardTitle>
                     <CardDescription className="text-sm leading-relaxed text-gray-600">
                       Track your progress with detailed analytics that highlight your strengths and pinpoint areas needing improvement. Our intelligent system adapts to your learning pace, offering tailored recommendations.
+                      Track your progress with detailed analytics that highlight
+                      your strengths and pinpoint areas needing improvement. Our
+                      intelligent system adapts to your learning pace, offering
+                      tailored recommendations.
                     </CardDescription>
                   </div>
                 </Card>
@@ -192,16 +190,29 @@ export default function LandingPage() {
 
               {/*Card 2*/}
               <div>
-                <Card className="h-full text-center flex flex-col gap-3 rounded-2xl border-0 shadow-sm hover:shadow-lg transition-shadow">
+                <Card className="h-full text-center flex flex-col gap-3 rounded-md border-1 border-gray-100 shadow-sm hover:shadow-lg transition-shadow">
                   <div className="student-opinion px-10">
-                    <p className="italic">
-                      “As a working professional, time is precious. IELTS Sprint allowed me to study efficiently with its well-structured courses and flexible schedule. I improved my score significantly and gained admission to my desired program abroad.”
+                    <p className="italic leading-relaxed font-medium">
+                      “As a working professional, time is precious. IELTS Sprint
+                      allowed me to study efficiently with its well-structured
+                      courses and flexible schedule. I improved my score
+                      significantly and gained admission to my desired program
+                      abroad.”
                     </p>
                   </div>
                   <br />
+                  <div className="flex justify-center">
+                    <Separator className="w-1/2 mb-8"></Separator>
+                  </div>
                   <div className="student-information-holder flex flex-row justify-center gap-3 mt-auto">
                     <div className="student-icon">
-                      <img src="/assets/avatar-landing-page.jpg" alt="" className="inline-block size-15 rounded-full outline -outline-offset-1 outline-white/10" />
+                      <Image
+                        src="/assets/avatar-landing-page.jpg"
+                        alt="User avatar"
+                        width={60}
+                        height={60}
+                        className="inline-block rounded-full outline -outline-offset-1 outline-white/10"
+                      />
                     </div>
                     <div className="student-information flex flex-col text-left mt-auto mb-auto">
                       <h5 className="name font-bold">David Miller</h5>
@@ -213,16 +224,29 @@ export default function LandingPage() {
 
               {/*Card 3*/}
               <div>
-                <Card className="h-full text-center flex flex-col gap-3 rounded-2xl border-0 shadow-sm hover:shadow-lg transition-shadow">
+                <Card className="h-full text-center flex flex-col gap-3 rounded-md border-1 border-gray-100 shadow-sm hover:shadow-lg transition-shadow">
                   <div className="student-opinion px-10">
-                    <p className="italic">
-                      “The speaking practice sessions on IELTS Sprint were a game-changer. The detailed feedback and sample answers helped me overcome my nervousness and speak confidently. I scored Band 7.5 and am now ready for my immigration journey!”
+                    <p className="italic leading-relaxed font-medium">
+                      “The speaking practice sessions on IELTS Sprint were a
+                      game-changer. The detailed feedback and sample answers
+                      helped me overcome my nervousness and speak confidently. I
+                      scored Band 7.5 and am now ready for my immigration
+                      journey!”
                     </p>
                   </div>
                   <br />
+                  <div className="flex justify-center">
+                    <Separator className="w-1/2 mb-8"></Separator>
+                  </div>
                   <div className="student-information-holder flex flex-row justify-center gap-3 mt-auto">
                     <div className="student-icon">
-                      <img src="/assets/avatar-landing-page.jpg" alt="" className="inline-block size-15 rounded-full outline -outline-offset-1 outline-white/10" />
+                      <Image
+                        src="/assets/avatar-landing-page.jpg"
+                        alt="User avatar"
+                        width={60}
+                        height={60}
+                        className="inline-block rounded-full outline -outline-offset-1 outline-white/10"
+                      />
                     </div>
                     <div className="student-information flex flex-col text-left mt-auto mb-auto">
                       <h5 className="name font-bold">Chen Wei</h5>
@@ -234,16 +258,28 @@ export default function LandingPage() {
 
               {/*Card 4*/}
               <div>
-                <Card className="h-full text-center flex flex-col gap-3 rounded-2xl border-0 shadow-sm hover:shadow-lg transition-shadow">
+                <Card className="h-full text-center flex flex-col gap-3 rounded-md border-1 border-gray-100 shadow-sm hover:shadow-lg transition-shadow">
                   <div className="student-opinion px-10">
-                    <p className="italic">
-                      “I needed to pass IELTS for a teaching position abroad. IELTS Sprint's writing tutorials broke down complex tasks into manageable steps, and the grammar resources were invaluable. I passed with flying colors!”
+                    <p className="italic leading-relaxed font-medium">
+                      “I needed to pass IELTS for a teaching position abroad.
+                      IELTS Sprint&apos;s writing tutorials broke down complex
+                      tasks into manageable steps, and the grammar resources
+                      were invaluable. I passed with flying colors!”
                     </p>
                   </div>
                   <br />
+                  <div className="flex justify-center">
+                    <Separator className="w-1/2 mb-8"></Separator>
+                  </div>
                   <div className="student-information-holder flex flex-row justify-center gap-3 mt-auto">
                     <div className="student-icon">
-                      <img src="/assets/avatar-landing-page.jpg" alt="" className="inline-block size-15 rounded-full outline -outline-offset-1 outline-white/10" />
+                      <Image
+                        src="/assets/avatar-landing-page.jpg"
+                        alt="User avatar"
+                        width={60}
+                        height={60}
+                        className="inline-block rounded-full outline -outline-offset-1 outline-white/10"
+                      />
                     </div>
                     <div className="student-information flex flex-col text-left mt-auto mb-auto">
                       <h5 className="name font-bold">Maria Rodriguez</h5>
@@ -257,6 +293,7 @@ export default function LandingPage() {
         </section>
       </main>
       <Footer />
+      <ScrollTop />
     </>
-  )
+  );
 }

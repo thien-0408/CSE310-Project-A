@@ -7,13 +7,11 @@ import {
 } from "@/components/ui/navigation-menu";
 import Link from "next/link";
 import Image from "next/image";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Bell } from "lucide-react";
 
 export default function NavBar() {
   return (
     <header className="w-full bg-white shadow-sm border-b">
-      <div className="container mx-auto px-4 py-3">
+      <div className=" mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           
           {/* Left Side: Logo + Navigation */}
@@ -23,8 +21,8 @@ export default function NavBar() {
               <Image
                 src="/assets/logo.png"
                 alt="IELTSSprint Logo"
-                width={40}
-                height={40}
+                width={30}
+                height={30}
                 quality={100}
                 className="mr-2"
               />
@@ -35,12 +33,12 @@ export default function NavBar() {
 
             {/* Navigation Menu - flows naturally from logo */}
             <NavigationMenu className="hidden md:flex">
-              <NavigationMenuList className="flex items-center space-x-6">
+              <NavigationMenuList className="flex items-center space-x-1 text-sm">
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
                     <Link 
                       href="/" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
+                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
                     >
                       Home
                     </Link>
@@ -51,8 +49,8 @@ export default function NavBar() {
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
                     <Link 
-                      href="" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
+                      href="/landingpage" 
+                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
                     >
                       Practice
                     </Link>
@@ -63,7 +61,7 @@ export default function NavBar() {
                   <NavigationMenuLink asChild>
                     <Link 
                       href="/login" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
+                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
                     >
                       Sign In
                     </Link>
@@ -74,7 +72,7 @@ export default function NavBar() {
                   <NavigationMenuLink asChild>
                     <Link 
                       href="/register" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
+                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
                     >
                       Sign Up
                     </Link>

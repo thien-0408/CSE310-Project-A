@@ -23,10 +23,20 @@ export default function Home() {
               <Link href={"/homepage"}>Home</Link>
             </Button>
           </li>
-          <li>
+          <li className="mb-3">
             <Button>
-              <Link href={"/landingpage"}>Landing page</Link>
-            </Button> 
+              <Link href={"/practice"}>User Practice</Link>
+            </Button>
+          </li>
+          <li className="mb-3">
+            <Button>
+              <Link href={"/landingpage"}>Landing Page</Link>
+            </Button>
+          </li>
+          <li className="mb-3">
+            <Button>
+              <Link href={"/dashboard"}>DashBoard</Link>
+            </Button>
           </li>
         </ul>
       </div>

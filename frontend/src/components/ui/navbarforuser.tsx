@@ -12,7 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 export default function NavBarUser() {
   return (
     <header className="w-full bg-white shadow-sm border-b">
-      <div className="container mx-auto px-4 py-3">
+      <div className=" mx-auto px-4 py-2">
         <div className="flex items-center justify-between">
           
           {/* Left Side: Logo + Navigation */}
@@ -22,8 +22,8 @@ export default function NavBarUser() {
               <Image
                 src="/assets/logo.png"
                 alt="IELTSSprint Logo"
-                width={40}
-                height={40}
+                width={30}
+                height={30}
                 quality={100}
                 className="mr-2"
               />
@@ -34,12 +34,12 @@ export default function NavBarUser() {
 
             {/* Navigation Menu - flows naturally from logo */}
             <NavigationMenu className="hidden md:flex">
-              <NavigationMenuList className="flex items-center space-x-6">
+              <NavigationMenuList className="flex items-center space-x-1 text-sm">
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
                     <Link 
                       href="/" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
+                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
                     >
                       Home
                     </Link>
@@ -61,29 +61,20 @@ export default function NavBarUser() {
                   <NavigationMenuLink asChild>
                     <Link 
                       href="/tests" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
+                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
                     >
                       Tests
                     </Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
 
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <Link 
-                      href="/progress" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
-                    >
-                      Progress
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
+                
 
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
                     <Link 
                       href="/profile" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
+                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
                     >
                       Profile
                     </Link>
@@ -94,7 +85,7 @@ export default function NavBarUser() {
                   <NavigationMenuLink asChild>
                     <Link 
                       href="/settings" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
+                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
                     >
                       Settings
                     </Link>
