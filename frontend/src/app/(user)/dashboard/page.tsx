@@ -18,6 +18,7 @@ import {
 import Footer from "@/components/ui/footer";
 import FooterUser from "@/components/ui/footeruser";
 import RecentAcivity from "@/components/ui/recentact";
+import ScrollTop from "@/components/ui/scroll-top";
 
 const stats = [
   {
@@ -262,6 +263,7 @@ export default function UserDashBoard() {
         </section>
       </main>
       <FooterUser></FooterUser>
+      <ScrollTop></ScrollTop>
     </>
   );
 }

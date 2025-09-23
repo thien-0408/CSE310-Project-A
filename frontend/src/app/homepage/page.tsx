@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import Footer from "@/components/ui/footer";
+import ScrollTop from "@/components/ui/scroll-top";
 
 export default function HomePage() {
   return (
@@ -19,7 +20,7 @@ export default function HomePage() {
               {/* Content Section */}
               <div className="flex flex-col space-y-8 text-left">
                 <div className="space-y-6">
-                  <h1 className=" md:text-5xl lg:text-5xl font-extrabold tracking-tight">
+                  <h1 className="text-4xl md:text-5xl lg:text-5xl font-extrabold tracking-tight">
                     <span className="text-gray-900">Master IELTS</span>
                     <br />
                     <span className="text-gray-900">with</span>
@@ -252,6 +253,7 @@ export default function HomePage() {
         </section>
       </main>
       <Footer></Footer>
+      <ScrollTop></ScrollTop>
     </>
   );
 }

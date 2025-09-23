@@ -38,7 +38,7 @@ export default function NavBarUser() {
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
                     <Link 
-                      href="/" 
+                      href="/dashboard" 
                       className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
                     >
                       Home
@@ -50,7 +50,7 @@ export default function NavBarUser() {
                   <NavigationMenuLink asChild>
                     <Link 
                       href="/practice" 
-                      className=" font-medium px-3 py-2" 
+                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter" 
                     >
                       Practice
                     </Link>
@@ -67,8 +67,6 @@ export default function NavBarUser() {
                     </Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
-
-                
 
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>

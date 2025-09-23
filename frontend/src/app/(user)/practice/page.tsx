@@ -31,6 +31,7 @@ import {
 import TestHistorySection from "@/components/ui/testhistory";
 import Footer from "@/components/ui/footer";
 import FooterUser from "@/components/ui/footeruser";
+import ScrollTop from "@/components/ui/scroll-top";
 
 {
   /*Score */
@@ -670,6 +671,7 @@ export default function UserDashBoard() {
         </section>
       </main>
       <FooterUser></FooterUser>
+      <ScrollTop></ScrollTop>
     </>
   );
 }

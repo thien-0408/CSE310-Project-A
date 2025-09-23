@@ -27,7 +27,7 @@ export default function NavBar() {
                 className="mr-2"
               />
               <h1 className="text-2xl font-bold italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8] bg-clip-text text-transparent">
-                <Link href={'/'}>IELTSSprint</Link>
+                <Link href={'/homepage'}>IELTSSprint</Link>
               </h1>
             </div>
 
@@ -37,7 +37,7 @@ export default function NavBar() {
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
                     <Link 
-                      href="/" 
+                      href="/homepage" 
                       className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
                     >
                       Home
