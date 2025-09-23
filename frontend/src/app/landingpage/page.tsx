@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
+import ScrollTop from "@/components/ui/scroll-top";
 
 export default function LandingPage() {
   return (
@@ -317,6 +318,7 @@ export default function LandingPage() {
         </section>
       </main>
       <Footer />
+      <ScrollTop></ScrollTop>
     </>
   );
 }
