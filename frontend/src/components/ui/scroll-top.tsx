@@ -25,7 +25,7 @@ export default function ScrollTop() {
     return () => window.removeEventListener("scroll", toggleVisibility);
   }, []);
 
-  const className = (visible == true ? "fixed w-[50px] h-[50px] md:bottom-20 md:right-20 text-[20px] leading-[50px] bottom-15 right-3 text-center rounded-full opacity-100 bg-black text-blue-600 animate-none md:animate-bounce" : "hidden");
+  const className = (visible == true ? "fixed w-[50px] h-[50px] md:bottom-20 md:right-20 text-[20px] leading-[50px] bottom-15 right-3 text-center rounded-full shadow-lg opacity-100 bg-white text-blue-600 animate-none md:animate-bounce" : "hidden");
 
   return (
     <>
