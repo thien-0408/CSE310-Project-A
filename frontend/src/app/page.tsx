@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import FullScreenButton from "@/components/ui/fullscreen";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
@@ -37,6 +38,11 @@ export default function Home() {
           <li className="mb-3">
             <Button>
               <Link href={"/dashboard"}>UserDashBoard</Link>
+            </Button>
+          </li>
+          <li className="mb-3">
+            <Button>
+              <Link href={'/tests'}>Test Interface</Link>
             </Button>
           </li>
         </ul>

@@ -30,7 +30,7 @@ export default function ScrollTop() {
   return (
     <>
       <div className={className} onClick={handleClick}>
-        <i className="fa-solid fa-arrow-up"></i>
+        <i className="fa-solid fa-arrow-up hover:cursor-pointer"></i>
       </div>
     </>
   )
