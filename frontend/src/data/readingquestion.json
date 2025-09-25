@@ -1,0 +1,94 @@
+{
+  "passageTitle": "The History of Typing",
+  "questions": [
+    {
+      "id": 1,
+      "type": "multiple_choice",
+      "question": "What does the writer say about the performance of older typists?",
+      "options": [
+        "They used different motor skills from younger typists.",
+        "They had been more efficiently trained than younger typists.",
+        "They used more time-saving techniques than younger typists.",
+        "They had better concentration skills than younger typists."
+      ],
+      "answerType": "single",
+      "answer": 2
+    },
+    {
+      "id": 2,
+      "type": "true_false_not_given",
+      "question": "Older typists had slower typing speed than younger typists.",
+      "options": ["True", "False", "Not Given"],
+      "answer": 1
+    },
+    {
+      "id": 3,
+      "type": "yes_no_not_given",
+      "question": "According to the writer, younger typists had better memory.",
+      "options": ["Yes", "No", "Not Given"],
+      "answer": 0
+    },
+    {
+      "id": 4,
+      "type": "matching_headings",
+      "question": "Match the headings with the paragraphs.",
+      "paragraphs": ["Paragraph A", "Paragraph B", "Paragraph C"],
+      "headings": [
+        "Experiments on typing skills",
+        "Impact of age on memory",
+        "Use of strategies to compensate"
+      ],
+      "answer": {
+        "Paragraph A": "Impact of age on memory",
+        "Paragraph B": "Experiments on typing skills",
+        "Paragraph C": "Use of strategies to compensate"
+      }
+    },
+    {
+      "id": 5,
+      "type": "sentence_completion",
+      "question": "Complete the sentence: Older typists compensated for their slower speed by using ___.",
+      "wordLimit": "NO MORE THAN TWO WORDS",
+      "answer": "strategic shifts"
+    },
+    {
+      "id": 6,
+      "type": "summary_completion",
+      "question": "Complete the summary using words from the passage.",
+      "text": "Studies have shown that younger typists performed better in terms of ____, but older typists relied on ____. ",
+      "wordLimit": "ONE WORD ONLY",
+      "answer": ["memory", "strategies"]
+    },
+    {
+      "id": 7,
+      "type": "table_completion",
+      "question": "Complete the table below.",
+      "table": {
+        "columns": ["Group", "Typing Speed", "Strategy"],
+        "rows": [
+          ["Young typists", "____", "Standard methods"],
+          ["Older typists", "60 words per min", "____"]
+        ]
+      },
+      "wordLimit": "ONE WORD ONLY",
+      "answer": {
+        "Young typists": ["60 words per min"],
+        "Older typists": ["strategies"]
+      }
+    },
+    {
+      "id": 8,
+      "type": "diagram_label_completion",
+      "question": "Label the parts of the diagram using words from the passage.",
+      "diagram": ["Brain", "Blood Flow", "____"],
+      "answer": ["Neural Networks"]
+    },
+    {
+      "id": 9,
+      "type": "short_answer",
+      "question": "Who conducted the experiment on rats’ brains?",
+      "wordLimit": "NO MORE THAN THREE WORDS",
+      "answer": "Marion Diamond"
+    }
+  ]
+}

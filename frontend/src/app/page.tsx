@@ -45,6 +45,12 @@ export default function Home() {
               <Link href={'/tests'}>Test Interface</Link>
             </Button>
           </li>
+          <li className="mb-3">
+            <Button>
+              <Link href={'/readingtest'}>Reading Test
+              </Link>
+            </Button>
+          </li>
         </ul>
       </div>
     </main>

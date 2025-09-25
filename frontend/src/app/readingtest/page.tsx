@@ -1,13 +1,55 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import NavbarTest from "@/components/ui/navbarfortest";
 import { useRef, useState } from "react";
-import Image from "next/image";
 import { useEffect } from "react";
+import ReadingPassage from "@/components/readingpassage";
+import readingData from "@/data/passage.json";
+import data from "@/data/readingquestion.json";
+import QuestionRenderer from "@/components/questionrenderer";
+import QuestionScoring from "@/components/QuestionScoring";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuList,
+} from "@/components/ui/navigation-menu";
+import Link from "next/link";
+import Image from "next/image";
+import FullScreenButton from "@/components/ui/fullscreen";
+import { Button } from "@/components/ui/button";
+import { GrNext } from "react-icons/gr";
+import { GrPrevious } from "react-icons/gr";
+
+
+
+// Interface for user answers
+interface UserAnswer {
+  questionId: number;
+  answer: unknown;
+}
 
 export default function ReadingTest() {
-  const [leftWidth, setLeftWidth] = useState(50); // passage's % width
+  const [leftWidth, setLeftWidth] = useState(50);
   const isDragging = useRef(false);
+  const [showResults, setShowResults] = useState(false);
+  const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
+
+  //Update user answer function
+  const handleAnswerChange = (questionId: number, answer: unknown) => {
+    setUserAnswers(prev => {
+      const existing = prev.find(ua => ua.questionId === questionId);
+      if (existing) {
+        // Update current answer
+        return prev.map(ua => 
+          ua.questionId === questionId 
+            ? { ...ua, answer } 
+            : ua
+        );
+      } else {
+        // Add new answer
+        return [...prev, { questionId, answer }];
+      }
+    });
+  };
 
   const handleMouseDown = () => {
     isDragging.current = true;
@@ -29,13 +71,14 @@ export default function ReadingTest() {
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
   }
+
   useEffect(() => {
     const handleMouseUp = () => {
       const selection = window.getSelection();
       if (selection && selection.toString().length > 0) {
         const range = selection.getRangeAt(0);
         const span = document.createElement("span");
-        span.className = "bg-yellow-300 font-bold"; //custom color here
+        span.className = "bg-yellow-300 font-bold";
         try {
           range.surroundContents(span);
         } catch (err) {
@@ -50,40 +93,84 @@ export default function ReadingTest() {
       document.removeEventListener("mouseup", handleMouseUp);
     };
   }, []);
+
+  const handleSubmit = () => {
+    setShowResults(true);
+  };
+
+  if (showResults) {
+    return (
+      <>
+        <NavbarTest />
+        <QuestionScoring
+          questions={data.questions}
+          userAnswers={userAnswers}
+          onClose={() => setShowResults(false)}
+        />
+      </>
+    );
+  }
+
   return (
     <>
-      <NavbarTest></NavbarTest>
+      {/*Nav bar */}
+      <header className="w-full bg-white shadow-sm border-b">
+      <div className="mx-auto px-4 py-3">
+        <div className="flex items-center justify-between">
+            {/*Left group*/}
+          <div className="flex items-center space-x-8">
+            <div className="flex items-center">
+              <Image
+                src="/assets/logo.png"
+                alt="IELTSSprint Logo"
+                width={30}
+                height={30}
+                quality={100}
+                className="mr-2"
+              />
+              <h1 className="text-2xl font-bold italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8] bg-clip-text text-transparent">
+                <Link href={'/homepage'}>IELTSSprint</Link>
+              </h1>
+            </div>
+            
+            
+          </div>
+
+          {/* Right group */}
+          <div className="flex items-center">
+            <NavigationMenu className="hidden md:flex">
+              <NavigationMenuList className="flex space-x-5 text-sm">
+                <NavigationMenuItem>
+                  <FullScreenButton></FullScreenButton>
+                </NavigationMenuItem>
+               
+              </NavigationMenuList>
+            </NavigationMenu>
+          </div>
+
+        </div>
+      </div>
+    </header>
       <div className="flex h-screen overflow-hidden">
         {/* Passage */}
         <div
-          className="overflow-y-auto p-6 border-r"
+          className="overflow-y-auto border-r"
           style={{ width: `${leftWidth}%` }}
         >
-          <div className="text-3xl font-extrabold text-center p-10 text-white  italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8] ">
+          <div className="text-3xl font-extrabold text-center p-10 text-white italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8]">
             <h1>Can the Planets coral reefs be saved?</h1>
           </div>
-          <h2 className="text-xl font-bold mb-4">Reading Passage 1</h2>
-          <p id="reading-passage" className="font-medium">
-            Stanley Rapoport at the National Institute of Health in the United
-            States measured the flow of blood in the brains of old and young
-            people as they completed different tasks. S ince blood flow reflects
-            neural activity, Rapoport could compare which networks of neurons
-            were the same, the neural networks they used were significantly
-            different. The older subjects used different inter nal strategies to
-            accomplish comparable results at the same time, Rapoport says. At
-            the Georgia Institute of Technology, psychologist Timothy Salthouse
-            compared a group of fast and accurate typists of college age with
-            ano ther group in their 60s. Both groups typed 60 words a minute.
-            The older typists, it turned out, achieved their speed w ith cunning
-            little strategies that made them more efficient than their younger
-            counterparts. They made fewer finger shift s, gaining a fraction of
-            a second here and there. They also read ahead in the test. The
-            neural networks involved in typing appear to have been reshaped to
-            compensate for losses in motor skills or other age changes.
-          </p>
+          <div className="p-6">
+            {readingData.map((q) => (
+              <ReadingPassage key={q.id}
+                id={q.id}
+                title={q.title}
+                text={q.text}/>
+            ))}
+          </div>
         </div>
 
-        {/* Divider <Resize> */}
+        {/* Divider */}
         <div
           onMouseDown={handleMouseDown}
           className="w-1 bg-gray-300 cursor-col-resize hover:bg-gray-500"
@@ -91,10 +178,28 @@ export default function ReadingTest() {
 
         {/* Questions */}
         <div className="flex-1 overflow-y-auto p-6">
-          <h3 className="text-lg font-semibold mb-4">Questions</h3>
-          {/* Question list*/}
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-semibold">Questions</h3>
+            
+          </div>
+          
+          <QuestionRenderer 
+            questions={data.questions} 
+            onAnswerChange={handleAnswerChange}
+          />
         </div>
       </div>
+      <footer className="sticky bottom-0 w-full bg-white shadow-inner border-t p-3 flex items-center justify-center space-x-5">
+        <div>
+          <Button className="rounded-4xl bg-gray-200 text-gray-800 hover:bg-gray-300"><GrPrevious /></Button>
+        </div>
+        <div>
+          <Button className="rounded-4xl bg-gray-200 text-gray-800 hover:bg-gray-300"><GrNext></GrNext></Button>
+        </div>
+        <div>
+          <Button className="rounded-3xl bg-[#407db9] hover:bg-[#336699] transition-all duration-300" onClick={handleSubmit}>Submit</Button>
+        </div>
+      </footer>
     </>
   );
 }
