@@ -34,6 +34,21 @@ const YesNoNotGiven: React.FC<Props> = ({ id, question, options = defaultOptions
 
   return (
     <div className="p-4 mb-2">
+        <h1>Do the following statements agree with the views of the writer in Reading Passage?</h1>
+      <div className="grid grid-cols-[1fr_2fr] p-4 bg-gray-100 rounded-sm my-4 tracking-tight">
+        <div className="space-y-2">
+          <h2 className="font-bold">YES.</h2>
+          <h2 className="font-bold">NO.</h2>
+          <h2 className="font-bold">NOT GIVEN.</h2>
+        </div>
+
+        <div className="space-y-2 font-medium">
+            <p>If the statement agrees with the views of the writer</p>
+            <p>If the statement contradicts the views of the writer	</p>
+            <p>If it is impossible to say what the writer thinks about</p>
+        </div>
+      </div>
+
       <p className="font-semibold mb-2">{id}. {question}</p>
       <div className="space-y-2">
         {options.map((opt, i) => (

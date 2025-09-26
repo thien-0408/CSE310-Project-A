@@ -1,12 +1,16 @@
+"use client"
 import React, { useState, useEffect } from "react";
 
 interface Props {
   id: number;
   question: string;
+  wordLimit?: string;
+  range?: string;
+  questionRange?: string;
   onAnswerChange?: (answer: string) => void;
 }
 
-const SummaryCompletion: React.FC<Props> = ({ id, question, onAnswerChange }) => {
+const SummaryCompletion: React.FC<Props> = ({ id, question,wordLimit, range,questionRange, onAnswerChange }) => {
   const storageKey = `question-sumc-${id}`;
   const [answer, setAnswer] = useState("");
 
@@ -30,6 +34,9 @@ const SummaryCompletion: React.FC<Props> = ({ id, question, onAnswerChange }) =>
 
   return (
     <div className="p-4 mb-2">
+      <h1 className="bg-gray-100 font-medium mb-3">Complete each summary with the correct ending <span className="font-bold">{range}</span>. <br/>
+      <span>Write the correct letter. <span className="font-bold">{range}</span>, in boxes <span className="font-bold">{questionRange}</span> on your answer sheet.</span>
+      </h1>
       <p className="font-semibold mb-2">{id}. {question}</p>
       <input
         type="text"

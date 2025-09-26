@@ -32,6 +32,7 @@ const MatchingHeadings: React.FC<Props> = ({ id, question, headings, onAnswerCha
 
   return (
     <div className="p-4 mb-2">
+      <h1 className="font-bold text-xl">Choose the correct heading for each section from the list of headings below.</h1>
       <p className="font-semibold mb-2">{id}. {question}</p>
       <div className="space-y-2">
         {headings.map((heading, i) => (

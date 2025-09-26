@@ -3,7 +3,6 @@ import NavbarTest from "@/components/ui/navbarfortest";
 import { useRef, useState } from "react";
 import { useEffect } from "react";
 import ReadingPassage from "@/components/readingpassage";
-import readingData from "@/data/passage.json";
 import data from "@/data/readingquestion.json";
 import QuestionRenderer from "@/components/questionrenderer";
 import QuestionScoring from "@/components/QuestionScoring";
@@ -32,6 +31,7 @@ export default function ReadingTest() {
   const isDragging = useRef(false);
   const [showResults, setShowResults] = useState(false);
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
+  const [loading, setLoading] = useState(false);
 
   //Update user answer function
   const handleAnswerChange = (questionId: number, answer: unknown) => {
@@ -96,6 +96,7 @@ export default function ReadingTest() {
 
   const handleSubmit = () => {
     setShowResults(true);
+    setLoading(true);
   };
 
   if (showResults) {
@@ -158,15 +159,21 @@ export default function ReadingTest() {
           style={{ width: `${leftWidth}%` }}
         >
           <div className="text-3xl font-extrabold text-center p-10 text-white italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8]">
-            <h1>Can the Planets coral reefs be saved?</h1>
+            <h1>{data.passageTitle}</h1>
           </div>
           <div className="p-6">
-            {readingData.map((q) => (
+            {/* {readingData.map((q) => (
               <ReadingPassage key={q.id}
                 id={q.id}
                 title={q.title}
                 text={q.text}/>
-            ))}
+            ))} */}
+             <ReadingPassage
+                key={data.passageId}
+                id={data.passageId}
+                title={data.passageTitle}
+                text={data.text}
+              />
           </div>
         </div>
 
