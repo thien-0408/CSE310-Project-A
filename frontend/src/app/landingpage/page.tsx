@@ -96,7 +96,7 @@ export default function LandingPage() {
             {/*Card holder*/}
             <div className="card-holder grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-8">
               {/*Card 1*/}
-              <div>
+              <div className="hover:scale-105 transition-transform duration-300">
                 <Card className="h-full text-center flex flex-col rounded-md border-1 border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6">
                   <div className="flex justify-center items-center mb-6">
                     <div className="icon-holder w-16 h-16 flex items-center justify-center">
@@ -107,7 +107,7 @@ export default function LandingPage() {
                     <CardTitle className="text-2xl font-semibold mb-4 leading-tight text-gray-900">
                       Comprehensive Practice Modules
                     </CardTitle>
-                    <CardDescription className="text-sm leading-relaxed text-gray-600">
+                    <CardDescription className=" font-medium leading-relaxed text-gray-600">
                       Access a wide array of practice tests covering all
                       sections: Listening, Reading, Writing, and Speaking. Each
                       module is designed to mirror the actual IELTS exam format,
@@ -118,7 +118,7 @@ export default function LandingPage() {
               </div>
 
               {/*Card 2*/}
-              <div>
+              <div className="hover:scale-105 transition-transform duration-300">
                 <Card className="h-full text-center flex flex-col rounded-md border-1 border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6">
                   <div className="flex justify-center items-center mb-6">
                     <div className="icon-holder w-16 h-16 flex items-center justify-center">
@@ -129,7 +129,7 @@ export default function LandingPage() {
                     <CardTitle className="text-2xl font-semibold mb-4 leading-tight text-gray-900">
                       Personalized Performance Analytics
                     </CardTitle>
-                    <CardDescription className="text-sm leading-relaxed text-gray-600">
+                    <CardDescription className=" font-medium leading-relaxed text-gray-600">
                       Track your progress with detailed analytics that highlight
                       your strengths and pinpoint areas needing improvement. Our
                       intelligent system adapts to your learning pace, offering
@@ -140,7 +140,7 @@ export default function LandingPage() {
               </div>
 
               {/*Card 3*/}
-              <div>
+              <div className="hover:scale-105 transition-transform duration-300">
                 <Card className="h-full text-center flex flex-col rounded-md border-1 border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6">
                   <div className="flex justify-center items-center mb-6">
                     <div className="icon-holder w-16 h-16 flex items-center justify-center">
@@ -151,7 +151,7 @@ export default function LandingPage() {
                     <CardTitle className="text-2xl font-semibold mb-4 leading-tight text-gray-900">
                       Expert Study Resources & Tips
                     </CardTitle>
-                    <CardDescription className="text-sm leading-relaxed text-gray-600">
+                    <CardDescription className=" font-medium leading-relaxed text-gray-600">
                       Dive into a rich library of expert-curated study
                       materials, grammar guides, vocabulary builders, and proven
                       strategies to maximize your score. Learn from the best, at
@@ -181,7 +181,7 @@ export default function LandingPage() {
             <div className="card-holder grid lg:grid-cols-2 sm:grid-cols-1 gap-10">
               {/*Card 1*/}
               <div>
-                <Card className="h-full text-center flex flex-col gap-3 rounded-md border-1 border-gray-100 shadow-sm hover:shadow-lg transition-shadow">
+                <Card className="h-full text-center flex flex-col gap-3 rounded-md border-1 border-gray-100 shadow-sm hover:shadow-lg hover:scale-105 transition-transform duration-300">
                   <div className="student-opinion px-10">
                     <p className="italic leading-relaxed font-medium">
                       “IELTS Sprint was instrumental in helping me achieve a
@@ -215,7 +215,7 @@ export default function LandingPage() {
 
               {/*Card 2*/}
               <div>
-                <Card className="h-full text-center flex flex-col gap-3 rounded-md border-1 border-gray-100 shadow-sm hover:shadow-lg transition-shadow">
+                <Card className="h-full text-center flex flex-col gap-3 rounded-md border-1 border-gray-100 shadow-sm hover:shadow-lg hover:scale-105 transition-transform duration-300">
                   <div className="student-opinion px-10">
                     <p className="italic leading-relaxed font-medium">
                       “As a working professional, time is precious. IELTS Sprint
@@ -249,7 +249,7 @@ export default function LandingPage() {
 
               {/*Card 3*/}
               <div>
-                <Card className="h-full text-center flex flex-col gap-3 rounded-md border-1 border-gray-100 shadow-sm hover:shadow-lg transition-shadow">
+                <Card className="h-full text-center flex flex-col gap-3 rounded-md border-1 border-gray-100 shadow-sm hover:shadow-lg hover:scale-105 transition-transform duration-300">
                   <div className="student-opinion px-10">
                     <p className="italic leading-relaxed font-medium">
                       “The speaking practice sessions on IELTS Sprint were a
@@ -283,7 +283,7 @@ export default function LandingPage() {
 
               {/*Card 4*/}
               <div>
-                <Card className="h-full text-center flex flex-col gap-3 rounded-md border-1 border-gray-100 shadow-sm hover:shadow-lg transition-shadow">
+                <Card className="h-full text-center flex flex-col gap-3 rounded-md border-1 border-gray-100 shadow-sm hover:shadow-lg hover:scale-105 transition-transform duration-300">
                   <div className="student-opinion px-10">
                     <p className="italic leading-relaxed font-medium">
                       “I needed to pass IELTS for a teaching position abroad.

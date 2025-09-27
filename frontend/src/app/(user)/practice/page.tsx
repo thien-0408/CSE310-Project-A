@@ -210,7 +210,7 @@ export default function UserDashBoard() {
           <div className="mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-6xl mx-auto">
               {/*Listening skill*/}
-              <div className="rounded-lg border-2 border-gray-100">
+              <div className="rounded-lg border-2 border-gray-100 hover:scale-105 transition-transform duration-200">
                 <Card className=" text-center flex flex-col rounded-sm border-1 shadow-sm hover:shadow-md transition-shadow p-6">
                   <div className="flex justify-center items-center">
                     <div className="w-16 h-16 flex items-center justify-center">
@@ -226,7 +226,7 @@ export default function UserDashBoard() {
                     </CardDescription>
                   </div>
                   <Progress value={0} className="bg-blue-400"></Progress>
-                  <p className="text-sm text-gray-800">70% Completed</p>
+                  <p className="text-sm text-gray-800"><span className="font-medium">70% </span>Completed</p>
                   <Button className="bg-blue-400 hover:bg-blue-600 transition-all">
                     Start Practice
                   </Button>
@@ -234,7 +234,7 @@ export default function UserDashBoard() {
               </div>
 
               {/*Reading */}
-              <div className="rounded-lg border-2 border-gray-100">
+              <div className="rounded-lg border-2 border-gray-100 hover:scale-105 transition-transform duration-200">
                 <Card className=" text-center flex flex-col rounded-sm border-1 shadow-sm hover:shadow-md transition-shadow p-6">
                   <div className="flex justify-center items-center ">
                     <div className="w-16 h-16 flex items-center justify-center">
@@ -250,7 +250,7 @@ export default function UserDashBoard() {
                     </CardDescription>
                   </div>
                   <Progress value={0} className="bg-blue-400"></Progress>
-                  <p className="text-sm text-gray-800">70% Completed</p>
+                  <p className="text-sm text-gray-800"><span className="font-medium">70% </span>Completed</p>
                   <Button className="bg-blue-400 hover:bg-blue-600 transition-all">
                     Start Practice
                   </Button>
@@ -258,7 +258,7 @@ export default function UserDashBoard() {
               </div>
 
               {/*Writing */}
-              <div className="rounded-lg border-2 border-gray-100">
+              <div className="rounded-lg border-2 border-gray-100 hover:scale-105 transition-transform duration-200">
                 <Card className=" text-center flex flex-col rounded-sm border-1 shadow-sm hover:shadow-md transition-shadow p-6">
                   <div className="flex justify-center items-center ">
                     <div className="w-16 h-16 flex items-center justify-center">
@@ -274,7 +274,7 @@ export default function UserDashBoard() {
                     </CardDescription>
                   </div>
                   <Progress value={0} className="bg-blue-400"></Progress>
-                  <p className="text-sm text-gray-800">70% Completed</p>
+                  <p className="text-sm text-gray-800"><span className="font-medium">70% </span>Completed</p>
                   <Button className="bg-blue-400 hover:bg-blue-600 transition-all">
                     Start Practice
                   </Button>
@@ -282,7 +282,7 @@ export default function UserDashBoard() {
               </div>
 
               {/*Speaking */}
-              <div className="rounded-lg border-2 border-gray-100">
+              <div className="rounded-lg border-2 border-gray-100 hover:scale-105 transition-transform duration-200">
                 <Card className=" text-center flex flex-col rounded-sm border-1 shadow-sm hover:shadow-md transition-shadow p-6">
                   <div className="flex justify-center items-center ">
                     <div className="w-16 h-16 flex items-center justify-center">
@@ -298,7 +298,7 @@ export default function UserDashBoard() {
                     </CardDescription>
                   </div>
                   <Progress value={0} className="bg-blue-400"></Progress>
-                  <p className="text-sm text-gray-800">70% Completed</p>
+                  <p className="text-sm text-gray-800"><span className="font-medium">70% </span>Completed</p>
                   <Button className="bg-blue-400 hover:bg-blue-600 transition-all">
                     Start Practice
                   </Button>
@@ -316,7 +316,7 @@ export default function UserDashBoard() {
           <div className="mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
               {/*First card */}
-              <div className=" hover:shadow-lg rounded-lg p-8 transition-all border-3 border-gray-100">
+              <div className=" hover:shadow-lg rounded-lg p-8 border-3 border-gray-100 hover:scale-105 transition-transform duration-200">
                 <div className="text-md font-semibold mb-2">
                   <h3>Academic Test Simulation</h3>
                 </div>
@@ -348,7 +348,7 @@ export default function UserDashBoard() {
               </div>
 
               {/*Second card */}
-              <div className=" hover:shadow-lg rounded-lg p-8 transition-all border-3 border-gray-100">
+              <div className=" hover:shadow-lg rounded-lg p-8 border-3 border-gray-100 hover:scale-105 transition-transform duration-200">
                 <div className="text-md font-semibold mb-2">
                   <h3>General Traning Test</h3>
                 </div>

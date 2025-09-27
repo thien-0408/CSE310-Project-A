@@ -13,11 +13,11 @@ export default function ReadingPassage({
 }: ReadingPassageProps) {
   return (
     <>
-      <div>
+      <div >
         <h1 className="text-2xl font-bold">Reading Passage {id}</h1>
-        <h2 className="mb-4 text-lg font-semibold text-blue-600">{title}</h2>
+        <h2 className="mb-4 text-lg font-bold text-blue-600">{title}</h2>
         {text.split("\n").map((line, index) => (
-        <p key={index} className="mb-2 leading-relaxed text-gray-800">
+        <p  key={index} className="mb-2 leading-relaxed text-gray-800 font-medium">
           {line}
         </p>
       ))}

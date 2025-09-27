@@ -22,7 +22,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
+} from "@/components/ui/pagination"
 
 type TestData = {
   id: number;
@@ -105,7 +105,7 @@ const TESTS: TestData[] = [
     title: "[Recent Tests- VOL] - Digital Marketing Trends",
     subtitle: ["Gap Filling", "Matching Information", "Matching Names"],
     button: "Try Now!",
-  },
+  }
 ];
 
 const filterWriting = ["Task 1", "Task 2"];
@@ -148,13 +148,13 @@ export default function TestSamplePage() {
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <Checkbox id="separated-test"></Checkbox>
-                  <Label htmlFor="seprated-test font-medium">
-                    Separated Test
-                  </Label>
+                  <Checkbox id = 'separated-test'>
+                  </Checkbox>
+                  <Label htmlFor="seprated-test font-medium">Separated Test</Label>
                 </div>
                 <div className="flex gap-2">
-                  <Checkbox id="full-test"></Checkbox>
+                  <Checkbox id = 'full-test'>
+                  </Checkbox>
                   <Label htmlFor="full-test font-medium">Full Test</Label>
                 </div>
                 <div>
@@ -257,40 +257,31 @@ export default function TestSamplePage() {
       </section>
       <footer>
         <Pagination className="p-5 border-2 border-gray-300">
-          <PaginationContent>
-            
-            <PaginationItem>
-              <PaginationLink
-                href="/tests"
-                isActive
-                size={undefined}
-                className="bg-blue-400 text-white "
-              >
-                1
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="/tests/index/2" size={undefined}>
-                2
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="tests/index/3" size={undefined}>
-                3
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext
-                href="/tests/index/2"
-                size={100}
-                className="text-blue-500 ml-2"
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+      <PaginationContent>
+        <PaginationItem >
+          <PaginationPrevious href="#" size={100} className="text-blue-500 mr-3"/>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="/tests" size={undefined} >
+            1
+            </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="/tests/index/2" isActive size={undefined} className="bg-blue-400 text-white " >
+            2
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="/tests/index/3" size={undefined}>3</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationEllipsis />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationNext href="/tests/index/3" size={100} className="text-blue-500 ml-2"/>
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
       </footer>
     </>
   );

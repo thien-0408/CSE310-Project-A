@@ -16,7 +16,7 @@ export function PaginationTest() {
           <PaginationPrevious href="#" size={100} className="text-blue-500 mr-3"/>
         </PaginationItem>
         <PaginationItem>
-          <PaginationLink href="/tests/index/1" isActive size={undefined} className="bg-blue-400 text-white ">
+          <PaginationLink href="/tests" isActive size={undefined} className="bg-blue-400 text-white ">
             1
             </PaginationLink>
         </PaginationItem>
@@ -26,7 +26,7 @@ export function PaginationTest() {
           </PaginationLink>
         </PaginationItem>
         <PaginationItem>
-          <PaginationLink href="#" size={undefined}>3</PaginationLink>
+          <PaginationLink href="tests/index/3" size={undefined}>3</PaginationLink>
         </PaginationItem>
         <PaginationItem>
           <PaginationEllipsis />

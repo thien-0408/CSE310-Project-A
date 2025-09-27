@@ -161,18 +161,14 @@ export default function ReadingTest() {
           <div className="text-3xl font-extrabold text-center p-10 text-white italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8]">
             <h1>{data.passageTitle}</h1>
           </div>
-          <div className="p-6">
-            {/* {readingData.map((q) => (
-              <ReadingPassage key={q.id}
-                id={q.id}
-                title={q.title}
-                text={q.text}/>
-            ))} */}
+          <div className="p-6 tracking-tight">
+            
              <ReadingPassage
                 key={data.passageId}
                 id={data.passageId}
                 title={data.passageTitle}
                 text={data.text}
+               
               />
           </div>
         </div>
@@ -184,9 +180,9 @@ export default function ReadingTest() {
         ></div>
 
         {/* Questions */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-6 tracking-tight">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold">Questions</h3>
+            <h3 className="text-lg font-semibold">Questions {data.passageRange}</h3>
             
           </div>
           

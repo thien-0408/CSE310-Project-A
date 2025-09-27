@@ -17,6 +17,7 @@ interface Question {
   options?: string[];
   paragraphs?: string[];
   headings?: string[];
+  answerOptions?: string[];
   text?: string;
   wordLimit?: string;
   table?: {
@@ -46,71 +47,83 @@ const QuestionRenderer: React.FC<Props> = ({ questions, onAnswerChange }) => {
                 onAnswerChange={(answer) => onAnswerChange(q.id, answer)}
               />
             );
+
           case "true_false_not_given":
             return (
-              <TrueFalseNotGiven 
-                key={q.id} 
-                {...q} 
+              <TrueFalseNotGiven
+                key={q.id}
+                {...q}
                 onAnswerChange={(answer) => onAnswerChange(q.id, answer)}
               />
             );
+
           case "yes_no_not_given":
             return (
-              <YesNoNotGiven 
-                key={q.id} 
-                {...q} 
+              <YesNoNotGiven
+                key={q.id}
+                {...q}
                 onAnswerChange={(answer) => onAnswerChange(q.id, answer)}
               />
             );
+
           case "matching_headings":
             return (
-              <MatchingHeadings 
-                key={q.id} 
-                {...q} 
-                headings={q.headings ?? []} 
+              <MatchingHeadings
+                key={q.id}
+                id={q.id}
+                question={q.question}
+                paragraphs={q.paragraphs ?? []}
+                headings={q.headings ?? []}
+                options={q.options ?? []}
                 onAnswerChange={(answer) => onAnswerChange(q.id, answer)}
               />
             );
+
           case "sentence_completion":
             return (
-              <SentenceCompletion 
-                key={q.id} 
-                {...q} 
+              <SentenceCompletion
+                key={q.id}
+                {...q}
                 onAnswerChange={(answer) => onAnswerChange(q.id, answer)}
               />
             );
+
           case "summary_completion":
             return (
-              <SummaryCompletion 
-                key={q.id} 
-                {...q} 
+              <SummaryCompletion
+                key={q.id}
+                {...q}
                 onAnswerChange={(answer) => onAnswerChange(q.id, answer)}
               />
             );
+
           case "table_completion":
             return (
-              <TableCompletion 
-                key={q.id} 
-                {...q} 
+              <TableCompletion
+                key={q.id}
+                {...q}
                 onAnswerChange={(answer) => onAnswerChange(q.id, answer)}
               />
             );
+
           case "diagram_label_completion":
             return (
-              <DiagramCompletion 
-                key={q.id} 
-                {...q} 
+              <DiagramCompletion
+                key={q.id}
+                {...q}
                 onAnswerChange={(answer) => onAnswerChange(q.id, answer)}
               />
             );
+
           case "short_answer":
             return (
-              <ShortAnswer 
-                key={q.id} 
-                {...q} 
+              <ShortAnswer
+                key={q.id}
+                {...q}
                 onAnswerChange={(answer) => onAnswerChange(q.id, answer)}
               />
             );
+
           default:
             return (
               <p key={q.id} className="text-red-500">

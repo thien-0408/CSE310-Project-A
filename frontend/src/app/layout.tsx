@@ -3,11 +3,11 @@ import { Montserrat} from "next/font/google";
 import "./globals.css";
 import Loader from "@/components/ui/Loader";
 
-
 const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ['latin'],weight:['100','200','300','400', '500','600','700','800']
 });
+
 
 export const metadata: Metadata = {
   title: "IELTS Sprint",
@@ -25,9 +25,7 @@ export default function RootLayout({
       <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
       </head>
-      <body
-        className={`${montserrat.variable} antialiased`}
-      >
+        <body className={`${montserrat.variable}`}>
         <Loader></Loader>
         {children}
       </body>

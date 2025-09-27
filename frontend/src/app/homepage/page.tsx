@@ -93,14 +93,14 @@ export default function HomePage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {/* Card 1 */}
-              <div>
+              <div className="hover:scale-105 transition-transform duration-300">
                 <Card className="h-full text-center flex flex-col rounded-md border-1 border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6">
                   <div className="flex justify-center items-center mb-6">
                     <div className="w-16 h-16 flex items-center justify-center">
                       <i className="fa-solid fa-book-open text-[#4b91e2] text-5xl"></i>
                     </div>
                   </div>
-                  <div className="flex-1 flex flex-col justify-between">
+                  <div className="flex-1 flex flex-col justify-between ">
                     <CardTitle className="text-2xl font-semibold mb-4 leading-tight text-gray-900">
                       Full-Length Mock Tests
                     </CardTitle>
@@ -113,7 +113,7 @@ export default function HomePage() {
               </div>
 
               {/* Card 2 */}
-              <div>
+              <div className="hover:scale-105 transition-transform duration-300">
                 <Card className="h-full text-center flex flex-col rounded-md border-1 border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6">
                   <div className="flex justify-center items-center mb-6">
                     <div className="w-16 h-16 flex items-center justify-center">
@@ -133,7 +133,7 @@ export default function HomePage() {
               </div>
 
               {/* Card 3 */}
-              <div>
+              <div className="hover:scale-105 transition-transform duration-300">
                 <Card className="h-full text-center flex flex-col rounded-md border-1 border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6">
                   <div className="flex justify-center items-center mb-6">
                     <div className="w-16 h-16 flex items-center justify-center">
@@ -153,7 +153,7 @@ export default function HomePage() {
               </div>
 
               {/* Card 4 */}
-              <div>
+              <div className="hover:scale-105 transition-transform duration-300">
                 <Card className="h-full text-center flex flex-col rounded-md border-1 border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6">
                   <div className="flex justify-center items-center mb-6">
                     <div className="w-16 h-16 flex items-center justify-center">
@@ -173,7 +173,7 @@ export default function HomePage() {
               </div>
 
               {/* Card 5 */}
-              <div>
+              <div className="hover:scale-105 transition-transform duration-300">
                 <Card className="h-full text-center flex flex-col rounded-md border-1 border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6">
                   <div className="flex justify-center items-center mb-6">
                     <div className="w-16 h-16 flex items-center justify-center">
@@ -193,7 +193,7 @@ export default function HomePage() {
               </div>
 
               {/* Card 6 */}
-              <div>
+              <div className="hover:scale-105 transition-transform duration-300">
                 <Card className="h-full text-center flex flex-col rounded-md border-1 border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6">
                   <div className="flex justify-center items-center mb-6">
                     <div className="w-16 h-16 flex items-center justify-center">

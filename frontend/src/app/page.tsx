@@ -42,7 +42,7 @@ export default function Home() {
           </li>
           <li className="mb-3">
             <Button>
-              <Link href={'/tests'}>Test Interface</Link>
+              <Link href={'/tests'}>Test Storage</Link>
             </Button>
           </li>
           <li className="mb-3">
