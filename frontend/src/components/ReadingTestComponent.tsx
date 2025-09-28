@@ -1,11 +1,10 @@
 "use client";
+
 import NavbarTest from "@/components/ui/navbarfortest";
-import { useRef, useState } from "react";
-import { useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import ReadingPassage from "@/components/readingpassage";
-import data from "@/data/readingquestion.json";
 import QuestionRenderer from "@/components/questionrenderer";
-import QuestionScoring from "@/components/QuestionScoring";
+import Scoring from "@/components/Scoring";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -15,10 +14,7 @@ import Link from "next/link";
 import Image from "next/image";
 import FullScreenButton from "@/components/ui/fullscreen";
 import { Button } from "@/components/ui/button";
-import { GrNext } from "react-icons/gr";
-import { GrPrevious } from "react-icons/gr";
-
-
+import { GrNext, GrPrevious } from "react-icons/gr";
 
 // Interface for user answers
 interface UserAnswer {
@@ -26,30 +22,48 @@ interface UserAnswer {
   answer: unknown;
 }
 
-export default function ReadingTest() {
+// Interface cho dữ liệu JSON
+interface ReadingData {
+  passageId: string | number;
+  passageTitle: string;
+  text: string;
+  passageRange?: string;
+  questions: {
+    id: number;
+    type: string;
+    question: string;
+    options?: string[];
+    answer: string | string[];
+  }[];
+}
+
+interface ReadingTestProps {
+  data: ReadingData;
+}
+
+
+export default function ReadingTestComponent({ data }: ReadingTestProps) {
   const [leftWidth, setLeftWidth] = useState(50);
   const isDragging = useRef(false);
   const [showResults, setShowResults] = useState(false);
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
+  
 
-  //Update user answer function
+  // Update user answer function
   const handleAnswerChange = (questionId: number, answer: unknown) => {
-    setUserAnswers(prev => {
-      const existing = prev.find(ua => ua.questionId === questionId);
+    setUserAnswers((prev) => {
+      const existing = prev.find((ua) => ua.questionId === questionId);
       if (existing) {
-        // Update current answer
-        return prev.map(ua => 
-          ua.questionId === questionId 
-            ? { ...ua, answer } 
-            : ua
+        return prev.map((ua) =>
+          ua.questionId === questionId ? { ...ua, answer } : ua
         );
       } else {
-        // Add new answer
         return [...prev, { questionId, answer }];
       }
     });
   };
 
+  // Resize panel
   const handleMouseDown = () => {
     isDragging.current = true;
   };
@@ -66,11 +80,16 @@ export default function ReadingTest() {
     isDragging.current = false;
   };
 
-  if (typeof window !== "undefined") {
+  useEffect(() => {
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
-  }
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, []);
 
+  // Highlight khi bôi đen
   useEffect(() => {
     const handleMouseUp = () => {
       const selection = window.getSelection();
@@ -101,7 +120,7 @@ export default function ReadingTest() {
     return (
       <>
         <NavbarTest />
-        <QuestionScoring
+        <Scoring
           questions={data.questions}
           userAnswers={userAnswers}
           onClose={() => setShowResults(false)}
@@ -112,44 +131,42 @@ export default function ReadingTest() {
 
   return (
     <>
-      {/*Nav bar */}
+      {/* Nav bar */}
       <header className="w-full bg-white shadow-sm border-b">
-      <div className="mx-auto px-4 py-3">
-        <div className="flex items-center justify-between">
-            {/*Left group*/}
-          <div className="flex items-center space-x-8">
-            <div className="flex items-center">
-              <Image
-                src="/assets/logo.png"
-                alt="IELTSSprint Logo"
-                width={30}
-                height={30}
-                quality={100}
-                className="mr-2"
-              />
-              <h1 className="text-2xl font-bold italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8] bg-clip-text text-transparent">
-                <Link href={'/homepage'}>IELTSSprint</Link>
-              </h1>
+        <div className="mx-auto px-4 py-3">
+          <div className="flex items-center justify-between">
+            {/* Left group */}
+            <div className="flex items-center space-x-8">
+              <div className="flex items-center">
+                <Image
+                  src="/assets/logo.png"
+                  alt="IELTSSprint Logo"
+                  width={30}
+                  height={30}
+                  quality={100}
+                  className="mr-2"
+                />
+                <h1 className="text-2xl font-bold italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8] bg-clip-text text-transparent">
+                  <Link href={"/homepage"}>IELTSSprint</Link>
+                </h1>
+              </div>
             </div>
-            
-            
-          </div>
 
-          {/* Right group */}
-          <div className="flex items-center">
-            <NavigationMenu className="hidden md:flex">
-              <NavigationMenuList className="flex space-x-5 text-sm">
-                <NavigationMenuItem>
-                  <FullScreenButton></FullScreenButton>
-                </NavigationMenuItem>
-               
-              </NavigationMenuList>
-            </NavigationMenu>
+            {/* Right group */}
+            <div className="flex items-center">
+              <NavigationMenu className="hidden md:flex">
+                <NavigationMenuList className="flex space-x-5 text-sm">
+                  <NavigationMenuItem>
+                    <FullScreenButton />
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
+            </div>
           </div>
-
         </div>
-      </div>
-    </header>
+      </header>
+
+      {/* Layout */}
       <div className="flex h-screen overflow-hidden">
         {/* Passage */}
         <div
@@ -160,14 +177,12 @@ export default function ReadingTest() {
             <h1>{data.passageTitle}</h1>
           </div>
           <div className="p-6 tracking-tight">
-            
-             <ReadingPassage
-                key={data.passageId}
-                id={data.passageId}
-                title={data.passageTitle}
-                text={data.text}
-               
-              />
+            <ReadingPassage
+              key={data.passageId}
+              id={Number(data.passageId)}
+              title={data.passageTitle}
+              text={data.text}
+            />
           </div>
         </div>
 
@@ -180,25 +195,37 @@ export default function ReadingTest() {
         {/* Questions */}
         <div className="flex-1 overflow-y-auto p-6 tracking-tight">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold">Questions{data.passageRange}</h3>
-            
+            <h3 className="text-lg font-semibold">
+              Questions {data.passageRange}
+            </h3>
           </div>
-          
-          <QuestionRenderer 
-            questions={data.questions} 
+
+          <QuestionRenderer
+            questions={data.questions}
             onAnswerChange={handleAnswerChange}
           />
         </div>
       </div>
+
+      {/* Footer */}
       <footer className="sticky bottom-0 w-full bg-white shadow-inner border-t p-3 flex items-center justify-center space-x-5">
         <div>
-          <Button className="rounded-4xl bg-gray-200 text-gray-800 hover:bg-gray-300"><GrPrevious /></Button>
+          <Button className="rounded-4xl bg-gray-200 text-gray-800 hover:bg-gray-300">
+            <GrPrevious />
+          </Button>
         </div>
         <div>
-          <Button className="rounded-4xl bg-gray-200 text-gray-800 hover:bg-gray-300"><GrNext></GrNext></Button>
+          <Button className="rounded-4xl bg-gray-200 text-gray-800 hover:bg-gray-300">
+            <GrNext />
+          </Button>
         </div>
         <div>
-          <Button className="rounded-3xl bg-[#407db9] hover:bg-[#336699] transition-all duration-300" onClick={handleSubmit}>Submit</Button>
+          <Button
+            className="rounded-3xl bg-[#407db9] hover:bg-[#336699] transition-all duration-300"
+            onClick={handleSubmit}
+          >
+            Submit
+          </Button>
         </div>
       </footer>
     </>

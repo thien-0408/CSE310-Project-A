@@ -94,6 +94,22 @@
       "question": "Who conducted the experiment on rats’ brains?",
       "wordLimit": "NO MORE THAN THREE WORDS",
       "answer": "Marion Diamond"
-    }
+    },
+    {
+  "id": 10,
+  "type": "gap_filling",
+  "question": "Photographers' responses to criticism",
+  "text": "Some of them rejected this criticism, certain that they could create pictures similar to ___5___. They did this by carefully setting up the different parts of the ___6___ before taking the photograph. Other things they did included causing the picture to be rather ___7___, and some who wanted to try to make the print look like a canvas even ___8___ their photographs. Others were anxious that their work should not be looked upon as some sort of ___9___ painting.",
+  "blanks": [
+    { "index": 5, "answer": "paintings" },
+    { "index": 6, "answer": "composition" },
+    { "index": 7, "answer": "artificial" },
+    { "index": 8, "answer": "retouching" },
+    { "index": 9, "answer": "imitative" }
+  ],
+  "wordLimit": "ONE WORD ONLY",
+  "answer": ["paintings", "composition", "artificial", "retouching", "imitative"]
+}
+
   ]
 }

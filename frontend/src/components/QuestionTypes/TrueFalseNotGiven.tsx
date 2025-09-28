@@ -31,7 +31,8 @@ const TrueFalseNotGiven: React.FC<Props> = ({
     }
   }, [storageKey]);
 
-  const handleChange = (index: number) => {
+  const handleChange = (value: string) => {
+    const index = parseInt(value, 10);
     setSelected(index);
     localStorage.setItem(storageKey, index.toString());
     if (onAnswerChange) {
@@ -58,23 +59,24 @@ const TrueFalseNotGiven: React.FC<Props> = ({
           <p>If there is no information on this</p>
         </div>
       </div>
+
       <p className="font-semibold mb-2">
         {id}. {question}
       </p>
-      <div className="space-y-2">
+
+      {/* Chuyển từ radio sang select */}
+      <select
+        value={selected !== null ? selected : ""}
+        onChange={(e) => handleChange(e.target.value)}
+        className="border rounded p-2"
+      >
+        <option value="">-- Select an answer --</option>
         {options.map((opt, i) => (
-          <label key={i} className="flex items-center space-x-2 cursor-pointer">
-            <input
-              type="radio"
-              name={`tfng${id}`}
-              className="text-blue-500"
-              checked={selected === i}
-              onChange={() => handleChange(i)}
-            />
-            <span>{opt}</span>
-          </label>
+          <option key={i} value={i}>
+            {opt}
+          </option>
         ))}
-      </div>
+      </select>
     </div>
   );
 };

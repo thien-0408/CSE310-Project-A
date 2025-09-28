@@ -9,6 +9,7 @@ import SummaryCompletion from "./QuestionTypes/SummaryCompletion";
 import TableCompletion from "./QuestionTypes/TableCompletion";
 import DiagramCompletion from "./QuestionTypes/DiagramCompletion";
 import ShortAnswer from "./QuestionTypes/ShortAnswer";
+import GapFilling from "./QuestionTypes/GapFilling";
 
 interface Question {
   id: number;
@@ -25,6 +26,8 @@ interface Question {
     rows: string[][];
   };
   diagram?: string[];
+  gapFilling?: string[];
+  blanks?: string[];
 }
 
 interface Props {
@@ -120,6 +123,22 @@ const QuestionRenderer: React.FC<Props> = ({ questions, onAnswerChange }) => {
               <ShortAnswer
                 key={q.id}
                 {...q}
+                onAnswerChange={(answer) => onAnswerChange(q.id, answer)}
+              />
+            );
+          case "gap_filling":
+            return (
+              <GapFilling
+                key={q.id}
+                id={q.id}
+                question={q.question}
+                text={q.text ?? ""}
+                blanks={
+                  q.blanks
+                    ? q.blanks.map((b, idx) => ({ index: idx + 1, answer: b }))
+                    : []
+                }
+                wordLimit={q.wordLimit}
                 onAnswerChange={(answer) => onAnswerChange(q.id, answer)}
               />
             );

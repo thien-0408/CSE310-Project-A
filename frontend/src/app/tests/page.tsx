@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import NavBarUser from "@/components/ui/navbarforuser";
-import { PaginationTest } from "@/components/ui/paginationtest";
 import { LuPencilLine } from "react-icons/lu";
 import { FiBook } from "react-icons/fi";
 import { HiOutlineMicrophone } from "react-icons/hi2";
@@ -108,10 +107,10 @@ const TESTS: TestData[] = [
   },
 ];
 
-const filterWriting = ["Task 1", "Task 2"];
+// const filterWriting = ["Task 1", "Task 2"];
 
-const filterListening = ["Task 1", "Task 2", "Part 3", "Part 4"];
-const filterSpeaking = ["Part 1", "Part 2", "Part 3"];
+// const filterListening = ["Task 1", "Task 2", "Part 3", "Part 4"];
+// const filterSpeaking = ["Part 1", "Part 2", "Part 3"];
 
 const filterPassage = [1, 2, 3];
 
