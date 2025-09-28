@@ -68,11 +68,10 @@ const TrueFalseNotGiven: React.FC<Props> = ({
       <select
         value={selected !== null ? selected : ""}
         onChange={(e) => handleChange(e.target.value)}
-        className="border rounded p-2"
+        className="border rounded p-2 font-medium"
       >
-        <option value="">-- Select an answer --</option>
         {options.map((opt, i) => (
-          <option key={i} value={i}>
+          <option key={i} value={i} className="text-left font-medium">
             {opt}
           </option>
         ))}

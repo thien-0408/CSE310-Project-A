@@ -3,7 +3,7 @@
 import NavbarTest from "@/components/ui/navbarfortest";
 import { useRef, useState, useEffect } from "react";
 import ReadingPassage from "@/components/readingpassage";
-import QuestionRenderer from "@/components/questionrenderer";
+import QuestionRenderer from "@/components/QuestionRenderer";
 import Scoring from "@/components/Scoring";
 import {
   NavigationMenu,

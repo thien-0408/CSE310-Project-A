@@ -25,7 +25,8 @@ const YesNoNotGiven: React.FC<Props> = ({ id, question, options = defaultOptions
     }
   }, [storageKey]);
 
-  const handleChange = (index: number) => {
+  const handleChange = (value: string) => {
+    const index = parseInt(value, 10);
     setSelected(index);
     localStorage.setItem(storageKey, index.toString());
     if (onAnswerChange) {
@@ -51,20 +52,17 @@ const YesNoNotGiven: React.FC<Props> = ({ id, question, options = defaultOptions
       </div>
 
       <p className="font-semibold mb-2">{id}. {question}</p>
-      <div className="space-y-2">
+      <select
+        value={selected !== null ? selected : ""}
+        onChange={(e) => handleChange(e.target.value)}
+        className="border rounded p-2 font-medium"
+      >
         {options.map((opt, i) => (
-          <label key={i} className="flex items-center space-x-2 cursor-pointer">
-            <input
-              type="radio"
-              name={`ynng${id}`}
-              className="text-blue-500"
-              checked={selected === i}
-              onChange={() => handleChange(i)}
-            />
-            <span>{opt}</span>
-          </label>
+          <option key={i} value={i} className="text-left font-medium">
+            {opt}
+          </option>
         ))}
-      </div>
+      </select>
     </div>
   );
 };

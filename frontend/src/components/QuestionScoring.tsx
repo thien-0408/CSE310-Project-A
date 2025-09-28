@@ -17,8 +17,10 @@ interface Question {
   };
   diagram?: string[];
   answer: unknown;
+  statements?: Array<{ statementId: number; text: string }>; // ⬅️ thêm dòng này
+
   answerType?: string;
-  blanks?: Array<{index: number; answer: string}>; 
+  blanks?: Array<{ index: number; answer: string }>;
   range?: string;
   questionRange?: string;
 
@@ -197,20 +199,48 @@ const QuestionScoring: React.FC<ScoringProps> = ({
           points = correctLabelsCount; // Partial scoring
           break;
         case "gap_filling": {
-  const correctBlanks = question.blanks as { index: number; answer: string }[];
-  const userBlanks = userAnswer.answer as Record<number, string> || {};
+          const correctBlanks = question.blanks as {
+            index: number;
+            answer: string;
+          }[];
+          const userBlanks =
+            (userAnswer.answer as Record<number, string>) || {};
+
+          let correctCount = 0;
+
+          // So sánh từng blank
+          correctBlanks.forEach((blank) => {
+            const userInput = userBlanks[blank.index] || "";
+            if (
+              userInput.toLowerCase().trim() ===
+              blank.answer.toLowerCase().trim()
+            ) {
+              correctCount++;
+            }
+          });
+
+          isCorrect = correctCount === correctBlanks.length;
+          points = correctCount; // partial scoring
+          break;
+        }
+        case "matching_names": {
+  const correctMatches = question.answer as Record<string, string>;
+  const userMatches = (userAnswer.answer || {}) as Record<string, string>;
 
   let correctCount = 0;
+  const totalStatements = Object.keys(correctMatches).length;
 
-  // So sánh từng blank
-  correctBlanks.forEach((blank) => {
-    const userInput = userBlanks[blank.index] || "";
-    if (userInput.toLowerCase().trim() === blank.answer.toLowerCase().trim()) {
+  Object.keys(correctMatches).forEach((sid) => {
+    if (
+      userMatches[sid] &&
+      userMatches[sid].toLowerCase().trim() ===
+        correctMatches[sid].toLowerCase().trim()
+    ) {
       correctCount++;
     }
   });
 
-  isCorrect = correctCount === correctBlanks.length;
+  isCorrect = correctCount === totalStatements;
   points = correctCount; // partial scoring
   break;
 }
@@ -218,7 +248,6 @@ const QuestionScoring: React.FC<ScoringProps> = ({
         default:
           points = 0;
       }
-
       return {
         questionId: question.id,
         isCorrect,
@@ -246,38 +275,45 @@ const QuestionScoring: React.FC<ScoringProps> = ({
       diagram_label_completion: "Diagram Labeling",
       short_answer: "Short Answer",
       gap_filling: "Gap Filling",
+      matching_names: "Matching Names",
     };
     return typeMap[type] || type;
   };
 
-  const formatAnswer = (answer: unknown, questionType: string, question?: Question): string => {
-  if (answer === null || answer === undefined) return "No answer";
+  const formatAnswer = (
+    answer: unknown,
+    questionType: string,
+    question?: Question
+  ): string => {
+    if (answer === null || answer === undefined) return "No answer";
 
-  switch (questionType) {
-    case "multiple_choice":
-      return `Option ${(answer as number) + 1}`;
-    case "matching_headings":
-    case "table_completion":
-      return JSON.stringify(answer, null, 2);
-    case "summary_completion":
-    case "diagram_label_completion":
-      return Array.isArray(answer) ? answer.join(", ") : String(answer);
-    case "gap_filling": {
-      if (typeof answer === 'object' && answer !== null) {
-        const answerObj = answer as Record<number, string>;
-        
-        // Lấy danh sách index từ question.blanks để đảm bảo thứ tự
-        const blanks = question?.blanks || [];
-        return blanks
-          .map(blank => answerObj[blank.index] || "[empty]")
-          .join(", ");
+    switch (questionType) {
+      case "multiple_choice":
+        return `Option ${(answer as number) + 1}`;
+      case "matching_headings":
+      case "table_completion":
+        return JSON.stringify(answer, null, 2);
+      case "summary_completion":
+      case "diagram_label_completion":
+        return Array.isArray(answer) ? answer.join(", ") : String(answer);
+      case "gap_filling": {
+        if (typeof answer === "object" && answer !== null) {
+          const answerObj = answer as Record<number, string>;
+          const blanks = question?.blanks || [];
+          return blanks
+            .map((blank) => answerObj[blank.index] || "[empty]")
+            .join(", ");
+        }
+        return String(answer);
       }
-      return String(answer);
+      case "matching_names": {
+        return JSON.stringify(answer, null, 2);
+}
+
+      default:
+        return String(answer);
     }
-    default:
-      return String(answer);
-  }
-};
+  };
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
@@ -343,31 +379,37 @@ const QuestionScoring: React.FC<ScoringProps> = ({
               <p className="text-gray-800 mb-3">{question.question}</p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-  <div>
-    <p className="text-sm font-medium text-gray-600 mb-1">
-      Your Answer:
-    </p>
-    <p
-      className={`p-2 rounded ${
-        result.isCorrect
-          ? "bg-green-100 text-green-800"
-          : "bg-red-100 text-red-800"
-      }`}
-    >
-      {formatAnswer(result.userAnswer, question.type, question)}
-    </p>
-  </div>
-  <div>
-    <p className="text-sm font-medium text-gray-600 mb-1">
-      Correct Answer:
-    </p>
-    <p className="p-2 bg-blue-100 text-blue-800 rounded">
-      {question.type === 'gap_filling' 
-        ? question.blanks?.map(blank => blank.answer).join(", ") || "No answer"
-        : formatAnswer(result.correctAnswer, question.type, question)}
-    </p>
-  </div>
-</div>
+                <div>
+                  <p className="text-sm font-medium text-gray-600 mb-1">
+                    Your Answer:
+                  </p>
+                  <p
+                    className={`p-2 rounded ${
+                      result.isCorrect
+                        ? "bg-green-100 text-green-800"
+                        : "bg-red-100 text-red-800"
+                    }`}
+                  >
+                    {formatAnswer(result.userAnswer, question.type, question)}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-600 mb-1">
+                    Correct Answer:
+                  </p>
+                  <p className="p-2 bg-blue-100 text-blue-800 rounded">
+                    {question.type === "gap_filling"
+                      ? question.blanks
+                          ?.map((blank) => blank.answer)
+                          .join(", ") || "No answer"
+                      : formatAnswer(
+                          result.correctAnswer,
+                          question.type,
+                          question
+                        )}
+                  </p>
+                </div>
+              </div>
             </div>
           );
         })}

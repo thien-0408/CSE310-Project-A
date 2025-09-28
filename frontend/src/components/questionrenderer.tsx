@@ -10,6 +10,7 @@ import TableCompletion from "./QuestionTypes/TableCompletion";
 import DiagramCompletion from "./QuestionTypes/DiagramCompletion";
 import ShortAnswer from "./QuestionTypes/ShortAnswer";
 import GapFilling from "./QuestionTypes/GapFilling";
+import MatchingNames from "./QuestionTypes/MatchingNames";
 
 interface Question {
   id: number;
@@ -27,8 +28,10 @@ interface Question {
   };
   diagram?: string[];
   gapFilling?: string[];
-  blanks?: Array<{ index: number; answer: string }>; 
-  answer?: unknown; 
+  blanks?: Array<{ index: number; answer: string }>;
+  statements?: Array<{ statementId: number; text: string }>; // ⬅️ thêm dòng này
+
+  answer?: unknown;
 }
 
 interface Props {
@@ -139,7 +142,17 @@ const QuestionRenderer: React.FC<Props> = ({ questions, onAnswerChange }) => {
                 onAnswerChange={(answer) => onAnswerChange(q.id, answer)}
               />
             );
-
+          case "matching_names":
+            return (
+              <MatchingNames
+                key={q.id}
+                id={q.id}
+                question={q.question}
+                statements={q.statements ?? []}
+                options={q.options ?? []}
+                onAnswerChange={(answer) => onAnswerChange(q.id, answer)}
+              />
+            );
           default:
             return (
               <p key={q.id} className="text-red-500">

@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { useEffect } from "react";
 import ReadingPassage from "@/components/readingpassage";
 import data from "@/data/readingquestion.json";
-import QuestionRenderer from "@/components/questionrenderer";
+import QuestionRenderer from "@/components/QuestionRenderer";
 import QuestionScoring from "@/components/QuestionScoring";
 import {
   NavigationMenu,
@@ -131,10 +131,7 @@ export default function ReadingTest() {
                 <Link href={'/homepage'}>IELTSSprint</Link>
               </h1>
             </div>
-            
-            
           </div>
-
           {/* Right group */}
           <div className="flex items-center">
             <NavigationMenu className="hidden md:flex">
@@ -142,7 +139,6 @@ export default function ReadingTest() {
                 <NavigationMenuItem>
                   <FullScreenButton></FullScreenButton>
                 </NavigationMenuItem>
-               
               </NavigationMenuList>
             </NavigationMenu>
           </div>
@@ -159,7 +155,7 @@ export default function ReadingTest() {
           <div className="text-3xl font-extrabold text-center p-10 text-white italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8]">
             <h1>{data.passageTitle}</h1>
           </div>
-          <div className="p-6 tracking-tight">
+          <div className="p-6 tracking-tight px-15">
             
              <ReadingPassage
                 key={data.passageId}
@@ -191,6 +187,7 @@ export default function ReadingTest() {
         </div>
       </div>
       <footer className="sticky bottom-0 w-full bg-white shadow-inner border-t p-3 flex items-center justify-center space-x-5">
+
         <div>
           <Button className="rounded-4xl bg-gray-200 text-gray-800 hover:bg-gray-300"><GrPrevious /></Button>
         </div>
