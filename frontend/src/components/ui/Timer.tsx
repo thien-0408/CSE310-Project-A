@@ -2,12 +2,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Clock, Play, Pause, RotateCcw, AlertTriangle } from 'lucide-react';
 
 interface TimerProps {
-  time: number; // Thời gian ban đầu tính bằng giây
-  onTimeUp?: () => void; // Callback khi hết thời gian
-  onTimeChange?: (remainingTime: number) => void; // Callback khi thời gian thay đổi
-  autoStart?: boolean; // Tự động bắt đầu khi component mount
-  showWarning?: boolean; // Hiện cảnh báo khi sắp hết thời gian
-  warningTime?: number; // Thời gian bắt đầu cảnh báo (giây)
+  time: number; 
+  onTimeUp?: () => void; 
+  onTimeChange?: (remainingTime: number) => void; 
+  autoStart?: boolean; 
+  showWarning?: boolean; 
+  warningTime?: number;
   className?: string;
 }
 
@@ -17,7 +17,7 @@ const Timer: React.FC<TimerProps> = ({
   onTimeChange,
   autoStart = false,
   showWarning = true,
-  warningTime = 300, // 5 phút
+  warningTime = 300, //5 mins
   className = ""
 }) => {
   const [remainingTime, setRemainingTime] = useState(time);
@@ -45,12 +45,12 @@ const Timer: React.FC<TimerProps> = ({
         setRemainingTime((prev) => {
           const newTime = prev - 1;
           
-          // Gọi callback onTimeChange
+          // Callback when time changes
           if (onTimeChange) {
             onTimeChange(newTime);
           }
           
-          // Kiểm tra nếu hết thời gian
+          // Check if time's up
           if (newTime === 0) {
             setIsRunning(false);
             setHasEnded(true);
@@ -71,7 +71,7 @@ const Timer: React.FC<TimerProps> = ({
     };
   }, [isRunning, remainingTime, onTimeUp, onTimeChange]);
 
-  // Reset timer khi time prop thay đổi
+  // Reset timer when props change
   useEffect(() => {
     setRemainingTime(time);
     setHasEnded(false);
@@ -94,7 +94,7 @@ const Timer: React.FC<TimerProps> = ({
     setHasEnded(false);
   };
 
-  // Xác định màu sắc dựa trên thời gian còn lại
+  // Colors
   const getTimerColor = () => {
     if (hasEnded) return 'text-red-600';
     if (showWarning && remainingTime <= warningTime) return 'text-amber-600';
@@ -117,13 +117,13 @@ const Timer: React.FC<TimerProps> = ({
           <Clock className="w-6 h-6 text-gray-600" />
         )}
         
-        {/* Hiển thị thời gian */}
+        {/* Time display */}
         <span className={`text-2xl font-mono font-bold ${getTimerColor()}`}>
           {formatTime(remainingTime)}
         </span>
       </div>
 
-      {/* Nút điều khiển */}
+      {/* Control buttons */}
       <div className="flex space-x-2">
         {!isRunning ? (
           <button
@@ -153,7 +153,7 @@ const Timer: React.FC<TimerProps> = ({
         </button>
       </div>
 
-      {/* Trạng thái */}
+      {/* State */}
       {hasEnded && (
         <div className="flex items-center space-x-1 text-red-600 font-medium">
           <AlertTriangle className="w-4 h-4" />

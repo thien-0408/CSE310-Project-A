@@ -27,7 +27,8 @@ interface Question {
   };
   diagram?: string[];
   gapFilling?: string[];
-  blanks?: string[];
+  blanks?: Array<{ index: number; answer: string }>; 
+  answer?: unknown; 
 }
 
 interface Props {
@@ -133,12 +134,8 @@ const QuestionRenderer: React.FC<Props> = ({ questions, onAnswerChange }) => {
                 id={q.id}
                 question={q.question}
                 text={q.text ?? ""}
-                blanks={
-                  q.blanks
-                    ? q.blanks.map((b, idx) => ({ index: idx + 1, answer: b }))
-                    : []
-                }
-                wordLimit={q.wordLimit}
+                blanks={q.blanks || []} // ✅ Dùng trực tiếp, không cần map
+                wordLimit={q.wordLimit || ""}
                 onAnswerChange={(answer) => onAnswerChange(q.id, answer)}
               />
             );

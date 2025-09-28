@@ -3,7 +3,6 @@ import React from "react";
 import { CheckCircle, XCircle, AlertCircle } from "lucide-react";
 
 interface Question {
-  blanks: { index: number; answer: string }[];
   id: number;
   type: string;
   question: string;
@@ -19,6 +18,10 @@ interface Question {
   diagram?: string[];
   answer: unknown;
   answerType?: string;
+  blanks?: Array<{index: number; answer: string}>; 
+  range?: string;
+  questionRange?: string;
+
   gapFilling?: string[];
 }
 
