@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from "react";
+import { Separator } from "@/components/ui/separator";
 
 interface Props {
   id: number;
@@ -48,9 +49,11 @@ const TrueFalseNotGiven: React.FC<Props> = ({
       </h1>
       <div className="grid grid-cols-[1fr_2fr] p-4 bg-gray-100 rounded-sm my-4 tracking-tight">
         <div className="space-y-2">
-          <h2 className="font-bold">TRUE.</h2>
-          <h2 className="font-bold">FALSE.</h2>
-          <h2 className="font-bold">NOT GIVEN.</h2>
+          <h2 className="font-bold text-[#407db9]">TRUE.</h2>
+          <Separator></Separator>
+          <h2 className="font-bold text-[#407db9]">FALSE.</h2>
+          <Separator></Separator>
+          <h2 className="font-bold text-[#407db9]">NOT GIVEN.</h2>
         </div>
 
         <div className="space-y-2 font-medium">

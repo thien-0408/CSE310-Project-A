@@ -37,16 +37,7 @@ export default function NavbarTest() {
 
           {/* Right group */}
           <div className="flex items-center">
-            <NavigationMenu className="hidden md:flex">
-              <NavigationMenuList className="flex space-x-5 text-sm">
-                <NavigationMenuItem>
-                  <FullScreenButton></FullScreenButton>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <Button className="rounded-3xl bg-[#336699] hover:bg-blue-700 transition-all duration-300">Submit</Button>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
+            
           </div>
 
         </div>

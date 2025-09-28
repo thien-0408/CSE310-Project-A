@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from "react";
-
+import { Separator } from "@/components/ui/separator";
 interface Props {
   id: number;
   question: string;
@@ -37,11 +37,13 @@ const YesNoNotGiven: React.FC<Props> = ({ id, question, options = defaultOptions
   return (
     <div className="p-4 mb-2">
         <h1>Do the following statements agree with the views of the writer in Reading Passage?</h1>
-      <div className="grid grid-cols-[1fr_2fr] p-4 bg-gray-100 rounded-sm my-4 tracking-tight">
+      <div className="grid grid-cols-[1fr_2fr] p-4 bg-[#f3f4f6] rounded-sm my-4 tracking-tight">
         <div className="space-y-2">
-          <h2 className="font-bold">YES.</h2>
-          <h2 className="font-bold">NO.</h2>
-          <h2 className="font-bold">NOT GIVEN.</h2>
+          <h2 className="font-bold text-[#407db9]">YES.</h2>
+          <Separator></Separator>
+          <h2 className="font-bold text-[#407db9]">NO.</h2>
+          <Separator></Separator>
+          <h2 className="font-bold text-[#407db9]">NOT GIVEN.</h2>
         </div>
 
         <div className="space-y-2 font-medium">

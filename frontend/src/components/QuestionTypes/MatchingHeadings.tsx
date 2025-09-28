@@ -14,7 +14,6 @@ const MatchingHeadings: React.FC<Props> = ({ id, question, paragraphs, headings,
   const storageKey = `question-mh-${id}`;
   const [selected, setSelected] = useState<Record<string, string>>({});
 
-  // Load saved answers từ localStorage
   useEffect(() => {
     const saved = localStorage.getItem(storageKey);
     if (saved) {
@@ -42,15 +41,15 @@ const MatchingHeadings: React.FC<Props> = ({ id, question, paragraphs, headings,
       <div className="space-y-4">
         {paragraphs.map((para, idx) => (
           <div key={idx} className="flex items-center space-x-4">
-            <span className="w-32 font-semibold">{para}</span>
+            <span className="w-1/2 font-semibold">{para}</span>
             <select
               value={selected[para] || ""}
               onChange={(e) => handleChange(para, e.target.value)}
-              className="flex-1 border rounded p-1"
+              className=" flex-1 border rounded p-1 "
             >
               <option value=""></option>
               {options?.map((opt, i) => (
-                <option key={i} value={opt}>
+                <option key={i} value={opt} className="">
                   {opt}
                 </option>
               ))}

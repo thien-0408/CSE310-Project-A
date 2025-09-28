@@ -43,10 +43,10 @@ const SummaryCompletion: React.FC<Props> = ({
     <div className="p-4 mb-2">
       <h1 className="bg-gray-100 font-medium mb-3">
         Complete each summary with the correct ending{" "}
-        <span className="font-bold">{range}</span>. <br />
+        <span className="font-bold text-[#407db9]">{range}</span>. <br />
         <span>
-          Write the correct letter. <span className="font-bold">{range}</span>,
-          in boxes <span className="font-bold">{questionRange}</span> on your
+          Write the correct letter. <span className="font-bold text-[#407db9] ">{range}</span>,
+          in boxes <span className="font-bold text-[#407db9]">{questionRange}</span> on your
           answer sheet.
         </span>
       </h1>
@@ -65,15 +65,7 @@ const SummaryCompletion: React.FC<Props> = ({
           
         </h1>
       </div>
-      {/*Options question type */}
-      {/* <select name="" id="">
-  <option value="">-- Select an option --</option>
-  {options && options.map((opt, idx) => (
-    <option key={idx} value={opt}>
-      {opt}
-    </option>
-  ))}
-</select> */}
+     
     </div>
   );
 };

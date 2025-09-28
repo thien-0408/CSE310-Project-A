@@ -32,7 +32,7 @@ const SentenceCompletion: React.FC<Props> = ({ id, question,wordLimit, onAnswerC
 
   return (
     <div className="p-4 mb-2">
-      <h1 className="mb-2 tracking-tight font-medium bg-gray-100">Complete the sentences below. <br /> Choose <span className="font-semibold">{wordLimit}</span> from the passage for each answer. Write your answers in boxes on your answer sheet.</h1>
+      <h1 className="mb-2 tracking-tight font-medium bg-gray-100">Complete the sentences below. <br /> Choose <span className=" text-[#407db9] font-bold">{wordLimit}</span> from the passage for each answer. Write your answers in boxes on your answer sheet.</h1>
       <p className="font-semibold mb-2">{id}. {question}</p>
       <input
         type="text"

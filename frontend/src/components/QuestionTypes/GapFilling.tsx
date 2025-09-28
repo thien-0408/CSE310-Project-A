@@ -59,7 +59,7 @@ const GapFilling: React.FC<Props> = ({
         {id}. {question}
       </h2>
       {wordLimit && (
-        <p className="text-sm italic mb-2">Write {wordLimit}.</p>
+        <p className="font-bold mb-3">Write <span className="font-bold text-[#407db9]">{wordLimit}</span>.</p>
       )}
 
       {/* Render với input */}

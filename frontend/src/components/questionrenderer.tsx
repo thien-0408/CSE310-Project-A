@@ -29,7 +29,7 @@ interface Question {
   diagram?: string[];
   gapFilling?: string[];
   blanks?: Array<{ index: number; answer: string }>;
-  statements?: Array<{ statementId: number; text: string }>; // ⬅️ thêm dòng này
+  statements?: Array<{ statementId: number; text: string }>; 
 
   answer?: unknown;
 }
@@ -137,7 +137,7 @@ const QuestionRenderer: React.FC<Props> = ({ questions, onAnswerChange }) => {
                 id={q.id}
                 question={q.question}
                 text={q.text ?? ""}
-                blanks={q.blanks || []} // ✅ Dùng trực tiếp, không cần map
+                blanks={q.blanks || []}
                 wordLimit={q.wordLimit || ""}
                 onAnswerChange={(answer) => onAnswerChange(q.id, answer)}
               />

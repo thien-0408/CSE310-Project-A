@@ -17,7 +17,7 @@ interface Question {
   };
   diagram?: string[];
   answer: unknown;
-  statements?: Array<{ statementId: number; text: string }>; // ⬅️ thêm dòng này
+  statements?: Array<{ statementId: number; text: string }>;
 
   answerType?: string;
   blanks?: Array<{ index: number; answer: string }>;

@@ -30,13 +30,13 @@ const MatchingNames: React.FC<MatchingNamesProps> = ({
       <ul className="space-y-3">
         {statements.map((s) => (
           <li key={s.statementId} className="flex items-center gap-4">
-            <span className="w-1/2">{s.text}</span>
+            <span className="w-1/2 ">{s.text}</span>
             <select
               className="border rounded px-2 py-1"
               value={answers[s.statementId] || ""}
               onChange={(e) => handleChange(s.statementId, e.target.value)}
             >
-              <option value="">-- Select --</option>
+              <option value=""></option>
               {options.map((opt, idx) => (
                 <option key={idx} value={opt}>
                   {opt}
