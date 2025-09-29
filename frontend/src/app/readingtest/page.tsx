@@ -153,7 +153,7 @@ export default function ReadingTest() {
             <h1 className="title">{data.passageTitle}</h1>
           </div>
           <div className="p-6  px-15">
-            
+              <Image src={"/testdata/repImage/DSC06942-1-1536x1024-1.jpg"} alt="Coral Reefs" width={200} height={200} quality={100} className="mb-2"></Image>
              <ReadingPassage
                 key={data.passageId}
                 id={data.passageId}
