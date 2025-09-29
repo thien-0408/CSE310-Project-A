@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -20,10 +19,29 @@ export default function Loader() {
   }, [pathname, searchParams]);
 
   if (!loading) return null;
-
+  
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-300 opacity-80 transition-opacity duration-300">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-8 border-blue-400"></div>
-    </div>
+    <>
+      <style jsx>{`
+        .custom-loader {
+          width: 50px;
+          aspect-ratio: 1;
+          border-radius: 50%;
+          border: 8px solid;
+          border-color: #000 #0000;
+          animation: l1 1s infinite;
+        }
+        
+        @keyframes l1 {
+          to {
+            transform: rotate(.5turn);
+          }
+        }
+      `}</style>
+      
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-300 opacity-80 transition-opacity duration-500">
+        <div className="custom-loader"></div>
+      </div>
+    </>
   );
 }

@@ -6,13 +6,12 @@ interface Props {
   id: number;
   question: string;
   options: string[];
-  onAnswerChange?: (answer: number) => void; // Thêm prop này
+  onAnswerChange?: (answer: number) => void; 
 }
 
 const MultipleChoice: React.FC<Props> = ({ id, question, options, onAnswerChange }) => {
   const storageKey = `question-${id}`;
 
-  // Load saved answer from localStorage
   const [selected, setSelected] = useState<number | null>(null);
 
   useEffect(() => {
@@ -20,18 +19,17 @@ const MultipleChoice: React.FC<Props> = ({ id, question, options, onAnswerChange
     if (saved !== null) {
       const savedIndex = parseInt(saved, 10);
       setSelected(savedIndex);
-      // Gọi onAnswerChange với giá trị đã lưu khi component mount
+     
       if (onAnswerChange) {
         onAnswerChange(savedIndex);
       }
     }
-  }, [storageKey]); // Bỏ onAnswerChange khỏi dependency array
+  }, [storageKey]); 
 
   const handleChange = (index: number) => {
     setSelected(index);
     localStorage.setItem(storageKey, index.toString());
     
-    // Gọi callback để thông báo về parent component
     if (onAnswerChange) {
       onAnswerChange(index);
     }

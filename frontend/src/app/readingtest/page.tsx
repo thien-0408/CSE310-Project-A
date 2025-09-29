@@ -18,8 +18,6 @@ import { Button } from "@/components/ui/button";
 import { GrNext } from "react-icons/gr";
 import { GrPrevious } from "react-icons/gr";
 
-
-
 // Interface for user answers
 interface UserAnswer {
   questionId: number;
@@ -142,27 +140,25 @@ export default function ReadingTest() {
               </NavigationMenuList>
             </NavigationMenu>
           </div>
-
         </div>
       </div>
     </header>
-      <div className="flex h-screen overflow-hidden">
+      <div className="flex h-screen overflow-hidden font-roboto">
         {/* Passage */}
         <div
           className="overflow-y-auto border-r"
           style={{ width: `${leftWidth}%` }}
         >
           <div className="text-3xl font-extrabold text-center p-10 text-white italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8]">
-            <h1>{data.passageTitle}</h1>
+            <h1 className="title">{data.passageTitle}</h1>
           </div>
-          <div className="p-6 tracking-tight px-15">
+          <div className="p-6  px-15">
             
              <ReadingPassage
                 key={data.passageId}
                 id={data.passageId}
                 title={data.passageTitle}
                 text={data.text}
-               
               />
           </div>
         </div>
@@ -174,9 +170,9 @@ export default function ReadingTest() {
         ></div>
 
         {/* Questions */}
-        <div className="flex-1 overflow-y-auto p-6 tracking-tight">
+        <div className="flex-1 overflow-y-auto p-6">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold">Questions{data.passageRange}</h3>
+            <h3 className="text-lg font-semibold text-[#2c76c0]">Questions {data.passageRange}</h3>
             
           </div>
           
@@ -187,7 +183,6 @@ export default function ReadingTest() {
         </div>
       </div>
       <footer className="sticky bottom-0 w-full bg-white shadow-inner border-t p-3 flex items-center justify-center space-x-5">
-
         <div>
           <Button className="rounded-4xl bg-gray-200 text-gray-800 hover:bg-gray-300"><GrPrevious /></Button>
         </div>

@@ -113,8 +113,21 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
-body {
-  font-family: var(--font-montserrat), sans-serif;
+:root {
+  --font-montserrat: 'Montserrat', sans-serif;
+  --font-roboto: 'Roboto', sans-serif;
+}
+* {
+  font-family: var(--font-montserrat);
+}
+
+/* Class override cho Roboto */
+.font-roboto {
+  font-family: var(--font-roboto) !important;
+}
+
+.font-roboto * {
+  font-family: var(--font-roboto) !important;
 }
 *{
   cursor: url("/cursors/icons8-cursor-24.png"), auto;

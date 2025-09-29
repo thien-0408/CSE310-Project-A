@@ -32,7 +32,7 @@ const MatchingNames: React.FC<MatchingNamesProps> = ({
           <li key={s.statementId} className="flex items-center gap-4">
             <span className="w-1/2 ">{s.text}</span>
             <select
-              className="border rounded px-2 py-1"
+          className="border border-gray-300 rounded-md p-2 font-medium text-gray-700 bg-white hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-150 ease-in-out"
               value={answers[s.statementId] || ""}
               onChange={(e) => handleChange(s.statementId, e.target.value)}
             >
