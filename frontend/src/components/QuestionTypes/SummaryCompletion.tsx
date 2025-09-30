@@ -55,7 +55,7 @@ const SummaryCompletion: React.FC<Props> = ({
       </p>
       <input
         type="text"
-        className="border rounded px-2 py-1 w-full"
+        className="border rounded px-2 py-1 w-full hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all"
         value={answer}
         onChange={handleChange}
         placeholder="Your answer"

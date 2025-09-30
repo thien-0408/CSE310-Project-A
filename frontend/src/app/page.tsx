@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
-import FullScreenButton from "@/components/ui/fullscreen";
-import { Input } from "@/components/ui/input";
-import Image from "next/image";
+import TextHighlighter from "@/components/ui/highlighter";
+import HighlighterDemo from "@/components/ui/highlighter";
 import Link from "next/link";
 
 export default function Home() {
@@ -51,6 +50,7 @@ export default function Home() {
               </Link>
             </Button>
           </li>
+          
         </ul>
       </div>
     </main>

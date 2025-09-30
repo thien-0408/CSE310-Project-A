@@ -34,7 +34,7 @@ const ShortAnswer: React.FC<Props> = ({ id, question, onAnswerChange }) => {
       <p className="font-semibold mb-2">{id}. {question}</p>
       <input
         type="text"
-        className="border rounded px-2 py-1 w-full"
+        className="border rounded px-2 py-1 w-full hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all"
         value={answer}
         onChange={handleChange}
         placeholder="Your answer"

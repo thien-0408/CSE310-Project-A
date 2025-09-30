@@ -26,7 +26,6 @@ const GapFilling: React.FC<Props> = ({
   const storageKey = `question-gap-${id}`;
   const [answers, setAnswers] = useState<Record<number, string>>({});
 
-  // Load từ localStorage
   useEffect(() => {
     const saved = localStorage.getItem(storageKey);
     if (saved) {
@@ -43,7 +42,6 @@ const GapFilling: React.FC<Props> = ({
     if (onAnswerChange) onAnswerChange(updated);
   };
 
-  // Render text có input box thay cho ___x___
   const renderWithBlanks = () => {
     let rendered = text;
     blanks.forEach((blank) => {
@@ -74,7 +72,7 @@ const GapFilling: React.FC<Props> = ({
                 type="text"
                 value={answers[idx] || ""}
                 onChange={(e) => handleChange(idx, e.target.value)}
-                className="border-b border-gray-500 px-2 mx-1 w-32 focus:outline-none"
+                className="border rounded-sm border-gray-500 px-1 mx-1 w-32 m-1 hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all"
                 placeholder={`[${idx}]`}
               />
             );

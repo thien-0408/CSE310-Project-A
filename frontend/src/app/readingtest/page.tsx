@@ -17,6 +17,8 @@ import FullScreenButton from "@/components/ui/fullscreen";
 import { Button } from "@/components/ui/button";
 import { GrNext } from "react-icons/gr";
 import { GrPrevious } from "react-icons/gr";
+import Loader from "@/components/ui/Loader";
+import TextHighlighter from "@/components/ui/highlighter";
 
 // Interface for user answers
 interface UserAnswer {
@@ -69,27 +71,7 @@ export default function ReadingTest() {
     window.addEventListener("mouseup", handleMouseUp);
   }
 
-  useEffect(() => {
-    const handleMouseUp = () => {
-      const selection = window.getSelection();
-      if (selection && selection.toString().length > 0) {
-        const range = selection.getRangeAt(0);
-        const span = document.createElement("span");
-        span.className = "bg-yellow-300 font-bold";
-        try {
-          range.surroundContents(span);
-        } catch (err) {
-          console.warn("Can't highlight complex text!");
-        }
-        selection.removeAllRanges();
-      }
-    };
-
-    document.addEventListener("mouseup", handleMouseUp);
-    return () => {
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, []);
+ 
 
   const handleSubmit = () => {
     setShowResults(true);
@@ -98,6 +80,7 @@ export default function ReadingTest() {
   if (showResults) {
     return (
       <>
+      <Loader></Loader>
         <NavbarTest />
         <QuestionScoring
           questions={data.questions}
@@ -145,6 +128,7 @@ export default function ReadingTest() {
     </header>
       <div className="flex h-screen overflow-hidden font-roboto">
         {/* Passage */}
+
         <div
           className="overflow-y-auto border-r"
           style={{ width: `${leftWidth}%` }}
@@ -152,15 +136,18 @@ export default function ReadingTest() {
           <div className="text-3xl font-extrabold text-center p-10 text-white italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8]">
             <h1 className="title">{data.passageTitle}</h1>
           </div>
-          <div className="p-6  px-15">
+          <div className="p-6 px-15 text-md">
               <Image src={"/testdata/repImage/DSC06942-1-1536x1024-1.jpg"} alt="Coral Reefs" width={200} height={200} quality={100} className="mb-2"></Image>
              <ReadingPassage
                 key={data.passageId}
                 id={data.passageId}
                 title={data.passageTitle}
-                text={data.text}
+                text={""}
               />
+          <TextHighlighter content={data.text} passageId={""}></TextHighlighter>
+
           </div>
+
         </div>
 
         {/* Divider */}
@@ -172,7 +159,7 @@ export default function ReadingTest() {
         {/* Questions */}
         <div className="flex-1 overflow-y-auto p-6">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-[#2c76c0]">Questions {data.passageRange}</h3>
+            <h3 className="text-xl font-semibold text-[#2c76c0]">Questions {data.passageRange}</h3>
             
           </div>
           
@@ -183,6 +170,9 @@ export default function ReadingTest() {
         </div>
       </div>
       <footer className="sticky bottom-0 w-full bg-white shadow-inner border-t p-3 flex items-center justify-center space-x-5">
+        <div>
+          <h3 className="text-gray-800 text-md">Question {userAnswers.length} of {data.questions.length}</h3>
+        </div>
         <div>
           <Button className="rounded-4xl bg-gray-200 text-gray-800 hover:bg-gray-300"><GrPrevious /></Button>
         </div>
