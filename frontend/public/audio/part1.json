@@ -1,0 +1,84 @@
+{
+  "id": 1,
+  "partNumber": 1,
+  "partTitle": "Social/Transactional Conversation",
+  "audioUrl":  "/audio/listening.mp3",
+  "audioDuration": 240,
+  "context": "The housing officer takes some details from the girl.",
+  "instructions": "Complete the following form with NO MORE THAN THREE WORDS AND/OR A NUMBER for each answer.",
+  "wordLimit": "NO MORE THAN THREE WORDS AND/OR A NUMBER",
+  "questionRange": "1-5",
+  "sections": [
+    {
+      "sectionId": 1,
+      "sectionTitle": "PERSONAL DETAILS FOR HOMESTAY APPLICATION",
+      "questionType": "form_completion",
+      "formFields": [
+        {
+          "id": 1,
+          "label": "First name",
+          "answer": "Thien",
+          "wordLimit": "ONE WORD",
+          "isInput": true,
+          "audioTimestamp": "0:15-0:18"
+        },
+        {
+          "id": 2,
+          "label": "Family name",
+          "answer": "Yuichini",
+          "isInput": false
+        },
+        {
+          "id": 3,
+          "label": "Gender",
+          "answer": "Female",
+          "isInput": false
+        },
+        {
+          "id": 4,
+          "label": "Age",
+          "answer": "28",
+          "isInput": false
+        },
+        {
+          "id": 5,
+          "label": "Passport number",
+          "answer": "",
+          "wordLimit": "ONE WORD AND/OR A NUMBER",
+          "isInput": true,
+          "audioTimestamp": "0:22-0:25"
+        },
+        {
+          "id": 6,
+          "label": "Nationality",
+          "answer": "Japanese",
+          "isInput": false
+        },
+        {
+          "id": 7,
+          "label": "Course enrolled",
+          "answer": "",
+          "wordLimit": "TWO WORDS",
+          "isInput": true,
+          "audioTimestamp": "0:30-0:35"
+        },
+        {
+          "id": 8,
+          "label": "Length of the course",
+          "answer": "",
+          "wordLimit": "TWO WORDS AND/OR A NUMBER",
+          "isInput": true,
+          "audioTimestamp": "0:40-0:44"
+        },
+        {
+          "id": 9,
+          "label": "Homestay time",
+          "answer": "",
+          "wordLimit": "TWO WORDS AND/OR A NUMBER",
+          "isInput": true,
+          "audioTimestamp": "0:48-0:52"
+        }
+      ]
+    }
+  ]
+}

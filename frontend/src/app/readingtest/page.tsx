@@ -71,8 +71,6 @@ export default function ReadingTest() {
     window.addEventListener("mouseup", handleMouseUp);
   }
 
- 
-
   const handleSubmit = () => {
     setShowResults(true);
   };

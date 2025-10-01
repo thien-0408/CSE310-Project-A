@@ -50,7 +50,12 @@ export default function Home() {
               </Link>
             </Button>
           </li>
-          
+           <li className="mb-3">
+            <Button>
+              <Link href={'/listeningtest'}>Listening Test
+              </Link>
+            </Button>
+          </li>
         </ul>
       </div>
     </main>

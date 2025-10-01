@@ -1,0 +1,152 @@
+{
+  "id": 1,
+  "partNumber": 1,
+  "partTitle": "Social/Transactional Conversation",
+  "audioUrl": "/audio/listening.mp3",
+  "audioDuration": 240,
+  "context": "The housing officer takes some details from the girl.",
+  "instructions": "Complete the following form with NO MORE THAN THREE WORDS AND/OR A NUMBER for each answer.",
+  "wordLimit": "NO MORE THAN THREE WORDS AND/OR A NUMBER",
+  "questionRange": "1-10",
+  "sections": [
+    {
+      "sectionId": 1,
+      "sectionTitle": "PERSONAL DETAILS FOR HOMESTAY APPLICATION",
+      "questionType": "form_completion",
+      "formFields": [
+        {
+          "id": 1,
+          "label": "First name",
+          "answer": "Thien",
+          "wordLimit": "ONE WORD",
+          "isInput": true,
+          "audioTimestamp": "0:15-0:18"
+        },
+        {
+          "id": 41,
+          "label": "Family name",
+          "answer": "Yuichini",
+          "isInput": false
+        },
+        {
+          "id": 42,
+          "label": "Gender",
+          "answer": "Female",
+          "isInput": false
+        },
+        {
+          "id": 43,
+          "label": "Age",
+          "answer": "28",
+          "isInput": false
+        },
+        {
+          "id": 2,
+          "label": "Passport number",
+          "answer": "1234567",
+          "wordLimit": "ONE WORD AND/OR A NUMBER",
+          "isInput": true,
+          "audioTimestamp": "0:22-0:25"
+        },
+        {
+          "id": 44,
+          "label": "Nationality",
+          "answer": "Japanese",
+          "isInput": false
+        },
+        {
+          "id": 3,
+          "label": "Course enrolled",
+          "answer": "Skibidi toilet",
+          "wordLimit": "TWO WORDS",
+          "isInput": true,
+          "audioTimestamp": "0:30-0:35"
+        },
+        {
+          "id": 4,
+          "label": "Length of the course",
+          "answer": "2 weeks",
+          "wordLimit": "TWO WORDS AND/OR A NUMBER",
+          "isInput": true,
+          "audioTimestamp": "0:40-0:44"
+        },
+        {
+          "id": 5,
+          "label": "Homestay time",
+          "answer": "1 month",
+          "wordLimit": "TWO WORDS AND/OR A NUMBER",
+          "isInput": true,
+          "audioTimestamp": "0:48-0:52"
+        }
+      ]
+    },
+    {
+      "sectionId": 2,
+      "sectionTitle": "",
+      "questionType": "multiple_choice",
+      "instructions": "Choose the correct option A, B, C, D",
+      "questions": [
+        {
+          "id": 6,
+          "question": "What type of accommodation does the student prefer?",
+          "options": [
+            "A shared apartment with other students",
+            "A private studio apartment",
+            "A homestay with a local family",
+            "University dormitory"
+          ],
+          "answer": 2,
+          "audioTimestamp": "1:00-1:10"
+        },
+        {
+          "id": 7,
+          "question": "What is the student's main concern about the homestay?",
+          "options": [
+            "The distance from university",
+            "The cost of accommodation",
+            "Dietary restrictions",
+            "Internet connection"
+          ],
+          "answer": 0,
+          "audioTimestamp": "1:25-1:35"
+        },
+        {
+          "id": 8,
+          "question": "When does the student need to move in?",
+          "options": [
+            "At the beginning of next month",
+            "In two weeks",
+            "At the end of this month",
+            "Next semester"
+          ],
+          "answer": 1,
+          "audioTimestamp": "1:50-2:00"
+        },
+        {
+          "id": 9,
+          "question": "What additional service does the housing officer offer?",
+          "options": [
+            "Free transportation to university",
+            "Help with visa application",
+            "Airport pick-up service",
+            "Language exchange program"
+          ],
+          "answer": 2,
+          "audioTimestamp": "2:15-2:25"
+        },
+        {
+          "id": 10,
+          "question": "How will the student receive the homestay details?",
+          "options": [
+            "By phone call",
+            "Through email",
+            "By post",
+            "In person at the office"
+          ],
+          "answer": 1,
+          "audioTimestamp": "2:35-2:45"
+        }
+      ]
+    }
+  ]
+}
