@@ -100,8 +100,7 @@ export default function ListeningTest() {
           </h3>
         </div>
         
-        {/* Optional: Add navigation buttons if needed */}
-        {/* <div>
+        <div>
           <Button className="rounded-4xl bg-gray-200 text-gray-800 hover:bg-gray-300">
             <GrPrevious />
           </Button>
@@ -110,7 +109,7 @@ export default function ListeningTest() {
           <Button className="rounded-4xl bg-gray-200 text-gray-800 hover:bg-gray-300">
             <GrNext />
           </Button>
-        </div> */}
+        </div>
         
         <div>
           <Button
@@ -118,7 +117,7 @@ export default function ListeningTest() {
             onClick={handleSubmit}
             disabled={answeredQuestions === 0}
           >
-            Submit Test
+            Submit
           </Button>
         </div>
       </footer>
