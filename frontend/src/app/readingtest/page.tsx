@@ -73,6 +73,8 @@ export default function ReadingTest() {
 
   const handleSubmit = () => {
     setShowResults(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
   };
 
   if (showResults) {

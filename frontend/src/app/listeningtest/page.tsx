@@ -86,7 +86,7 @@ export default function ListeningTest() {
         <NavbarTest />
       </header>
 
-      <main>
+      <main className="font-roboto">
         <ListeningRenderer
           listeningData={listeningData}
           onAnswerChange={handleAnswerChange}

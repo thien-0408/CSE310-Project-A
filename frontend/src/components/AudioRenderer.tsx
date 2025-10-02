@@ -2,47 +2,9 @@
 import React from "react";
 import FormCompletion from "./ListeningTypes/FormCompletion";
 import ListeningMultipleChoice from "./ListeningTypes/MultipleChoice";
+import ListeningShortAnswer from "./ListeningTypes/ShortAnswer";
 import { Volume2, Headphones } from "lucide-react";
-
-interface FormField {
-  id: number;
-  label: string;
-  answer: string;
-  wordLimit?: string;
-  isInput: boolean;
-  audioTimestamp?: string;
-}
-
-interface Question {
-  id: number;
-  question: string;
-  options?: string[];
-  answer: string | number;
-  wordLimit?: string;
-  audioTimestamp?: string;
-}
-
-interface Section {
-  sectionId: number;
-  sectionTitle: string;
-  questionType: string;
-  formFields?: FormField[];
-  questions?: Question[];
-  
-}
-
-interface ListeningData {
-  id: number;
-  partNumber: number;
-  partTitle: string;
-  audioUrl: string;
-  audioDuration: number;
-  context: string;
-  instructions: string;
-  wordLimit?: string;
-  questionRange: string;
-  sections: Section[];
-}
+import { ListeningData } from "@/types/listening"; // Import from types
 
 interface Props {
   listeningData: ListeningData;
@@ -127,19 +89,31 @@ const ListeningRenderer: React.FC<Props> = ({ listeningData, onAnswerChange }) =
           // Multiple Choice
           if (section.questionType === "multiple_choice" && section.questions) {
             return (
-              
               <div key={section.sectionId}>
-                <h1 className="mb-4 font-bold text-xl">Choose the correct option A, B, C, D</h1>
                 {section.questions.map((q) => (
                   <ListeningMultipleChoice
                     key={q.id}
                     id={q.id}
-                    question={q.question}
+                    question={q.question || q.text || ""}
                     options={q.options || []}
                     onAnswerChange={(answer) => onAnswerChange(section.sectionId, q.id, answer)}
                   />
                 ))}
               </div>
+            );
+          }
+
+          // Short Answer
+          if (section.questionType === "short_answer" && section.questions) {
+            return (
+              <ListeningShortAnswer
+                key={section.sectionId}
+                sectionId={section.sectionId}
+                instruction={section.instruction || listeningData.instructions}
+                wordLimit={section.wordLimit || listeningData.wordLimit || "NO MORE THAN THREE WORDS"}
+                questions={section.questions}
+                onAnswerChange={onAnswerChange}
+              />
             );
           }
 

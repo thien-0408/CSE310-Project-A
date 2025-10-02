@@ -147,6 +147,43 @@
           "audioTimestamp": "2:35-2:45"
         }
       ]
+    },
+    {
+      "sectionId": 3,
+      "sectionTitle": "",
+      "questionType": "short_answer",
+      "instruction": "Answer the questions below.",
+      "wordLimit": "NO MORE THAN THREE WORDS",
+      "questions": [
+        {
+          "id": 11,
+          "text": "Although the girl is not a vegetarian, she doesn't eat a lot of meat. Her favourite food is",
+          "answer": "pasta",
+          "wordLimit": "ONE WORD",
+          "audioTimestamp": "1:15-1:20"
+        },
+        {
+          "id": 12,
+          "text": "The girl has given up playing handball. Now, she just play",
+          "answer": "tennis",
+          "wordLimit": "ONE WORD",
+          "audioTimestamp": "1:35-1:40"
+        },
+        {
+          "id": 13,
+          "text": "The girl does not like the bus because they are always late. She would rather",
+          "answer": "walk",
+          "wordLimit": "ONE WORD",
+          "audioTimestamp": "1:55-2:00"
+        },
+        {
+          "id": 14,
+          "text": "The girl can get the information about the homestay family that she wants",
+          "answer": "by email",
+          "wordLimit": "TWO WORDS",
+          "audioTimestamp": "2:15-2:20"
+        }
+      ]
     }
   ]
 }
