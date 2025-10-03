@@ -24,7 +24,8 @@ const ListeningScoring: React.FC<ScoringProps> = ({
           if (!field.isInput) return;
 
           const userAnswer = userAnswers.find(
-            (ua) => ua.sectionId === section.sectionId && ua.questionId === field.id
+            (ua) =>
+              ua.sectionId === section.sectionId && ua.questionId === field.id
           );
 
           let isCorrect = false;
@@ -56,7 +57,9 @@ const ListeningScoring: React.FC<ScoringProps> = ({
       if (section.questionType === "multiple_choice" && section.questions) {
         section.questions.forEach((question) => {
           const userAnswer = userAnswers.find(
-            (ua) => ua.sectionId === section.sectionId && ua.questionId === question.id
+            (ua) =>
+              ua.sectionId === section.sectionId &&
+              ua.questionId === question.id
           );
 
           let isCorrect = false;
@@ -84,7 +87,9 @@ const ListeningScoring: React.FC<ScoringProps> = ({
       if (section.questionType === "short_answer" && section.questions) {
         section.questions.forEach((question) => {
           const userAnswer = userAnswers.find(
-            (ua) => ua.sectionId === section.sectionId && ua.questionId === question.id
+            (ua) =>
+              ua.sectionId === section.sectionId &&
+              ua.questionId === question.id
           );
 
           let isCorrect = false;
@@ -111,6 +116,50 @@ const ListeningScoring: React.FC<ScoringProps> = ({
           });
         });
       }
+      if (section.questionType === "multiple_answer" && section.questions) {
+        section.questions.forEach((question) => {
+          const userAnswer = userAnswers.find(
+            (ua) =>
+              ua.sectionId === section.sectionId &&
+              ua.questionId === question.id
+          );
+
+          let isCorrect = false;
+          let points = 0;
+
+          if (
+            userAnswer &&
+            Array.isArray(userAnswer.answer) &&
+            Array.isArray(question.answer)
+          ) {
+            const correctAnswers = question.answer as number[];
+            const userAnswerArray = userAnswer.answer as number[];
+            // Sort both arrays for comparison
+            const sortedCorrect = [...correctAnswers].sort((a, b) => a - b);
+            const sortedUser = [...userAnswerArray].sort((a, b) => a - b);
+            // Check if arrays are equal
+            isCorrect =
+              sortedCorrect.length === sortedUser.length &&
+              sortedCorrect.every((val, idx) => val === sortedUser[idx]);
+            // Partial scoring: count how many correct answers user got
+            const correctCount = userAnswerArray.filter((ans) =>
+              correctAnswers.includes(ans)
+            ).length;
+            points = correctCount; // Or use: isCorrect ? correctAnswers.length : 0
+          }
+
+          results.push({
+            sectionId: section.sectionId,
+            questionId: question.id,
+            isCorrect,
+            userAnswer: userAnswer?.answer ?? null,
+            correctAnswer: question.answer,
+            points,
+            questionType: "multiple_answer",
+            questionText: question.question || question.text || "",
+          });
+        });
+      }
     });
 
     return results;
@@ -119,15 +168,17 @@ const ListeningScoring: React.FC<ScoringProps> = ({
   const results = scoreAnswers();
   const totalScore = results.reduce((sum, result) => sum + result.points, 0);
   const maxPossibleScore = results.length;
-  const percentage = maxPossibleScore > 0 
-    ? Math.round((totalScore / maxPossibleScore) * 100) 
-    : 0;
+  const percentage =
+    maxPossibleScore > 0
+      ? Math.round((totalScore / maxPossibleScore) * 100)
+      : 0;
 
   const getQuestionTypeDisplay = (type: string): string => {
     const typeMap: Record<string, string> = {
       form_completion: "Form Completion",
       multiple_choice: "Multiple Choice",
       short_answer: "Short Answer",
+      multiple_answer: "Multiple Answer",
       note_completion: "Note Completion",
       sentence_completion: "Sentence Completion",
       matching: "Matching",
@@ -136,13 +187,43 @@ const ListeningScoring: React.FC<ScoringProps> = ({
     return typeMap[type] || type;
   };
 
-  const formatAnswer = (answer: unknown, questionType: string, sectionId: number, questionId: number): string => {
+  const formatAnswer = (
+    answer: unknown,
+    questionType: string,
+    sectionId: number,
+    questionId: number
+  ): string => {
     if (answer === null || answer === undefined) return "No answer";
 
-    if (questionType === "multiple_choice") {
-      const section = listeningData.sections.find(s => s.sectionId === sectionId);
+    if (questionType === "multiple_answer" && Array.isArray(answer)) {
+      const section = listeningData.sections.find(
+        (s) => s.sectionId === sectionId
+      );
       if (section?.questions) {
-        const question = section.questions.find(q => q.id === questionId);
+        const question = section.questions.find((q) => q.id === questionId);
+        if (question?.options) {
+          return (answer as number[])
+            .sort((a, b) => a - b)
+            .map((idx) => {
+              const letter = String.fromCharCode(65 + idx);
+              return `${letter}. ${question.options![idx]}`;
+            })
+            .join(", ");
+        }
+      }
+      // Fallback: just show letters
+      return (answer as number[])
+        .sort((a, b) => a - b)
+        .map((idx) => String.fromCharCode(65 + idx))
+        .join(", ");
+    }
+
+    if (questionType === "multiple_choice") {
+      const section = listeningData.sections.find(
+        (s) => s.sectionId === sectionId
+      );
+      if (section?.questions) {
+        const question = section.questions.find((q) => q.id === questionId);
         if (question?.options && typeof answer === "number") {
           const letter = String.fromCharCode(65 + answer);
           return `${letter}. ${question.options[answer] || "Invalid option"}`;
@@ -152,7 +233,6 @@ const ListeningScoring: React.FC<ScoringProps> = ({
 
     return String(answer);
   };
-
   const resultsBySection = results.reduce((acc, result) => {
     if (!acc[result.sectionId]) {
       acc[result.sectionId] = [];
@@ -184,11 +264,15 @@ const ListeningScoring: React.FC<ScoringProps> = ({
       </div>
 
       <div className="space-y-6">
-        <h3 className="text-xl font-semibold text-gray-800">Question Details</h3>
-        
+        <h3 className="text-xl font-semibold text-gray-800">
+          Question Details
+        </h3>
+
         {Object.entries(resultsBySection).map(([sectionId, sectionResults]) => {
-          const section = listeningData.sections.find(s => s.sectionId === parseInt(sectionId));
-          
+          const section = listeningData.sections.find(
+            (s) => s.sectionId === parseInt(sectionId)
+          );
+
           return (
             <div key={sectionId} className="space-y-4">
               {section?.sectionTitle && (
@@ -196,7 +280,7 @@ const ListeningScoring: React.FC<ScoringProps> = ({
                   {section.sectionTitle}
                 </h4>
               )}
-              
+
               {sectionResults.map((result) => (
                 <div
                   key={`${result.sectionId}-${result.questionId}`}
@@ -245,7 +329,12 @@ const ListeningScoring: React.FC<ScoringProps> = ({
                             : "bg-red-100 text-red-800"
                         }`}
                       >
-                        {formatAnswer(result.userAnswer, result.questionType, result.sectionId, result.questionId)}
+                        {formatAnswer(
+                          result.userAnswer,
+                          result.questionType,
+                          result.sectionId,
+                          result.questionId
+                        )}
                       </p>
                     </div>
                     <div>
@@ -253,7 +342,12 @@ const ListeningScoring: React.FC<ScoringProps> = ({
                         Correct Answer:
                       </p>
                       <p className="p-2 bg-blue-100 text-blue-800 rounded">
-                        {formatAnswer(result.correctAnswer, result.questionType, result.sectionId, result.questionId)}
+                        {formatAnswer(
+                          result.correctAnswer,
+                          result.questionType,
+                          result.sectionId,
+                          result.questionId
+                        )}
                       </p>
                     </div>
                   </div>

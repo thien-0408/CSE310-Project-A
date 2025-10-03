@@ -1,17 +1,25 @@
-'use client';
+"use client";
 import React from "react";
 import FormCompletion from "./ListeningTypes/FormCompletion";
 import ListeningMultipleChoice from "./ListeningTypes/MultipleChoice";
 import ListeningShortAnswer from "./ListeningTypes/ShortAnswer";
-import { Volume2, Headphones } from "lucide-react";
-import { ListeningData } from "@/types/listening"; // Import from types
+import { Volume2 } from "lucide-react";
+import { ListeningData } from "@/types/listening";
+import ListeningMultipleAnswer from "./ListeningTypes/MultipleAnswer";
 
 interface Props {
   listeningData: ListeningData;
-  onAnswerChange: (sectionId: number, questionId: number, answer: unknown) => void;
+  onAnswerChange: (
+    sectionId: number,
+    questionId: number,
+    answer: unknown
+  ) => void;
 }
 
-const ListeningRenderer: React.FC<Props> = ({ listeningData, onAnswerChange }) => {
+const ListeningRenderer: React.FC<Props> = ({
+  listeningData,
+  onAnswerChange,
+}) => {
   const [isPlaying, setIsPlaying] = React.useState(false);
   const audioRef = React.useRef<HTMLAudioElement>(null);
 
@@ -68,7 +76,10 @@ const ListeningRenderer: React.FC<Props> = ({ listeningData, onAnswerChange }) =
       <div className="space-y-6">
         {listeningData.sections.map((section) => {
           // Form Completion
-          if (section.questionType === "form_completion" && section.formFields) {
+          if (
+            section.questionType === "form_completion" &&
+            section.formFields
+          ) {
             return (
               <FormCompletion
                 key={section.sectionId}
@@ -96,7 +107,9 @@ const ListeningRenderer: React.FC<Props> = ({ listeningData, onAnswerChange }) =
                     id={q.id}
                     question={q.question || q.text || ""}
                     options={q.options || []}
-                    onAnswerChange={(answer) => onAnswerChange(section.sectionId, q.id, answer)}
+                    onAnswerChange={(answer) =>
+                      onAnswerChange(section.sectionId, q.id, answer)
+                    }
                   />
                 ))}
               </div>
@@ -110,10 +123,33 @@ const ListeningRenderer: React.FC<Props> = ({ listeningData, onAnswerChange }) =
                 key={section.sectionId}
                 sectionId={section.sectionId}
                 instruction={section.instruction || listeningData.instructions}
-                wordLimit={section.wordLimit || listeningData.wordLimit || "NO MORE THAN THREE WORDS"}
+                wordLimit={
+                  section.wordLimit ||
+                  listeningData.wordLimit ||
+                  "NO MORE THAN THREE WORDS"
+                }
                 questions={section.questions}
                 onAnswerChange={onAnswerChange}
               />
+            );
+          }
+          if (section.questionType === "multiple_answer" && section.questions) {
+            return (
+              <div key={section.sectionId}>
+                {section.questions.map((q) => (
+                  <ListeningMultipleAnswer
+                    key={q.id}
+                    id={q.id}
+                    question={q.question || q.text || ""}
+                    instruction={section.instruction}
+                    options={q.options || []}
+                    maxAnswers={section.maxAnswers || q.maxAnswers || 2}
+                    onAnswerChange={(answer) =>
+                      onAnswerChange(section.sectionId, q.id, answer)
+                    }
+                  />
+                ))}
+              </div>
             );
           }
 

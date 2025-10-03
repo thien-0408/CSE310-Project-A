@@ -3,12 +3,13 @@ import React, { useEffect, useState } from "react";
 
 interface Question {
   id: number;
-  question?: string;  // Make optional
-  text?: string;      // Add this for short_answer
+  question?: string;
+  text?: string;
   options?: string[];
-  answer: string | number;
+  answer: string | number | number[]; 
   wordLimit?: string;
   audioTimestamp?: string;
+  maxAnswers?: number; 
 }
 
 interface Props {
@@ -28,14 +29,12 @@ const ListeningShortAnswer: React.FC<Props> = ({
 }) => {
   const [answers, setAnswers] = useState<Record<number, string>>({});
 
-  // Load từ localStorage
   useEffect(() => {
     const storageKey = `listening-short-answer-${sectionId}`;
     const saved = localStorage.getItem(storageKey);
     if (saved) {
       const parsed = JSON.parse(saved);
       setAnswers(parsed);
-      // Notify parent of loaded answers
       Object.entries(parsed).forEach(([qId, answer]) => {
         if (onAnswerChange) {
           onAnswerChange(sectionId, parseInt(qId), answer as string);

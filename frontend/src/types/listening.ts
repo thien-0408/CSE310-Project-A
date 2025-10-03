@@ -12,17 +12,19 @@ export interface Question {
   question?: string;
   text?: string;
   options?: string[];
-  answer: string | number;
+  answer: string | number | number[]; 
   wordLimit?: string;
   audioTimestamp?: string;
+  maxAnswers?: number; 
 }
 
 export interface Section {
   sectionId: number;
   sectionTitle: string;
   questionType: string;
-  instruction?: string;  
-  wordLimit?: string;    
+  instruction?: string;
+  wordLimit?: string;
+  maxAnswers?: number;
   formFields?: FormField[];
   questions?: Question[];
 }

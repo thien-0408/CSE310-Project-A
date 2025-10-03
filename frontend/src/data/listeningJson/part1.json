@@ -184,6 +184,27 @@
           "audioTimestamp": "2:15-2:20"
         }
       ]
+    },
+    {
+      "sectionId": 4,
+      "sectionTitle": "",
+      "questionType": "multiple_answer",
+      "instruction": "Mark TWO letters that represent the correct answer.",
+      "maxAnswers": 2,
+      "questions": [
+        {
+          "id": 15,
+          "question": "Which kind of family does the girl prefer?",
+          "options": [
+            "A big family with many young children",
+            "A family without smoker or drinkers",
+            "A family without any pets",
+            "A family with many animals or pets"
+          ],
+          "answer": [1, 2], 
+          "audioTimestamp": "1:15-1:30"
+        }
+      ]
     }
   ]
 }
