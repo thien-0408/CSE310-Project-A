@@ -3,8 +3,10 @@ import React, { useEffect, useState } from "react";
 
 interface Question {
   id: number;
-  text: string;
-  answer: string;
+  question?: string;  // Make optional
+  text?: string;      // Add this for short_answer
+  options?: string[];
+  answer: string | number;
   wordLimit?: string;
   audioTimestamp?: string;
 }

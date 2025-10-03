@@ -1,11 +1,13 @@
+"use client";
 import NavBar from "@/components/ui/navbar";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import {  CardDescription, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import Footer from "@/components/ui/footer";
+import { SpotlightCard } from "@/components/ui/spotlightcard";
 import ScrollTop from "@/components/ui/scroll-top";
-
+ import VenomBeam from "@/components/ui/venom-beam";
 export default function HomePage() {
   return (
     <>
@@ -13,9 +15,9 @@ export default function HomePage() {
         <NavBar />
       </div>
       {/* Hero Banner Section */}
-      <header className="container mx-auto tracking-tight">
-        <div className="w-full bg-gradient-to-br from-[#dfe9fa] via-[#c8daf8] to-[#85acef] relative overflow-hidden lg:p-40 p-10">
-          <div className="container mx-auto">
+      <VenomBeam className="w-full relative overflow-hidden p-10 container mx-auto lg:p-40  ">
+        <div className="">
+          <div >
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               {/* Content Section */}
               <div className="flex flex-col space-y-8 text-left">
@@ -79,7 +81,7 @@ export default function HomePage() {
           <div className="absolute top-20 left-10 w-32 h-32 bg-blue-400/10 rounded-full blur-xl"></div>
           <div className="absolute bottom-20 right-10 w-40 h-40 bg-cyan-400/10 rounded-full blur-xl"></div>
         </div>
-      </header>
+      </VenomBeam>
 
       <main>
         {/*Benefit section*/}
@@ -93,8 +95,11 @@ export default function HomePage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {/* Card 1 */}
-              <div className="hover:scale-105 transition-transform duration-300">
-                <Card className="h-full text-center flex flex-col rounded-md border-1 border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6">
+              <SpotlightCard
+                spotlightColor="34, 211, 238"
+                className="hover:scale-105 transition-transform duration-300"
+              >
+                <div className="h-full text-center flex flex-col transition-shadow p-2">
                   <div className="flex justify-center items-center mb-6">
                     <div className="w-16 h-16 flex items-center justify-center">
                       <i className="fa-solid fa-book-open text-[#4b91e2] text-5xl"></i>
@@ -109,18 +114,20 @@ export default function HomePage() {
                       the actual IELTS exam environment for all modules.
                     </CardDescription>
                   </div>
-                </Card>
-              </div>
-
+                </div>
+              </SpotlightCard>
               {/* Card 2 */}
-              <div className="hover:scale-105 transition-transform duration-300">
-                <Card className="h-full text-center flex flex-col rounded-md border-1 border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6">
+              <SpotlightCard
+                spotlightColor="34, 211, 238"
+                className="hover:scale-105 transition-transform duration-300"
+              >
+                <div className="h-full text-center flex flex-col transition-shadow p-2">
                   <div className="flex justify-center items-center mb-6">
                     <div className="w-16 h-16 flex items-center justify-center">
                       <i className="fa-solid fa-award text-[#4b91e2] text-5xl"></i>
                     </div>
                   </div>
-                  <div className="flex-1 flex flex-col justify-between">
+                  <div className="flex-1 flex flex-col justify-between ">
                     <CardTitle className="text-2xl font-semibold mb-4 leading-tight text-gray-900">
                       Comprehensive Study Materials
                     </CardTitle>
@@ -129,18 +136,20 @@ export default function HomePage() {
                       and grammar exercises tailored for IELTS success.
                     </CardDescription>
                   </div>
-                </Card>
-              </div>
-
+                </div>
+              </SpotlightCard>
               {/* Card 3 */}
-              <div className="hover:scale-105 transition-transform duration-300">
-                <Card className="h-full text-center flex flex-col rounded-md border-1 border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6">
+              <SpotlightCard
+                spotlightColor="34, 211, 238"
+                className="hover:scale-105 transition-transform duration-300"
+              >
+                <div className="h-full text-center flex flex-col transition-shadow p-2">
                   <div className="flex justify-center items-center mb-6">
                     <div className="w-16 h-16 flex items-center justify-center">
                       <i className="fa-solid fa-user-tie text-[#4b91e2] text-5xl"></i>
                     </div>
                   </div>
-                  <div className="flex-1 flex flex-col justify-between">
+                  <div className="flex-1 flex flex-col justify-between ">
                     <CardTitle className="text-2xl font-semibold mb-4 leading-tight text-gray-900">
                       Personalized Feedback
                     </CardTitle>
@@ -149,18 +158,20 @@ export default function HomePage() {
                       speaking to identify areas for improvement.
                     </CardDescription>
                   </div>
-                </Card>
-              </div>
-
+                </div>
+              </SpotlightCard>
               {/* Card 4 */}
-              <div className="hover:scale-105 transition-transform duration-300">
-                <Card className="h-full text-center flex flex-col rounded-md border-1 border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6">
+              <SpotlightCard
+                spotlightColor="34, 211, 238"
+                className="hover:scale-105 transition-transform duration-300"
+              >
+                <div className="h-full text-center flex flex-col transition-shadow p-2">
                   <div className="flex justify-center items-center mb-6">
                     <div className="w-16 h-16 flex items-center justify-center">
-                      <i className="fa-solid fa-bullseye text-[#4b91e2] text-5xl"></i>
+                      <i className="fa-solid fa-user-tie text-[#4b91e2] text-5xl"></i>
                     </div>
                   </div>
-                  <div className="flex-1 flex flex-col justify-between">
+                  <div className="flex-1 flex flex-col justify-between ">
                     <CardTitle className="text-2xl font-semibold mb-4 leading-tight text-gray-900">
                       Progress Tracking & Analytics
                     </CardTitle>
@@ -169,18 +180,20 @@ export default function HomePage() {
                       track your progress across different skills over time.
                     </CardDescription>
                   </div>
-                </Card>
-              </div>
-
+                </div>
+              </SpotlightCard>
               {/* Card 5 */}
-              <div className="hover:scale-105 transition-transform duration-300">
-                <Card className="h-full text-center flex flex-col rounded-md border-1 border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6">
+              <SpotlightCard
+                spotlightColor="34, 211, 238"
+                className="hover:scale-105 transition-transform duration-300"
+              >
+                <div className="h-full text-center flex flex-col transition-shadow p-2">
                   <div className="flex justify-center items-center mb-6">
                     <div className="w-16 h-16 flex items-center justify-center">
                       <i className="fa-solid fa-graduation-cap text-[#4b91e2] text-5xl"></i>
                     </div>
                   </div>
-                  <div className="flex-1 flex flex-col justify-between">
+                  <div className="flex-1 flex flex-col justify-between ">
                     <CardTitle className="text-2xl font-semibold mb-4 leading-tight text-gray-900">
                       Expert Tips & Strategies
                     </CardTitle>
@@ -189,18 +202,21 @@ export default function HomePage() {
                       IELTS instructors to maximize your score.
                     </CardDescription>
                   </div>
-                </Card>
-              </div>
-
+                </div>
+              </SpotlightCard>
               {/* Card 6 */}
-              <div className="hover:scale-105 transition-transform duration-300">
-                <Card className="h-full text-center flex flex-col rounded-md border-1 border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6">
+
+              <SpotlightCard
+                spotlightColor="34, 211, 238"
+                className="hover:scale-105 transition-transform duration-300"
+              >
+                <div className="h-full text-center flex flex-col transition-shadow p-2">
                   <div className="flex justify-center items-center mb-6">
                     <div className="w-16 h-16 flex items-center justify-center">
                       <i className="fa-solid fa-lightbulb text-[#4b91e2] text-5xl"></i>
                     </div>
                   </div>
-                  <div className="flex-1 flex flex-col justify-between">
+                  <div className="flex-1 flex flex-col justify-between ">
                     <CardTitle className="text-2xl font-semibold mb-4 leading-tight text-gray-900">
                       Interactive Learning Modules
                     </CardTitle>
@@ -209,8 +225,8 @@ export default function HomePage() {
                       learning fun and effective for all levels.
                     </CardDescription>
                   </div>
-                </Card>
-              </div>
+                </div>
+              </SpotlightCard>
             </div>
           </div>
         </section>

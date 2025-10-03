@@ -8,10 +8,20 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      colors: {
-        'bluelogo' : '#4a9fde',
-        'cyanlogo': '4bd6ce'
-      }
+      keyframes: {
+        "canopy-x": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(calc(-100% - var(--gap)))" },
+        },
+        "canopy-y": {
+          from: { transform: "translateY(0)" },
+          to: { transform: "translateY(calc(-100% - var(--gap)))" },
+        },
+      },
+      animation: {
+        "canopy-horizontal": "canopy-x var(--duration) infinite linear",
+        "canopy-vertical": "canopy-y var(--duration) linear infinite",
+      },
     },
   },
   plugins: [],

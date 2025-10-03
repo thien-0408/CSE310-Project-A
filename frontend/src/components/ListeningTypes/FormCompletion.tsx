@@ -53,7 +53,7 @@ const FormCompletion: React.FC<Props> = ({
 
   return (
     <div className="p-6 mb-6 bg-white border border-gray-200 rounded-lg">
-      <h1>Choose the correct option A, B, C, D</h1>
+      
       {/* Header */}
       <div className="mb-4">
         <h3 className="text-lg font-bold text-gray-800 mb-2">{title}</h3>

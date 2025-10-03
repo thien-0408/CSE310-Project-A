@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 interface Props {
   id: number;
-  question: string;
+  question:  string | undefined;
   options: string[];
   instructions?: string;
   onAnswerChange?: (answer: number | null) => void;

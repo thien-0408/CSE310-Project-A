@@ -1,12 +1,13 @@
 import { Button } from "@/components/ui/button";
-import TextHighlighter from "@/components/ui/highlighter";
-import HighlighterDemo from "@/components/ui/highlighter";
 import Link from "next/link";
-
+import BackgroundMeteors from "@/components/ui/backgroundmeteors";
+import { SpotlightCard } from "@/components/ui/spotlightcard";
 export default function Home() {
+  
   return (
     <main>
-      <div className="flex justify-center ">
+      
+    <div className="flex justify-center ">
         <ul className="p-4">
           <li className="mb-3">
             <Button>
@@ -58,6 +59,8 @@ export default function Home() {
           </li>
         </ul>
       </div>
+   
+
     </main>
   );
 }

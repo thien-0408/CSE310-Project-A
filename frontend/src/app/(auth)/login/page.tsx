@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -38,7 +37,9 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50">
+    <>
+  
+      <div className="flex justify-center items-center min-h-screen ">
   <Form {...form}>
     <form
       onSubmit={form.handleSubmit(onSubmit)}
@@ -146,6 +147,6 @@ export default function LoginPage() {
     </form>
   </Form>
 </div>
-
+    </>
   );
 }

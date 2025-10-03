@@ -1,3 +1,4 @@
+"use client";
 import NavBar from "@/components/ui/navbar";
 import Footer from "@/components/ui/footer";
 import Image from "next/image";
@@ -5,7 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
+import { SpotlightCard } from "@/components/ui/spotlightcard";
 import ScrollTop from "@/components/ui/scroll-top";
+ import VenomBeam from "@/components/ui/venom-beam";
+
 
 export default function LandingPage() {
   return (
@@ -13,10 +17,10 @@ export default function LandingPage() {
       <div className="sticky top-0 z-50">
         <NavBar></NavBar>
       </div>
-      <header className="w">
+      <VenomBeam className="w-full relative overflow-hidden p-10 container mx-auto lg:p-40">
         {/*Hero banner section*/}
-        <section className="w-full bg-gradient-to-br from-[#dfe9fa] via-[#c8daf8] to-[#85acef] relative overflow-hidden lg:p-40 p-10">
-          <div className="container mx-auto">
+<section >
+          <div className="">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               {/* Content Section */}
               <div className="flex flex-col space-y-8">
@@ -78,7 +82,7 @@ export default function LandingPage() {
             <div className="absolute bottom-20 right-10 w-40 h-40 bg-cyan-400/10 rounded-full blur-xl"></div>
           </div>
         </section>
-      </header>
+      </VenomBeam>
       <main>
         {/*Reason section*/}
         <section className="reason-section py-20 px-10 lg:px-20 tracking-tight">
@@ -97,7 +101,7 @@ export default function LandingPage() {
             <div className="card-holder grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-8">
               {/*Card 1*/}
               <div className="hover:scale-105 transition-transform duration-300">
-                <Card className="h-full text-center flex flex-col rounded-md border-1 border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6">
+                <SpotlightCard spotlightColor="34, 211, 238" className="h-full text-center flex flex-col rounded-md border-1 border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6">
                   <div className="flex justify-center items-center mb-6">
                     <div className="icon-holder w-16 h-16 flex items-center justify-center">
                       <i className="fa-solid fa-circle-check text-[#4b91e2] text-5xl"></i>
@@ -114,12 +118,12 @@ export default function LandingPage() {
                       ensuring you are well-prepared for test day.
                     </CardDescription>
                   </div>
-                </Card>
+                </SpotlightCard>
               </div>
 
               {/*Card 2*/}
               <div className="hover:scale-105 transition-transform duration-300">
-                <Card className="h-full text-center flex flex-col rounded-md border-1 border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6">
+                <SpotlightCard spotlightColor="34, 211, 238" className="h-full text-center flex flex-col rounded-md border-1 border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6">
                   <div className="flex justify-center items-center mb-6">
                     <div className="icon-holder w-16 h-16 flex items-center justify-center">
                       <i className="fa-solid fa-flask text-[#4b91e2] text-5xl"></i>
@@ -136,12 +140,12 @@ export default function LandingPage() {
                       tailored recommendations.
                     </CardDescription>
                   </div>
-                </Card>
+                </SpotlightCard>
               </div>
 
               {/*Card 3*/}
               <div className="hover:scale-105 transition-transform duration-300">
-                <Card className="h-full text-center flex flex-col rounded-md border-1 border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6">
+                <SpotlightCard spotlightColor="34, 211, 238" className="h-full text-center flex flex-col rounded-md border-1 border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6">
                   <div className="flex justify-center items-center mb-6">
                     <div className="icon-holder w-16 h-16 flex items-center justify-center">
                       <i className="fa-solid fa-book-open text-[#4b91e2] text-5xl"></i>
@@ -158,7 +162,7 @@ export default function LandingPage() {
                       your own pace.
                     </CardDescription>
                   </div>
-                </Card>
+                </SpotlightCard>
               </div>
             </div>
           </div>
