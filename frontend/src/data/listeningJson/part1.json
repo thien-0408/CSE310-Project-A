@@ -82,7 +82,7 @@
     },
     {
       "sectionId": 2,
-      "sectionTitle": "",
+      "sectionTitle": "Question 15 - 16",
       "questionType": "multiple_choice",
       "instructions": "Choose the correct option A, B, C, D",
       "questions": [
@@ -150,7 +150,7 @@
     },
     {
       "sectionId": 3,
-      "sectionTitle": "",
+      "sectionTitle": "Question 11 - 14",
       "questionType": "short_answer",
       "instruction": "Answer the questions below.",
       "wordLimit": "NO MORE THAN THREE WORDS",
@@ -203,6 +203,73 @@
           ],
           "answer": [1, 2], 
           "audioTimestamp": "1:15-1:30"
+        }
+      ]
+    },
+    {
+      "sectionId": 5,
+      "sectionTitle": "VISAS",
+      "questionType": "note_completion",
+      "instruction": "Complete the notes by filling in the blanks.",
+      "wordLimit": "NO MORE THAN THREE WORDS AND/OR NUMBER",
+      "questions": [
+        {
+          "id": 17,
+          "text": "Normal visas last",
+          "answer": "six months",
+          "wordLimit": "TWO WORDS AND/OR NUMBER",
+          "audioTimestamp": "0:25-0:30"
+        },
+        {
+          "id": 18,
+          "text": "You need to pay ___ for the visa.",
+          "answer": "50 dollars",
+          "wordLimit": "TWO WORDS AND/OR NUMBER",
+          "audioTimestamp": "0:45-0:50"
+        },
+        {
+          "id": 19,
+          "text": "Some Eznian consulates neighbouring countries require you to provide a letter to",
+          "answer": "the embassy",
+          "wordLimit": "TWO WORDS",
+          "audioTimestamp": "1:10-1:15"
+        },
+        {
+          "id": 20,
+          "text": "You can get information of major embassies ___ of the student handbook.",
+          "answer": "on page 16",
+          "wordLimit": "THREE WORDS AND/OR NUMBER",
+          "audioTimestamp": "1:30-1:35"
+        }
+      ]
+    },
+    {
+      "sectionId": 6,
+      "sectionTitle": "SOME MISCELLANEOUS GENERAL ADVICE",
+      "questionType": "note_completion",
+      "instruction": "Complete the notes below.",
+      "wordLimit": "NO MORE THAN THREE WORDS AND/OR NUMBER",
+      "questions": [
+        {
+          "id": 21,
+          "text": "If you carry a lot of money, you need to complete a",
+          "answer": "customs form",
+          "wordLimit": "TWO WORDS",
+          "audioTimestamp": "2:00-2:05"
+        },
+        {
+          "id": 22,
+          "text": "Remember to declare all your items, especially expensive items, on a",
+          "answer": "customs declaration",
+          "wordLimit": "TWO WORDS",
+          "audioTimestamp": "2:20-2:25"
+        },
+        {
+          "id": 23,
+          "text": "You are advised to carry a health certificate. The one you need is the",
+          "answer": "yellow book",
+          "wordLimit": "TWO WORDS",
+          "audioTimestamp": "2:40-2:45"
         }
       ]
     }

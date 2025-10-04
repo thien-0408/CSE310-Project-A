@@ -2,6 +2,7 @@
 @plugin "tailwindcss-animate";
 @import "tw-animate-css";
 @tailwind utilities;
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -132,8 +133,6 @@
 *{
   cursor: url("/cursors/icons8-cursor-24.png"), auto;
 }
-
-
 
 @layer base {
   * {

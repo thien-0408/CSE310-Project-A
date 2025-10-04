@@ -1,8 +1,7 @@
 "use client";
 import React from "react";
-import { CheckCircle, XCircle, Volume2 } from "lucide-react";
-import { ListeningData, UserAnswer, ScoreResult } from "@/types/listening"; // Import from types
-
+import { CheckCircle, XCircle } from "lucide-react";
+import { ListeningData, UserAnswer, ScoreResult } from "@/types/listening";
 interface ScoringProps {
   listeningData: ListeningData;
   userAnswers: UserAnswer[];
@@ -157,6 +156,37 @@ const ListeningScoring: React.FC<ScoringProps> = ({
             points,
             questionType: "multiple_answer",
             questionText: question.question || question.text || "",
+          });
+        });
+      }
+      //Note completion
+      if (section.questionType === "note_completion" && section.questions) {
+        section.questions.forEach((question) => {
+          const userAnswer = userAnswers.find(
+            (ua) =>
+              ua.sectionId === section.sectionId && ua.questionId === question.id
+          );
+
+          let isCorrect = false;
+          let points = 0;
+
+          if (userAnswer) {
+            const normalizeAnswer = (ans: string) => ans.toLowerCase().trim();
+            const correctAnswer = normalizeAnswer(String(question.answer));            
+            const userAnswerText = normalizeAnswer(userAnswer.answer as string);
+            isCorrect = userAnswerText === correctAnswer;
+            points = isCorrect ? 1 : 0;
+          }
+
+          results.push({
+            sectionId: section.sectionId,
+            questionId: question.id,
+            isCorrect,
+            userAnswer: userAnswer?.answer || null,
+            correctAnswer: question.answer,
+            points,
+            questionType: "note_completion",
+            questionText: question.text,
           });
         });
       }

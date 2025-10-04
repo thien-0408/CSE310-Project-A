@@ -6,6 +6,7 @@ import ListeningShortAnswer from "./ListeningTypes/ShortAnswer";
 import { Volume2 } from "lucide-react";
 import { ListeningData } from "@/types/listening";
 import ListeningMultipleAnswer from "./ListeningTypes/MultipleAnswer";
+import ListeningNoteCompletion from "./ListeningTypes/NoteCompletion";
 
 interface Props {
   listeningData: ListeningData;
@@ -133,6 +134,7 @@ const ListeningRenderer: React.FC<Props> = ({
               />
             );
           }
+          // Multiple answer
           if (section.questionType === "multiple_answer" && section.questions) {
             return (
               <div key={section.sectionId}>
@@ -152,7 +154,19 @@ const ListeningRenderer: React.FC<Props> = ({
               </div>
             );
           }
-
+          if (section.questionType === "note_completion" && section.questions) {
+            return (
+              <ListeningNoteCompletion
+                key={section.sectionId}
+                sectionId={section.sectionId}
+                sectionTitle={section.sectionTitle}
+                instruction={section.instruction || listeningData.instructions}
+                wordLimit={section.wordLimit || listeningData.wordLimit || "NO MORE THAN THREE WORDS"}
+                questions={section.questions}
+                onAnswerChange={onAnswerChange}
+              />
+            );
+          }
           return null;
         })}
       </div>

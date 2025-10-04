@@ -10,14 +10,20 @@ export interface FormField {
 export interface Question {
   id: number;
   question?: string;
-  text?: string;
+  text: string;
   options?: string[];
   answer: string | number | number[]; 
   wordLimit?: string;
   audioTimestamp?: string;
   maxAnswers?: number; 
 }
-
+export interface Note {
+  id: number;
+  text: string;
+  answer: string;
+  wordLimit?: string;
+  audioTimestamp?: string;
+}
 export interface Section {
   sectionId: number;
   sectionTitle: string;
@@ -27,6 +33,7 @@ export interface Section {
   maxAnswers?: number;
   formFields?: FormField[];
   questions?: Question[];
+  notes?: Note[]; // ADD THIS
 }
 
 export interface ListeningData {
