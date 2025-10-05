@@ -272,6 +272,102 @@
           "audioTimestamp": "2:40-2:45"
         }
       ]
+    },
+    {
+      "sectionId": 7,
+      "sectionTitle": "",
+      "questionType": "diagram_labeling",
+      "instruction": "Complete the flow chart below.",
+      "wordLimit": "A-I",
+      "title": "Excavation Projects Next Week",
+      "options": [
+        { "key": "A", "text": "some soil samples" },
+        { "key": "B", "text": "some photographs" },
+        { "key": "C", "text": "objects to team leader" },
+        { "key": "D", "text": "labels on objects" },
+        { "key": "E", "text": "a record sheet" },
+        { "key": "F", "text": "a unit number" },
+        { "key": "G", "text": "further analysis of objects" },
+        { "key": "H", "text": "tools from the site hut" },
+        { "key": "I", "text": "a comprehensive plan" }
+      ],
+      "steps": [
+        {
+          "id": 24,
+          "text": "Take",
+          "answer": "H",
+          "audioTimestamp": "1:15-1:20"
+        },
+        {
+          "id": 25,
+          "text": "And your team leader for",
+          "answer": "I",
+          "audioTimestamp": "1:35-1:40"
+        },
+        {
+          "id": 26,
+          "text": "Make",
+          "answer": "A",
+          "audioTimestamp": "1:55-2:00"
+        },
+        {
+          "id": 27,
+          "text": "Put",
+          "answer": "D",
+          "audioTimestamp": "2:15-2:20"
+        },
+        {
+          "id": 28,
+          "text": "Complete",
+          "answer": "E",
+          "audioTimestamp": "2:35-2:40"
+        }
+      ]
+    },
+    {
+      "sectionId": 8,
+      "sectionTitle": "",
+      "questionType": "map_labeling",
+      "instruction": "Label the map below. Write the correct letter, A-I, next to the questions 29 - 32.",
+      "title": "The Elmsden Way",
+      "mapImageUrl": "/map/map.jpg", 
+      "options": [
+        { "key": "A", "text": "Cycle route" },
+        { "key": "B", "text": "River Cleve" },
+        { "key": "C", "text": "Railway line" },
+        { "key": "D", "text": "Main road" },
+        { "key": "E", "text": "Woods" },
+        { "key": "F", "text": "Bridge" },
+        { "key": "G", "text": "Café" },
+        { "key": "H", "text": "Car park" },
+        { "key": "I", "text": "Information center" }
+      ],
+      "questions": [
+        {
+          "id": 29,
+          "question": "Rocks",
+          "answer": "A",
+          "audioTimestamp": "1:15-1:20"
+        },
+        {
+          "id": 30,
+          "question": "Colleen Nature Reserve",
+          "answer": "D",
+          "audioTimestamp": "1:35-1:40"
+        },
+        {
+          "id": 31,
+          "question": "Picnic area",
+          "answer": "H",
+          "audioTimestamp": "1:55-2:00"
+        },
+        {
+          "id": 32,
+          "question": "Visitor center",
+          "answer": "I",
+          "audioTimestamp": "2:15-2:20"
+        }
+      ]
     }
   ]
 }

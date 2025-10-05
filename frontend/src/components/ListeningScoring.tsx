@@ -164,7 +164,8 @@ const ListeningScoring: React.FC<ScoringProps> = ({
         section.questions.forEach((question) => {
           const userAnswer = userAnswers.find(
             (ua) =>
-              ua.sectionId === section.sectionId && ua.questionId === question.id
+              ua.sectionId === section.sectionId &&
+              ua.questionId === question.id
           );
 
           let isCorrect = false;
@@ -172,7 +173,7 @@ const ListeningScoring: React.FC<ScoringProps> = ({
 
           if (userAnswer) {
             const normalizeAnswer = (ans: string) => ans.toLowerCase().trim();
-            const correctAnswer = normalizeAnswer(String(question.answer));            
+            const correctAnswer = normalizeAnswer(String(question.answer));
             const userAnswerText = normalizeAnswer(userAnswer.answer as string);
             isCorrect = userAnswerText === correctAnswer;
             points = isCorrect ? 1 : 0;
@@ -190,6 +191,67 @@ const ListeningScoring: React.FC<ScoringProps> = ({
           });
         });
       }
+      if (section.questionType === "diagram_labeling" && section.steps) {
+        section.steps.forEach((step) => {
+          const userAnswer = userAnswers.find(
+            (ua) =>
+              ua.sectionId === section.sectionId && ua.questionId === step.id
+          );
+
+          let isCorrect = false;
+          let points = 0;
+
+          if (userAnswer) {
+            const normalizeAnswer = (ans: string) => ans.toLowerCase().trim();
+            const correctAnswer = normalizeAnswer(step.answer);
+            const userAnswerText = normalizeAnswer(userAnswer.answer as string);
+
+            isCorrect = userAnswerText === correctAnswer;
+            points = isCorrect ? 1 : 0;
+          }
+
+          results.push({
+            sectionId: section.sectionId,
+            questionId: step.id,
+            isCorrect,
+            userAnswer: userAnswer?.answer || null,
+            correctAnswer: step.answer,
+            points,
+            questionType: "diagram_labeling",
+            questionText: step.text,
+          });
+        });
+      }
+      if (section.questionType === "map_labeling" && section.questions) {
+  (section.questions).forEach((question) => {
+    const userAnswer = userAnswers.find(
+      (ua) => ua.sectionId === section.sectionId && ua.questionId === question.id
+    );
+
+    let isCorrect = false;
+    let points = 0;
+
+    if (userAnswer) {
+      const normalizeAnswer = (ans: string) => ans.toUpperCase().trim();
+      const correctAnswer = normalizeAnswer(String(question.answer));
+      const userAnswerText = normalizeAnswer(userAnswer.answer as string);
+
+      isCorrect = userAnswerText === correctAnswer;
+      points = isCorrect ? 1 : 0;
+    }
+
+    results.push({
+      sectionId: section.sectionId,
+      questionId: question.id,
+      isCorrect,
+      userAnswer: userAnswer?.answer || null,
+      correctAnswer: question.answer,
+      points,
+      questionType: "map_labeling",
+      questionText: question.question,
+    });
+  });
+}
     });
 
     return results;
@@ -211,6 +273,7 @@ const ListeningScoring: React.FC<ScoringProps> = ({
       multiple_answer: "Multiple Answer",
       note_completion: "Note Completion",
       sentence_completion: "Sentence Completion",
+      diagram_labeling: "Diagram Labeling",
       matching: "Matching",
       map_labeling: "Map Labeling",
     };

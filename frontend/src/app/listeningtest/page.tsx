@@ -7,6 +7,8 @@ import ListeningScoring from "@/components/ListeningScoring";
 import { Button } from "@/components/ui/button";
 import { GrNext, GrPrevious } from "react-icons/gr";
 import Loader from "@/components/ui/Loader";
+import { ListeningData } from "@/types/listening"; // Import type
+
 
 interface UserAnswer {
   sectionId: number;
@@ -17,7 +19,8 @@ interface UserAnswer {
 export default function ListeningTest() {
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
   const [showResults, setShowResults] = useState(false);
-  
+  const typedListeningData = listeningData as ListeningData;
+
   // Handle answer change from ListeningRenderer
   const handleAnswerChange = (sectionId: number, questionId: number, answer: unknown) => {
     setUserAnswers(prev => {
@@ -72,7 +75,7 @@ export default function ListeningTest() {
         <Loader />
         <NavbarTest />
         <ListeningScoring
-          listeningData={listeningData}
+          listeningData={typedListeningData}
           userAnswers={userAnswers}
           onClose={handleCloseResults}
         />
@@ -88,7 +91,7 @@ export default function ListeningTest() {
 
       <main className="font-roboto">
         <ListeningRenderer
-          listeningData={listeningData}
+          listeningData={typedListeningData}
           onAnswerChange={handleAnswerChange}
         />
       </main>

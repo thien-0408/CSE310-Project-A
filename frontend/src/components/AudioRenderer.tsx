@@ -4,9 +4,11 @@ import FormCompletion from "./ListeningTypes/FormCompletion";
 import ListeningMultipleChoice from "./ListeningTypes/MultipleChoice";
 import ListeningShortAnswer from "./ListeningTypes/ShortAnswer";
 import { Volume2 } from "lucide-react";
-import { ListeningData } from "@/types/listening";
+import { ListeningData,  Question } from "@/types/listening";
 import ListeningMultipleAnswer from "./ListeningTypes/MultipleAnswer";
 import ListeningNoteCompletion from "./ListeningTypes/NoteCompletion";
+import ListeningDiagramLabeling from "./ListeningTypes/DiagramLabeling";
+import ListeningMapLabeling from "./ListeningTypes/Map";
 
 interface Props {
   listeningData: ListeningData;
@@ -154,6 +156,7 @@ const ListeningRenderer: React.FC<Props> = ({
               </div>
             );
           }
+          //Note Completion
           if (section.questionType === "note_completion" && section.questions) {
             return (
               <ListeningNoteCompletion
@@ -161,12 +164,46 @@ const ListeningRenderer: React.FC<Props> = ({
                 sectionId={section.sectionId}
                 sectionTitle={section.sectionTitle}
                 instruction={section.instruction || listeningData.instructions}
-                wordLimit={section.wordLimit || listeningData.wordLimit || "NO MORE THAN THREE WORDS"}
-                questions={section.questions}
+                wordLimit={
+                  section.wordLimit ||
+                  listeningData.wordLimit ||
+                  "NO MORE THAN THREE WORDS"
+                }
+                questions={section.questions as Question[]}
                 onAnswerChange={onAnswerChange}
               />
             );
           }
+          // Diagram Labeling
+          if (section.questionType === "diagram_labeling" && section.steps) {
+            return (
+              <ListeningDiagramLabeling
+                key={section.sectionId}
+                sectionId={section.sectionId}
+                title={section.title || "Complete the diagram"}
+                instruction={section.instruction || listeningData.instructions}
+                wordLimit={section.wordLimit || listeningData.wordLimit || ""}
+                options={section.options}
+                steps={section.steps}
+                onAnswerChange={onAnswerChange}
+              />
+            );
+          }
+          // Map 
+          if (section.questionType === "map_labeling" && section.questions) {
+  return (
+    <ListeningMapLabeling
+      key={section.sectionId}
+      sectionId={section.sectionId}
+      title={section.title || "Label the map"}
+      instruction={section.instruction || listeningData.instructions}
+      mapImageUrl={section.mapImageUrl}
+      options={section.options || []}
+      questions={section.questions as []}
+      onAnswerChange={onAnswerChange}
+    />
+  );
+}
           return null;
         })}
       </div>

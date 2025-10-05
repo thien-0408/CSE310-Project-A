@@ -6,6 +6,18 @@ export interface FormField {
   isInput: boolean;
   audioTimestamp?: string;
 }
+export interface DiagramStep {
+  id: number;
+  text: string;
+  answer: string;
+  wordLimit?: string;
+  audioTimestamp?: string;
+}
+
+export interface DiagramOption {
+  key: string;
+  text: string;
+}
 
 export interface Question {
   id: number;
@@ -15,6 +27,7 @@ export interface Question {
   answer: string | number | number[]; 
   wordLimit?: string;
   audioTimestamp?: string;
+  
   maxAnswers?: number; 
 }
 export interface Note {
@@ -30,10 +43,14 @@ export interface Section {
   questionType: string;
   instruction?: string;
   wordLimit?: string;
+  title?: string;
+  mapImageUrl?: string; // ADD THIS
   maxAnswers?: number;
   formFields?: FormField[];
-  questions?: Question[];
-  notes?: Note[]; // ADD THIS
+  questions?: Question[]  // Support both types
+  notes?: Note[];
+  steps?: DiagramStep[];
+  options?: DiagramOption[];
 }
 
 export interface ListeningData {
