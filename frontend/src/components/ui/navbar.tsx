@@ -27,7 +27,7 @@ export default function NavBar() {
                 className="mr-2"
               />
               <h1 className="text-2xl font-bold italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8] bg-clip-text text-transparent">
-                <Link href={'/homepage'}>IELTSSprint</Link>
+                <Link href={'/homepage'}>IELTS Sprint</Link>
               </h1>
             </div>
 

@@ -27,7 +27,6 @@ export interface Question {
   answer: string | number | number[]; 
   wordLimit?: string;
   audioTimestamp?: string;
-  
   maxAnswers?: number; 
 }
 export interface Note {
@@ -44,10 +43,10 @@ export interface Section {
   instruction?: string;
   wordLimit?: string;
   title?: string;
-  mapImageUrl?: string; // ADD THIS
+  mapImageUrl?: string; 
   maxAnswers?: number;
   formFields?: FormField[];
-  questions?: Question[]  // Support both types
+  questions?: Question[] 
   notes?: Note[];
   steps?: DiagramStep[];
   options?: DiagramOption[];

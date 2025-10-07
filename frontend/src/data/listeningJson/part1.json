@@ -368,6 +368,62 @@
           "audioTimestamp": "2:15-2:20"
         }
       ]
+    },
+    {
+      "sectionId": 9,
+      "sectionTitle": "What description applies to each of the following structures?",
+      "questionType": "matching_information",
+      "instruction": "Choose SIX answers from the box and write the correct letter, A-I, next to questions 33-38.",
+      "title": "Descriptions",
+      "options": [
+        { "key": "A", "text": "easy to transport" },
+        { "key": "B", "text": "not much room inside" },
+        { "key": "C", "text": "made from recycled materials" },
+        { "key": "D", "text": "designed to promote technology" },
+        { "key": "E", "text": "never actually built" },
+        { "key": "F", "text": "easy to keep clean" },
+        { "key": "G", "text": " very strong construction" },
+        { "key": "H", "text": "futuristic design" },
+        { "key": "I", "text": "light and airy" }
+      ],
+      "questions": [
+        {
+          "id": 33,
+          "question": "the 'house of the future' (1957)",
+          "answer": "A",
+          "audioTimestamp": "1:15-1:20"
+        },
+        {
+          "id": 34,
+          "question": "the 'wonderhouse' (1964)",
+          "answer": "D",
+          "audioTimestamp": "1:35-1:40"
+        },
+        {
+          "id": 35,
+          "question": "spaceship houses (1968-78)",
+          "answer": "H",
+          "audioTimestamp": "1:55-2:00"
+        },
+        {
+          "id": 36,
+          "question": "foam houses (1979-83)",
+          "answer": "I",
+          "audioTimestamp": "2:15-2:20"
+        },
+        {
+          "id": 37,
+          "question": "plastic exhibition hall",
+          "answer": "F",
+          "audioTimestamp": "2:25-2:30"
+        },
+        {
+          "id": 38,
+          "question": "New Zealand house",
+          "answer": "C",
+          "audioTimestamp": "2:35-2:40"
+        }
+      ]
     }
   ]
 }

@@ -2,6 +2,7 @@
 import React from "react";
 import { CheckCircle, XCircle } from "lucide-react";
 import { ListeningData, UserAnswer, ScoreResult } from "@/types/listening";
+import { match } from "assert";
 interface ScoringProps {
   listeningData: ListeningData;
   userAnswers: UserAnswer[];
@@ -223,35 +224,65 @@ const ListeningScoring: React.FC<ScoringProps> = ({
         });
       }
       if (section.questionType === "map_labeling" && section.questions) {
-  (section.questions).forEach((question) => {
-    const userAnswer = userAnswers.find(
-      (ua) => ua.sectionId === section.sectionId && ua.questionId === question.id
-    );
+        section.questions.forEach((question) => {
+          const userAnswer = userAnswers.find(
+            (ua) =>
+              ua.sectionId === section.sectionId &&
+              ua.questionId === question.id
+          );
+          let isCorrect = false;
+          let points = 0;
+          if (userAnswer) {
+            const normalizeAnswer = (ans: string) => ans.toUpperCase().trim();
+            const correctAnswer = normalizeAnswer(String(question.answer));
+            const userAnswerText = normalizeAnswer(userAnswer.answer as string);
 
-    let isCorrect = false;
-    let points = 0;
+            isCorrect = userAnswerText === correctAnswer;
+            points = isCorrect ? 1 : 0;
+          }
 
-    if (userAnswer) {
-      const normalizeAnswer = (ans: string) => ans.toUpperCase().trim();
-      const correctAnswer = normalizeAnswer(String(question.answer));
-      const userAnswerText = normalizeAnswer(userAnswer.answer as string);
+          results.push({
+            sectionId: section.sectionId,
+            questionId: question.id,
+            isCorrect,
+            userAnswer: userAnswer?.answer || null,
+            correctAnswer: question.answer,
+            points,
+            questionType: "map_labeling",
+            questionText: question.question,
+          });
+        });
+      }
+      if (section.questionType === "matching_information" && section.questions) {
+        section.questions.forEach((question) => {
+          const userAnswer = userAnswers.find(
+            (ua) =>
+              ua.sectionId === section.sectionId &&
+              ua.questionId === question.id
+          );
+          let isCorrect = false;
+          let points = 0;
+          if (userAnswer) {
+            const normalizeAnswer = (ans: string) => ans.toUpperCase().trim();
+            const correctAnswer = normalizeAnswer(String(question.answer));
+            const userAnswerText = normalizeAnswer(userAnswer.answer as string);
 
-      isCorrect = userAnswerText === correctAnswer;
-      points = isCorrect ? 1 : 0;
-    }
+            isCorrect = userAnswerText === correctAnswer;
+            points = isCorrect ? 1 : 0;
+          }
 
-    results.push({
-      sectionId: section.sectionId,
-      questionId: question.id,
-      isCorrect,
-      userAnswer: userAnswer?.answer || null,
-      correctAnswer: question.answer,
-      points,
-      questionType: "map_labeling",
-      questionText: question.question,
-    });
-  });
-}
+          results.push({
+            sectionId: section.sectionId,
+            questionId: question.id,
+            isCorrect,
+            userAnswer: userAnswer?.answer || null,
+            correctAnswer: question.answer,
+            points,
+            questionType: "matching_information",
+            questionText: question.question,
+          });
+        });
+      }
     });
 
     return results;
@@ -274,7 +305,8 @@ const ListeningScoring: React.FC<ScoringProps> = ({
       note_completion: "Note Completion",
       sentence_completion: "Sentence Completion",
       diagram_labeling: "Diagram Labeling",
-      matching: "Matching",
+      matching_: "Matching",
+      matching_information: "Matching Information",
       map_labeling: "Map Labeling",
     };
     return typeMap[type] || type;

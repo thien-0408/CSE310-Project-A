@@ -7,7 +7,8 @@ import ListeningScoring from "@/components/ListeningScoring";
 import { Button } from "@/components/ui/button";
 import { GrNext, GrPrevious } from "react-icons/gr";
 import Loader from "@/components/ui/Loader";
-import { ListeningData } from "@/types/listening"; // Import type
+import { ListeningData } from "@/types/listening"; 
+import ScrollTop from "@/components/ui/scroll-top";
 
 
 interface UserAnswer {
@@ -85,9 +86,9 @@ export default function ListeningTest() {
 
   return (
     <>
-      <header>
+      {/* <header>
         <NavbarTest />
-      </header>
+      </header> */}
 
       <main className="font-roboto">
         <ListeningRenderer
@@ -124,6 +125,7 @@ export default function ListeningTest() {
           </Button>
         </div>
       </footer>
+      <ScrollTop></ScrollTop>
     </>
   );
 }
