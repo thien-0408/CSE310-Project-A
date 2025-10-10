@@ -3,16 +3,13 @@ import React from "react";
 import FormCompletion from "./ListeningTypes/FormCompletion";
 import ListeningMultipleChoice from "./ListeningTypes/MultipleChoice";
 import ListeningShortAnswer from "./ListeningTypes/ShortAnswer";
-import { Volume2 } from "lucide-react";
 import { ListeningData, Question } from "@/types/listening";
 import ListeningMultipleAnswer from "./ListeningTypes/MultipleAnswer";
 import ListeningNoteCompletion from "./ListeningTypes/NoteCompletion";
 import ListeningDiagramLabeling from "./ListeningTypes/DiagramLabeling";
 import ListeningMapLabeling from "./ListeningTypes/Map";
 import MatchingInformation from "./ListeningTypes/MatchingInformation";
-import { IoCaretForwardCircleOutline } from "react-icons/io5";
-import { RiForward10Fill } from "react-icons/ri";
-import { MdSettingsBackupRestore } from "react-icons/md";
+
 import CustomAudioPlayer from "./ui/CustomAudioPlayer";
 
 

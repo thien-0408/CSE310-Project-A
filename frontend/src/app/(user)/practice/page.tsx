@@ -29,7 +29,6 @@ import {
   Bar,
 } from "recharts";
 import TestHistorySection from "@/components/ui/testhistory";
-import Footer from "@/components/ui/footer";
 import FooterUser from "@/components/ui/footeruser";
 import ScrollTop from "@/components/ui/scroll-top";
 
@@ -93,7 +92,7 @@ export default function UserDashBoard() {
       <div className="sticky top-0 z-50">
         <NavBarUser></NavBarUser>
       </div>
-      <main className="p-10 lg:px-30">
+      <main className="p-10 lg:px-30 container mx-auto">
         {/*First section */}
         <section>
           {/**Big div for text & button */}

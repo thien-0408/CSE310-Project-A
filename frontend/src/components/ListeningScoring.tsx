@@ -2,7 +2,6 @@
 import React from "react";
 import { CheckCircle, XCircle } from "lucide-react";
 import { ListeningData, UserAnswer, ScoreResult } from "@/types/listening";
-import { match } from "assert";
 interface ScoringProps {
   listeningData: ListeningData;
   userAnswers: UserAnswer[];
@@ -279,7 +278,7 @@ const ListeningScoring: React.FC<ScoringProps> = ({
             correctAnswer: question.answer,
             points,
             questionType: "matching_information",
-            questionText: question.question,
+            questionText: question.text,
           });
         });
       }

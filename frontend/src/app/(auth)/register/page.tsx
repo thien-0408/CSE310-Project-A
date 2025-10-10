@@ -38,7 +38,12 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8]">
+    <div className="flex justify-center items-center min-h-screen " style={{
+     backgroundImage: `
+       radial-gradient(circle at center, #93c5fd, transparent)
+     `,
+   }} 
+>
   <Form {...form}>
     <form
       onSubmit={form.handleSubmit(onSubmit)}
@@ -164,6 +169,7 @@ export default function RegisterPage() {
       />
     </form>
   </Form>
+  
 </div>
 
   );

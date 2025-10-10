@@ -11,6 +11,7 @@
   "sections": [
     {
       "sectionId": 1,
+      "sectionRange": "Question 1 - 5",
       "sectionTitle": "PERSONAL DETAILS FOR HOMESTAY APPLICATION",
       "questionType": "form_completion",
       "formFields": [

@@ -1,20 +1,37 @@
-'use client';
+"use client";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
+import {Button} from "@/components/ui/button"
+import { CgProfile } from "react-icons/cg";
+import { MdOutlineAttachMoney } from "react-icons/md";
+import { IoLogOut } from "react-icons/io5";
+import { HiUserGroup } from "react-icons/hi2";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useRouter } from 'next/navigation';
 
 export default function NavBarUser() {
-  return (
-    <header className="w-full bg-white shadow-sm border-b">
-      <div className=" mx-auto px-4 py-2">
+  const router = useRouter();
+  const handleLogout = () =>{
+    router.push("/homepage");
+  }
+    return (
+    <header className="w-full  bg-white shadow-sm border-b">
+      <div className=" mx-auto px-4 py-2 container">
         <div className="flex items-center justify-between">
-          
           {/* Left Side: Logo + Navigation */}
           <div className="flex items-center space-x-8">
             {/* Logo and Brand */}
@@ -28,7 +45,7 @@ export default function NavBarUser() {
                 className="mr-2"
               />
               <h1 className="text-2xl font-bold italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8] bg-clip-text text-transparent">
-                <Link href={'/'}>IELTSSprint</Link>
+                <Link href={"/"}>IELTSSprint</Link>
               </h1>
             </div>
 
@@ -37,8 +54,8 @@ export default function NavBarUser() {
               <NavigationMenuList className="flex items-center space-x-1 text-sm">
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
-                    <Link 
-                      href="/dashboard" 
+                    <Link
+                      href="/dashboard"
                       className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
                     >
                       Home
@@ -48,9 +65,9 @@ export default function NavBarUser() {
 
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
-                    <Link 
-                      href="/practice" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter" 
+                    <Link
+                      href="/practice"
+                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
                     >
                       Practice
                     </Link>
@@ -59,8 +76,8 @@ export default function NavBarUser() {
 
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
-                    <Link 
-                      href="/tests" 
+                    <Link
+                      href="/tests"
                       className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
                     >
                       Tests
@@ -70,8 +87,8 @@ export default function NavBarUser() {
 
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
-                    <Link 
-                      href="/profile" 
+                    <Link
+                      href="/profile"
                       className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
                     >
                       Profile
@@ -81,8 +98,8 @@ export default function NavBarUser() {
 
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
-                    <Link 
-                      href="/settings" 
+                    <Link
+                      href="/settings"
                       className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
                     >
                       Settings
@@ -96,10 +113,36 @@ export default function NavBarUser() {
           {/* Right Side: avatar */}
           <div className="flex items-center space-x-4">
             {/* Avatar */}
-            <Avatar className="cursor-pointer hover:ring-2 hover:ring-blue-500 hover:ring-offset-1 transition-all">
-              <AvatarImage src="/demo/avatar.jpg" />
-              <AvatarFallback className="bg-blue-100 text-blue-700">CN</AvatarFallback>
-            </Avatar>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Avatar className="cursor-pointer hover:ring-2 hover:ring-blue-500 hover:ring-offset-1 transition-all">
+                  <AvatarImage src="/demo/avatar.jpg" />
+                  <AvatarFallback className="bg-blue-100 text-blue-700">
+                    CN
+                  </AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <CgProfile />
+                  Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <MdOutlineAttachMoney />
+                  Billing
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <HiUserGroup />
+                  Team
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout} >
+                    <IoLogOut/>
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>

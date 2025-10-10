@@ -57,7 +57,7 @@ const FormCompletion: React.FC<Props> = ({
       {/* Header */}
       <div className="mb-4">
         <h3 className="text-lg font-bold text-gray-800 mb-2">{title}</h3>
-        <p className="text-sm font-medium">
+        <p className="text-lg font-medium">
           Complete the following form with{" "}
           <span className="text-red-600 font-bold">{wordLimit}</span> for each answer.
         </p>

@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { CheckCircle, XCircle, AlertCircle } from "lucide-react";
+import { CheckCircle, XCircle } from "lucide-react";
 
 interface Question {
   id: number;
@@ -425,6 +425,8 @@ const QuestionScoring: React.FC<ScoringProps> = ({
           </button>
         </div>
       )}
+      
+
     </div>
   );
 };

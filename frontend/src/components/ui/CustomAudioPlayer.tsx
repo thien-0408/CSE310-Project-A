@@ -1,8 +1,11 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
-import { TfiControlBackward, TfiControlForward } from "react-icons/tfi";
-import { IoCaretForwardCircleOutline, IoPauseCircleOutline } from "react-icons/io5";
+import {
+  IoCaretForwardCircleOutline,
+  IoPauseCircleOutline,
+} from "react-icons/io5";
 import { HiVolumeUp } from "react-icons/hi";
+import { FaArrowRotateLeft, FaArrowRotateRight } from "react-icons/fa6";
 
 export default function CustomAudioPlayer({ src }: { src: string }) {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -15,7 +18,8 @@ export default function CustomAudioPlayer({ src }: { src: string }) {
     const audio = audioRef.current;
     if (!audio) return;
 
-    const updateProgress = () => setProgress((audio.currentTime / audio.duration) * 100 || 0);
+    const updateProgress = () =>
+      setProgress((audio.currentTime / audio.duration) * 100 || 0);
     const setAudioDuration = () => setDuration(audio.duration || 0);
 
     audio.addEventListener("timeupdate", updateProgress);
@@ -55,7 +59,10 @@ export default function CustomAudioPlayer({ src }: { src: string }) {
   const skip = (seconds: number) => {
     const audio = audioRef.current;
     if (!audio) return;
-    audio.currentTime = Math.max(0, Math.min(audio.duration, audio.currentTime + seconds));
+    audio.currentTime = Math.max(
+      0,
+      Math.min(audio.duration, audio.currentTime + seconds)
+    );
   };
 
   const formatTime = (time: number) => {
@@ -68,20 +75,35 @@ export default function CustomAudioPlayer({ src }: { src: string }) {
   return (
     <div className="flex items-center gap-4 bg-white py-2 w-full max-w-4xl">
       <div className="flex items-center gap-4">
-        <button onClick={() => skip(-10)} className="text-2xl text-gray-600 hover:scale-110 transition">
-          <TfiControlBackward />
+        <button
+          onClick={() => skip(-10)}
+          className="text-2xl text-gray-500 hover:scale-110 transition"
+        >
+          <FaArrowRotateLeft />
         </button>
-        <button onClick={togglePlay} className="text-4xl text-blue-500 hover:scale-110 transition">
-          {isPlaying ? <IoPauseCircleOutline /> : <IoCaretForwardCircleOutline />}
+        <button
+          onClick={togglePlay}
+          className="text-4xl text-blue-500 hover:scale-110 transition"
+        >
+          {isPlaying ? (
+            <IoPauseCircleOutline />
+          ) : (
+            <IoCaretForwardCircleOutline />
+          )}
         </button>
-        <button onClick={() => skip(10)} className="text-2xl text-gray-600 hover:scale-110 transition">
-          <TfiControlForward />
+        <button
+          onClick={() => skip(10)}
+          className="text-2xl text-gray-500 hover:scale-110 transition"
+        >
+          <FaArrowRotateRight />
         </button>
       </div>
 
       {/* Thanh tiến trình */}
       <div className="flex items-center gap-2 flex-1">
-        <span className="text-sm text-gray-500 w-12 text-right">{formatTime(audioRef.current?.currentTime || 0)}</span>
+        <span className="text-sm text-gray-500 w-12 text-right">
+          {formatTime(audioRef.current?.currentTime || 0)}
+        </span>
         <input
           type="range"
           min="0"
@@ -90,7 +112,9 @@ export default function CustomAudioPlayer({ src }: { src: string }) {
           onChange={handleSeek}
           className="w-full accent-blue-500"
         />
-        <span className="text-sm text-gray-500 w-12">{formatTime(duration)}</span>
+        <span className="text-sm text-gray-500 w-12">
+          {formatTime(duration)}
+        </span>
       </div>
 
       {/* Volume */}

@@ -86,10 +86,12 @@ const userInfo = {
 export default function UserDashBoard() {
   return (
     <>
+
+   
       <div className="sticky top-0 z-50">
         <NavBarUser></NavBarUser>
       </div>
-      <main className="p-10 lg:px-30 pt-1">
+      <main className="p-10 lg:px-30 pt-1 container mx-auto">
         {/* Section 1: Hero */}
         <section className="p-4 tracking-tighter">
           <div className="grid grid-cols-1 md:grid-cols-2 py-5">

@@ -22,6 +22,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import Link from "next/link";
 
 type TestData = {
   id: number;
@@ -227,6 +228,7 @@ export default function TestSamplePage() {
                         </div>
                       </div>
                       <CardContent className="p-3">
+                        
                         <Badge
                           variant="secondary"
                           className="mb-2"
@@ -239,12 +241,15 @@ export default function TestSamplePage() {
                             <div key={idx}>{s}</div>
                           ))}
                         </div>
-                        <Button
-                          className="mt-3 w-full bg-white text-blue-400 border-2 border-blue-400 hover:bg-blue-400 hover:text-white"
-                          size="sm"
-                        >
-                          {test.button}
-                        </Button>
+
+                         <Link href={`/tests/${test.id}`} >
+          <Button
+            className="mt-3 w-full bg-white text-blue-400 border-2 border-blue-400 hover:bg-blue-400 hover:text-white"
+            size="sm"
+          >
+            {test.button}
+          </Button>
+        </Link>
                       </CardContent>
                     </Card>
                   ))}

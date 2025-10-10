@@ -54,7 +54,13 @@ export default function LoginPage() {
 
   return (
     <>
-      <div className="flex justify-center items-center min-h-screen ">
+      <div className="flex justify-center items-center min-h-screen  "  style={{
+     backgroundImage: `
+       radial-gradient(circle at center, #93c5fd, transparent)
+     `,
+   }} 
+
+>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}

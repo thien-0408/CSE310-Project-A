@@ -1,16 +1,18 @@
 "use client";
-import NavbarTest from "@/components/ui/navbarfortest";
-import ListeningRenderer from "@/components/AudioRenderer";
+
 import React, { useState } from "react";
-import listeningData from "@/data/listeningJson/part1.json";
-import ListeningScoring from "@/components/ListeningScoring";
 import { Button } from "@/components/ui/button";
 import { GrNext, GrPrevious } from "react-icons/gr";
 import Loader from "@/components/ui/Loader";
-import { ListeningData } from "@/types/listening"; 
+import NavbarTest from "@/components/ui/navbarfortest";
+import ListeningRenderer from "@/components/AudioRenderer";
+import ListeningScoring from "@/components/ListeningScoring";
+import { ListeningData } from "@/types/listening";
 import ScrollTop from "@/components/ui/scroll-top";
-import ScrollToTopButton from "@/components/ui/testscroller";
 
+interface ListeningTestProps {
+  testData: ListeningData;
+}
 
 interface UserAnswer {
   sectionId: number;
@@ -18,12 +20,12 @@ interface UserAnswer {
   answer: unknown;
 }
 
-export default function ListeningTest() {
+// 👈 Step 1 & 3: Rename the function and accept props
+export default function ListeningTestComponent({ testData }: ListeningTestProps) {
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
   const [showResults, setShowResults] = useState(false);
-  const typedListeningData = listeningData as ListeningData;
+  // const typedListeningData = listeningData as ListeningData; // 👈 No longer needed
 
-  // Handle answer change from ListeningRenderer
   const handleAnswerChange = (sectionId: number, questionId: number, answer: unknown) => {
     setUserAnswers(prev => {
       const existingIndex = prev.findIndex(
@@ -31,33 +33,29 @@ export default function ListeningTest() {
       );
       
       if (existingIndex !== -1) {
-        // Update existing answer
         const updated = [...prev];
         updated[existingIndex] = { sectionId, questionId, answer };
         return updated;
       } else {
-        // Add new answer
         return [...prev, { sectionId, questionId, answer }];
       }
     });
   };
   
   const handleSubmit = () => {
-    // Optional: Validate that all questions are answered
     console.log('Submitting answers:', userAnswers);
     setShowResults(true);
   };
 
   const handleCloseResults = () => {
     setShowResults(false);
-    // Optional: Scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Calculate total questions for progress tracking
   const getTotalQuestions = () => {
     let total = 0;
-    listeningData.sections.forEach(section => {
+    // 👈 Step 4: Use the 'testData' prop instead of the imported variable
+    testData.sections.forEach(section => {
       if (section.formFields) {
         total += section.formFields.filter(f => f.isInput).length;
       }
@@ -78,7 +76,8 @@ export default function ListeningTest() {
         <Loader />
         <NavbarTest />
         <ListeningScoring
-          listeningData={typedListeningData}
+          // 👈 Step 4: Use the 'testData' prop
+          listeningData={testData} 
           userAnswers={userAnswers}
           onClose={handleCloseResults}
         />
@@ -88,13 +87,10 @@ export default function ListeningTest() {
 
   return (
     <>
-      {/* <header>
-        <NavbarTest />
-      </header> */}
-
       <main className="font-roboto">
         <ListeningRenderer
-          listeningData={typedListeningData}
+          // 👈 Step 4: Use the 'testData' prop
+          listeningData={testData}
           onAnswerChange={handleAnswerChange}
         />
       </main>
@@ -105,7 +101,6 @@ export default function ListeningTest() {
             Progress: {answeredQuestions} / {totalQuestions} answered
           </h3>
         </div>
-        
         <div>
           <Button className="rounded-4xl bg-gray-200 text-gray-800 hover:bg-gray-300">
             <GrPrevious />
@@ -116,7 +111,6 @@ export default function ListeningTest() {
             <GrNext />
           </Button>
         </div>
-        
         <div>
           <Button
             className="rounded-3xl bg-[#407db9] hover:bg-[#336699] transition-all duration-300"
@@ -127,7 +121,7 @@ export default function ListeningTest() {
           </Button>
         </div>
       </footer>
-      <ScrollToTopButton></ScrollToTopButton>
+      <ScrollTop />
     </>
   );
 }
