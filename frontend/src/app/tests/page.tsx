@@ -122,12 +122,21 @@ export default function TestSamplePage() {
   return (
     <>
       <NavBarUser></NavBarUser>
-      <section className="tracking-tight">
-        <div className="bg-white min-h-screen">
+      <section
+        className="tracking-tight "
+        style={{
+          backgroundImage: `
+        radial-gradient(circle at center, #2489bf 0%, transparent 70%)
+      `,
+          opacity: 0.9,
+          mixBlendMode: "multiply",
+        }}
+      >
+        <div className="">
           <div className="container mx-auto px-4 py-10">
             <div className="flex gap-8">
               {/* Sidebar Filter */}
-              <aside className="w-72 bg-white rounded-lg border p-6 flex flex-col space-y-6">
+              <aside className="w-72 rounded-lg border p-6 flex flex-col space-y-6">
                 <div className="">
                   <h3 className="font-semibold mb-4">Skill</h3>
                   <div className="space-y-2 ml-2">
@@ -184,7 +193,7 @@ export default function TestSamplePage() {
                 <div className="flex items-center justify-between mb-6">
                   <div>
                     <h1 className="text-2xl font-bold">
-                      All Test <span className="text-blue-400">Samples</span>
+                      All Test <span className="text-blue-600">Samples</span>
                     </h1>
                   </div>
                   <div className="flex gap-2">
@@ -228,7 +237,6 @@ export default function TestSamplePage() {
                         </div>
                       </div>
                       <CardContent className="p-3">
-                        
                         <Badge
                           variant="secondary"
                           className="mb-2"
@@ -242,14 +250,14 @@ export default function TestSamplePage() {
                           ))}
                         </div>
 
-                         <Link href={`/tests/${test.id}`} >
-          <Button
-            className="mt-3 w-full bg-white text-blue-400 border-2 border-blue-400 hover:bg-blue-400 hover:text-white"
-            size="sm"
-          >
-            {test.button}
-          </Button>
-        </Link>
+                        <Link href={`/tests/${test.id}`}>
+                          <Button
+                            className="mt-3 w-full bg-white text-blue-400 border-2 border-blue-400 hover:bg-blue-400 hover:text-white"
+                            size="sm"
+                          >
+                            {test.button}
+                          </Button>
+                        </Link>
                       </CardContent>
                     </Card>
                   ))}
@@ -262,7 +270,6 @@ export default function TestSamplePage() {
       <footer>
         <Pagination className="p-5 border-2 border-gray-300">
           <PaginationContent>
-            
             <PaginationItem>
               <PaginationLink
                 href="/tests"
