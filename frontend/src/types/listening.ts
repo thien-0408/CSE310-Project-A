@@ -42,9 +42,9 @@ export interface Section {
   questionType: string;
   instruction?: string;
   wordLimit?: string;
+  maxAnswers: number;
   title?: string;
   mapImageUrl?: string; 
-  maxAnswers?: number;
   formFields?: FormField[];
   questions?: Question[] 
   notes?: Note[];

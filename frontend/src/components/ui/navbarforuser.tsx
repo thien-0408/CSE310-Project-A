@@ -28,6 +28,9 @@ export default function NavBarUser() {
   const handleLogout = () =>{
     router.push("/homepage");
   }
+  const handleProfile = () =>{
+    router.push("/profile")
+  }
     return (
     <header className="w-full  bg-white shadow-sm border-b">
       <div className=" mx-auto px-4 py-2 container">
@@ -125,7 +128,7 @@ export default function NavBarUser() {
               <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleProfile}>
                   <CgProfile />
                   Profile
                 </DropdownMenuItem>

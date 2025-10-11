@@ -16,6 +16,7 @@ import {
 import FooterUser from "@/components/ui/footeruser";
 import RecentAcivity from "@/components/ui/recentact";
 import ScrollTop from "@/components/ui/scroll-top";
+import Link from "next/link";
 
 const stats = [
   {
@@ -106,13 +107,16 @@ export default function UserDashBoard() {
                 <div className="mb-8">
                   <h1 className="text-3xl font-extrabold mb-4">
                     Good Morning,{" "}
-                    <span className="text-blue-500">{userInfo.name}</span>
+                    <span className="bg-gradient-to-b from-[#00B4DB] to-[#0083B0] bg-clip-text text-transparent">{userInfo.name}</span>
                   </h1>
                   <p>Ready to master your IELTS with confidence?</p>
                 </div>
-                <Button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">
-                  Continue Practice
-                </Button>
+                <Button
+                    size="lg"
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    <Link href={"/tests"}>Continue Practicing</Link>
+                  </Button>
               </div>
               {/* Right */}
               <div className="relative overflow-hidden w-full h-full shadow-sm rounded-r-2xl ">
