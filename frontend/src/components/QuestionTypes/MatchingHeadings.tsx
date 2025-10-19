@@ -32,9 +32,8 @@ const MatchingHeadings: React.FC<Props> = ({ id, question, paragraphs, headings,
 
   return (
     <div className="p-4 mb-4">
-      <h2 className="font-bold text-lg mb-2">
-        {id}. {question}
-      </h2>
+            <p className="font-semibold mb-2 flex items-center gap-2"><span className="flex items-center justify-center w-7 h-7 bg-blue-500 text-white rounded-full text-lg font-bold flex-shrink-0">{id}</span>{question}</p>
+
 
       <p className="mb-3 font-medium">Choose the correct heading for each paragraph:</p>
 

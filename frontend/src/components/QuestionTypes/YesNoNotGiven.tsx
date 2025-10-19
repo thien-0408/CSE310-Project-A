@@ -59,7 +59,7 @@ const YesNoNotGiven: React.FC<Props> = ({
       </div>
 
       <div className="flex items-center gap-2">
-        <p className="font-semibold mb-2">{id}.</p>
+      <p className="font-semibold mb-2 flex items-center gap-2"><span className="flex items-center justify-center w-7 h-7 bg-blue-500 text-white rounded-full text-lg font-bold flex-shrink-0">{id}</span></p>
         <select
           value={selected !== null ? selected : ""}
           onChange={(e) => handleChange(e.target.value)}

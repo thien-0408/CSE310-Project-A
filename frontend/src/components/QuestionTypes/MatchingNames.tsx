@@ -26,7 +26,7 @@ const MatchingNames: React.FC<MatchingNamesProps> = ({
 
   return (
     <div className="p-4">
-      <p className="font-semibold mb-3">{id}. {question}</p>
+      <p className="font-semibold mb-2 flex items-center gap-2"><span className="flex items-center justify-center w-7 h-7 bg-blue-500 text-white rounded-full text-lg font-bold flex-shrink-0">{id}</span>{question}</p>
       <ul className="space-y-3">
         {statements.map((s) => (
           <li key={s.statementId} className="flex items-center gap-4">

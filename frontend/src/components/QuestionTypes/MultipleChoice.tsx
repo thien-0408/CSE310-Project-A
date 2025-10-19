@@ -37,7 +37,7 @@ const MultipleChoice: React.FC<Props> = ({ id, question, options, onAnswerChange
 
   return (
     <div className="p-4 mb-2">
-      <p className="font-semibold mb-2">{id}. {question}</p>
+      <p className="font-semibold mb-2 flex items-center gap-2"><span className="flex items-center justify-center w-7 h-7 bg-blue-500 text-white rounded-full text-lg font-bold flex-shrink-0">{id}</span>{question}</p>
       <div className="space-y-2">
         {options.map((opt, i) => (
           <label key={i} className="flex items-center space-x-2 cursor-pointer">

@@ -1,12 +1,10 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import BackgroundMeteors from "@/components/ui/backgroundmeteors";
-import { SpotlightCard } from "@/components/ui/spotlightcard";
+import { useState } from "react";
 export default function Home() {
-  
   return (
     <main>
-      
     <div className="flex justify-center ">
         <ul className="p-4">
           <li className="mb-3">
@@ -63,6 +61,8 @@ export default function Home() {
               </Link>
             </Button>
           </li>
+          
+ 
         </ul>
       </div>
     </main>

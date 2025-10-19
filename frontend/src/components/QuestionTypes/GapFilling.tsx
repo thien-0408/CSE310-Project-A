@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React, { useEffect, useState } from "react";
 
 interface Blank {
@@ -53,11 +53,17 @@ const GapFilling: React.FC<Props> = ({
 
   return (
     <div className="p-4 mb-4">
-      <h2 className="font-bold mb-2">
-        {id}. {question}
-      </h2>
+      <p className="font-semibold mb-2 flex items-center gap-2">
+        <span className="flex items-center justify-center w-7 h-7 bg-blue-500 text-white rounded-full text-lg font-bold flex-shrink-0">
+          {id}
+        </span>
+        {question}
+      </p>
+
       {wordLimit && (
-        <p className="font-bold mb-3">Write <span className="font-bold text-[#407db9]">{wordLimit}</span>.</p>
+        <p className="font-bold mb-3">
+          Write <span className="font-bold text-[#407db9]">{wordLimit}</span>.
+        </p>
       )}
 
       {/* Render với input */}

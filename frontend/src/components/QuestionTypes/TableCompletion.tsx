@@ -31,7 +31,7 @@ const TableCompletion: React.FC<Props> = ({ id, question, onAnswerChange }) => {
 
   return (
     <div className="p-4 mb-2">
-      <p className="font-semibold mb-2">{id}. {question}</p>
+      <p className="font-semibold mb-2 flex items-center gap-2"><span className="flex items-center justify-center w-7 h-7 bg-blue-500 text-white rounded-full text-lg font-bold flex-shrink-0">{id}</span>{question}</p>
       <input
         type="text"
         className="border rounded px-2 py-1 w-full"
