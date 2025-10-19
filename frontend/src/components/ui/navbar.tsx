@@ -10,8 +10,8 @@ import Image from "next/image";
 
 export default function NavBar() {
   return (
-    <header className="w-full bg-white shadow-sm border-b">
-      <div className=" mx-auto px-4 py-3">
+    <header className="  w-full bg-white shadow-sm border-b">
+      <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           
           {/* Left Side: Logo + Navigation */}
@@ -38,7 +38,7 @@ export default function NavBar() {
                   <NavigationMenuLink asChild>
                     <Link 
                       href="/homepage" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
+                      className="text-gray-700 font-medium px-3 py-2 tracking-tighter rounded-full hover:p-4 hover:text-white hover:bg-gradient-to-r from-[#00c6ff] to-[#0072ff] transition-all duration-300"
                     >
                       Home
                     </Link>
@@ -50,7 +50,7 @@ export default function NavBar() {
                   <NavigationMenuLink asChild>
                     <Link 
                       href="/landingpage" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
+                      className="text-gray-700 font-medium px-3 py-2 tracking-tighter rounded-full hover:p-4 hover:text-white hover:bg-gradient-to-r from-[#00c6ff] to-[#0072ff] transition-all duration-300"
                     >
                       Practice
                     </Link>
@@ -60,8 +60,38 @@ export default function NavBar() {
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
                     <Link 
+                      href="/tests" 
+                      className="text-gray-700 font-medium px-3 py-2 tracking-tighter rounded-full hover:p-4 hover:text-white hover:bg-gradient-to-r from-[#00c6ff] to-[#0072ff] transition-all duration-300"
+                    >
+                      Tests
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <Link 
                       href="/login" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
+                      className="text-gray-700 font-medium px-3 py-2 tracking-tighter rounded-full hover:p-4 hover:text-white hover:bg-gradient-to-r from-[#00c6ff] to-[#0072ff] transition-all duration-300"
+                    >
+                      About Us
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+
+              </NavigationMenuList>
+            </NavigationMenu>
+
+            
+          </div>
+
+          <NavigationMenu className="flex md:pr-30 ">
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <Link 
+                      href="/login" 
+                      className="font-medium px-5 py-2 tracking-tighter rounded-full hover:py-3 text-white bg-gradient-to-r from-[#00c6ff] to-[#0072ff] transition-all duration-300"
                     >
                       Sign In
                     </Link>
@@ -72,19 +102,14 @@ export default function NavBar() {
                   <NavigationMenuLink asChild>
                     <Link 
                       href="/register" 
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
+                      className=" font-medium px-5 py-2 tracking-tighter rounded-full hover:py-3 text-gray-600 shadow-lg bg-white transition-all duration-300"
                     >
                       Sign Up
                     </Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
-
-                
               </NavigationMenuList>
             </NavigationMenu>
-          </div>
-
-          
         </div>
       </div>
     </header>

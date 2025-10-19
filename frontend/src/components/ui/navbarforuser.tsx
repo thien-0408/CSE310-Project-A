@@ -59,7 +59,7 @@ export default function NavBarUser() {
                   <NavigationMenuLink asChild>
                     <Link
                       href="/dashboard"
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
+                      className="text-gray-700 font-medium px-3 py-2 tracking-tighter rounded-full hover:p-4 hover:text-white hover:bg-gradient-to-r from-[#00c6ff] to-[#0072ff] transition-all duration-300"
                     >
                       Home
                     </Link>
@@ -70,7 +70,7 @@ export default function NavBarUser() {
                   <NavigationMenuLink asChild>
                     <Link
                       href="/practice"
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
+                      className="text-gray-700 font-medium px-3 py-2 tracking-tighter rounded-full hover:p-4 hover:text-white hover:bg-gradient-to-r from-[#00c6ff] to-[#0072ff] transition-all duration-300"
                     >
                       Practice
                     </Link>
@@ -81,7 +81,7 @@ export default function NavBarUser() {
                   <NavigationMenuLink asChild>
                     <Link
                       href="/tests"
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
+                      className="text-gray-700 font-medium px-3 py-2 tracking-tighter rounded-full hover:p-4 hover:text-white hover:bg-gradient-to-r from-[#00c6ff] to-[#0072ff] transition-all duration-300"
                     >
                       Tests
                     </Link>
@@ -92,7 +92,7 @@ export default function NavBarUser() {
                   <NavigationMenuLink asChild>
                     <Link
                       href="/profile"
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
+                      className="text-gray-700 font-medium px-3 py-2 tracking-tighter rounded-full hover:p-4 hover:text-white hover:bg-gradient-to-r from-[#00c6ff] to-[#0072ff] transition-all duration-300"
                     >
                       Profile
                     </Link>
@@ -103,7 +103,7 @@ export default function NavBarUser() {
                   <NavigationMenuLink asChild>
                     <Link
                       href="/settings"
-                      className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 tracking-tighter"
+                      className="text-gray-700 font-medium px-3 py-2 tracking-tighter rounded-full hover:p-4 hover:text-white hover:bg-gradient-to-r from-[#00c6ff] to-[#0072ff] transition-all duration-300"
                     >
                       Settings
                     </Link>

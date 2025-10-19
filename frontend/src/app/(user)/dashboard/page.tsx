@@ -220,9 +220,10 @@ export default function UserDashBoard() {
                     <i className="fa-regular fa-calendar-check"></i> {item.date}
                   </p>
                   <p className="pb-4 text-sm">
-                    Your next scheduled IELTS academic test at {item.location}.
+                    Your next scheduled IELTS academic test will be at {item.location}.
                   </p>
-                  <Button className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md">
+                  <Button size = "lg" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+>
                     View Details
                   </Button>
                 </div>
@@ -265,7 +266,7 @@ export default function UserDashBoard() {
                         </span>
                       ))}
                     </div>
-                    <Button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 my-6 w-full rounded-md">
+                    <Button className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 my-6 w-full rounded-md">
                       Start Module
                     </Button>
                   </div>
