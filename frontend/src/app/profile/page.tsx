@@ -85,18 +85,10 @@ export default function ProfilePage() {
       confirmPassword: "",
     });
   };
-  const [isModalOpen, setModalOpen] = useState(false);
 
   return (
     <>
-    <ConfirmModal
-  isOpen={isModalOpen}
-  onClose={() => setModalOpen(false)}
-  onConfirm={handleConfirmAction}
-  title="Update Information?"
->
-  This will update all your information. You still can update later
-</ConfirmModal>
+  
       <NavBarUser></NavBarUser>
       <div
         className="min-h-screen bg-gray-50 text-gray-800"

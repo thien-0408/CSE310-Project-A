@@ -84,7 +84,7 @@ export default function RegisterPage() {
             <div className="space-y-6">
               {/* Register information */}
               <div>
-                <FormLabel className="block text-sm font-medium text-gray-900 mb-2">
+                <FormLabel className="block text-sm font-medium text-gray-900 mb-2 transition-all duration-500">
                   Full Name
                 </FormLabel>
                 <FormControl>

@@ -26,7 +26,7 @@ import { useRouter } from 'next/navigation';
 export default function NavBarUser() {
   const router = useRouter();
   const handleLogout = () =>{
-    router.push("/homepage");
+    router.push("/");
   }
   const handleProfile = () =>{
     router.push("/profile")

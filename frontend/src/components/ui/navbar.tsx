@@ -10,7 +10,7 @@ import Image from "next/image";
 
 export default function NavBar() {
   return (
-    <header className="  w-full bg-white shadow-sm border-b">
+    <header className="w-full bg-white shadow-sm border-b">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           
@@ -46,16 +46,7 @@ export default function NavBar() {
                 </NavigationMenuItem>
 
             
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <Link 
-                      href="/landingpage" 
-                      className="text-gray-700 font-medium px-3 py-2 tracking-tighter rounded-full hover:p-4 hover:text-white hover:bg-gradient-to-r from-[#00c6ff] to-[#0072ff] transition-all duration-300"
-                    >
-                      Practice
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
+                
 
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>

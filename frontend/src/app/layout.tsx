@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Montserrat, Roboto } from "next/font/google";
 import "./globals.css";
+import AOSInitializer from '@/components/OASInitializer';
+import 'aos/dist/aos.css';
 import Loader from "@/components/ui/Loader";
 
 const montserrat = Montserrat({
@@ -38,8 +40,11 @@ export default function RootLayout({
         />
       </head>
       <body className={`${montserrat.variable} ${roboto.variable}`}>
-        <Loader></Loader>
-        {children}
+        <AOSInitializer>
+                  {children}
+
+        </AOSInitializer>
+        {/* <Loader></Loader> */}
       </body>
     </html>
   );
