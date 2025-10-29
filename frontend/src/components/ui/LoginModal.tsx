@@ -76,7 +76,8 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     }
     console.log("Login successful! Redirecting with data:", values);
     handleClose();
-    setTimeout(() => router.push("/dashboard"), 300);
+    
+    router.push("/dashboard");
   }
 
   // Don't render if not open

@@ -1,7 +1,8 @@
 "use client";
 import React, { useState, useEffect, useRef, JSX } from 'react';
 import { Highlighter, StickyNote, X } from 'lucide-react';
-
+import {Button} from "@/components/ui/button";
+import { Textarea } from './textarea';
 interface Highlight {
   id: string;
   text: string;
@@ -239,20 +240,20 @@ const TextHighlighter: React.FC<TextHighlighterProps> = ({ content, passageId })
 
       {/* Note Modal */}
       {showNoteModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg p-6 w-96 shadow-xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600/50 backdrop-blur-sm transition-opacity duration-300">
+          <div className="bg-white rounded-3xl p-6 w-96 shadow-xl">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold">Add Note</h3>
-              <button
+              <Button
                 onClick={() => {
                   setShowNoteModal(false);
                   setCurrentNote('');
                   setPendingHighlight(null);
                 }}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-gray-500 hover:text-gray-700 hover:bg-white hover:shadow-2xl bg-white"
               >
                 <X className="w-5 h-5" />
-              </button>
+              </Button>
             </div>
             
             <div className="mb-4">
@@ -262,7 +263,7 @@ const TextHighlighter: React.FC<TextHighlighterProps> = ({ content, passageId })
               </p>
             </div>
 
-            <textarea
+            <Textarea
               value={currentNote}
               onChange={(e) => setCurrentNote(e.target.value)}
               placeholder="Enter your note..."
@@ -270,22 +271,22 @@ const TextHighlighter: React.FC<TextHighlighterProps> = ({ content, passageId })
             />
 
             <div className="flex justify-end gap-2 mt-4">
-              <button
+              <Button
                 onClick={() => {
                   setShowNoteModal(false);
                   setCurrentNote('');
                   setPendingHighlight(null);
                 }}
-                className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded"
+                className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-xl bg-white shadow-lg"
               >
                 Cancel
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={saveNote}
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                className="px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600"
               >
                 Save
-              </button>
+              </Button>
             </div>
           </div>
         </div>
