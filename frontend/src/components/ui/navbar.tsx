@@ -37,18 +37,37 @@ export default function NavBar() {
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
                     <Link 
-                      href="/homepage" 
+                      href="/" 
                       className="text-gray-700 font-medium px-3 py-2 tracking-tighter rounded-full hover:p-4 hover:text-white hover:bg-gradient-to-r from-[#00c6ff] to-[#0072ff] transition-all duration-300"
                     >
                       Home
                     </Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
-
-            
                 
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <Link 
+                      href="/listening" 
+                      className="text-gray-700 font-medium px-3 py-2 tracking-tighter rounded-full hover:p-4 hover:text-white hover:bg-gradient-to-r from-[#00c6ff] to-[#0072ff] transition-all duration-300"
+                    >
+                      Listening
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
 
                 <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <Link 
+                      href="/reading" 
+                      className="text-gray-700 font-medium px-3 py-2 tracking-tighter rounded-full hover:p-4 hover:text-white hover:bg-gradient-to-r from-[#00c6ff] to-[#0072ff] transition-all duration-300"
+                    >
+                      Reading
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+
+                {/* <NavigationMenuItem>
                   <NavigationMenuLink asChild>
                     <Link 
                       href="/tests" 
@@ -57,7 +76,7 @@ export default function NavBar() {
                       Tests
                     </Link>
                   </NavigationMenuLink>
-                </NavigationMenuItem>
+                </NavigationMenuItem> */}
 
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>

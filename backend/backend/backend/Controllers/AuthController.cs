@@ -49,6 +49,39 @@ namespace backend.Controllers
             }
             return Ok(result);
         }
+
+        //Get profile
+        [HttpGet("profile")]
+        [Authorize]
+        public async Task<ActionResult<UserProfileDto>> GetMyProfile()
+        {
+            var userId = GetUserIdFromToken(); // Hàm helper của bạn
+            if (userId == Guid.Empty) return Unauthorized();
+
+            var profile = await authService.GetProfileAsync(userId);
+            if (profile is null) return NotFound();
+
+            return Ok(profile);
+        }
+        //Edit profile
+        [HttpPut("profile")]
+        [Authorize]
+        public async Task<ActionResult<UserProfileDto>> UpdateProfile(UpdateProfileDto request) // Sửa DTO
+        {
+            var userId = GetUserIdFromToken(); // Hàm helper của bạn
+            if (userId == Guid.Empty) return Unauthorized();
+
+            var updatedProfile = await authService.UpdateProfileAsync(userId, request);
+            if (updatedProfile is null) return NotFound();
+
+            return Ok(updatedProfile);
+        }
+        private Guid GetUserIdFromToken()
+        {
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            Guid.TryParse(userIdString, out var userId);
+            return userId;
+        }
         //User authentication
         [Authorize]
         [HttpGet]

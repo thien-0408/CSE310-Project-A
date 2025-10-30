@@ -1,7 +1,6 @@
 "use client";
 import NavbarTest from "@/components/ui/navbarfortest";
 import { useRef, useState } from "react";
-import { useEffect } from "react";
 import ReadingPassage from "@/components/readingpassage";
 import data from "@/data/readingquestion.json";
 import QuestionRenderer from "@/components/QuestionRenderer";

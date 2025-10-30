@@ -119,7 +119,6 @@ export default function LoginPage() {
                       )}
                     />
                     {/* Password Field */}
-
                     <FormField
                       control={form.control}
                       name="password" 
@@ -140,7 +139,6 @@ export default function LoginPage() {
                         </div>
                       )}
                     />
-
                     {/* Remember Me and Forgot Password */}
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
@@ -154,10 +152,8 @@ export default function LoginPage() {
                         Forgot your password?
                       </a>
                     </div>
-
                     {/* Error Message */}
                     <FormMessage className="text-red-600 text-sm" />
-
                     {/* Submit Button */}
                     <Button
                       type="submit"
@@ -165,7 +161,6 @@ export default function LoginPage() {
                     >
                       Sign In
                     </Button>
-
                     {/* Sign Up Link */}
                     <div className="text-center">
                       <span className="text-sm text-gray-900">
