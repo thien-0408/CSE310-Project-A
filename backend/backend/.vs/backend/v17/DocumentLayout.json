@@ -3,12 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\services\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\services\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
@@ -21,10 +29,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\data\\userdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\data\\userdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\models\\refreshtokenrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -55,10 +59,6 @@
       "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\models\\tokenresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\services\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\services\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\backend.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
       "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\backend.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
@@ -78,70 +78,41 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Program.cs",
               "RelativeDocumentMoniker": "backend\\Program.cs",
               "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Program.cs",
               "RelativeToolTip": "backend\\Program.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAABsAAAADAAAAAAAAAA==",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAACEAAAA+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-26T14:07:03.686Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{56df62a4-05a3-4e5b-aa1a-99371ccfb997}"
-            },
-            {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "UserDto.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Models\\UserDto.cs",
-              "RelativeDocumentMoniker": "backend\\Models\\UserDto.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Models\\UserDto.cs",
-              "RelativeToolTip": "backend\\Models\\UserDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-26T13:27:51.173Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "User.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\User.cs",
-              "RelativeDocumentMoniker": "backend\\Entities\\User.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\User.cs",
-              "RelativeToolTip": "backend\\Entities\\User.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAxAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-26T12:14:15.377Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "AuthController.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "backend\\Controllers\\AuthController.cs",
               "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\AuthController.cs",
               "RelativeToolTip": "backend\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAABUAAAAAAAAAAADwvx0AAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAFgAAAAAAAAAAAAwwGMAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-26T13:21:52.973Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "UserDbContext.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Data\\UserDbContext.cs",
               "RelativeDocumentMoniker": "backend\\Data\\UserDbContext.cs",
@@ -153,19 +124,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 0,
               "Title": "AuthService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Services\\AuthService.cs",
               "RelativeDocumentMoniker": "backend\\Services\\AuthService.cs",
               "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Services\\AuthService.cs",
               "RelativeToolTip": "backend\\Services\\AuthService.cs",
-              "ViewState": "AgIAAHoAAAAAAAAAAAAowIYAAAAcAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAA6AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T08:20:40.406Z"
+              "WhenOpened": "2025-10-27T08:20:40.406Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "RegisterDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Models\\RegisterDto.cs",
               "RelativeDocumentMoniker": "backend\\Models\\RegisterDto.cs",
@@ -189,7 +161,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "Profile.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\Profile.cs",
               "RelativeDocumentMoniker": "backend\\Entities\\Profile.cs",
@@ -201,19 +173,44 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 1,
               "Title": "IAuthService.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Services\\IAuthService.cs",
               "RelativeDocumentMoniker": "backend\\Services\\IAuthService.cs",
               "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Services\\IAuthService.cs",
               "RelativeToolTip": "backend\\Services\\IAuthService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAA7AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-27T08:19:36.747Z"
+              "WhenOpened": "2025-10-27T08:19:36.747Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\User.cs",
+              "RelativeDocumentMoniker": "backend\\Entities\\User.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\User.cs",
+              "RelativeToolTip": "backend\\Entities\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-26T12:14:15.377Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "UserDto.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Models\\UserDto.cs",
+              "RelativeDocumentMoniker": "backend\\Models\\UserDto.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Models\\UserDto.cs",
+              "RelativeToolTip": "backend\\Models\\UserDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-26T13:27:51.173Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "launchSettings.json",
               "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "backend\\Properties\\launchSettings.json",
@@ -221,12 +218,11 @@
               "RelativeToolTip": "backend\\Properties\\launchSettings.json",
               "ViewState": "AgIAAAwAAAAAAAAAAAAIwBsAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-10-26T15:48:37.9Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-26T15:48:37.9Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "UpdateProfileDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Models\\UpdateProfileDto.cs",
               "RelativeDocumentMoniker": "backend\\Models\\UpdateProfileDto.cs",
@@ -238,7 +234,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "TokenResponseDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Models\\TokenResponseDto.cs",
               "RelativeDocumentMoniker": "backend\\Models\\TokenResponseDto.cs",
@@ -250,7 +246,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "RefreshTokenRequestDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Models\\RefreshTokenRequestDto.cs",
               "RelativeDocumentMoniker": "backend\\Models\\RefreshTokenRequestDto.cs",
@@ -262,7 +258,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "UserProfileDto.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Models\\UserProfileDto.cs",
               "RelativeDocumentMoniker": "backend\\Models\\UserProfileDto.cs",
@@ -295,6 +291,10 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2025-10-27T09:35:04.909Z"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{56df62a4-05a3-4e5b-aa1a-99371ccfb997}"
             }
           ]
         }

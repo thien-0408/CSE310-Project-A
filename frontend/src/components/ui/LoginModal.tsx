@@ -27,6 +27,8 @@ interface LoginModalProps {
 
 export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false); 
+  const [apiError, setApiError] = useState<string | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   
   const formSchema = z.object({
@@ -46,10 +48,6 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     },
   });
 
-  const userInfo = {
-    username: "admin",
-    password: "admin123",
-  };
 
   // Animation control
   useEffect(() => {
@@ -62,25 +60,52 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     setIsAnimating(false);
     setTimeout(() => {
       onClose();
-    }, 300); // Match animation duration
+    }, 300); 
   };
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    if (values.username !== userInfo.username) {
-      form.setError("username", { message: "User not found" });
-      return;
-    }
-    if (values.password !== userInfo.password) {
-      form.setError("password", { message: "Incorrect password" });
-      return;
-    }
-    console.log("Login successful! Redirecting with data:", values);
-    handleClose();
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+    setApiError(null); 
+
     
-    router.push("/dashboard");
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5151";
+
+    try {
+      const response = await fetch(`${apiUrl}/api/Auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // Values match with Login 
+        body: JSON.stringify(values),
+      });
+
+      if (!response.ok) {
+        // Get error from server
+        const errorMessage = await response.text();
+        setApiError(errorMessage || "Invalid username or password");
+        setIsLoading(false);
+        return;
+      }
+
+      //Successfully login and get token
+      const tokens = await response.json(); 
+
+     //Save token into local storage
+      localStorage.setItem("accessToken", tokens.accessToken);
+      localStorage.setItem("refreshToken", tokens.refreshToken);
+
+      console.log("Login successful! Tokens received:", tokens);
+      router.push("/dashboard");
+
+    } catch (error) {
+      // Handle internet error
+      console.error("Login failed:", error);
+      setApiError("Failed to connect to the server. Please try again.");
+      setIsLoading(false);
+    }
   }
 
-  // Don't render if not open
   if (!isOpen) return null;
 
   return (
@@ -199,12 +224,19 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                   </a>
                 </div>
 
+                {apiError && (
+                  <p className="text-sm font-medium text-red-600">
+                      {apiError}
+                  </p>
+                )}
+
                 {/* Submit Button */}
                 <Button
-                  type="submit"
+                  type="submit" disabled={isLoading} 
+
                   className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 >
-                  Sign In
+                {isLoading ? "Signing In..." : "Sign In"}
                 </Button>
 
                 {/* Sign Up Link */}

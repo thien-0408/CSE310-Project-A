@@ -5,7 +5,6 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import {Button} from "@/components/ui/button"
 import { CgProfile } from "react-icons/cg";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { IoLogOut } from "react-icons/io5";
@@ -25,8 +24,24 @@ import { useRouter } from 'next/navigation';
 
 export default function NavBarUser() {
   const router = useRouter();
-  const handleLogout = () =>{
-    router.push("/");
+  const handleLogout = async () =>{
+    const token = localStorage.getItem("accessToken");
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5151";
+    if(token){
+      try{
+        await fetch (`${apiUrl}/api/Auth/logout`,{
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        });
+      }catch (error){
+        console.error("There're something wrong");
+      }
+    }
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    window.location.href= "/"
   }
   const handleProfile = () =>{
     router.push("/profile")

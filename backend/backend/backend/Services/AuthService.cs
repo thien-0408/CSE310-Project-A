@@ -120,9 +120,6 @@ namespace backend.Services
                 signingCredentials: creds);
             return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
         }
-
-
-
         public async Task<UserProfileDto?> GetProfileAsync(Guid userId)
         {
             var user = await context.Users
@@ -174,5 +171,17 @@ namespace backend.Services
             // (Bạn cần viết 1 hàm GetProfileAsync để gọi ở đây hoặc map thủ công)
             return await GetProfileAsync(userId);
         }
+
+        public async Task<bool> LogoutAsync(Guid userId)
+        {
+            var user = await context.Users.FindAsync(userId);
+            if(user is null) { return false; }
+            user.RefreshToken = null;
+            user.RefreshExpireTime = null;
+            await context.SaveChangesAsync();
+            return true;
+        }
+
+       
     }
 }

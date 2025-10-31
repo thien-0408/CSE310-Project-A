@@ -1,5 +1,4 @@
 "use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -17,9 +16,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { useState } from "react"; 
+import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false); 
+  const [apiError, setApiError] = useState<string | null>(null);
+
   const formSchema = z.object({
     username: z.string().min(2, {
       message: "Username must be at least 2 characters.",
@@ -28,6 +32,7 @@ export default function LoginPage() {
       message: "Password must be at least 6 characters.",
     }),
   });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,32 +40,59 @@ export default function LoginPage() {
       password: "",
     },
   });
-  const userInfo = {
-    username: "admin",
-    password: "admin123",
-  };
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    if (values.username !== userInfo.username) {
-      form.setError("username", { message: "User not found" });
-      return;
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+    setApiError(null); 
+
+    
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5151";
+
+    try {
+      const response = await fetch(`${apiUrl}/api/Auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // Values match with Login 
+        body: JSON.stringify(values),
+      });
+
+      if (!response.ok) {
+        // Get error from server
+        const errorMessage = await response.text();
+        setApiError(errorMessage || "Invalid username or password");
+        setIsLoading(false);
+        return;
+      }
+
+      //Successfully login and get token
+      const tokens = await response.json(); 
+
+     //Save token into local storage
+      localStorage.setItem("accessToken", tokens.accessToken);
+      localStorage.setItem("refreshToken", tokens.refreshToken);
+
+      console.log("Login successful! Tokens received:", tokens);
+      router.push("/dashboard");
+
+    } catch (error) {
+      // Handle internet error
+      console.error("Login failed:", error);
+      setApiError("Failed to connect to the server. Please try again.");
+      setIsLoading(false);
     }
-    if (values.password !== userInfo.password) {
-      form.setError("password", { message: "Incorrect password" });
-      return;
-    }
-    console.log("Login successful! Redirecting with data:", values);
-    router.push("/dashboard");
   }
 
   return (
     <>
-      <div className="flex justify-center items-center min-h-screen  "  style={{
-     backgroundImage: `
-       radial-gradient(circle at center, #93c5fd, transparent)
-     `,
-   }} 
-
->
+      <div
+        className="flex justify-center items-center min-h-screen"
+        style={{
+          backgroundImage: `
+           radial-gradient(circle at center, #93c5fd, transparent)
+         `,
+        }}
+      >
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -68,10 +100,10 @@ export default function LoginPage() {
           >
             <FormField
               control={form.control}
-              name="username"
+              name="username" 
               render={({ field }) => (
                 <FormItem className="bg-white border-2 border-gray-200 rounded-2xl p-11 shadow-sm">
-                  {/* Header Section with Logo and Title */}
+                  {/* ... Logo header ... */}
                   <div className="flex items-center justify-center mb-3">
                     <Image
                       src="/assets/logo.png"
@@ -86,19 +118,19 @@ export default function LoginPage() {
                     </h1>
                   </div>
 
-                  {/* Sign In Title and Subtitle */}
+                  {/* ... Sign in title ... */}
                   <div className="text-center mb-8">
-                    <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                  <h2 className="text-3xl font-bold text-gray-900 mb-2">
                       Sign In
                     </h2>
                     <p className="text-gray-900 text-sm">
                       Welcome back! Please enter your details to sign in.
                     </p>
+
                   </div>
 
-                  {/* Form Fields */}
                   <div className="space-y-6">
-                    {/* Email or Username Field */}
+                    {/* Username Field */}
                     <FormField
                       control={form.control}
                       name="username"
@@ -121,7 +153,7 @@ export default function LoginPage() {
                     {/* Password Field */}
                     <FormField
                       control={form.control}
-                      name="password" 
+                      name="password"
                       render={({ field }) => (
                         <div>
                           <FormLabel className="block text-sm font-medium text-gray-900 mb-2">
@@ -131,7 +163,7 @@ export default function LoginPage() {
                             <Input
                               placeholder="••••••"
                               type="password"
-                              {...field} 
+                              {...field}
                               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                             />
                           </FormControl>
@@ -139,39 +171,49 @@ export default function LoginPage() {
                         </div>
                       )}
                     />
-                    {/* Remember Me and Forgot Password */}
+                    
+                    {/* ... Remember me ... */}
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2">
                         <Checkbox id="rememberMe" />
                         <Label htmlFor="rememberMe">Remember me</Label>
                       </div>
-                      <a
+                      <Link
                         href="/forgot-password"
                         className="text-sm text-blue-400 hover:text-blue-600 font-medium"
                       >
                         Forgot your password?
-                      </a>
+                      </Link>
+
                     </div>
-                    {/* Error Message */}
-                    <FormMessage className="text-red-600 text-sm" />
-                    {/* Submit Button */}
+
+                    {/* --- Display API error --- */}
+                    {apiError && (
+                      <p className="text-sm font-medium text-red-600">
+                        {apiError}
+                      </p>
+                    )}
+
+                    {/* --- Disable button when submiting--- */}
                     <Button
                       type="submit"
+                      disabled={isLoading} 
                       className="w-full bg-blue-400 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                     >
-                      Sign In
+                      {isLoading ? "Signing In..." : "Sign In"}
                     </Button>
-                    {/* Sign Up Link */}
+                    
+                    {/* ... Sign up link ... */}
                     <div className="text-center">
-                      <span className="text-sm text-gray-900">
+                    <span className="text-sm text-gray-900">
                         Dont have an account?{" "}
                       </span>
-                      <a
+                      <Link
                         href="/register"
                         className="text-sm text-blue-500 hover:text-blue-500 font-medium"
                       >
                         Sign Up
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </FormItem>

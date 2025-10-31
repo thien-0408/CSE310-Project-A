@@ -11,5 +11,6 @@ namespace backend.Services
 
         Task<UserProfileDto?> GetProfileAsync(Guid userId);
         Task<UserProfileDto?> UpdateProfileAsync(Guid userId, UpdateProfileDto request);
+        Task<bool> LogoutAsync(Guid userId);
     }
 }

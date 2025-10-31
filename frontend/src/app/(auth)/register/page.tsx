@@ -25,8 +25,6 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
 
-  // 4. SỬA LẠI HOÀN CHỈNH SCHEMA ĐỂ KHỚP VỚI FORM
-  // Backend RegisterDto.cs của bạn cần: UserName, Password, FullName, Email
   const formSchema = z
     .object({
       fullName: z.string().min(2, "Full name is required"),
@@ -40,12 +38,11 @@ export default function RegisterPage() {
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: "Passwords do not match",
-      path: ["confirmPassword"], // Gắn lỗi vào trường confirmPassword
+      path: ["confirmPassword"], 
     });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    // 5. Cập nhật defaultValues
     defaultValues: {
       fullName: "",
       email: "",
@@ -55,8 +52,7 @@ export default function RegisterPage() {
       terms: false,
     },
   });
-
-  // 6. SỬA HÀM onSubmit ĐỂ GỌI API
+  //Call API function
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     setApiError(null);
@@ -69,7 +65,7 @@ export default function RegisterPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        // Payload này khớp với RegisterDto.cs của bạn
+
         body: JSON.stringify({
           username: values.username,
           password: values.password,
@@ -79,20 +75,16 @@ export default function RegisterPage() {
       });
 
       if (!response.ok) {
-        // Xử lý lỗi (ví dụ: "User Already Exist!")
         const errorMessage = await response.text();
         setApiError(errorMessage || "Registration failed. Please try again.");
         setIsLoading(false);
         return;
       }
 
-      // Đăng ký thành công!
-      // Backend của bạn trả về UserProfileDto (đã sửa ở bước trước)
       const userProfile = await response.json();
       console.log("Registration successful:", userProfile);
 
-      // Chuyển hướng người dùng đến trang Login
-      router.push("/login?registered=true"); // Thêm param để hiển thị thông báo "Đăng ký thành công!"
+      router.push("/login?registered=true"); 
       
     } catch (error) {
       console.error("Registration failed:", error);
@@ -100,7 +92,6 @@ export default function RegisterPage() {
       setIsLoading(false);
     }
   }
-
   return (
     <div
       className="flex justify-center items-center min-h-screen "
@@ -112,13 +103,9 @@ export default function RegisterPage() {
     >
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(onSubmit) }
           className="w-full max-w-md"
         >
-          {/* 7. BỎ FormField bọc ngoài đi. 
-              Thay vào đó, chỉ dùng FormItem làm thẻ div bọc.
-              Chúng ta sẽ bọc TỪNG Input bằng FormField
-          */}
           <FormItem className="bg-white border-2 border-gray-200 rounded-2xl px-9 py-7 shadow-sm">
             {/* Header Section with Logo and Title */}
             <div className="flex items-center justify-center mb-3">
@@ -145,8 +132,7 @@ export default function RegisterPage() {
 
             {/* Form Fields */}
             <div className="space-y-4 mt-6">
-              {/* 8. BỌC TỪNG TRƯỜNG BẰNG FormField */}
-
+              
               {/* Full Name Field */}
               <FormField
                 control={form.control}
@@ -277,17 +263,16 @@ export default function RegisterPage() {
                 )}
               />
 
-              {/* 10. HIỂN THỊ LỖI API */}
+              {/* API errors */}
               {apiError && (
                 <p className="text-sm font-medium text-red-600">
                   {apiError}
                 </p>
               )}
-
               {/* Submit Button */}
               <Button
                 type="submit"
-                disabled={isLoading} // 11. Vô hiệu hóa khi tải
+                disabled={isLoading} // Disable when loading
                 className="w-full bg-blue-400 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               >
                 {isLoading ? "Signing Up..." : "Sign Up"}

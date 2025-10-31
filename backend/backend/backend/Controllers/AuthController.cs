@@ -2,14 +2,9 @@
 using backend.Models;
 using backend.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace backend.Controllers
 {
@@ -28,7 +23,6 @@ namespace backend.Controllers
             var userProfile = await authService.GetProfileAsync(user.Id);
             return Ok(userProfile);
         }
-
         [HttpPost("login")]
         public async Task<ActionResult<string>> Login(UserDto request)
         {
@@ -76,6 +70,21 @@ namespace backend.Controllers
 
             return Ok(updatedProfile);
         }
+
+        //Logout API
+        [HttpPost("logout")]
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            var userId = GetUserIdFromToken();
+            if(userId == Guid.Empty)
+            {
+                return Unauthorized();
+            }
+            await authService.LogoutAsync(userId);
+            return Ok("Logged out successfully");
+        }
+        
         private Guid GetUserIdFromToken()
         {
             var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
