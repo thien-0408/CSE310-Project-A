@@ -11,7 +11,6 @@ import { FaGraduationCap } from "react-icons/fa";
 
 import { IoPerson } from "react-icons/io5";
 import { GiProgression } from "react-icons/gi";
-import { GiGraduateCap } from "react-icons/gi";
 import { FaLightbulb } from "react-icons/fa";
 
 import Footer from "@/components/ui/footer";
