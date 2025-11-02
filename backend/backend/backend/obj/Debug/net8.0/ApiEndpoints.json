@@ -47,6 +47,16 @@
   },
   {
     "ContainingType": "backend.Controllers.AuthController",
+    "Method": "Logout",
+    "RelativePath": "api/Auth/logout",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend.Controllers.AuthController",
     "Method": "GetMyProfile",
     "RelativePath": "api/Auth/profile",
     "HttpMethod": "GET",

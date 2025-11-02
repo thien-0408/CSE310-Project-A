@@ -18,6 +18,9 @@ import { GrNext } from "react-icons/gr";
 import { GrPrevious } from "react-icons/gr";
 import Loader from "@/components/ui/Loader";
 import TextHighlighter from "@/components/ui/highlighter";
+import IELTSCountdownTimer from "@/components/ui/coutdownTimer";
+import { IoIosSettings } from "react-icons/io";
+
 
 // Interface for user answers
 interface UserAnswer {
@@ -33,14 +36,12 @@ export default function ReadingTest() {
 
   //Update user answer function
   const handleAnswerChange = (questionId: number, answer: unknown) => {
-    setUserAnswers(prev => {
-      const existing = prev.find(ua => ua.questionId === questionId);
+    setUserAnswers((prev) => {
+      const existing = prev.find((ua) => ua.questionId === questionId);
       if (existing) {
         // Update current answer
-        return prev.map(ua => 
-          ua.questionId === questionId 
-            ? { ...ua, answer } 
-            : ua
+        return prev.map((ua) =>
+          ua.questionId === questionId ? { ...ua, answer } : ua
         );
       } else {
         // Add new answer
@@ -72,14 +73,13 @@ export default function ReadingTest() {
 
   const handleSubmit = () => {
     setShowResults(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   if (showResults) {
     return (
       <>
-      <Loader></Loader>
+        <Loader></Loader>
         <NavbarTest />
         <QuestionScoring
           questions={data.questions}
@@ -93,41 +93,54 @@ export default function ReadingTest() {
   return (
     <>
       {/*Nav bar */}
-      <header className="w-full bg-white shadow-sm border-b">
-      <div className="mx-auto px-4 py-3">
-        <div className="flex items-center justify-between">
+      <header className="w-full bg-white shadow-sm border-b top-0 z-50 sticky">
+        <div className="mx-auto px-4 py-3">
+          <div className="grid grid-cols-3 items-center">
             {/*Left group*/}
-          <div className="flex items-center space-x-8">
-            <div className="flex items-center">
-              <Image
-                src="/assets/logo.png"
-                alt="IELTSSprint Logo"
-                width={30}
-                height={30}
-                quality={100}
-                className="mr-2"
-              />
-              <h1 className="text-2xl font-bold italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8] bg-clip-text text-transparent">
-                <Link href={'/homepage'}>IELTSSprint</Link>
-              </h1>
+            <div className="flex items-center space-x-8 justify-self-start">
+              <div className="flex items-center">
+                <Image
+                  src="/assets/logo.png"
+                  alt="IELTSSprint Logo"
+                  width={30}
+                  height={30}
+                  quality={100}
+                  className="mr-2"
+                />
+                <h1 className="text-2xl font-bold italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8] bg-clip-text text-transparent">
+                  <Link href={"/homepage"}>IELTSSprint</Link>
+                </h1>
+              </div>
+            </div>
+
+            {/*Middle group*/}
+            <div className="justify-self-center">
+              <IELTSCountdownTimer minutes={60}></IELTSCountdownTimer>
+            </div>
+
+            {/* Right group*/}
+            <div className="flex items-center justify-self-end rounded-2xl shadow-2xl bg-gray-100 px-5 py-3 hover:bg-gray-200 transition-all duration-300">
+              <NavigationMenu className="hidden md:flex">
+                <NavigationMenuList className="flex space-x-5 text-sm">
+                  <NavigationMenuItem>
+                    <FullScreenButton ></FullScreenButton>
+                  </NavigationMenuItem>
+                  
+                  <NavigationMenuList>
+                    <NavigationMenuItem>
+                        <IoIosSettings className="text-2xl" />
+                    </NavigationMenuItem>
+                  </NavigationMenuList>
+                </NavigationMenuList>
+
+
+              </NavigationMenu>
             </div>
           </div>
-          {/* Right group */}
-          <div className="flex items-center">
-            <NavigationMenu className="hidden md:flex">
-              <NavigationMenuList className="flex space-x-5 text-sm">
-                <NavigationMenuItem>
-                  <FullScreenButton></FullScreenButton>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
-          </div>
         </div>
-      </div>
-    </header>
+      </header>
       <div className="flex h-screen overflow-hidden font-roboto">
         {/* Passage */}
-
         <div
           className="overflow-y-auto border-r"
           style={{ width: `${leftWidth}%` }}
@@ -136,17 +149,25 @@ export default function ReadingTest() {
             <h1 className="title">{data.passageTitle}</h1>
           </div>
           <div className="p-6 px-15 text-md">
-              <Image src={"/testdata/repImage/DSC06942-1-1536x1024-1.jpg"} alt="Coral Reefs" width={200} height={200} quality={100} className="mb-2"></Image>
-             <ReadingPassage
-                key={data.passageId}
-                id={data.passageId}
-                title={data.passageTitle}
-                text={""}
-              />
-          <TextHighlighter content={data.text} passageId={""}></TextHighlighter>
-
+            <Image
+              src={"/testdata/repImage/DSC06942-1-1536x1024-1.jpg"}
+              alt="Coral Reefs"
+              width={200}
+              height={200}
+              quality={100}
+              className="mb-2"
+            ></Image>
+            <ReadingPassage
+              key={data.passageId}
+              id={data.passageId}
+              title={data.passageTitle}
+              text={""}
+            />
+            <TextHighlighter
+              content={data.text}
+              passageId={""}
+            ></TextHighlighter>
           </div>
-
         </div>
 
         {/* Divider */}
@@ -158,28 +179,40 @@ export default function ReadingTest() {
         {/* Questions */}
         <div className="flex-1 overflow-y-auto p-6">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-semibold text-[#2c76c0]">Questions {data.passageRange}</h3>
-            
+            <h3 className="text-xl font-semibold text-[#2c76c0]">
+              Questions {data.passageRange}
+            </h3>
           </div>
-          
-          <QuestionRenderer 
-            questions={data.questions} 
+
+          <QuestionRenderer
+            questions={data.questions}
             onAnswerChange={handleAnswerChange}
           />
         </div>
       </div>
       <footer className="sticky bottom-0 w-full bg-white shadow-inner border-t p-3 flex items-center justify-center space-x-5">
         <div>
-          <h3 className="text-gray-800 text-md">Question {userAnswers.length} of {data.questions.length}</h3>
+          <h3 className="text-gray-800 text-md">
+            Question {userAnswers.length} of {data.questions.length}
+          </h3>
         </div>
         <div>
-          <Button className="rounded-4xl bg-gray-200 text-gray-800 hover:bg-gray-300"><GrPrevious /></Button>
+          <Button className="rounded-4xl bg-gray-200 text-gray-800 hover:bg-gray-300">
+            <GrPrevious />
+          </Button>
         </div>
         <div>
-          <Button className="rounded-4xl bg-gray-200 text-gray-800 hover:bg-gray-300"><GrNext></GrNext></Button>
+          <Button className="rounded-4xl bg-gray-200 text-gray-800 hover:bg-gray-300">
+            <GrNext></GrNext>
+          </Button>
         </div>
         <div>
-          <Button className="rounded-3xl bg-[#407db9] hover:bg-[#336699] transition-all duration-300" onClick={handleSubmit}>Submit</Button>
+          <Button
+            className="rounded-3xl bg-[#407db9] hover:bg-[#336699] transition-all duration-300"
+            onClick={handleSubmit}
+          >
+            Submit
+          </Button>
         </div>
       </footer>
     </>

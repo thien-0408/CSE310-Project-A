@@ -36,8 +36,7 @@ namespace backend.Services
                 Email = request.Email,
                 User = user
             };
-            //user.UserName = request.UserName;
-            //user.PasswordHash = HashedPassword;
+         
 
             
             context.Users.Add(user); //add to db
@@ -153,10 +152,10 @@ namespace backend.Services
                              .FirstOrDefaultAsync(p => p.UserId == userId);
             if (profile is null)
             {
-                return null; // Không tìm thấy profile
+                return null; // Not found 
             }
 
-            // 2. Cập nhật các trường cho Profile
+            // Update
             profile.FullName = request.FullName;
             profile.Email = request.Email;
             profile.Bio = request.Bio;
@@ -164,11 +163,9 @@ namespace backend.Services
             profile.PhoneNumber = request.PhoneNumber;
             profile.DateOfBirth = request.DateOfBirth;
 
-            // 3. Lưu thay đổi
             await context.SaveChangesAsync();
 
-            // 4. Trả về DTO
-            // (Bạn cần viết 1 hàm GetProfileAsync để gọi ở đây hoặc map thủ công)
+            // return DTO
             return await GetProfileAsync(userId);
         }
 
