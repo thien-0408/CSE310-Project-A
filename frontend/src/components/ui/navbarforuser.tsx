@@ -21,12 +21,18 @@ import Link from "next/link";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from 'next/navigation';
+import { UserProfile } from "@/types/userProfile";
+import { useState, useEffect } from "react";
+
 
 export default function NavBarUser() {
+  const [profile, setProfile] = useState<UserProfile | null>(null);  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const router = useRouter();
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5151";
+
   const handleLogout = async () =>{
     const token = localStorage.getItem("accessToken");
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5151";
     if(token){
       try{
         await fetch (`${apiUrl}/api/Auth/logout`,{
@@ -46,6 +52,70 @@ export default function NavBarUser() {
   const handleProfile = () =>{
     router.push("/profile")
   }
+   async function getUserProfile(token: string): Promise<UserProfile | null> {
+      const endpoint: string = `${apiUrl}/api/Auth/profile`;
+      try {
+        const response = await fetch(endpoint, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json", 
+            "Authorization": `Bearer ${token}`, 
+          },
+        });
+    
+        if (!response.ok) {
+          const errorBody = await response.json().catch(() => ({ message: 'Unexpected error' }));
+          console.error(`Error ${response.status} when getting profile:`, errorBody);
+          return null;
+        }
+        const data: UserProfile = await response.json();
+        console.log(data);
+        
+        return data;
+    
+      } catch (error) {
+        console.error("Error when trying to connect:", error);
+        return null;
+      }
+    }
+    function getStoredToken(): string | null {
+      if (typeof window !== 'undefined') {
+        return localStorage.getItem('accessToken'); 
+      }
+      return null;
+    }
+  useEffect(() => {
+      // Call API in useeffect
+      async function loadUserProfileData() {
+        const token = getStoredToken(); 
+        setLoading(true); 
+  
+        if (!token) {
+          console.warn("Can't find token");
+          setError(true);
+          setLoading(false);
+          return;
+        }
+        
+        console.log("Loading profile with token...");
+  
+        const userProfile = await getUserProfile(token); 
+        
+        if (userProfile) {
+          console.log("Profile loaded");
+          setProfile(userProfile);
+        } else {
+          console.error("Fail to load profile");
+          setError(true);
+        }
+        setLoading(false); 
+      }
+  
+      loadUserProfileData();
+    }, []); 
+
+    
+  
     return (
     <header className="w-full  bg-white shadow-sm border-b">
       <div className=" mx-auto px-4 py-2 container">
@@ -134,7 +204,7 @@ export default function NavBarUser() {
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <Avatar className="cursor-pointer hover:ring-2 hover:ring-blue-500 hover:ring-offset-1 transition-all">
-                  <AvatarImage src="/demo/avatar.jpg" />
+                  <AvatarImage src={apiUrl + profile?.avatarUrl} />
                   <AvatarFallback className="bg-blue-100 text-blue-700">
                     CN
                   </AvatarFallback>

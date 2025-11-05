@@ -21,7 +21,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("https://localhost:3000", "http://localhost:3000") // URL của Next.js
+                          policy.WithOrigins("https://localhost:3000", "http://localhost:3000") 
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
                       });
@@ -34,7 +34,6 @@ builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        // Tell the app HOW to validate the token
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -42,16 +41,17 @@ builder.Services
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
 
-            // Get the settings from appsettings.json
             ValidIssuer = builder.Configuration["AppSettings:Issuer"],
             ValidAudience = builder.Configuration["AppSettings:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:Token"]!)
-            )
+            ),
+            RoleClaimType = System.Security.Claims.ClaimTypes.Role,
         };
     });
 //add services
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IFileService, FileService>();    
 
 // Add Swagger/OpenAPI support
 builder.Services.AddEndpointsApiExplorer();
@@ -60,14 +60,49 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "Backend API",
-        Version = "1.0.0",  // ĐỔI TỪ "v1" THÀNH "1.0.0"
+        Version = "1.0.0",
         Description = "API Documentation for Backend"
     });
+
+    // --- ADD THIS BLOCK TO ENABLE JWT AUTH IN SWAGGER ---
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http, // We are using Http auth
+        Scheme = "Bearer", // The scheme is "Bearer"
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header, // The token is in the header
+        Description = "Please enter a valid JWT token."
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer" // This Id must match the "Bearer" string above
+                }
+            },
+            new string[] {}
+        }
+    });
+    // --- END OF BLOCK ---
 });
 
 var app = builder.Build();
+try
+{
+    await DataSeeder.SeedAdminUserAsync(app.Services);
+}
+catch (Exception ex)
+{
+    var logger = app.Services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "An error occurred during database seeding.");
+}
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -76,11 +111,11 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Backend API v1.0.0");
         c.RoutePrefix = "swagger";
     });
-    //app.MapScalarApiReference();
-
 }
 
+
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 app.UseCors(MyAllowSpecificOrigins);
 app.UseAuthentication();
 app.UseAuthorization();

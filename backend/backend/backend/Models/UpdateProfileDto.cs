@@ -8,5 +8,7 @@
         public string? PhoneNumber { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public string Email { get; set; } = string.Empty;
+        public IFormFile? Avatar { get; set; }
+
     }
 }

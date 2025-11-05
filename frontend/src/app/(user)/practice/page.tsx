@@ -31,6 +31,7 @@ import {
 import TestHistorySection from "@/components/ui/testhistory";
 import FooterUser from "@/components/ui/footeruser";
 import ScrollTop from "@/components/ui/scroll-top";
+import AuthGuard from "@/components/auth/AuthGuard";
 
 {
   /*Score */
@@ -92,7 +93,8 @@ export default function UserDashBoard() {
       <div className="sticky top-0 z-50">
         <NavBarUser></NavBarUser>
       </div>
-      <main
+      <AuthGuard>
+        <main
         className="p-10 lg:px-30 "
         style={{
           backgroundImage: `
@@ -602,6 +604,8 @@ export default function UserDashBoard() {
           </section>
         </div>
       </main>
+      </AuthGuard>
+      
       <FooterUser></FooterUser>
       <ScrollTop></ScrollTop>
     </>

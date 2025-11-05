@@ -1,8 +1,11 @@
-﻿using backend.Entities;
+﻿using backend.Data;
+using backend.Entities;
 using backend.Models;
 using backend.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 
@@ -10,18 +13,53 @@ namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController(IAuthService authService) : ControllerBase
+    public class AuthController : ControllerBase
     {
+        private readonly UserDbContext context;
+        private readonly IAuthService authService;
+        public AuthController(UserDbContext _context, IAuthService sv)
+        {
+            context = _context;
+            authService = sv;
+        }
+
         [HttpPost("register")]
         public async Task<ActionResult<UserProfileDto>> Register(RegisterDto request)
         {
-            var user = await authService.RegisterAsync(request);
-            if (user is null)
+            var userName = await context.Users.FirstOrDefaultAsync(u => u.UserName == request.UserName);
+            if (userName is not null)
             {
                 return BadRequest("User Already Exist!");
             }
-            var userProfile = await authService.GetProfileAsync(user.Id);
-            return Ok(userProfile);
+            var user = new User
+            {
+                Role = "User",
+                UserName = request.UserName,
+            };
+            
+            var HashedPassword = new PasswordHasher<User>().HashPassword(user, request.Password);
+            user.PasswordHash = HashedPassword;
+
+            var profile = new Profile
+            {
+                FullName = request.FullName,
+                Email = request.Email,
+                User = user,
+                AvatarUrl = "/user-avatars/default_avatar.jpg"
+            };
+            context.Users.Add(user); //add to db
+            await context.Profiles.AddAsync(profile);
+            await context.SaveChangesAsync();
+            var userProfileDto = new UserProfileDto
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                FullName = profile.FullName,
+                Email = profile.Email,
+                AvatarUrl = profile.AvatarUrl,
+                Role = user.Role
+            };
+            return Ok(userProfileDto);
         }
         [HttpPost("login")]
         public async Task<ActionResult<string>> Login(UserDto request)
@@ -49,7 +87,7 @@ namespace backend.Controllers
         [Authorize]
         public async Task<ActionResult<UserProfileDto>> GetMyProfile()
         {
-            var userId = GetUserIdFromToken(); // Hàm helper của bạn
+            var userId = GetUserIdFromToken(); 
             if (userId == Guid.Empty) return Unauthorized();
 
             var profile = await authService.GetProfileAsync(userId);
@@ -57,19 +95,7 @@ namespace backend.Controllers
 
             return Ok(profile);
         }
-        //Edit profile
-        [HttpPut("profile")]
-        [Authorize]
-        public async Task<ActionResult<UserProfileDto>> UpdateProfile(UpdateProfileDto request) // Sửa DTO
-        {
-            var userId = GetUserIdFromToken(); // Hàm helper của bạn
-            if (userId == Guid.Empty) return Unauthorized();
-
-            var updatedProfile = await authService.UpdateProfileAsync(userId, request);
-            if (updatedProfile is null) return NotFound();
-
-            return Ok(updatedProfile);
-        }
+        
 
         //Logout API
         [HttpPost("logout")]
@@ -97,13 +123,6 @@ namespace backend.Controllers
         public IActionResult AuthenticationEndPoint()
         {
             return Ok("You're authenticated");
-        }
-        //Admin auth
-        [Authorize(Roles = "Admin")]
-        [HttpGet("admin-only")]
-        public IActionResult AdminOnlyEndPoint()
-        {
-            return Ok("You're Admin");
         }
     }
 }

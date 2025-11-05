@@ -74,7 +74,6 @@ export default function LoginPage() {
 
       console.log("Login successful! Tokens received:", tokens);
       router.push("/dashboard");
-
     } catch (error) {
       // Handle internet error
       console.error("Login failed:", error);

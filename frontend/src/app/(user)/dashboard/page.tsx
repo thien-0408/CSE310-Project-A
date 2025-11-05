@@ -17,6 +17,10 @@ import FooterUser from "@/components/ui/footeruser";
 import RecentAcivity from "@/components/ui/recentact";
 import ScrollTop from "@/components/ui/scroll-top";
 import Link from "next/link";
+import { UserProfile } from "@/types/userProfile";
+import { useState } from "react";
+import { useEffect } from "react";
+import AuthGuard from "@/components/auth/AuthGuard";
 
 const stats = [
   {
@@ -78,17 +82,82 @@ const modules = [
     tags: ["Listening", "Intermediate"],
   },
 ];
-const userInfo = {
-  name: "Skibidi",
-};
+
 export default function UserDashBoard() {
+const [profile, setProfile] = useState<UserProfile | null>(null);  const [loading, setLoading] = useState(true);
+const [error, setError] = useState(false);
+
+//API get profile
+  const apiUrl: string = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5151";
+  async function getUserProfile(token: string): Promise<UserProfile | null> {
+    const endpoint: string = `${apiUrl}/api/Auth/profile`;
+    try {
+      const response = await fetch(endpoint, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json", 
+          "Authorization": `Bearer ${token}`, 
+        },
+      });
+  
+      if (!response.ok) {
+        const errorBody = await response.json().catch(() => ({ message: 'Unexpected error' }));
+        console.error(`Error ${response.status} when getting profile:`, errorBody);
+        return null;
+      }
+      const data: UserProfile = await response.json();
+      console.log(data);
+      
+      return data;
+  
+    } catch (error) {
+      console.error("Error when trying to connect:", error);
+      return null;
+    }
+  }
+  function getStoredToken(): string | null {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('accessToken'); 
+    }
+    return null;
+  }
+useEffect(() => {
+    // Call API in useeffect
+    async function loadUserProfileData() {
+      const token = getStoredToken(); 
+      setLoading(true); 
+
+      if (!token) {
+        console.warn("Can't find token");
+        setError(true);
+        setLoading(false);
+        return;
+      }
+      
+      console.log("Loading profile with token...");
+
+      const userProfile = await getUserProfile(token); 
+      
+      if (userProfile) {
+        console.log("Profile loaded");
+        setProfile(userProfile);
+      } else {
+        console.error("Fail to load profile");
+        setError(true);
+      }
+      setLoading(false); 
+    }
+
+    loadUserProfileData();
+  }, []); 
+
   return (
     <>
       <div className="sticky top-0 z-50">
         <NavBarUser></NavBarUser>
       </div>
-
-      <main
+      <AuthGuard>
+<main
         className="p-10 lg:px-30 pt-1"
         style={{
           backgroundImage: `
@@ -107,7 +176,7 @@ export default function UserDashBoard() {
                 <div className="mb-8">
                   <h1 className="text-3xl font-extrabold mb-4">
                     Good Morning,{" "}
-                    <span className="bg-gradient-to-b from-[#00B4DB] to-[#0083B0] bg-clip-text text-transparent">{userInfo.name}</span>
+                    <span className="bg-gradient-to-b from-[#00B4DB] to-[#0083B0] bg-clip-text text-transparent">{profile?.fullName}</span>
                   </h1>
                   <p>Ready to master your IELTS with confidence?</p>
                 </div>
@@ -223,7 +292,7 @@ export default function UserDashBoard() {
                     Your next scheduled IELTS academic test will be at {item.location}.
                   </p>
                   <Button size = "lg" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
->
+                  >
                     View Details
                   </Button>
                 </div>
@@ -284,6 +353,8 @@ export default function UserDashBoard() {
           </section>
         </div>
       </main>
+      </AuthGuard>
+      
       <FooterUser></FooterUser>
       <ScrollTop></ScrollTop>
     </>

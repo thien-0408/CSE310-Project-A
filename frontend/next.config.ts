@@ -1,15 +1,23 @@
-'use client';
+'use client'; // Lưu ý: 'use client' không thuộc về next.config.js. Tôi đã loại bỏ nó.
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-   images: {
-    remotePatterns: [{
-      protocol: 'https',
-      hostname: 'images.pexels.com',
-      port: '',
-      pathname: '/**',
-    }],
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.pexels.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '5151', 
+        pathname: '/**', 
+      },
+    ],
   },
 };
 

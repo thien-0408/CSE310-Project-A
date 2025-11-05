@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { FC } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import NavBarUser from "@/components/ui/navbarforuser";
 import ConfirmModal from "@/components/ui/ModelConfirm";
-
+import { UserProfile } from "@/types/userProfile";
 interface IconProps {
   icon: string;
   className?: string;
@@ -17,12 +17,74 @@ const Icon: FC<IconProps> = ({ icon, className }) => (
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("edit-profile");
-  const [profile, setProfile] = useState({
-    name: "Skibidi",
-    email: "skibidi@example.com",
-    bio: "IELTS enthusiast aiming for a band 9. Currently focusing on improving my writing and speaking skills.",
-    avatar: "/assets/avatar-landing-page.jpg",
-  });
+  
+  const [profile, setProfile] = useState<UserProfile | null>(null);  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  
+  //API get profile
+    const apiUrl: string = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5151";
+    async function getUserProfile(token: string): Promise<UserProfile | null> {
+      const endpoint: string = `${apiUrl}/api/Auth/profile`;
+      try {
+        const response = await fetch(endpoint, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json", 
+            "Authorization": `Bearer ${token}`, 
+          },
+        });
+    
+        if (!response.ok) {
+          const errorBody = await response.json().catch(() => ({ message: 'Unexpected error' }));
+          console.error(`Error ${response.status} when getting profile:`, errorBody);
+          return null;
+        }
+        const data: UserProfile = await response.json();
+        console.log(data);
+        
+        return data;
+    
+      } catch (error) {
+        console.error("Error when trying to connect:", error);
+        return null;
+      }
+    }
+    function getStoredToken(): string | null {
+      if (typeof window !== 'undefined') {
+        return localStorage.getItem('accessToken'); 
+      }
+      return null;
+    }
+  useEffect(() => {
+      // Call API in useeffect
+      async function loadUserProfileData() {
+        const token = getStoredToken(); 
+        setLoading(true); 
+  
+        if (!token) {
+          console.warn("Can't find token");
+          setError(true);
+          setLoading(false);
+          return;
+        }
+        
+        console.log("Loading profile with token...");
+  
+        const userProfile = await getUserProfile(token); 
+        
+        if (userProfile) {
+          console.log("Profile loaded");
+          setProfile(userProfile);
+        } else {
+          console.error("Fail to load profile");
+          setError(true);
+        }
+        setLoading(false); 
+      }
+  
+      loadUserProfileData();
+    }, []); 
+  
   const handleConfirmAction = () => {
     console.log("Action confirmed!");
     // call api to edit
@@ -37,23 +99,66 @@ export default function ProfilePage() {
     const { name, value } = e.target;
     setPasswords((prev) => ({ ...prev, [name]: value }));
   };
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setProfile((prev) => ({ ...prev, [name]: value }));
-  };
+ const handleInputChange = (
+  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+) => {
+  const { name, value } = e.target;
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  setProfile((prev) => {
+    // 💡 KIỂM TRA QUAN TRỌNG: Nếu prev là NULL, không làm gì cả, trả về NULL.
+    if (!prev) {
+      console.warn("Không thể cập nhật input: Profile chưa được tải.");
+      return null;
+    }
+
+    // Nếu prev tồn tại, thực hiện spread an toàn
+    return { 
+      ...prev, 
+      [name]: value 
+    };
+  });
+};
+
+ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       const reader = new FileReader();
+      
       reader.onloadend = () => {
-        setProfile((prev) => ({ ...prev, avatar: reader.result as string }));
+        const newAvatar = reader.result as string;
+
+        setProfile((prev) => {
+          if (!prev) {
+            // 💡 KIỂM TRA QUAN TRỌNG: Nếu prev là NULL, 
+            // KHÔNG thể spread, phải trả về một UserProfile mặc định
+            // (hoặc null nếu bạn không muốn cập nhật state)
+
+            // Nếu bạn muốn hiển thị hình ảnh đã chọn ngay cả khi chưa có profile:
+            // Bạn phải định nghĩa một UserProfile default hợp lệ TẠM THỜI
+            // (Đảm bảo tất cả các trường string/number/Guid đều có giá trị mặc định)
+            return {
+              id: 'temp-id', // Phải có giá trị string/Guid hợp lệ
+              userName: '',
+              role: '',
+              fullName: '',
+              email: '',
+              bio: '',
+              targetScore: 0,
+              phoneNumber: '',
+              dateOfBirth: new Date().toISOString(),
+              avatar: newAvatar, // Gán avatar mới
+              avatarUrl: newAvatar // Hoặc gán vào avatarUrl tùy theo logic của bạn
+            } as UserProfile; // Ép kiểu là UserProfile
+          }
+          
+          // Nếu prev đã tồn tại, thực hiện spread an toàn
+          return { ...prev, avatar: newAvatar };
+        });
       };
+      
       reader.readAsDataURL(file);
     }
-  };
+};
   //handle submit and send to backend
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -72,7 +177,7 @@ export default function ProfilePage() {
       return;
     }
     // send change password API request to backend
-    console.log("Password change submitted for user:", profile.email);
+    console.log("Password change submitted for user:", profile?.email);
     console.log({
       currentPassword: passwords.currentPassword,
       newPassword: passwords.newPassword,
@@ -167,6 +272,8 @@ export default function ProfilePage() {
   );
 }
 
+
+
 // --- SidebarLink Component ---
 interface SidebarLinkProps {
   icon: string;
@@ -196,7 +303,7 @@ const SidebarLink: FC<SidebarLinkProps> = ({
 
 // --- EditProfileForm Component ---
 interface EditProfileFormProps {
-  profile: { name: string; email: string; bio: string; avatar: string };
+  profile: UserProfile | null;
   onInputChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
@@ -221,7 +328,7 @@ const EditProfileForm: FC<EditProfileFormProps> = ({
     {/* Profile Picture Section */}
     <div className="flex items-center space-x-6 border-t pt-6">
       <Image
-        src={profile.avatar}
+        src={profile?.avatar || '/assets/avatar-landing-page.jpg' }
         alt="Profile"
         className="h-20 w-20 rounded-full object-cover"
         width={100}
@@ -251,14 +358,14 @@ const EditProfileForm: FC<EditProfileFormProps> = ({
       <InputField
         label="Full Name"
         name="name"
-        value={profile.name}
+        value={profile?.fullName || 'Default User'}
         onChange={onInputChange}
       />
       <InputField
         label="Email Address"
         name="email"
         type="email"
-        value={profile.email}
+        value={profile?.email || 'example@mail.com'}
         onChange={onInputChange}
         disabled
       />
@@ -274,7 +381,7 @@ const EditProfileForm: FC<EditProfileFormProps> = ({
           name="bio"
           rows={4}
           className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-          value={profile.bio}
+          value={profile?.bio}
           onChange={onInputChange}
         ></textarea>
         <p className="mt-2 text-sm text-gray-500">

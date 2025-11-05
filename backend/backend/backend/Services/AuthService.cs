@@ -1,7 +1,9 @@
 ﻿using backend.Data;
 using backend.Entities;
 using backend.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -11,8 +13,18 @@ using System.Text;
 
 namespace backend.Services
 {
-    public class AuthService(UserDbContext context, IConfiguration configuration) : IAuthService
+    public class AuthService : IAuthService
     {
+        private readonly UserDbContext context;
+        private readonly IConfiguration configuration;
+        private readonly IFileService fileService;
+        public AuthService(UserDbContext context, IConfiguration configuration, IFileService fileService)
+        {
+            this.context = context;
+            this.configuration = configuration;
+            this.fileService = fileService;
+        }
+
         //Register
         public async Task<User?> RegisterAsync(RegisterDto request)
         {
@@ -27,6 +39,7 @@ namespace backend.Services
                 Role = "User",
                 UserName = request.UserName,
             };
+            
             var HashedPassword = new PasswordHasher<User>().HashPassword(user, request.Password);
             user.PasswordHash = HashedPassword;
 
@@ -34,14 +47,12 @@ namespace backend.Services
             {
                 FullName = request.FullName,
                 Email = request.Email,
-                User = user
+                User = user,
             };
-         
-
-            
             context.Users.Add(user); //add to db
             await context.Profiles.AddAsync(profile);
             await context.SaveChangesAsync();
+
             return user;
         }
         public async Task<TokenResponseDto?> LoginAsync(UserDto request)
@@ -57,6 +68,7 @@ namespace backend.Services
             {
                 return null;
             }
+            
             return await CreateTokenResponse(user);
         }
 
@@ -109,7 +121,7 @@ namespace backend.Services
 
             };
             var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(configuration.GetValue<string>("Appsettings:Token")!));
+                Encoding.UTF8.GetBytes(configuration.GetValue<string>("AppSettings:Token")!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
             var tokenDescriptor = new JwtSecurityToken(
                 issuer: configuration.GetValue<string>("AppSettings:Issuer"),
@@ -122,8 +134,8 @@ namespace backend.Services
         public async Task<UserProfileDto?> GetProfileAsync(Guid userId)
         {
             var user = await context.Users
-                .Include(u => u.Profile) // RẤT QUAN TRỌNG: tải Profile cùng lúc
-                .AsNoTracking() // Không cần theo dõi thay đổi (read-only)
+                .Include(u => u.Profile) 
+                .AsNoTracking() 
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user is null || user.Profile is null)
@@ -142,7 +154,8 @@ namespace backend.Services
                 Bio = user.Profile.Bio,
                 TargetScore = user.Profile.TargetScore,
                 PhoneNumber = user.Profile.PhoneNumber,
-                DateOfBirth = user.Profile.DateOfBirth
+                DateOfBirth = user.Profile.DateOfBirth,
+                AvatarUrl = user.Profile.AvatarUrl,
             };
         }
 
@@ -162,6 +175,7 @@ namespace backend.Services
             profile.TargetScore = request.TargetScore;
             profile.PhoneNumber = request.PhoneNumber;
             profile.DateOfBirth = request.DateOfBirth;
+            
 
             await context.SaveChangesAsync();
 

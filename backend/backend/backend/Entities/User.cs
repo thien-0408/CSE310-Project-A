@@ -9,5 +9,6 @@
         public string? RefreshToken { get; set; }
         public DateTime? RefreshExpireTime { get; set; }
         public Profile Profile { get; set; } = null!; //User's profile
+        public bool IsActive { get; set; } = true;
     }
 }
