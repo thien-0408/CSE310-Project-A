@@ -12,10 +12,11 @@ import Footer from "@/components/ui/footer";
 import { SpotlightCard } from "@/components/ui/spotlightcard";
 import ScrollTop from "@/components/ui/scroll-top";
 import VenomBeam from "@/components/ui/venom-beam";
-import { MdAudioFile } from "react-icons/md";
-import { GiProgression } from "react-icons/gi";
+import { MdAudioFile, MdQuickreply } from "react-icons/md";
+import { GiNotebook, GiProgression, GiStarFormation } from "react-icons/gi";
 
 import { useState } from "react";
+import { FaToolbox } from "react-icons/fa";
 export default function Reading() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
@@ -144,7 +145,7 @@ export default function Reading() {
                 <div className="h-full text-center flex flex-col transition-shadow p-2">
                   <div className="flex justify-center items-center mb-6">
                     <div className="w-16 h-16 flex items-center justify-center">
-                      <MdAudioFile className="text-[#4b91e2] text-5xl" />
+                      <GiStarFormation className="text-[#4b91e2] text-5xl" />
                     </div>
                   </div>
                   <div className="flex-1 flex flex-col justify-between ">
@@ -165,7 +166,8 @@ export default function Reading() {
                 <div className="h-full text-center flex flex-col transition-shadow p-2">
                   <div className="flex justify-center items-center mb-6">
                     <div className="w-16 h-16 flex items-center justify-center">
-                      <PiFediverseLogoFill className="text-[#4b91e2] text-5xl" />
+                      <FaToolbox className="text-[#4b91e2] text-5xl" />
+
                     </div>
                   </div>
                   <div className="flex-1 flex flex-col justify-between ">
@@ -186,7 +188,8 @@ export default function Reading() {
                 <div className="h-full text-center flex flex-col transition-shadow p-2">
                   <div className="flex justify-center items-center mb-6">
                     <div className="w-16 h-16 flex items-center justify-center">
-                      <i className="fa-solid fa-user-tie text-[#4b91e2] text-5xl"></i>
+                      <GiNotebook className="text-[#4b91e2] text-5xl"/>
+
                     </div>
                   </div>
                   <div className="flex-1 flex flex-col justify-between ">
@@ -207,7 +210,7 @@ export default function Reading() {
                 <div className="h-full text-center flex flex-col transition-shadow p-2">
                   <div className="flex justify-center items-center mb-6">
                     <div className="w-16 h-16 flex items-center justify-center">
-                      <VscFeedback className="text-[#4b91e2] text-5xl" />
+                      <MdQuickreply className="text-[#4b91e2] text-5xl" />
                     </div>
                   </div>
                   <div className="flex-1 flex flex-col justify-between ">

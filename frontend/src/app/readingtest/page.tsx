@@ -1,6 +1,6 @@
 "use client";
 import NavbarTest from "@/components/ui/navbarfortest";
-import { useRef, useState } from "react";
+import { useRef, useState, FC } from "react";
 import ReadingPassage from "@/components/readingpassage";
 import data from "@/data/readingquestion.json";
 import QuestionRenderer from "@/components/QuestionRenderer";
@@ -10,7 +10,7 @@ import {
   NavigationMenuItem,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import Link from "next/link";
+import { IoExit } from "react-icons/io5";
 import Image from "next/image";
 import FullScreenButton from "@/components/ui/fullscreen";
 import { Button } from "@/components/ui/button";
@@ -20,7 +20,7 @@ import Loader from "@/components/ui/Loader";
 import TextHighlighter from "@/components/ui/highlighter";
 import IELTSCountdownTimer from "@/components/ui/coutdownTimer";
 import { IoIosSettings } from "react-icons/io";
-
+import { useRouter } from "next/navigation";
 
 // Interface for user answers
 interface UserAnswer {
@@ -29,6 +29,68 @@ interface UserAnswer {
 }
 
 export default function ReadingTest() {
+  //Confirm modal
+  const [confirmModal, setConfirmModal] = useState<ConfirmModalProps>({
+    isVisible: false,
+    message: "",
+    onConfirm: () => {},
+    onCancel: () => {},
+  });
+  interface ConfirmModalProps {
+    message: string;
+    onConfirm: () => void;
+    onCancel: () => void;
+    isVisible: boolean;
+  }
+  const handleExit = () => {
+    setConfirmModal({
+      isVisible: true,
+      message: "Are you sure you want to drop the test?",
+      onConfirm: () => {
+        setExit(true);
+        router.push("/tests");
+      },
+      onCancel: () =>
+        setConfirmModal({
+          isVisible: false,
+          message: "",
+          onConfirm: () => {},
+          onCancel: () => {},
+        }),
+    });
+  };
+  const ConfirmModal: FC<ConfirmModalProps> = ({
+    message,
+    onConfirm,
+    onCancel,
+    isVisible,
+  }) => {
+    if (!isVisible) return null;
+
+    return (
+      <div data-aos = "fade" data-aos-duration="300" className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600/50 backdrop-blur-sm transition-opacity duration-300">
+        <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl border border-gray-200">
+          <p className="text-center text-gray-700 mb-6 text-lg">{message}</p>
+          <div className="flex justify-center gap-4">
+            <button
+              className="px-6 py-3 rounded-full bg-red-500 text-white font-medium hover:bg-red-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
+              onClick={onConfirm}
+            >
+              Confirm
+            </button>
+            <button
+              className="px-6 py-3 rounded-full bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
+              onClick={onCancel}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+  const [isExit, setExit] = useState(false);
+  const router = useRouter();
   const [leftWidth, setLeftWidth] = useState(50);
   const isDragging = useRef(false);
   const [showResults, setShowResults] = useState(false);
@@ -39,7 +101,6 @@ export default function ReadingTest() {
     setUserAnswers((prev) => {
       const existing = prev.find((ua) => ua.questionId === questionId);
       if (existing) {
-        // Update current answer
         return prev.map((ua) =>
           ua.questionId === questionId ? { ...ua, answer } : ua
         );
@@ -75,12 +136,17 @@ export default function ReadingTest() {
     setShowResults(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-
+  if(isExit){
+    return(
+      <>
+      <Loader></Loader>
+      </>
+    )
+  }
   if (showResults) {
     return (
       <>
         <Loader></Loader>
-        <NavbarTest />
         <QuestionScoring
           questions={data.questions}
           userAnswers={userAnswers}
@@ -93,13 +159,19 @@ export default function ReadingTest() {
   return (
     <>
       {/*Nav bar */}
-      <header className="w-full bg-white shadow-sm border-b top-0 z-50 sticky">
+      <ConfirmModal
+        isVisible={confirmModal.isVisible}
+        message={confirmModal.message}
+        onConfirm={confirmModal.onConfirm}
+        onCancel={confirmModal.onCancel}
+      />
+      <header className="w-full bg-white shadow-sm border-b top-0 z-9 sticky">
         <div className="mx-auto px-4 py-3">
           <div className="grid grid-cols-3 items-center">
             {/*Left group*/}
             <div className="flex items-center space-x-8 justify-self-start">
               <div className="flex items-center">
-                <Image
+                {/* <Image
                   src="/assets/logo.png"
                   alt="IELTSSprint Logo"
                   width={30}
@@ -109,7 +181,7 @@ export default function ReadingTest() {
                 />
                 <h1 className="text-2xl font-bold italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8] bg-clip-text text-transparent">
                   <Link href={"/homepage"}>IELTSSprint</Link>
-                </h1>
+                </h1> */}
               </div>
             </div>
 
@@ -123,17 +195,19 @@ export default function ReadingTest() {
               <NavigationMenu className="hidden md:flex">
                 <NavigationMenuList className="flex space-x-5 text-sm">
                   <NavigationMenuItem>
-                    <FullScreenButton ></FullScreenButton>
+                    <FullScreenButton></FullScreenButton>
                   </NavigationMenuItem>
-                  
-                  <NavigationMenuList>
+
+                  <NavigationMenuList className="flex gap-2">
                     <NavigationMenuItem>
-                        <IoIosSettings className="text-2xl" />
+                      <IoIosSettings className="text-2xl" />
+                    </NavigationMenuItem>
+
+                    <NavigationMenuItem>
+                      <IoExit className="text-2xl" onClick={handleExit} />
                     </NavigationMenuItem>
                   </NavigationMenuList>
                 </NavigationMenuList>
-
-
               </NavigationMenu>
             </div>
           </div>

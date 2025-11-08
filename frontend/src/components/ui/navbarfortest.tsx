@@ -10,7 +10,6 @@ import Image from "next/image";
 import FullScreenButton from "@/components/ui/fullscreen";
 
 
-import { Button } from "@/components/ui/button";
 export default function NavbarTest() {
   return (
     <header className="w-full bg-white shadow-sm border-b">

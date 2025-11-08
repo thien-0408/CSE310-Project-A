@@ -18,6 +18,8 @@ import {
   XCircle,
   AlertCircle,
 } from "lucide-react";
+import { MdAddCircleOutline } from "react-icons/md";
+
 import Image from "next/image";
 interface User {
   id: string;
@@ -93,7 +95,6 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   isVisible,
 }) => {
   if (!isVisible) return null;
-
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-md z-50">
       <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl border border-gray-200">
@@ -573,7 +574,7 @@ const AdminDashboard: React.FC = () => {
               } hover:bg-gradient-to-r from-[#00c6ff] to-[#0072ff] hover:text-white  hover:-translate-y-1`}
               onClick={() => setActiveTab("config")}
             >
-              <Settings size={18} />
+              <MdAddCircleOutline size={18} />
               Add Test
             </button>
 

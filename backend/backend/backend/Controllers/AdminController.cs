@@ -41,11 +41,11 @@ namespace backend.Controllers
         {
             if (await _context.Users.AnyAsync(u => u.UserName == newUser.UserName))
             {
-                return null;
+                return BadRequest("User already exist");
             }
             var user = new User
             {
-                Role = "User",
+                Role = newUser.Role,
                 UserName = newUser.UserName,
             };
             var HashedPassword = new PasswordHasher<User>().HashPassword(user, newUser.Password);

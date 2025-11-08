@@ -110,7 +110,22 @@ namespace backend.Controllers
             await authService.LogoutAsync(userId);
             return Ok("Logged out successfully");
         }
-        
+        [Authorize]
+        [HttpPatch("change-password")]
+        public async Task<ActionResult> ChangePassword(ChangePasswordDto request)
+        {
+            var userId = GetUserIdFromToken();
+            if (userId == Guid.Empty)
+            {
+                return Unauthorized();
+            }
+            var success = await authService.ChangePasswordAsync(userId, request);
+            if (success)
+            {
+                return Ok("Password changed successfully");
+            }
+            return BadRequest("Invalid current password");
+        }
         private Guid GetUserIdFromToken()
         {
             var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

@@ -71,6 +71,25 @@ namespace backend.Services
             
             return await CreateTokenResponse(user);
         }
+        public async Task<bool> ChangePasswordAsync(Guid userId, ChangePasswordDto requestDto )
+        {
+            var user = await context.Users.FindAsync(userId);
+            if(user is null)
+            {
+                return false;
+            }
+            //verify password
+            var result = new PasswordHasher<User>().VerifyHashedPassword(user, user.PasswordHash, requestDto.CurrentPassword);
+            if (result == PasswordVerificationResult.Failed) 
+            { 
+                return false;
+            }
+            //Hash new pass and save
+            var newHashedPass = new PasswordHasher<User>().HashPassword(user, requestDto.NewPassword);
+            user.PasswordHash = newHashedPass;
+            await context.SaveChangesAsync();
+            return true;
+        }
 
         private async Task<TokenResponseDto> CreateTokenResponse(User user)
         {

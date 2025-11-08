@@ -20,12 +20,13 @@ import {
   PaginationItem,
   PaginationLink,
   PaginationNext,
-  PaginationPrevious,
 } from "@/components/ui/pagination";
 import Link from "next/link";
 
 type TestData = {
   id: number;
+  testType: string;
+  skill: string;
   image: string;
   views: number;
   passage: number;
@@ -33,6 +34,8 @@ type TestData = {
   subtitle: string[];
   button: string;
 };
+
+// Skill filter
 const filterSkills = [
   {
     skill: "Writing",
@@ -51,45 +54,65 @@ const filterSkills = [
     icon: <HiOutlineMicrophone />,
   },
 ];
+
+// Filtering array for test type
+const filterTypes = [
+  { id: "separated", label: "Separated Test" },
+  { id: "full_test", label: "Full Test" },
+];
+
 const TESTS: TestData[] = [
   {
     id: 1,
+    testType: "separated",
+    skill: "reading",
     image: "/testdata/reading.png",
     views: 13879,
     passage: 2,
-    title: "[Recent Tests- VOL] - Digital Marketing Trends",
+    title: "The Future of Urban Farming: Sustainable Cities and Agriculture",
     subtitle: ["Gap Filling", "Matching Information", "Matching Names"],
     button: "Try Now!",
   },
   {
     id: 2,
+    skill: "Reading",
+    testType: "full_test",
     image: "/testdata/reading.png",
-    views: 13879,
+    views: 12,
     passage: 2,
-    title: "[Recent Tests- VOL] - Digital Marketing Trends",
+    title:
+      "The Psychology of Color: How Colors Influence Our Emotions and Decisions",
     subtitle: ["Gap Filling", "Matching Information", "Matching Names"],
     button: "Try Now!",
   },
   {
     id: 3,
+    skill: "Listening",
+    testType: "separated",
     image: "/testdata/reading.png",
     views: 13879,
     passage: 2,
-    title: "[Recent Tests- VOL] - Digital Marketing Trends",
+    title:
+      "The Rise of Artificial Intelligence in Healthcare: Opportunities and Challenges",
     subtitle: ["Gap Filling", "Matching Information", "Matching Names"],
     button: "Try Now!",
   },
   {
     id: 4,
+    skill: "Listening",
+    testType: "full_test",
     image: "/testdata/reading.png",
     views: 13879,
     passage: 2,
-    title: "[Recent Tests- VOL] - Digital Marketing Trends",
+    title:
+      "Climate Change and the Oceans: Understanding the Impact on Marine Ecosystems",
     subtitle: ["Gap Filling", "Matching Information", "Matching Names"],
     button: "Try Now!",
   },
   {
     id: 5,
+    skill: "Reading",
+    testType: "separated",
     image: "/testdata/reading.png",
     views: 13879,
     passage: 2,
@@ -99,6 +122,8 @@ const TESTS: TestData[] = [
   },
   {
     id: 6,
+    skill: "Writing",
+    testType: "separated",
     image: "/testdata/reading.png",
     views: 13879,
     passage: 2,
@@ -108,16 +133,38 @@ const TESTS: TestData[] = [
   },
 ];
 
-// const filterWriting = ["Task 1", "Task 2"];
-
-// const filterListening = ["Task 1", "Task 2", "Part 3", "Part 4"];
-// const filterSpeaking = ["Part 1", "Part 2", "Part 3"];
-
 const filterPassage = [1, 2, 3];
 
 export default function TestSamplePage() {
-  // Example filter states, can be expanded
   const [titleSearch, setTitleSearch] = useState("");
+  const [selectedSkills, setSelectedSkills] = useState<Set<string>>(new Set());
+  const [selectedTypes, setSelectedTypes] = useState<Set<string>>(new Set());
+
+  const handleFilterChange = (
+    value: string,
+    filterSet: Set<string>,
+    setFilter: React.Dispatch<React.SetStateAction<Set<string>>>
+  ) => {
+    const newSet = new Set(filterSet);
+    if (newSet.has(value)) {
+      newSet.delete(value);
+    } else {
+      newSet.add(value);
+    }
+    setFilter(newSet);
+  };
+
+  const filteredTests = TESTS.filter((test) => {
+    const matchesTitle = test.title
+      .toLowerCase()
+      .includes(titleSearch.toLowerCase());
+    const matchesSkill =
+      selectedSkills.size === 0 || selectedSkills.has(test.skill.toLowerCase());
+    const matchesType =
+      selectedTypes.size === 0 ||
+      selectedTypes.has(test.testType.toLowerCase());
+    return matchesTitle && matchesSkill && matchesType;
+  });
 
   return (
     <>
@@ -140,51 +187,82 @@ export default function TestSamplePage() {
                 <div className="">
                   <h3 className="font-semibold mb-4">Skill</h3>
                   <div className="space-y-2 ml-2">
-                    {filterSkills.map((filterSkills) => (
-                      <div key={filterSkills.skill} className="flex">
-                        <Checkbox id={`skill-${filterSkills.skill}`} />
-                        <label
-                          htmlFor={`skill-${filterSkills.skill}`}
-                          className="ml-2 text-sm font-medium"
+                    {filterSkills.map((filter) => (
+                      <div key={filter.skill} className="flex items-center">
+                        <Checkbox
+                          id={`skill-${filter.skill}`}
+                          onCheckedChange={() =>
+                            handleFilterChange(
+                              filter.skill.toLowerCase(),
+                              selectedSkills,
+                              setSelectedSkills
+                            )
+                          }
+                          checked={selectedSkills.has(
+                            filter.skill.toLowerCase()
+                          )}
+                        />
+                        <Label
+                          htmlFor={`skill-${filter.skill}`}
+                          className="ml-2 text-sm font-medium cursor-pointer"
                         >
                           <div className="flex gap-2">
-                            <div>{filterSkills.icon}</div>
-                            <div>{filterSkills.skill}</div>
+                            <div>{filter.icon}</div>
+                            <div>{filter.skill}</div>
                           </div>
-                        </label>
+                        </Label>
                       </div>
                     ))}
                   </div>
                 </div>
-                <div className="flex gap-2">
-                  <Checkbox id="separated-test"></Checkbox>
-                  <Label htmlFor="seprated-test font-medium">
-                    Separated Test
-                  </Label>
+
+                <div>
+                  <h3 className="font-semibold mb-4">Test Type</h3>
+                  <div className="space-y-2 ml-2">
+                    {filterTypes.map((type) => (
+                      <div key={type.id} className="flex items-center">
+                        <Checkbox
+                          id={`type-${type.id}`}
+                          onCheckedChange={() =>
+                            handleFilterChange(
+                              type.id,
+                              selectedTypes,
+                              setSelectedTypes
+                            )
+                          }
+                          checked={selectedTypes.has(type.id)}
+                        />
+                        <Label
+                          htmlFor={`type-${type.id}`}
+                          className="ml-2 text-sm font-medium cursor-pointer"
+                        >
+                          {type.label}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div className="flex gap-2">
-                  <Checkbox id="full-test"></Checkbox>
-                  <Label htmlFor="full-test font-medium">Full Test</Label>
-                </div>
+
                 <div>
                   <h3 className="font-semibold mb-4">Passage (Difficulty)</h3>
                   <div className="space-y-2 ml-2">
                     {filterPassage.map((n) => (
-                      <div key={n}>
+                      <div key={n} className="flex items-center">
                         <Checkbox id={`passage-${n}`} />
-                        <label
+                        <Label
                           htmlFor={`passage-${n}`}
-                          className="ml-2 text-sm"
+                          className="ml-2 text-sm cursor-pointer"
                         >
                           Passage {n}
-                        </label>
+                        </Label>
                       </div>
                     ))}
                   </div>
                 </div>
-                <Button className="mt-5 w-full bg-blue-500 hover:bg-blue-700">
-                  Apply
-                </Button>
+
+                {/* <Button class5 w-full bg-blue-500 hover:bg-blue-700">
+                  ApplyName="mt-
+                </Button> */}
               </aside>
 
               {/* Main Content */}
@@ -218,49 +296,57 @@ export default function TestSamplePage() {
                   </div>
                 </div>
                 {/* Grid Display */}
+                {/* FIX 6: Render `filteredTests` thay vì `TESTS` */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
-                  {TESTS.map((test) => (
-                    <Card
-                      key={test.id}
-                      className="p-0 overflow-hidden rounded-xl border relative group hover:scale-105 transition-all duration-500"
-                    >
-                      <div className="relative h-40 w-full bg-gray-100">
-                        <Image
-                          src={test.image}
-                          fill
-                          className="object-cover rounded-t-xl"
-                          alt={test.title}
-                        />
-                        <div className="absolute top-2 right-2 bg-black/60 text-white text-xs rounded-full px-2 py-1 flex items-center gap-1">
-                          <span>👁️</span>
-                          <span>{test.views.toLocaleString()}</span>
+                  {filteredTests.length > 0 ? (
+                    filteredTests.map((test) => (
+                      <Card
+                        key={test.id}
+                        className="p-0 overflow-hidden rounded-xl border relative group hover:scale-105 transition-all duration-500"
+                      >
+                        <div className="relative h-40 w-full bg-gray-100">
+                          <Image
+                            src={test.image}
+                            fill
+                            className="object-cover rounded-t-xl"
+                            alt={test.title}
+                          />
+                          <div className="absolute top-2 right-2 bg-black/60 text-white text-xs rounded-full px-2 py-1 flex items-center gap-1">
+                            <span>👁️</span>
+                            <span>{test.views.toLocaleString()}</span>
+                          </div>
                         </div>
-                      </div>
-                      <CardContent className="p-3">
-                        <Badge
-                          variant="secondary"
-                          className="mb-2"
-                        >{`Passage ${test.passage}`}</Badge>
-                        <CardTitle className="text-base font-bold leading-tight hover:text-blue-600">
-                          {test.title}
-                        </CardTitle>
-                        <div className="text-xs text-gray-600 mt-2 space-y-1">
-                          {test.subtitle.map((s, idx) => (
-                            <div key={idx}>{s}</div>
-                          ))}
-                        </div>
+                        <CardContent className="p-3">
+                          <Badge
+                            variant="secondary"
+                            className="mb-2"
+                          >{`Passage ${test.passage}`}</Badge>
+                          <CardTitle className="text-base font-bold leading-tight hover:text-blue-600">
+                            {test.title}
+                          </CardTitle>
+                          <div className="text-xs text-gray-600 mt-2 space-y-1">
+                            {test.subtitle.map((s, idx) => (
+                              <div key={idx}>{s}</div>
+                            ))}
+                          </div>
 
-                        <Link href={`/tests/${test.id}`}>
-                          <Button
-                            className="mt-3 w-full bg-white text-blue-400 border-2 border-blue-400 hover:bg-blue-400 hover:text-white"
-                            size="sm"
-                          >
-                            {test.button}
-                          </Button>
-                        </Link>
-                      </CardContent>
-                    </Card>
-                  ))}
+                          <Link href={`/tests/${test.id}`}>
+                            <Button
+                              className="mt-3 w-full bg-white text-blue-400 border-2 border-blue-400 hover:bg-blue-400 hover:text-white"
+                              size="sm"
+                            >
+                              {test.button}
+                            </Button>
+                          </Link>
+                        </CardContent>
+                      </Card>
+                    ))
+                  ) : (
+                    <div className="col-span-full text-center text-gray-500 mt-10">
+                      <p className="text-lg font-medium">No results found.</p>
+                      <p>Try adjusting your search or filter criteria.</p>
+                    </div>
+                  )}
                 </div>
               </main>
             </div>
@@ -268,6 +354,7 @@ export default function TestSamplePage() {
         </div>
       </section>
       <footer>
+        {/* Pagination nên được cập nhật logic dựa trên `filteredTests` */}
         <Pagination className="p-5 border-2 border-gray-300">
           <PaginationContent>
             <PaginationItem>

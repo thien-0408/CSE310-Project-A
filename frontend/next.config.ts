@@ -1,4 +1,3 @@
-'use client'; // Lưu ý: 'use client' không thuộc về next.config.js. Tôi đã loại bỏ nó.
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {

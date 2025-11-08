@@ -21,7 +21,6 @@ namespace backend.Controllers
         {
             _context = context;
             _fileService = service;
-
         }
         //Edit profile
         [Authorize]

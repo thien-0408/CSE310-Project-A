@@ -1,4 +1,3 @@
-// components/Auth/AuthGuard.tsx
 'use client';
 
 import { useRouter } from 'next/navigation';

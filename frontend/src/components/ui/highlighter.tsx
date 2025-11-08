@@ -240,7 +240,7 @@ const TextHighlighter: React.FC<TextHighlighterProps> = ({ content, passageId })
 
       {/* Note Modal */}
       {showNoteModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600/50 backdrop-blur-sm transition-opacity duration-300">
+        <div data-aos = "fade" data-aos-duration="300" className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600/50 backdrop-blur-sm transition-opacity duration-300">
           <div className="bg-white rounded-3xl p-6 w-96 shadow-xl">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold">Add Note</h3>

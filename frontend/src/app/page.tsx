@@ -8,11 +8,9 @@ import LoginModal from "@/components/ui/LoginModal";
 import { FaBookOpen } from "react-icons/fa";
 import { FaMedal } from "react-icons/fa";
 import { FaGraduationCap } from "react-icons/fa";
-
 import { IoPerson } from "react-icons/io5";
 import { GiProgression } from "react-icons/gi";
 import { FaLightbulb } from "react-icons/fa";
-
 import Footer from "@/components/ui/footer";
 import { SpotlightCard } from "@/components/ui/spotlightcard";
 import ScrollTop from "@/components/ui/scroll-top";
