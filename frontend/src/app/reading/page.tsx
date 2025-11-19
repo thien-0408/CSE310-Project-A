@@ -3,20 +3,19 @@ import "aos/dist/aos.css";
 import NavBar from "@/components/ui/navbar";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import {  CardDescription, CardTitle } from "@/components/ui/card";
 import LoginModal from "@/components/ui/LoginModal";
-import { PiFediverseLogoFill } from "react-icons/pi";
 import { SiTestcafe } from "react-icons/si";
-import { VscFeedback } from "react-icons/vsc";
 import Footer from "@/components/ui/footer";
 import { SpotlightCard } from "@/components/ui/spotlightcard";
 import ScrollTop from "@/components/ui/scroll-top";
 import VenomBeam from "@/components/ui/venom-beam";
-import { MdAudioFile, MdQuickreply } from "react-icons/md";
+import {  MdQuickreply } from "react-icons/md";
 import { GiNotebook, GiProgression, GiStarFormation } from "react-icons/gi";
 
 import { useState } from "react";
 import { FaToolbox } from "react-icons/fa";
+import Link from "next/link";
 export default function Reading() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
@@ -58,11 +57,10 @@ export default function Reading() {
                 {/* CTA Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button
-                    onClick={() => setIsLoginModalOpen(true)}
                     size="lg"
                     className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                   >
-                    Move to Reading
+                    <Link href="/view-test?skill=reading">Move to Reading</Link>
                   </Button>
                   <Button
                     variant="outline"
@@ -167,7 +165,6 @@ export default function Reading() {
                   <div className="flex justify-center items-center mb-6">
                     <div className="w-16 h-16 flex items-center justify-center">
                       <FaToolbox className="text-[#4b91e2] text-5xl" />
-
                     </div>
                   </div>
                   <div className="flex-1 flex flex-col justify-between ">

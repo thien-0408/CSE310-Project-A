@@ -1,4 +1,5 @@
 "use client";
+import { jwtDecode } from "jwt-decode";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -16,12 +17,17 @@ import {
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { useState } from "react"; 
+import { useState } from "react";
 import Link from "next/link";
+
+interface AuthPayload {
+  role: "User" | "Admin";
+  // ...
+}
 
 export default function LoginPage() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
 
   const formSchema = z.object({
@@ -42,9 +48,8 @@ export default function LoginPage() {
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-    setApiError(null); 
+    setApiError(null);
 
-    
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5151";
 
     try {
@@ -53,7 +58,7 @@ export default function LoginPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        // Values match with Login 
+        // Values match with Login
         body: JSON.stringify(values),
       });
 
@@ -65,15 +70,14 @@ export default function LoginPage() {
         return;
       }
 
-      //Successfully login and get token
-      const tokens = await response.json(); 
+      //Get token
+      const tokens = await response.json();
 
-     //Save token into local storage
+      //Save token into local storage
       localStorage.setItem("accessToken", tokens.accessToken);
       localStorage.setItem("refreshToken", tokens.refreshToken);
-
-      console.log("Login successful! Tokens received:", tokens);
       router.push("/dashboard");
+      console.log("Login successful! Tokens received:", tokens);
     } catch (error) {
       // Handle internet error
       console.error("Login failed:", error);
@@ -99,7 +103,7 @@ export default function LoginPage() {
           >
             <FormField
               control={form.control}
-              name="username" 
+              name="username"
               render={({ field }) => (
                 <FormItem className="bg-white border-2 border-gray-200 rounded-2xl p-11 shadow-sm">
                   {/* ... Logo header ... */}
@@ -119,13 +123,12 @@ export default function LoginPage() {
 
                   {/* ... Sign in title ... */}
                   <div className="text-center mb-8">
-                  <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                    <h2 className="text-3xl font-bold text-gray-900 mb-2">
                       Sign In
                     </h2>
                     <p className="text-gray-900 text-sm">
                       Welcome back! Please enter your details to sign in.
                     </p>
-
                   </div>
 
                   <div className="space-y-6">
@@ -170,10 +173,10 @@ export default function LoginPage() {
                         </div>
                       )}
                     />
-                    
+
                     {/* ... Remember me ... */}
                     <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2">
                         <Checkbox id="rememberMe" />
                         <Label htmlFor="rememberMe">Remember me</Label>
                       </div>
@@ -183,7 +186,6 @@ export default function LoginPage() {
                       >
                         Forgot your password?
                       </Link>
-
                     </div>
 
                     {/* --- Display API error --- */}
@@ -196,15 +198,15 @@ export default function LoginPage() {
                     {/* --- Disable button when submiting--- */}
                     <Button
                       type="submit"
-                      disabled={isLoading} 
+                      disabled={isLoading}
                       className="w-full bg-blue-400 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                     >
                       {isLoading ? "Signing In..." : "Sign In"}
                     </Button>
-                    
+
                     {/* ... Sign up link ... */}
                     <div className="text-center">
-                    <span className="text-sm text-gray-900">
+                      <span className="text-sm text-gray-900">
                         Dont have an account?{" "}
                       </span>
                       <Link

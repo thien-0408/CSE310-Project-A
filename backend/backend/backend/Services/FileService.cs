@@ -15,9 +15,9 @@
             }
 
 
-            var wwwRootPath = _environment.WebRootPath;
+            var wwwRootPath = _environment.WebRootPath; //wwwroot
 
-            var pathToRemove = path.TrimStart('/');
+            var pathToRemove = path.TrimStart('/'); //D/avaa/sadsd.img
             var filePath = Path.Combine(wwwRootPath, pathToRemove);
 
             if (File.Exists(filePath))

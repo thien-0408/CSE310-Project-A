@@ -62,7 +62,6 @@ export default function NavBarUser() {
             "Authorization": `Bearer ${token}`, 
           },
         });
-    
         if (!response.ok) {
           const errorBody = await response.json().catch(() => ({ message: 'Unexpected error' }));
           console.error(`Error ${response.status} when getting profile:`, errorBody);

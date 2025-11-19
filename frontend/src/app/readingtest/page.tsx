@@ -1,7 +1,5 @@
 "use client";
-import NavbarTest from "@/components/ui/navbarfortest";
-import { useRef, useState, FC } from "react";
-import ReadingPassage from "@/components/readingpassage";
+import { useRef, useState, FC, useMemo } from "react"; 
 import data from "@/data/readingquestion.json";
 import QuestionRenderer from "@/components/QuestionRenderer";
 import QuestionScoring from "@/components/QuestionScoring";
@@ -21,6 +19,8 @@ import TextHighlighter from "@/components/ui/highlighter";
 import IELTSCountdownTimer from "@/components/ui/coutdownTimer";
 import { IoIosSettings } from "react-icons/io";
 import { useRouter } from "next/navigation";
+import type { ReadingData } from "@/types/reading";
+import ReadingPassage from "@/components/readingpassage";
 
 // Interface for user answers
 interface UserAnswer {
@@ -93,20 +93,29 @@ export default function ReadingTest() {
   const router = useRouter();
   const [leftWidth, setLeftWidth] = useState(50);
   const isDragging = useRef(false);
-  const [showResults, setShowResults] = useState(false);
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
+  const [showScoring, setShowScoring] = useState(false);
 
+  const readingData = data as ReadingData;
+  const allQuestions = useMemo(() => {
+    return readingData.sections.flatMap((section) => section.questions);
+  }, [readingData.sections]);
+
+  const totalQuestions = allQuestions.length;
   //Update user answer function
   const handleAnswerChange = (questionId: number, answer: unknown) => {
-    setUserAnswers((prev) => {
-      const existing = prev.find((ua) => ua.questionId === questionId);
-      if (existing) {
-        return prev.map((ua) =>
-          ua.questionId === questionId ? { ...ua, answer } : ua
-        );
+    setUserAnswers((prevAnswers) => {
+      const existingAnswerIndex = prevAnswers.findIndex(
+        (a) => a.questionId === questionId
+      );
+      if (existingAnswerIndex !== -1) {
+        // Update existing answer
+        const updatedAnswers = [...prevAnswers];
+        updatedAnswers[existingAnswerIndex] = { questionId, answer };
+        return updatedAnswers;
       } else {
         // Add new answer
-        return [...prev, { questionId, answer }];
+        return [...prevAnswers, { questionId, answer }];
       }
     });
   };
@@ -132,9 +141,14 @@ export default function ReadingTest() {
     window.addEventListener("mouseup", handleMouseUp);
   }
 
+  // const handleSubmit = () => {
+  //   setShowResults(true);
+  //   window.scrollTo({ top: 0, behavior: "smooth" });
+  // };
+  
   const handleSubmit = () => {
-    setShowResults(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    setShowScoring(true);
+    setConfirmModal({ ...confirmModal, isVisible: false });
   };
   if(isExit){
     return(
@@ -143,18 +157,21 @@ export default function ReadingTest() {
       </>
     )
   }
-  if (showResults) {
+ if (showScoring) {
     return (
       <>
-        <Loader></Loader>
-        <QuestionScoring
-          questions={data.questions}
-          userAnswers={userAnswers}
-          onClose={() => setShowResults(false)}
-        />
+      <Loader></Loader>
+      
+          <QuestionScoring
+            sections={readingData.sections}
+            userAnswers={userAnswers}
+            onClose={() => setShowScoring(false)}
+          />
+      
       </>
     );
   }
+  
 
   return (
     <>
@@ -171,23 +188,12 @@ export default function ReadingTest() {
             {/*Left group*/}
             <div className="flex items-center space-x-8 justify-self-start">
               <div className="flex items-center">
-                {/* <Image
-                  src="/assets/logo.png"
-                  alt="IELTSSprint Logo"
-                  width={30}
-                  height={30}
-                  quality={100}
-                  className="mr-2"
-                />
-                <h1 className="text-2xl font-bold italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8] bg-clip-text text-transparent">
-                  <Link href={"/homepage"}>IELTSSprint</Link>
-                </h1> */}
               </div>
             </div>
 
             {/*Middle group*/}
             <div className="justify-self-center">
-              <IELTSCountdownTimer minutes={60}></IELTSCountdownTimer>
+              <IELTSCountdownTimer minutes={readingData.testDuration}></IELTSCountdownTimer>
             </div>
 
             {/* Right group*/}
@@ -232,11 +238,10 @@ export default function ReadingTest() {
               className="mb-2"
             ></Image>
             <ReadingPassage
-              key={data.passageId}
-              id={data.passageId}
-              title={data.passageTitle}
-              text={""}
-            />
+            id={readingData.partNumber}
+            title={readingData.passageTitle}
+            text={""}
+          />
             <TextHighlighter
               content={data.text}
               passageId={""}
@@ -254,12 +259,12 @@ export default function ReadingTest() {
         <div className="flex-1 overflow-y-auto p-6">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-semibold text-[#2c76c0]">
-              Questions {data.passageRange}
+              Questions {readingData.questionRange}
             </h3>
           </div>
 
           <QuestionRenderer
-            questions={data.questions}
+            sections={readingData.sections}
             onAnswerChange={handleAnswerChange}
           />
         </div>
@@ -267,7 +272,7 @@ export default function ReadingTest() {
       <footer className="sticky bottom-0 w-full bg-white shadow-inner border-t p-3 flex items-center justify-center space-x-5">
         <div>
           <h3 className="text-gray-800 text-md">
-            Question {userAnswers.length} of {data.questions.length}
+            Question {userAnswers.length} of {totalQuestions}
           </h3>
         </div>
         <div>

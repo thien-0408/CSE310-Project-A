@@ -8,7 +8,12 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 
+
 export default function NavBar() {
+
+  
+  
+  
   return (
     <header className="w-full bg-white shadow-sm border-b">
       <div className="container mx-auto px-4 py-3">
@@ -67,17 +72,6 @@ export default function NavBar() {
                   </NavigationMenuLink>
                 </NavigationMenuItem>
 
-                {/* <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <Link 
-                      href="/tests" 
-                      className="text-gray-700 font-medium px-3 py-2 tracking-tighter rounded-full hover:p-4 hover:text-white hover:bg-gradient-to-r from-[#00c6ff] to-[#0072ff] transition-all duration-300"
-                    >
-                      Tests
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem> */}
-
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
                     <Link 
@@ -95,7 +89,7 @@ export default function NavBar() {
             
           </div>
 
-          <NavigationMenu className="flex md:pr-30 ">
+          <NavigationMenu className="flex">
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>

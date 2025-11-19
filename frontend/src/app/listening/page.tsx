@@ -7,7 +7,6 @@ import { CardDescription, CardTitle } from "@/components/ui/card";
 import LoginModal from "@/components/ui/LoginModal";
 import { PiFediverseLogoFill } from "react-icons/pi";
 import { SiTestcafe } from "react-icons/si";
-import { VscFeedback } from "react-icons/vsc";
 import Footer from "@/components/ui/footer";
 import { SpotlightCard } from "@/components/ui/spotlightcard";
 import ScrollTop from "@/components/ui/scroll-top";
@@ -17,6 +16,7 @@ import { GiProgression } from "react-icons/gi";
 import { MdQuickreply } from "react-icons/md";
 
 import { useState } from "react";
+import Link from "next/link";
 export default function Listening() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
@@ -59,11 +59,10 @@ export default function Listening() {
                 {/* CTA Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button
-                    onClick={() => setIsLoginModalOpen(true)}
                     size="lg"
                     className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                   >
-                    Move to Listening
+                    <Link href ="/view-test?skill=listening">Move to Listening</Link>
                   </Button>
                   <Button
                     variant="outline"

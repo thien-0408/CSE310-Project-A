@@ -1,14 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
-
-interface Blank {
-  index: number;
-  answer: string; // đáp án đúng (dùng cho scoring)
-}
+import { Blank } from "@/types/reading"; 
 
 interface Props {
-  id: number;
-  question: string;
+  id: number; // Section ID
+  question: string; // Instructions
   text: string;
   blanks: Blank[];
   wordLimit?: string;
@@ -23,69 +19,69 @@ const GapFilling: React.FC<Props> = ({
   wordLimit,
   onAnswerChange,
 }) => {
-  const storageKey = `question-gap-${id}`;
+  const storageKey = `section-gap-${id}`; 
   const [answers, setAnswers] = useState<Record<number, string>>({});
 
   useEffect(() => {
     const saved = localStorage.getItem(storageKey);
     if (saved) {
-      const parsed = JSON.parse(saved);
-      setAnswers(parsed);
-      if (onAnswerChange) onAnswerChange(parsed);
+      try {
+        const parsed = JSON.parse(saved);
+        setAnswers(parsed);
+        if (onAnswerChange) onAnswerChange(parsed);
+      } catch (e) {
+        console.error("Error parsing saved answers", e);
+      }
     }
-  }, [storageKey]);
+  }, []); 
 
-  const handleChange = (index: number, value: string) => {
-    const updated = { ...answers, [index]: value };
+  const handleChange = (questionId: number, value: string) => {
+    const updated = { ...answers, [questionId]: value };
     setAnswers(updated);
     localStorage.setItem(storageKey, JSON.stringify(updated));
+    
     if (onAnswerChange) onAnswerChange(updated);
   };
 
-  const renderWithBlanks = () => {
-    let rendered = text;
-    blanks.forEach((blank) => {
-      const inputBox = `<input data-blank="${blank.index}" />`;
-      rendered = rendered.replace(`___${blank.index}___`, inputBox);
-    });
-    return rendered;
-  };
+  const validIds = new Set(blanks.map((b) => b.index));
 
   return (
-    <div className="p-4 mb-4">
-      <p className="font-semibold mb-2 flex items-center gap-2">
-        <span className="flex items-center justify-center w-7 h-7 bg-blue-500 text-white rounded-full text-lg font-bold flex-shrink-0">
-          {id}
-        </span>
-        {question}
-      </p>
-
+    <div className="p-6 mb-6 bg-white rounded-xl">
       {wordLimit && (
-        <p className="font-bold mb-3">
-          Write <span className="font-bold text-[#407db9]">{wordLimit}</span>.
+        <p className="text-sm text-gray-500 mb-4 italic font-medium">
+          {wordLimit}
         </p>
       )}
 
-      {/* Render với input */}
-      <p className="leading-relaxed">
+      <div className="leading-loose text-gray-700 text-base">
         {text.split(/(___\d+___)/g).map((part, i) => {
           const match = part.match(/___(\d+)___/);
+          
           if (match) {
-            const idx = parseInt(match[1], 10);
-            return (
-              <input
-                key={i}
-                type="text"
-                value={answers[idx] || ""}
-                onChange={(e) => handleChange(idx, e.target.value)}
-                className="border rounded-sm border-gray-500 px-1 mx-1 w-32 m-1 hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all"
-                placeholder={`[${idx}]`}
-              />
-            );
+            const questionId = parseInt(match[1], 10);
+            
+            if (validIds.has(questionId)) {
+              return (
+                <span key={i} className="inline-flex items-center mx-1 relative">
+                  <span className="flex items-center justify-center w-7 h-7 bg-blue-500 text-white rounded-full text-lg font-bold flex-shrink-0">
+                    {questionId}
+                  </span>
+                  <input
+                    type="text"
+                    value={answers[questionId] || ""}
+                    onChange={(e) => handleChange(questionId, e.target.value)}
+                    className="border-b-2 border-gray-300 bg-blue-50/50 px-2 py-0.5 w-32 text-center focus:border-blue-500 focus:bg-white focus:outline-none transition-all font-medium text-blue-700"
+                    autoComplete="off"
+                  />
+                </span>
+              );
+            }
+            return <span key={i} className="text-red-500 font-bold">[Invalid ID: {questionId}]</span>;
           }
+          
           return <span key={i}>{part}</span>;
         })}
-      </p>
+      </div>
     </div>
   );
 };

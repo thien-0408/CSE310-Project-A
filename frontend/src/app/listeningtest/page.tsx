@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { GrNext, GrPrevious } from "react-icons/gr";
 import Loader from "@/components/ui/Loader";
 import { ListeningData } from "@/types/listening"; 
-import ScrollTop from "@/components/ui/scroll-top";
 import ScrollToTopButton from "@/components/ui/testscroller";
 
 
@@ -23,7 +22,6 @@ export default function ListeningTest() {
   const [showResults, setShowResults] = useState(false);
   const typedListeningData = listeningData as ListeningData;
 
-  // Handle answer change from ListeningRenderer
   const handleAnswerChange = (sectionId: number, questionId: number, answer: unknown) => {
     setUserAnswers(prev => {
       const existingIndex = prev.findIndex(

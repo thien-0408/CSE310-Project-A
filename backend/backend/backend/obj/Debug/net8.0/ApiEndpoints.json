@@ -1,6 +1,32 @@
 [
   {
     "ContainingType": "backend.Controllers.AdminController",
+    "Method": "ActivateUser",
+    "RelativePath": "api/Admin/activate-user/{userName}",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userName",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "backend.Entities.User",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "backend.Controllers.AdminController",
     "Method": "AdminOnlyEndPoint",
     "RelativePath": "api/Admin/admin-only",
     "HttpMethod": "GET",
@@ -38,8 +64,8 @@
   {
     "ContainingType": "backend.Controllers.AdminController",
     "Method": "DeActivateUser",
-    "RelativePath": "api/Admin/deactivate/user/{username}",
-    "HttpMethod": "POST",
+    "RelativePath": "api/Admin/deactivate-user/{username}",
+    "HttpMethod": "PATCH",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -64,7 +90,7 @@
   {
     "ContainingType": "backend.Controllers.AdminController",
     "Method": "DeleteUser",
-    "RelativePath": "api/Admin/delete-account/{username}",
+    "RelativePath": "api/Admin/delete-user/{username}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -75,6 +101,46 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": [
+      {
+        "Type": "backend.Entities.User",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "backend.Controllers.AdminController",
+    "Method": "GetAllUser",
+    "RelativePath": "api/Admin/fetch-users",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[backend.Entities.User, backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "backend.Controllers.AdminController",
+    "Method": "Logout",
+    "RelativePath": "api/Admin/logout",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": [
       {
         "Type": "backend.Entities.User",
@@ -115,6 +181,22 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend.Controllers.AuthController",
+    "Method": "ChangePassword",
+    "RelativePath": "api/Auth/change-password",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "backend.Models.ChangePasswordDto",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {

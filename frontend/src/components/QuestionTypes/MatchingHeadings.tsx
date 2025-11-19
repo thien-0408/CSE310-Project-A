@@ -59,12 +59,18 @@ const MatchingHeadings: React.FC<Props> = ({
               onChange={(e) => handleChange(para, e.target.value)}
               className=" flex-1 border border-gray-300 rounded-md p-2 font-medium text-gray-700 bg-white hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-150 ease-in-out"
             >
+              
               <option value=""></option>
-              {options?.map((opt, i) => (
+              {headings?.map((opt, i) => (
                 <option key={i} value={opt} className="">
                   {opt}
                 </option>
               ))}
+              {/* {headings.map((h, i) => (
+            <li key={i} className="font-semibold  even:bg-gray-100 p-4">
+              {h}
+            </li>
+          ))} */}
             </select>
           </div>
         ))}
