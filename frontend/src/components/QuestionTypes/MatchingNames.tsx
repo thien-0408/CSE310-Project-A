@@ -72,7 +72,7 @@ const MatchingNames: React.FC<MatchingNamesProps> = ({
             
             {/* Question Text with ID */}
             <div className="flex gap-3 flex-1">
-              <span className="flex items-center justify-center w-8 h-8 bg-gray-100 text-gray-600 rounded-full text-sm font-bold flex-shrink-0 border border-gray-200">
+              <span className="flex items-center justify-center w-8 h-8 bg-blue-500 text-white rounded-full text-md font-bold flex-shrink-0 border border-gray-200">
                 {q.id}
               </span>
               <p className="text-gray-700 text-base pt-1">
@@ -85,7 +85,7 @@ const MatchingNames: React.FC<MatchingNamesProps> = ({
               <select
                 className={`w-full cursor-pointer border rounded-md p-2 text-sm font-medium transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 ${
                   answers[q.id] 
-                    ? "border-blue-500 bg-blue-50 text-blue-700" 
+                    ? "border-white bg-blue-500 text-white" 
                     : "border-gray-300 bg-white text-gray-700"
                 }`}
                 value={answers[q.id] || ""}
@@ -93,8 +93,7 @@ const MatchingNames: React.FC<MatchingNamesProps> = ({
               >
                 <option value="" disabled>Select answer...</option>
                 {options.map((opt, idx) => {
-                  // Trích xuất chữ cái (A, B, C) để hiển thị gọn trong dropdown mobile nếu cần
-                  // Hoặc hiển thị cả dòng. Ở đây tôi hiển thị cả dòng cho rõ.
+                  
                   return (
                     <option key={idx} value={opt}>
                       {opt}

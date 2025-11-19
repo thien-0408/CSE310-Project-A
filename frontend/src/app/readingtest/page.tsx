@@ -225,9 +225,7 @@ export default function ReadingTest() {
           className="overflow-y-auto border-r"
           style={{ width: `${leftWidth}%` }}
         >
-          <div className="text-3xl font-extrabold text-center p-10 text-white italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8]">
-            <h1 className="title">{data.passageTitle}</h1>
-          </div>
+          
           <div className="p-6 px-15 text-md">
             <Image
               src={"/testdata/repImage/DSC06942-1-1536x1024-1.jpg"}

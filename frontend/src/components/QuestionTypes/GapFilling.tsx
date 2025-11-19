@@ -63,14 +63,14 @@ const GapFilling: React.FC<Props> = ({
             if (validIds.has(questionId)) {
               return (
                 <span key={i} className="inline-flex items-center mx-1 relative">
-                  <span className="flex items-center justify-center w-7 h-7 bg-blue-500 text-white rounded-full text-lg font-bold flex-shrink-0">
+                  <span className="flex items-center justify-center w-8 h-8 bg-blue-500 text-white rounded-full text-md font-bold flex-shrink-0 border border-gray-200">
                     {questionId}
                   </span>
                   <input
                     type="text"
                     value={answers[questionId] || ""}
                     onChange={(e) => handleChange(questionId, e.target.value)}
-                    className="border-b-2 border-gray-300 bg-blue-50/50 px-2 py-0.5 w-32 text-center focus:border-blue-500 focus:bg-white focus:outline-none transition-all font-medium text-blue-700"
+                    className="font-semibold border-b-2 border-gray-300 bg-blue-50/50 px-2 py-0.5 w-32 text-center focus:border-blue-500 focus:bg-white focus:outline-none transition-all  text-blue-700"
                     autoComplete="off"
                   />
                 </span>

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React from "react";
 import { useState, useEffect } from "react";
 
@@ -6,10 +6,15 @@ interface Props {
   id: number;
   question: string;
   options: string[];
-  onAnswerChange?: (answer: number) => void; 
+  onAnswerChange?: (answer: number) => void;
 }
 
-const MultipleChoice: React.FC<Props> = ({ id, question, options, onAnswerChange }) => {
+const MultipleChoice: React.FC<Props> = ({
+  id,
+  question,
+  options,
+  onAnswerChange,
+}) => {
   const storageKey = `question-${id}`;
 
   const [selected, setSelected] = useState<number | null>(null);
@@ -19,17 +24,17 @@ const MultipleChoice: React.FC<Props> = ({ id, question, options, onAnswerChange
     if (saved !== null) {
       const savedIndex = parseInt(saved, 10);
       setSelected(savedIndex);
-     
+
       if (onAnswerChange) {
         onAnswerChange(savedIndex);
       }
     }
-  }, [storageKey]); 
+  }, [storageKey]);
 
   const handleChange = (index: number) => {
     setSelected(index);
     localStorage.setItem(storageKey, index.toString());
-    
+
     if (onAnswerChange) {
       onAnswerChange(index);
     }
@@ -37,7 +42,12 @@ const MultipleChoice: React.FC<Props> = ({ id, question, options, onAnswerChange
 
   return (
     <div className="p-4 mb-2">
-      <p className="font-semibold mb-2 flex items-center gap-2"><span className="flex items-center justify-center w-7 h-7 bg-blue-500 text-white rounded-full text-lg font-bold flex-shrink-0">{id}</span>{question}</p>
+      <p className="font-semibold mb-2 flex items-center gap-2">
+        <span className="flex items-center justify-center w-7 h-7 bg-blue-500 text-white rounded-full text-lg font-bold flex-shrink-0">
+          {id}
+        </span>
+        {question}
+      </p>
       <div className="space-y-2">
         {options.map((opt, i) => (
           <label key={i} className="flex items-center space-x-2 cursor-pointer">

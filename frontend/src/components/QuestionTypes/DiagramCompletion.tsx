@@ -70,7 +70,7 @@ const DiagramCompletion: React.FC<Props> = ({
             className="bg-gray-50 p-6 rounded-xl border border-gray-200 relative transition-all hover:border-blue-200"
           >
             {/* Question ID Badge */}
-            <div className="absolute -top-3 -left-3 w-8 h-8 bg-white text-blue-600 border border-gray-200 rounded-full flex items-center justify-center font-bold shadow-sm z-10">
+            <div className="absolute -top-3 -left-3 w-8 h-8 bg-blue-500 text-white border border-gray-200 rounded-full flex items-center justify-center font-bold shadow-sm z-10">
               {q.id}
             </div>
 
@@ -88,7 +88,6 @@ const DiagramCompletion: React.FC<Props> = ({
 
                 return (
                   <React.Fragment key={index}>
-                    {/* Mũi tên chỉ hướng (hiển thị giữa các phần tử) */}
                     {index > 0 && (
                       <div className="text-gray-300 hidden sm:block">
                         <svg
@@ -115,7 +114,7 @@ const DiagramCompletion: React.FC<Props> = ({
                             type="text"
                             value={answers[q.id] || ""}
                             onChange={(e) => handleChange(q.id, e.target.value)}
-                            className="border-2 border-blue-300 bg-white px-4 py-2 rounded-lg w-48 text-center text-blue-800 font-semibold placeholder-blue-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 outline-none transition-all shadow-sm"
+                            className="border-2 border-blue-300 bg-white px-4 py-2 rounded-lg w-48 text-center text-blue-700 font-semibold placeholder-blue-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 outline-none transition-all shadow-sm"
                             placeholder="Type answer..."
                             autoComplete="off"
                           />

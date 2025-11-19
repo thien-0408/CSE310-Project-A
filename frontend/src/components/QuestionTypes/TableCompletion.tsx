@@ -55,16 +55,15 @@ const TableCompletion: React.FC<Props> = ({
           if (match) {
             const questionId = parseInt(match[1], 10);
             return (
-              <div key={index} className="relative inline-block mx-1">
-                {/* Badge ID nhỏ phía trên */}
-                <span className=" left-0  justify-center w-10 h-10 bg-blue-600 text-white rounded-full text-sm font-bold flex-shrink-0">
+              <div key={index} className="flex mx-1">
+              <span className="flex items-center justify-center w-8 h-8 bg-blue-500 text-white rounded-full text-md font-bold flex-shrink-0 border border-gray-200">
                   {questionId}
                 </span>
                 <input
                   type="text"
                   value={answers[questionId] || ""}
                   onChange={(e) => handleChange(questionId, e.target.value)}
-                  className="border border-gray-300 bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200 rounded px-2 py-1 w-32 text-center text-sm font-medium text-gray-700 outline-none transition-all"
+                  className="border-b-2 border-gray-300 bg-blue-50/50 px-2 py-0.5 w-32 text-center focus:border-blue-500 focus:bg-white focus:outline-none transition-all font-medium text-blue-700"
                   autoComplete="off"
                 />
               </div>
@@ -78,7 +77,7 @@ const TableCompletion: React.FC<Props> = ({
   if (!table) return null;
 
   return (
-    <div className="p-6 mb-6 bg-white rounded-xl ">
+    <div className="p-0 mb-6 bg-white rounded-xl ">
       {/* Render Table  */}
       <div className="">
         <table className="w-full min-w-[600px] border-collapse border border-gray-200 rounded-lg overflow-hidden shadow-sm">

@@ -233,7 +233,7 @@ const QuestionRenderer: React.FC<Props> = ({ sections, onAnswerChange }) => {
       {sections.map((section) => (
         <div
           key={section.sectionId}
-          className="p-6 border border-gray-200 rounded-lg shadow-sm bg-white"
+          className="p-4  rounded-lg shadow-sm bg-white"
         >
           {/* Section Header */}
           <div className="mb-4 border-b pb-3">

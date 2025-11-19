@@ -53,14 +53,17 @@ const MatchingHeadings: React.FC<Props> = ({
       <div className="space-y-4">
         {paragraphs.map((para, idx) => (
           <div key={idx} className="flex items-center space-x-4">
-            <span className="w-1/2 font-semibold">{para}</span>
+            <span className="flex items-center justify-center w-8 h-8 bg-blue-500 text-white rounded-full text-md font-bold flex-shrink-0 border border-gray-200">
+                {idx}
+              </span>
+            <span className="w-1/2 text-base text-gray-700">{para}</span>
             <select
               value={selected[para] || ""}
               onChange={(e) => handleChange(para, e.target.value)}
               className=" flex-1 border border-gray-300 rounded-md p-2 font-medium text-gray-700 bg-white hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-150 ease-in-out"
             >
               
-              <option value=""></option>
+              <option value="" disabled>Select answer...</option>
               {headings?.map((opt, i) => (
                 <option key={i} value={opt} className="">
                   {opt}
