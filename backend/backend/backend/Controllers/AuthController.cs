@@ -11,7 +11,7 @@ using System.Security.Claims;
 
 namespace backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     [ApiController]
     public class AuthController : ControllerBase
     {

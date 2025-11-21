@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/user")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -39,7 +39,6 @@ namespace backend.Controllers
             }
             var avatarUrl = await _fileService.UploadFile(request.Avatar, "user_avatars");
             // Update
-
             var profileUpdate = new Profile
             {
                 Bio = request.Bio,

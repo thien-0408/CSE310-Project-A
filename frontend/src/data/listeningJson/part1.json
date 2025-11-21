@@ -3,15 +3,15 @@
   "partNumber": 1,
   "partTitle": "Social/Transactional Conversation",
   "audioUrl": "/audio/listening.mp3",
-  "audioDuration": 240,
+  "audioDuration": 60,
   "context": "The housing officer takes some details from the girl.",
-  "instructions": "Complete the following form with NO MORE THAN THREE WORDS AND/OR A NUMBER for each answer.",
-  "wordLimit": "NO MORE THAN THREE WORDS AND/OR A NUMBER",
   "questionRange": "1-10",
   "sections": [
     {
       "sectionId": 1,
       "sectionRange": "Question 1 - 5",
+      "instructions": "Complete the following form with NO MORE THAN THREE WORDS AND/OR A NUMBER for each answer.",
+      "wordLimit": "NO MORE THAN THREE WORDS AND/OR A NUMBER",
       "sectionTitle": "PERSONAL DETAILS FOR HOMESTAY APPLICATION",
       "questionType": "form_completion",
       "formFields": [

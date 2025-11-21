@@ -2,7 +2,7 @@
   {
     "ContainingType": "backend.Controllers.AdminController",
     "Method": "ActivateUser",
-    "RelativePath": "api/Admin/activate-user/{userName}",
+    "RelativePath": "api/admin/activate-user/{userName}",
     "HttpMethod": "PATCH",
     "IsController": true,
     "Order": 0,
@@ -28,7 +28,7 @@
   {
     "ContainingType": "backend.Controllers.AdminController",
     "Method": "AdminOnlyEndPoint",
-    "RelativePath": "api/Admin/admin-only",
+    "RelativePath": "api/admin/admin-only",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -38,7 +38,7 @@
   {
     "ContainingType": "backend.Controllers.AdminController",
     "Method": "CreateAccount",
-    "RelativePath": "api/Admin/create-account",
+    "RelativePath": "api/admin/create-account",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -64,7 +64,7 @@
   {
     "ContainingType": "backend.Controllers.AdminController",
     "Method": "DeActivateUser",
-    "RelativePath": "api/Admin/deactivate-user/{username}",
+    "RelativePath": "api/admin/deactivate-user/{username}",
     "HttpMethod": "PATCH",
     "IsController": true,
     "Order": 0,
@@ -90,7 +90,7 @@
   {
     "ContainingType": "backend.Controllers.AdminController",
     "Method": "DeleteUser",
-    "RelativePath": "api/Admin/delete-user/{username}",
+    "RelativePath": "api/admin/delete-user/{username}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -116,7 +116,7 @@
   {
     "ContainingType": "backend.Controllers.AdminController",
     "Method": "GetAllUser",
-    "RelativePath": "api/Admin/fetch-users",
+    "RelativePath": "api/admin/fetch-users",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -136,7 +136,7 @@
   {
     "ContainingType": "backend.Controllers.AdminController",
     "Method": "Logout",
-    "RelativePath": "api/Admin/logout",
+    "RelativePath": "api/admin/logout",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -156,7 +156,7 @@
   {
     "ContainingType": "backend.Controllers.AdminController",
     "Method": "GetMyProfile",
-    "RelativePath": "api/Admin/profile",
+    "RelativePath": "api/admin/profile",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -176,7 +176,7 @@
   {
     "ContainingType": "backend.Controllers.AuthController",
     "Method": "AuthenticationEndPoint",
-    "RelativePath": "api/Auth",
+    "RelativePath": "api/auth",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -186,7 +186,7 @@
   {
     "ContainingType": "backend.Controllers.AuthController",
     "Method": "ChangePassword",
-    "RelativePath": "api/Auth/change-password",
+    "RelativePath": "api/auth/change-password",
     "HttpMethod": "PATCH",
     "IsController": true,
     "Order": 0,
@@ -202,7 +202,7 @@
   {
     "ContainingType": "backend.Controllers.AuthController",
     "Method": "Login",
-    "RelativePath": "api/Auth/login",
+    "RelativePath": "api/auth/login",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -228,7 +228,7 @@
   {
     "ContainingType": "backend.Controllers.AuthController",
     "Method": "Logout",
-    "RelativePath": "api/Auth/logout",
+    "RelativePath": "api/auth/logout",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -238,7 +238,7 @@
   {
     "ContainingType": "backend.Controllers.AuthController",
     "Method": "GetMyProfile",
-    "RelativePath": "api/Auth/profile",
+    "RelativePath": "api/auth/profile",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -258,7 +258,7 @@
   {
     "ContainingType": "backend.Controllers.AuthController",
     "Method": "RefreshToken",
-    "RelativePath": "api/Auth/refresh-token",
+    "RelativePath": "api/auth/refresh-token",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -284,7 +284,7 @@
   {
     "ContainingType": "backend.Controllers.AuthController",
     "Method": "Register",
-    "RelativePath": "api/Auth/register",
+    "RelativePath": "api/auth/register",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -308,9 +308,70 @@
     ]
   },
   {
+    "ContainingType": "backend.Controllers.ListeningTestController",
+    "Method": "GetAllTest",
+    "RelativePath": "api/listening-test",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[backend.Entities.ListeningTest, backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "backend.Controllers.ListeningTestController",
+    "Method": "UploadJson",
+    "RelativePath": "api/listening-test/upload-json-test",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "JsonFile",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "testType",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "audioDuration",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "backend.Entities.ListeningTest",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "backend.Controllers.MilestoneController",
     "Method": "CreateEvent",
-    "RelativePath": "api/Milestone/generate-event",
+    "RelativePath": "api/milestone/generate-event",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -336,7 +397,7 @@
   {
     "ContainingType": "backend.Controllers.UserController",
     "Method": "UpdateProfile",
-    "RelativePath": "api/User/profile",
+    "RelativePath": "api/user/profile",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,

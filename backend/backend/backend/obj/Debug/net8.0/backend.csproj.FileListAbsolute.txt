@@ -143,3 +143,4 @@ C:\Users\ADMIN\OneDrive\Máy tính\CSE310-Project-A\backend\backend\backend\bin\
 C:\Users\ADMIN\OneDrive\Máy tính\CSE310-Project-A\backend\backend\backend\bin\Debug\net8.0\Scalar.AspNetCore.dll
 C:\Users\ADMIN\OneDrive\Máy tính\CSE310-Project-A\backend\backend\backend\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
 C:\Users\ADMIN\OneDrive\Máy tính\CSE310-Project-A\backend\backend\backend\bin\Debug\net8.0\backend.staticwebassets.runtime.json
+C:\Users\ADMIN\OneDrive\Máy tính\CSE310-Project-A\backend\backend\backend\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

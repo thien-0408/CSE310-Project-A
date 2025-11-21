@@ -23,13 +23,26 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from 'next/navigation';
 import { UserProfile } from "@/types/userProfile";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation"; 
+
 
 
 export default function NavBarUser() {
   const [profile, setProfile] = useState<UserProfile | null>(null);  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const router = useRouter();
+  const pathname = usePathname(); 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5151";
+  //CSS for nav bar 
+  const getLinkClassName = (href: string) => {
+    const isActive = pathname === href;
+    
+    const baseClasses = "font-medium px-4 py-3 rounded-full transition-all duration-300";
+      if (isActive) {
+      return `${baseClasses} text-white bg-gradient-to-r from-[#00c6ff] to-[#0072ff] bg-blue-100 shadow-sm font-bold`;
+    }
+      return `${baseClasses} hover:text-white hover:bg-gradient-to-r from-[#00c6ff] to-[#0072ff] hover:bg-blue-100`;
+  };
 
   const handleLogout = async () =>{
     const token = localStorage.getItem("accessToken");
@@ -120,41 +133,46 @@ export default function NavBarUser() {
       <div className=" mx-auto px-4 py-2 container">
         <div className="flex items-center justify-between">
           {/* Left Side: Logo + Navigation */}
-          <div className="flex items-center space-x-8">
+          
             {/* Logo and Brand */}
-            <div className="flex items-center">
+             <div className="flex items-center shrink-0">
+            <Link href={'/'} className="flex items-center gap-2">
               <Image
                 src="/assets/logo.png"
-                alt="IELTSSprint Logo"
-                width={30}
-                height={30}
+                alt="IELTS Sprint Logo"
+                width={32} 
+                height={32}
                 quality={100}
-                className="mr-2"
+                className="object-contain"
               />
-              <h1 className="text-2xl font-bold italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8] bg-clip-text text-transparent">
-                <Link href={"/"}>IELTSSprint</Link>
+              <h1 className="text-2xl font-bold italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8] bg-clip-text text-transparent hidden sm:block">
+                IELTS Sprint
               </h1>
-            </div>
+            </Link>
+          </div>
+            
 
             {/* Navigation Menu - flows naturally from logo */}
-            <NavigationMenu className="hidden md:flex">
-              <NavigationMenuList className="flex items-center space-x-1 text-sm">
+            <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2">
+            <NavigationMenu className=" p-3 px-12 shadow-lg rounded-full"> 
+              <NavigationMenuList className="flex items-center space-x-1">
+                
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
-                    <Link
-                      href="/dashboard"
-                      className="text-gray-700 font-medium px-3 py-2 tracking-tighter rounded-full hover:p-4 hover:text-white hover:bg-gradient-to-r from-[#00c6ff] to-[#0072ff] transition-all duration-300"
+                    <Link 
+                      href="/" 
+                      className={getLinkClassName('/dashboard')}
                     >
-                      Home
+                      Dashboard
                     </Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
-                    <Link
-                      href="/practice"
-                      className="text-gray-700 font-medium px-3 py-2 tracking-tighter rounded-full hover:p-4 hover:text-white hover:bg-gradient-to-r from-[#00c6ff] to-[#0072ff] transition-all duration-300"
+                    <Link 
+                      href="/reading" 
+                      className={getLinkClassName('/practice')}
                     >
                       Practice
                     </Link>
@@ -163,9 +181,9 @@ export default function NavBarUser() {
 
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
-                    <Link
-                      href="/tests"
-                      className="text-gray-700 font-medium px-3 py-2 tracking-tighter rounded-full hover:p-4 hover:text-white hover:bg-gradient-to-r from-[#00c6ff] to-[#0072ff] transition-all duration-300"
+                    <Link 
+                      href="/listening" 
+                      className={getLinkClassName('/view-tests')}
                     >
                       Tests
                     </Link>
@@ -174,28 +192,19 @@ export default function NavBarUser() {
 
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
-                    <Link
-                      href="/profile"
-                      className="text-gray-700 font-medium px-3 py-2 tracking-tighter rounded-full hover:p-4 hover:text-white hover:bg-gradient-to-r from-[#00c6ff] to-[#0072ff] transition-all duration-300"
+                    <Link 
+                      href="/profile" 
+                      className={getLinkClassName('/profile')}
                     >
                       Profile
                     </Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
 
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <Link
-                      href="/settings"
-                      className="text-gray-700 font-medium px-3 py-2 tracking-tighter rounded-full hover:p-4 hover:text-white hover:bg-gradient-to-r from-[#00c6ff] to-[#0072ff] transition-all duration-300"
-                    >
-                      Settings
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
           </div>
+          
 
           {/* Right Side: avatar */}
           <div className="flex items-center space-x-4">
@@ -205,7 +214,7 @@ export default function NavBarUser() {
                 <Avatar className="cursor-pointer hover:ring-2 hover:ring-blue-500 hover:ring-offset-1 transition-all">
                   <AvatarImage src={apiUrl + profile?.avatarUrl} />
                   <AvatarFallback className="bg-blue-100 text-blue-700">
-                    CN
+                    ISP
                   </AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>

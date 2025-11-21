@@ -40,9 +40,7 @@ const MatchingHeadings: React.FC<Props> = ({
   return (
     <div className="p-4 mb-4">
       <p className="font-semibold mb-2 flex items-center gap-2">
-        <span className="flex items-center justify-center w-7 h-7 bg-blue-500 text-white rounded-full text-lg font-bold flex-shrink-0">
-          {id}
-        </span>
+        
         {question}
       </p>
 
@@ -54,7 +52,7 @@ const MatchingHeadings: React.FC<Props> = ({
         {paragraphs.map((para, idx) => (
           <div key={idx} className="flex items-center space-x-4">
             <span className="flex items-center justify-center w-8 h-8 bg-blue-500 text-white rounded-full text-md font-bold flex-shrink-0 border border-gray-200">
-                {idx}
+                {id}
               </span>
             <span className="w-1/2 text-base text-gray-700">{para}</span>
             <select
@@ -69,11 +67,6 @@ const MatchingHeadings: React.FC<Props> = ({
                   {opt}
                 </option>
               ))}
-              {/* {headings.map((h, i) => (
-            <li key={i} className="font-semibold  even:bg-gray-100 p-4">
-              {h}
-            </li>
-          ))} */}
             </select>
           </div>
         ))}

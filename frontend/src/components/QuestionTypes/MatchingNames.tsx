@@ -83,17 +83,12 @@ const MatchingNames: React.FC<MatchingNamesProps> = ({
             {/* Answer Select Dropdown */}
             <div className="w-full sm:w-48 flex-shrink-0 pl-11 sm:pl-0">
               <select
-                className={`w-full cursor-pointer border rounded-md p-2 text-sm font-medium transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 ${
-                  answers[q.id] 
-                    ? "border-white bg-blue-500 text-white" 
-                    : "border-gray-300 bg-white text-gray-700"
-                }`}
+                className="w-full cursor-pointer border rounded-md p-2 text-sm font-medium transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
                 value={answers[q.id] || ""}
                 onChange={(e) => handleChange(q.id, e.target.value)}
               >
-                <option value="" disabled>Select answer...</option>
+                <option  value="" disabled>Select answer...</option>
                 {options.map((opt, idx) => {
-                  
                   return (
                     <option key={idx} value={opt}>
                       {opt}

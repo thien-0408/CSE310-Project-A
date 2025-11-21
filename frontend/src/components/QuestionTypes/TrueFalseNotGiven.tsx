@@ -42,11 +42,7 @@ const TrueFalseNotGiven: React.FC<Props> = ({
 
   return (
     <div className="p-4 mb-2">
-      <h1 className="font-medium text-gray-800">
-        Do the following statements agree with the views of the writer in
-        Reading Passage? In boxes on your answer sheet, write.
-      </h1>
-      <div className="grid grid-cols-[1fr_2fr] p-4 bg-gray-100 rounded-sm my-4 tracking-tight">
+      <div className="grid grid-cols-[1fr_2fr] p-4 bg-gray-100 rounded-sm my-4 tracking-tight ">
         <div className="space-y-2">
           <h2 className="font-bold text-[#407db9]">TRUE.</h2>
           <h2 className="font-bold text-[#407db9]">FALSE.</h2>

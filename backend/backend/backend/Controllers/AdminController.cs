@@ -12,7 +12,7 @@ using System.Security.Claims;
 
 namespace backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/admin")]
     [ApiController]
     public class AdminController : ControllerBase
     {

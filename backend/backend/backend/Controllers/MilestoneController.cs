@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/milestone")]
     [ApiController]
     public class MilestoneController : ControllerBase
     {
