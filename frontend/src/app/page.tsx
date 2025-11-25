@@ -8,7 +8,9 @@ import LoginModal from "@/components/ui/LoginModal";
 import { FaBookOpen } from "react-icons/fa";
 import { FaMedal } from "react-icons/fa";
 import { FaGraduationCap } from "react-icons/fa";
-import { IoPerson } from "react-icons/io5";
+import { ImCalculator } from "react-icons/im";
+
+import {  IoPerson } from "react-icons/io5";
 import { GiProgression } from "react-icons/gi";
 import { FaLightbulb } from "react-icons/fa";
 import Footer from "@/components/ui/footer";
@@ -17,6 +19,8 @@ import ScrollTop from "@/components/ui/scroll-top";
 import VenomBeam from "@/components/ui/venom-beam";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
+import { SiTicktick } from "react-icons/si";
+import { GrResources } from "react-icons/gr";
 export default function HomePage() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
@@ -107,7 +111,7 @@ export default function HomePage() {
       <main>
         {/*Benefit section*/}
         <section
-          data-aos="fade-down"
+          data-aos="fade-right" data-aos-duration="500"
           className="py-20 px-10 lg:px-40 tracking-tight"
         >
           <div className="container mx-auto px-6 lg:px-8 ">
@@ -257,7 +261,7 @@ export default function HomePage() {
 
         {/* Why choose IELTS Sprint? */}
         <section
-          data-aos="fade-down"
+          data-aos="fade-left" data-aos-duration="500"
           className="reason-section py-20 px-10 lg:px-20 tracking-tight"
         >
           <div className="container mx-auto px-6 lg:px-8">
@@ -281,7 +285,8 @@ export default function HomePage() {
                 >
                   <div className="flex justify-center items-center mb-6">
                     <div className="icon-holder w-16 h-16 flex items-center justify-center">
-                      <i className="fa-solid fa-circle-check text-[#4b91e2] text-5xl"></i>
+                      <SiTicktick className = "text-[#4b91e2] text-5xl" />
+
                     </div>
                   </div>
                   <div className="flex-1 flex flex-col justify-between">
@@ -306,7 +311,8 @@ export default function HomePage() {
                 >
                   <div className="flex justify-center items-center mb-6">
                     <div className="icon-holder w-16 h-16 flex items-center justify-center">
-                      <i className="fa-solid fa-flask text-[#4b91e2] text-5xl"></i>
+                      <ImCalculator className = "text-[#4b91e2] text-5xl" />
+
                     </div>
                   </div>
                   <div className="flex-1 flex flex-col justify-between">
@@ -331,7 +337,7 @@ export default function HomePage() {
                 >
                   <div className="flex justify-center items-center mb-6">
                     <div className="icon-holder w-16 h-16 flex items-center justify-center">
-                      <i className="fa-solid fa-book-open text-[#4b91e2] text-5xl"></i>
+                      <GrResources className = "text-[#4b91e2] text-5xl" />
                     </div>
                   </div>
                   <div className="flex-1 flex flex-col justify-between">
@@ -507,7 +513,7 @@ export default function HomePage() {
           </div>
         </section>
         {/*Success path*/}
-        <section data-aos="fade-down">
+        <section data-aos="flip-left">
           <div className="w-full bg-gray-50 flex flex-col items-center py-30 sm:flex-row lg:px-60 lg:py-30 p-10 tracking-tight">
             <div className="flex-1">
               {/**Image section */}

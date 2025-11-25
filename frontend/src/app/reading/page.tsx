@@ -249,12 +249,12 @@ export default function Reading() {
         {/*Student's comments */}
 
         {/*Success path*/}
-        <section data-aos="fade-down">
+        <section data-aos="flip-left" data-aos-duration="500">
           <div className="w-full bg-gray-50 flex flex-col items-center py-30 sm:flex-row lg:px-60 lg:py-30 p-10 tracking-tight">
             <div className="flex-1">
               {/**Image section */}
               <Image
-                src="/assets/success-path.jpg"
+                src="/assets/reading-section.avif"
                 alt=""
                 width={450}
                 height={350}

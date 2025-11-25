@@ -19,10 +19,18 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode"; // 1. Import jwt-decode
 
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
+}
+
+// 2. Define the structure for the decoded token
+interface DecodedToken {
+  "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"?: string | string[];
+  role?: string | string[];
+  sub?: string;
 }
 
 export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
@@ -48,7 +56,6 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     },
   });
 
-
   // Animation control
   useEffect(() => {
     if (isOpen) {
@@ -66,7 +73,6 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     setApiError(null); 
-
     
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5151";
 
@@ -76,27 +82,51 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
         headers: {
           "Content-Type": "application/json",
         },
-        // Values match with Login 
         body: JSON.stringify(values),
       });
 
       if (!response.ok) {
-        // Get error from server
         const errorMessage = await response.text();
         setApiError(errorMessage || "Invalid username or password");
         setIsLoading(false);
         return;
       }
 
-      //Successfully login and get token
+      // Successfully login and get token
       const tokens = await response.json(); 
 
-     //Save token into local storage
+      // Save token into local storage
       localStorage.setItem("accessToken", tokens.accessToken);
       localStorage.setItem("refreshToken", tokens.refreshToken);
 
       console.log("Login successful! Tokens received:", tokens);
-      router.push("/dashboard");
+
+      // 3. Decode Token and Route based on Role
+      try {
+        const decoded: DecodedToken = jwtDecode(tokens.accessToken);
+        
+        // Extract role (handling ASP.NET Identity URL and potential Array vs String)
+        const roleClaim = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] || decoded.role;
+        const userRole = Array.isArray(roleClaim) ? roleClaim[0] : roleClaim;
+
+        // Close modal logic (optional, but good for cleanup)
+        setIsAnimating(false);
+
+        if (userRole === "Admin") {
+          router.push("/admin");
+        } else {
+          router.push("/dashboard");
+        }
+        
+        // Trigger onClose after navigation starts (optional)
+        onClose();
+
+      } catch (decodeError) {
+        console.error("Token decoding failed:", decodeError);
+        // Fallback to dashboard if decoding fails
+        router.push("/dashboard");
+        onClose();
+      }
 
     } catch (error) {
       // Handle internet error
@@ -132,7 +162,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
               {/* Close Button */}
               <button
                 type="button"
-                onClick={onClose}
+                onClick={handleClose}
                 className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
               >
                 <X className="w-6 h-6" />

@@ -1,129 +1,97 @@
 'use client';
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
+
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation"; 
+import { usePathname } from "next/navigation";
 
 export default function NavBar() {
-  const pathname = usePathname(); 
+  const pathname = usePathname();
 
   const getLinkClassName = (href: string) => {
     const isActive = pathname === href;
     
-    const baseClasses = "font-medium px-4 py-3 rounded-full transition-all duration-300";
-      if (isActive) {
-      return `${baseClasses} text-white bg-gradient-to-r from-[#00c6ff] to-[#0072ff] bg-blue-100 shadow-sm font-bold`;
+    if (isActive) {
+      return "relative font-semibold px-6 py-2.5 text-blue-600 transition-all duration-300 after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-blue-400 after:via-blue-600 after:to-cyan-400 after:rounded-full";
     }
-      return `${baseClasses} hover:text-white hover:bg-gradient-to-r from-[#00c6ff] to-[#0072ff] hover:bg-blue-100`;
+    
+    return "relative font-medium px-6 py-2.5 text-gray-600 hover:text-blue-600 transition-all duration-300 after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 hover:after:w-full after:h-0.5 after:bg-gradient-to-r after:from-blue-400 after:via-blue-600 after:to-cyan-400 after:rounded-full after:transition-all after:duration-300";
   };
 
   return (
-    <header className="w-full bg-white shadow-sm border-b sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-3">
+    <header className="w-full bg-white shadow-sm sticky top-0 z-10 border-b border-gray-100">
+      <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          
-          {/* 1. Left Side: Logo & Brand */}
+         
+          {/* Logo & Brand */}
           <div className="flex items-center shrink-0">
-            <Link href={'/'} className="flex items-center gap-2">
-              <Image
-                src="/assets/logo.png"
-                alt="IELTS Sprint Logo"
-                width={32} 
-                height={32}
-                quality={100}
-                className="object-contain"
-              />
-              <h1 className="text-2xl font-bold italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8] bg-clip-text text-transparent hidden sm:block">
-                IELTS Sprint
-              </h1>
+            <Link href={'/'} className="flex items-center gap-3 group">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-lg blur-sm opacity-0 group-hover:opacity-70 transition-opacity duration-300"></div>
+                <Image
+                  src="/assets/logo.png"
+                  alt="IELTS Sprint Logo"
+                  width={40}
+                  height={40}
+                  quality={100}
+                  className="object-contain relative z-10 transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+              <div className="hidden sm:block">
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent">
+                  IELTS Sprint
+                </h1>
+                <p className="text-xs text-gray-500 font-medium -mt-1">Your Path to Success</p>
+              </div>
             </Link>
           </div>
 
-          {/* 2. Center: Main Navigation Menu */}
-          <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2">
-            <NavigationMenu className=" p-3 px-12 shadow-lg rounded-full"> 
-              <NavigationMenuList className="flex items-center space-x-1">
+          {/* Main Navigation */}
+          <nav className="hidden md:block">
+            <ul className="flex items-center gap-1">
                 
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <Link 
-                      href="/" 
-                      className={getLinkClassName('/')}
-                    >
-                      Home
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
+              <li>
+                <Link href="/" className={getLinkClassName('/')}>
+                  Home
+                </Link>
+              </li>
 
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <Link 
-                      href="/reading" 
-                      className={getLinkClassName('/reading')}
-                    >
-                      Reading
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
+              <li>
+                <Link href="/reading" className={getLinkClassName('/reading')}>
+                  Reading
+                </Link>
+              </li>
 
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <Link 
-                      href="/listening" 
-                      className={getLinkClassName('/listening')}
-                    >
-                      Listening
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
+              <li>
+                <Link href="/listening" className={getLinkClassName('/listening')}>
+                  Listening
+                </Link>
+              </li>
 
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <Link 
-                      href="/about" 
-                      className={getLinkClassName('/about')}
-                    >
-                      About Us
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
+              <li>
+                <Link href="/about" className={getLinkClassName('/about')}>
+                  About Us
+                </Link>
+              </li>
 
-              </NavigationMenuList>
-            </NavigationMenu>
-          </div>
+            </ul>
+          </nav>
 
-          {/* 3. Right Side: Auth Buttons */}
-          <div className="flex items-center shrink-0">
-            <NavigationMenu>
-              <NavigationMenuList className="flex items-center gap-3">
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <Link 
-                      href="/login" 
-                      className="text-gray-600 font-medium px-5 py-2 rounded-full hover:bg-gray-100 transition-all duration-200"
-                    >
-                      Sign In
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
+          {/* Auth Buttons */}
+          <div className="flex items-center gap-4 shrink-0">
+            <Link
+              href="/login"
+              className="hidden sm:block text-gray-700 font-medium px-5 py-2 rounded-full hover:bg-gray-50 transition-all duration-200 border border-transparent hover:border-gray-200"
+            >
+              Sign In
+            </Link>
 
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <Link 
-                      href="/register" 
-                      className="font-medium px-6 py-2.5 rounded-full text-white bg-gradient-to-r from-[#00c6ff] to-[#0072ff] hover:shadow-lg hover:shadow-blue-200 transition-all duration-300 transform hover:-translate-y-0.5"
-                    >
-                      Sign Up
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
+            <Link
+              href="/register"
+              className="relative font-semibold px-6 py-2.5 rounded-full text-white bg-gradient-to-r from-blue-600 to-cyan-500 overflow-hidden group transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-blue-200"
+            >
+              <span className="relative z-10">Get Started</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </Link>
           </div>
 
         </div>

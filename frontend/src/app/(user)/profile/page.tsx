@@ -1,12 +1,37 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import type { FC } from "react";
+import { useState, useEffect, FC, ChangeEvent, FormEvent, useMemo, useCallback } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import NavBarUser from "@/components/ui/navbarforuser";
-import { UserProfile } from "@/types/userProfile";
 import AuthGuard from "@/components/auth/AuthGuard";
+
+// --- Types ---
+export interface UserProfile {
+  id: string;
+  userName: string;
+  email: string;
+  fullName: string;
+  bio?: string;
+  targetScore?: number;
+  phoneNumber?: string;
+  dateOfBirth?: string;
+  avatarUrl?: string;
+  role?: string;
+}
+
+interface ChangePasswordRequest {
+  CurrentPassword: string;
+  NewPassword: string;
+}
+
+interface ToastMessage {
+  id: number;
+  message: string;
+  type: "success" | "error";
+}
+
+// --- Helper Components ---
 interface IconProps {
   icon: string;
   className?: string;
@@ -15,205 +40,172 @@ const Icon: FC<IconProps> = ({ icon, className }) => (
   <i className={`fas ${icon} ${className}`}></i>
 );
 
-export default function ProfilePage() {
- 
-  const [activeTab, setActiveTab] = useState("edit-profile");
+// --- API Configuration ---
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5151";
 
+export default function ProfilePage() {
+  const [activeTab, setActiveTab] = useState("edit-profile");
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
-  //API get profile
-  const apiUrl: string =
-    process.env.NEXT_PUBLIC_API_URL || "http://localhost:5151";
-  async function getUserProfile(token: string): Promise<UserProfile | null> {
-    const endpoint: string = `${apiUrl}/api/Auth/profile`;
-    try {
-      const response = await fetch(endpoint, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  // --- Toast Handler ---
+  const showToast = (message: string, type: "success" | "error" = "success") => {
+    const id = Date.now();
+    setToasts((prev) => [...prev, { id, message, type }]);
+    // Auto remove after 3 seconds
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id));
+    }, 3000);
+  };
 
-      if (!response.ok) {
-        const errorBody = await response
-          .json()
-          .catch(() => ({ message: "Unexpected error" }));
-        console.error(
-          `Error ${response.status} when getting profile:`,
-          errorBody
-        );
-        return null;
-      }
-      const data: UserProfile = await response.json();
-      console.log(data);
+  const removeToast = (id: number) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
 
-      return data;
-    } catch (error) {
-      console.error("Error when trying to connect:", error);
-      return null;
-    }
-  }
-  function getStoredToken(): string | null {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("accessToken");
-    }
-    return null;
-  }
+  // --- Fetch Profile ---
   useEffect(() => {
-    // Call API in useeffect
-    async function loadUserProfileData() {
-      const token = getStoredToken();
-      setLoading(true);
-
+    const fetchProfile = async () => {
+      const token = localStorage.getItem("accessToken");
       if (!token) {
-        console.warn("Can't find token");
-        setError(true);
         setLoading(false);
         return;
       }
 
-      console.log("Loading profile with token...");
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/Auth/profile`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      const userProfile = await getUserProfile(token);
-
-      if (userProfile) {
-        console.log("Profile loaded");
-        setProfile(userProfile);
-      } else {
-        console.error("Fail to load profile");
-        setError(true);
+        if (response.ok) {
+          const data = await response.json();
+          setProfile(data);
+        }
+      } catch (error) {
+        console.error("Failed to load profile", error);
+        showToast("Failed to load profile data", "error");
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
-    }
+    };
 
-    loadUserProfileData();
+    fetchProfile();
   }, []);
 
-  //update pass
-  const [passwords, setPasswords] = useState<PasswordState>({
-  currentPassword: '',
-  newPassword: '',
-  confirmPassword: '',
-});
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-  setPasswords((prev) => ({
-    ...prev,
-    [name]: value,
-  }));
-};
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    if (name === "phoneNumber") {
-      const regex = /^[0-9+]*$/;
-      if (!regex.test(value)) {
+  // --- Handle Profile Updates ---
+  const handleProfileUpdate = async (updatedData: UserProfile, file: File | null) => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+        showToast("Not authenticated", "error");
         return;
-      }
     }
-    setProfile((prev) => {
-      if (!prev) {
-        console.warn("Can't update profile.");
-        return null;
+
+    const formData = new FormData();
+    formData.append("FullName", updatedData.fullName || "");
+    formData.append("Email", updatedData.email || "");
+    
+    if (updatedData.bio) formData.append("Bio", updatedData.bio);
+    if (updatedData.phoneNumber) formData.append("PhoneNumber", updatedData.phoneNumber);
+    if (updatedData.targetScore) formData.append("TargetScore", updatedData.targetScore.toString());
+    if (updatedData.dateOfBirth) formData.append("DateOfBirth", updatedData.dateOfBirth);
+
+    if (file) {
+      formData.append("Avatar", file);
+    } else {
+      // NOTE: If your backend strictly requires an Avatar for every update, keep this check.
+      // If it allows partial updates without avatar, you can remove this block.
+      showToast("Please re-upload or confirm your Avatar image to save changes.", "error");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/user/update-profile`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (response.ok) {
+        showToast("Profile updated successfully!", "success");
+        // Refresh local state
+        setProfile((prev) => prev ? { ...prev, ...updatedData } : null);
+      } else {
+        const msg = await response.text();
+        showToast(`Update failed: ${msg}`, "error");
       }
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-
-      reader.onloadend = () => {
-        const newAvatar = reader.result as string;
-
-        setProfile((prev) => {
-          if (!prev) {
-            return {
-              id: "temp-id", // Phải có giá trị string/Guid hợp lệ
-              userName: "",
-              role: "",
-              fullName: "",
-              email: "",
-              bio: "",
-              targetScore: 0,
-              phoneNumber: "",
-              dateOfBirth: new Date().toISOString(),
-              avatar: newAvatar, // Gán avatar mới
-              avatarUrl: newAvatar, // Hoặc gán vào avatarUrl tùy theo logic của bạn
-            } as UserProfile; // Ép kiểu là UserProfile
-          }
-          // Nếu prev đã tồn tại, thực hiện spread an toàn
-          return { ...prev, avatar: newAvatar };
-        });
-      };
-
-      reader.readAsDataURL(file);
+    } catch (error) {
+      console.error("Update error:", error);
+      showToast("An error occurred while updating profile.", "error");
     }
   };
-  //handle submit and send to backend
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Profile updated:", profile);
 
-    // alert('Profile updated successfully!');
+  // --- Handle Password Change ---
+  const handlePasswordChange = async (data: ChangePasswordRequest) => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) return;
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/auth/change-password`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.text();
+      if (response.ok) {
+        showToast("Password changed successfully", "success");
+      } else {
+        showToast(result || "Failed to change password", "error");
+      }
+    } catch (error) {
+      console.error(error);
+      showToast("Network error", "error");
+    }
   };
-  const handlePasswordSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
 
-  // --- VALIDATION PHÍA CLIENT ---
-  if (passwords.newPassword !== passwords.confirmPassword) {
-    alert("Mật khẩu mới và xác nhận mật khẩu không khớp.");
-    return;
-  }
-  if (passwords.newPassword.length < 6) { // Thêm validation min length
-    alert("Mật khẩu mới phải có ít nhất 6 ký tự.");
-    return;
-  }
+  if (loading) return <div className="p-10 text-center">Loading profile...</div>;
+  if (!profile) return <div className="p-10 text-center">Please log in to view profile.</div>;
 
-  // --- GỌI API (Chỉ gửi 2 trường) ---
-  const result = await changePassword({
-    CurrentPassword: passwords.currentPassword, // Khớp DTO
-    NewPassword: passwords.newPassword,         // Khớp DTO
-  });
-  
-  if (result.success) {
-    alert(result.message);
-    // Reset form sau khi thành công
-    setPasswords({ currentPassword: '', newPassword: '', confirmPassword: '' });
-  } else {
-    alert(result.message);
-  }
-};
-  if (!profile) {
-    return <div>Loading profile...</div>;
-  }
   return (
     <>
-      <NavBarUser></NavBarUser>
+      <NavBarUser />
+      
+      {/* Toast Container */}
+      <div className="fixed top-24 right-5 z-50 flex flex-col gap-2">
+        {toasts.map((toast) => (
+          <div
+            key={toast.id}
+            className={`flex items-center w-80 p-4 rounded-lg shadow-lg text-white transition-all duration-300 animate-in slide-in-from-right-10 ${
+              toast.type === "success" ? "bg-green-500" : "bg-red-500"
+            }`}
+          >
+            <div className="flex-1 text-sm font-medium">{toast.message}</div>
+            <button
+              onClick={() => removeToast(toast.id)}
+              className="ml-4 text-white hover:text-gray-200"
+            >
+              <i className="fas fa-times"></i>
+            </button>
+          </div>
+        ))}
+      </div>
+
       <div
         className="min-h-screen bg-gray-50 text-gray-800"
         style={{
           backgroundImage: `
-        linear-gradient(135deg, 
-          rgba(248,250,252,1) 0%, 
-          rgba(219,234,254,0.7) 30%, 
-          rgba(165,180,252,0.5) 60%, 
-          rgba(129,140,248,0.6) 100%
-        ),
-        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.6) 0%, transparent 40%),
-        radial-gradient(circle at 80% 70%, rgba(199,210,254,0.4) 0%, transparent 50%),
-        radial-gradient(circle at 40% 80%, rgba(224,231,255,0.3) 0%, transparent 60%)
-      `,
+            linear-gradient(135deg, rgba(248,250,252,1) 0%, rgba(219,234,254,0.7) 30%, rgba(165,180,252,0.5) 60%, rgba(129,140,248,0.6) 100%),
+            radial-gradient(circle at 20% 30%, rgba(255,255,255,0.6) 0%, transparent 40%)
+          `,
         }}
       >
         <div className="container mx-auto max-w-6xl p-4 sm:p-6 lg:p-8">
@@ -226,9 +218,9 @@ export default function ProfilePage() {
 
           <AuthGuard>
             <div className="flex flex-col md:flex-row md:space-x-8">
-              {/* Left Sidebar Navigation */}
+              {/* Sidebar */}
               <aside className="md:w-1/4 mb-8 md:mb-0">
-                <ul className="space-y-2">
+                <ul className="space-y-2 bg-white/50 backdrop-blur-sm p-4 rounded-xl shadow-sm">
                   <SidebarLink
                     icon="fa-user-edit"
                     label="Edit Profile"
@@ -250,23 +242,14 @@ export default function ProfilePage() {
                 </ul>
               </aside>
 
-              {/* Right Content Area */}
+              {/* Main Content */}
               <main className="flex-1">
-                <div className="rounded-xl bg-white p-6 sm:p-8 shadow-md">
+                <div className="rounded-xl bg-white p-6 sm:p-8 shadow-md border border-gray-100">
                   {activeTab === "edit-profile" && (
-                    <EditProfileForm
-                      profile={profile}
-                      onInputChange={handleInputChange}
-                      onFileChange={handleFileChange}
-                      onSubmit={handleSubmit}
-                    />
+                    <EditProfileForm profile={profile} onSubmit={handleProfileUpdate} />
                   )}
                   {activeTab === "security" && (
-                    <SecurityTab
-                      passwords={passwords}
-                      onPasswordChange={handlePasswordChange}
-                      onPasswordSubmit={handlePasswordSubmit}
-                    />
+                    <SecurityTab onSubmit={handlePasswordChange} />
                   )}
                   {activeTab === "notifications" && <NotificationsTab />}
                 </div>
@@ -279,15 +262,9 @@ export default function ProfilePage() {
   );
 }
 
-// --- SidebarLink Component ---
-interface SidebarLinkProps {
-  icon: string;
-  label: string;
-  isActive: boolean;
-  onClick: () => void;
-}
+// --- Components ---
 
-const SidebarLink: FC<SidebarLinkProps> = ({
+const SidebarLink: FC<{ icon: string; label: string; isActive: boolean; onClick: () => void }> = ({
   icon,
   label,
   isActive,
@@ -296,8 +273,8 @@ const SidebarLink: FC<SidebarLinkProps> = ({
   <li>
     <button
       onClick={onClick}
-      className={`w-full text-left flex items-center space-x-3 rounded-lg px-4 py-3 font-medium transition-colors duration-200 ${
-        isActive ? "bg-blue-600 text-white" : "text-gray-600 hover:bg-gray-100"
+      className={`w-full text-left flex items-center space-x-3 rounded-lg px-4 py-3 font-medium transition-all duration-200 ${
+        isActive ? "bg-blue-600 text-white shadow-md" : "text-gray-600 hover:bg-white hover:shadow-sm"
       }`}
     >
       <Icon icon={icon} className="w-5 text-center" />
@@ -306,231 +283,299 @@ const SidebarLink: FC<SidebarLinkProps> = ({
   </li>
 );
 
-// --- EditProfileForm Component ---
 interface EditProfileFormProps {
-  profile: UserProfile | null;
-  onInputChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
-  onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  profile: UserProfile;
+  onSubmit: (data: UserProfile, file: File | null) => void;
 }
 
-const apiUrl = "http://localhost:5151/";
-async function updateProfile(
-  profileData: UserProfile,
-  newAvatarFile: File | null
-): Promise<{ success: boolean; message: string }> {
-  const token = localStorage.getItem("accessToken");
-  if (!token) {
-    return { success: false, message: "Authentication token not found." };
-  }
-  const formData = new FormData();
-  // 2. Thêm các trường dữ liệu text (phải khớp TÊN TUYỆT ĐỐI với DTO C#)
-  formData.append("FullName", profileData.fullName);
-  formData.append("Email", profileData.email);
-  // Xử lý các trường nullable (Nếu là null/undefined, gửi chuỗi rỗng hoặc không gửi)
-  // Gửi Bio (nếu có)
-  if (profileData.bio) {
-    formData.append("Bio", profileData.bio);
-  }
-  if (
-    profileData.targetScore !== null &&
-    profileData.targetScore !== undefined
-  ) {
-    formData.append("TargetScore", profileData.targetScore.toString());
-  }
-  if (profileData.phoneNumber) {
-    formData.append("PhoneNumber", profileData.phoneNumber);
-  }
-  if (profileData.dateOfBirth) {
-    formData.append(
-      "DateOfBirth",
-      new Date(profileData.dateOfBirth).toISOString()
-    );
-  }
+const EditProfileForm: FC<EditProfileFormProps> = ({ profile: initialProfile, onSubmit }) => {
+  const [formData, setFormData] = useState<UserProfile>(initialProfile);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string>(
+     initialProfile.avatarUrl 
+      ? (initialProfile.avatarUrl.startsWith("http") ? initialProfile.avatarUrl : `${API_BASE_URL}/${initialProfile.avatarUrl}`)
+      : "/default-avatar.png"
+  );
 
-  // 3. Thêm File Avatar
-  if (newAvatarFile) {
-    // Tên trường phải là "Avatar" (khớp với public IFormFile? Avatar { get; set; })
-    formData.append("Avatar", newAvatarFile, newAvatarFile.name);
-  } else {
-    // API C# của bạn có kiểm tra if(request.Avatar is null) return BadRequest("Avatar is required");
-    // Nếu bạn không muốn người dùng upload file mà chỉ update info, bạn cần chỉnh API C#
-    // hoặc gửi một placeholder file. Trong trường hợp này, tôi giả định API chấp nhận
-    // trường AvatarUrl cũ nếu không có Avatar mới (nhưng API C# hiện tại đang yêu cầu file).
-    // Nếu API yêu cầu file, bạn phải đảm bảo có file ở đây.
-    // Tôi sẽ giả định rằng khi update, người dùng luôn phải chọn file,
-    // hoặc bạn sẽ chỉnh API C# để nó không yêu cầu file nếu không có.
-    // Nếu API C# KHÔNG yêu cầu file, bạn BỎ QUA khối if (newAvatarFile)
-    // Nếu API C# VẪN yêu cầu file, bạn phải trả về lỗi ở đây:
-    // return { success: false, message: "Avatar file is required." };
-  }
-  const url = `${apiUrl}/profile`; // Dựa trên [HttpPut("profile")]
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-  try {
-    const response = await fetch(url, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
-    });
-
-    if (response.ok) {
-      return { success: true, message: "Profile updated successfully." };
-    } else {
-      const errorText = await response.text();
-      return {
-        success: false,
-        message: `Update failed: ${errorText || response.statusText}`,
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result as string);
       };
+      reader.readAsDataURL(file);
     }
-  } catch (error) {
-    console.error("API call error:", error);
-    return { success: false, message: "Network error during profile update." };
-  }
-}
+  };
 
-const handleConfirmAction = () => {};
-const EditProfileForm: FC<EditProfileFormProps> = ({
-  profile,
-  onInputChange,
-  onFileChange,
-  onSubmit,
-}) => (
-  <form onSubmit={onSubmit} className="space-y-8">
-    <div>
-      <h2 className="text-xl font-bold text-gray-900">Personal Information</h2>
-      <p className="mt-1 text-sm text-gray-500">
-        Update your photo and personal details here.
-      </p>
-    </div>
-    <AuthGuard>
-      {/* Profile Picture Section */}
-      <div className="flex items-center space-x-6 border-t pt-6">
-        <Image
-          src={apiUrl + profile?.avatarUrl}
-          alt=""
-          width={100}
-          height={100}
-          className="h-20 w-20 rounded-full object-cover"
-        />
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    const dataToSend = {
+      ...formData,
+      targetScore: Number(formData.targetScore)
+    };
+    onSubmit(dataToSend, selectedFile);
+  };
+
+  // Logic to determine if changes have been made
+  const hasChanges = useMemo(() => {
+    // 1. If a new file is selected, it's a change
+    if (selectedFile) return true;
+
+    // 2. Compare fields
+    const normalize = (val: unknown) => (val === null || val === undefined ? "" : String(val));
+    
+    // Check specific fields relevant to the update DTO
+    if (normalize(formData.fullName) !== normalize(initialProfile.fullName)) return true;
+    if (normalize(formData.email) !== normalize(initialProfile.email)) return true;
+    if (normalize(formData.bio) !== normalize(initialProfile.bio)) return true;
+    if (normalize(formData.phoneNumber) !== normalize(initialProfile.phoneNumber)) return true;
+    
+    // Compare dates (format YYYY-MM-DD vs potentially full ISO from API)
+    const formDate = formData.dateOfBirth ? new Date(formData.dateOfBirth).toISOString().split('T')[0] : "";
+    const initDate = initialProfile.dateOfBirth ? new Date(initialProfile.dateOfBirth).toISOString().split('T')[0] : "";
+    if (formDate !== initDate) return true;
+
+    // Compare numbers
+    if (Number(formData.targetScore) !== Number(initialProfile.targetScore)) return true;
+
+    return false;
+  }, [formData, selectedFile, initialProfile]);
+
+  const ieltsScores = Array.from({ length: 19 }, (_, i) => (i * 0.5).toFixed(1));
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-8">
+      <div>
+        <h2 className="text-xl font-bold text-gray-900">Personal Information</h2>
+        <p className="mt-1 text-sm text-gray-500">Update your photo and personal details.</p>
+      </div>
+
+      {/* Avatar Section */}
+      <div className="flex items-center space-x-6 border-t pt-6 bg-blue-50/50 p-4 rounded-lg">
+        <div className="relative h-24 w-24">
+            <Image
+            src={previewUrl}
+            alt="Avatar"
+            fill
+            className="rounded-full object-cover border-4 border-white shadow-sm"
+            />
+        </div>
         <div>
           <label
             htmlFor="avatar-upload"
-            className="cursor-pointer rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700"
+            className="cursor-pointer inline-flex items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-semibold text-blue-600 shadow-sm ring-1 ring-inset ring-blue-300 hover:bg-blue-50"
           >
-            Change Photo
+            <i className="fas fa-camera mr-2"></i> Change Photo
           </label>
           <input
             id="avatar-upload"
             name="avatar-upload"
             type="file"
             className="sr-only"
-            onChange={onFileChange}
+            onChange={handleFileChange}
             accept="image/*"
           />
-          <p className="mt-2 text-xs text-gray-500">JPG, GIF or PNG.</p>
+          <p className="mt-2 text-xs text-red-500 font-medium">* Required for update</p>
         </div>
       </div>
-    </AuthGuard>
 
-    {/* Form Fields */}
-    <div className="flex gap-5 items-center">
-      <h1 className="text-gray-600 font-medium">Target Score</h1>
-      <Button className="rounded-full bg-blue-600 p-4 text-2xl font-bold">
-        {profile?.targetScore || 9.0}
-      </Button>
-    </div>
-    <div className="space-y-6 border-t pt-6">
-      <InputField
-        label="Full Name"
-        name="fullName"
-        value={profile?.fullName || ""}
-        onChange={onInputChange}
-      />
-      <InputField
-        label="Email Address"
-        name="email"
-        type="email"
-        value={profile?.email || ""}
-        onChange={onInputChange}
-      />
-      <InputField
-        label="Phone Number"
-        name="phoneNumber"
-        type="text"
-        value={profile?.phoneNumber || ""}
-        onChange={onInputChange}
-      />
-      <InputField
-        label="Date of Birth"
-        name="dateOfBirth"
-        type="text"
-        value={profile?.dateOfBirth || ""}
-        onChange={onInputChange}
-      />
+      {/* Target Score */}
+      <div className="flex items-center justify-between bg-gradient-to-r from-blue-600 to-indigo-600 p-5 rounded-xl text-white shadow-lg">
+        <div>
+          
+            <h3 className="font-bold text-lg">IELTS Target Band (Current Target: {formData.targetScore})</h3>
+            <p className="text-blue-100 text-sm">Set your goal to get personalized plans.</p>
+        </div>
+        <div className="flex items-center bg-white rounded-lg px-3 py-1">
+            <span className="text-gray-500 mr-2 font-bold">Band:</span>
+            <select 
+                name="targetScore"
+                value={formData.targetScore}
+                onChange={handleInputChange}
+                className="bg-transparent text-blue-700 font-bold text-2xl focus:outline-none cursor-pointer"
+            >
+                {ieltsScores.map(score => (
+                    <option className="font-semibold text-black" key={score} value={score}>{score}</option>
+                ))}
+            </select>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 border-t pt-6">
+        <InputField
+          label="Full Name"
+          name="fullName"
+          value={formData.fullName}
+          onChange={handleInputChange}
+        />
+        <InputField
+          label="Email Address"
+          name="email"
+          type="email"
+          value={formData.email}
+          onChange={handleInputChange}
+        />
+        <InputField
+          label="Phone Number"
+          name="phoneNumber"
+          value={formData.phoneNumber || ""}
+          onChange={handleInputChange}
+          placeholder="+84..."
+        />
+        <InputField
+          label="Date of Birth"
+          name="dateOfBirth"
+          type="date"
+          value={formData.dateOfBirth ? new Date(formData.dateOfBirth).toISOString().split('T')[0] : ""}
+          onChange={handleInputChange}
+        />
+      </div>
+
       <div>
-        <label
-          htmlFor="bio"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Your Bio
-        </label>
+        <label className="block text-sm font-medium text-gray-700">Your Bio</label>
         <textarea
-          id="bio"
           name="bio"
           rows={4}
-          className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-          value={profile?.bio || ""}
-          onChange={onInputChange}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 border"
+          value={formData.bio || ""}
+          onChange={handleInputChange}
+          placeholder="Tell us about your learning journey..."
         ></textarea>
-        <p className="mt-2 text-sm text-gray-500">
-          Write a few sentences about yourself.
-        </p>
       </div>
-    </div>
 
-    {/* Action Buttons */}
-    <div className="flex justify-end space-x-4 border-t pt-6">
-      <Button
-        type="button"
-        className="rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200"
-      >
-        Cancel
-      </Button>
-      <Button
-        type="submit"
-        className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
-        onClick={handleConfirmAction}
-      >
-        Save Changes
-      </Button>
+      <div className="flex justify-end pt-6">
+        <Button
+          type="submit"
+          disabled={!hasChanges}
+          className={`rounded-md px-6 py-2 text-sm font-medium text-white shadow-sm transition-all
+            ${hasChanges 
+                ? "bg-blue-500 hover:bg-blue-700" 
+                : "bg-gray-400 cursor-not-allowed opacity-50"
+            }`}
+        >
+          {hasChanges ? "Save Profile Changes" : "No Changes to Save"}
+        </Button>
+      </div>
+    </form>
+  );
+};
+
+interface SecurityTabProps {
+  onSubmit: (data: ChangePasswordRequest) => void;
+}
+
+const SecurityTab: FC<SecurityTabProps> = ({ onSubmit }) => {
+  const [passwords, setPasswords] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setPasswords({ ...passwords, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (passwords.newPassword !== passwords.confirmPassword) {
+      // We can use a prop callback or context for toast here, 
+      // but for simplicity in this component structure, we might rely on HTML validation 
+      // or passed down handlers. Assuming parent handles the API logic toast.
+      // Ideally, pass a specific onError handler. 
+      // For this implementation, I will rely on standard Alert for client-side validation failures
+      // inside this sub-component to keep props simple, or you can pass setToast down.
+      alert("New passwords do not match."); 
+      return;
+    }
+    if (passwords.newPassword.length < 6) {
+      alert("Password must be at least 6 characters.");
+      return;
+    }
+    onSubmit({
+        CurrentPassword: passwords.currentPassword,
+        NewPassword: passwords.newPassword
+    });
+    setPasswords({ currentPassword: "", newPassword: "", confirmPassword: "" });
+  };
+
+  // Check if form is filled to enable button
+  const isFormValid = passwords.currentPassword && passwords.newPassword && passwords.confirmPassword;
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <h2 className="text-xl font-bold text-gray-900">Password & Security</h2>
+      <p className="mt-1 text-sm text-gray-500">Ensure your account is using a strong password.</p>
+      
+      <div className="space-y-6 border-t pt-6 mt-6">
+        <InputField
+          label="Current Password"
+          name="currentPassword"
+          type="password"
+          value={passwords.currentPassword}
+          onChange={handleChange}
+        />
+        <InputField
+          label="New Password"
+          name="newPassword"
+          type="password"
+          value={passwords.newPassword}
+          onChange={handleChange}
+        />
+        <InputField
+          label="Confirm New Password"
+          name="confirmPassword"
+          type="password"
+          value={passwords.confirmPassword}
+          onChange={handleChange}
+        />
+      </div>
+
+      <div className="flex justify-end pt-6 mt-6">
+        <Button
+          type="submit"
+          disabled={!isFormValid}
+          className={`rounded-md px-6 py-2 text-sm font-medium text-white shadow-sm transition-all
+            ${isFormValid 
+                ? "bg-blue-500 hover:bg-blue-700" 
+                : "bg-gray-400 cursor-not-allowed opacity-50"
+            }`}
+        >
+          Update Password
+        </Button>
+      </div>
+    </form>
+  );
+};
+
+const NotificationsTab = () => (
+  <div className="text-center py-10">
+    <div className="inline-block p-4 rounded-full bg-gray-100 mb-4">
+        <i className="fas fa-bell-slash text-gray-400 text-2xl"></i>
     </div>
-  </form>
+    <h2 className="text-xl font-bold text-gray-900">Notifications</h2>
+    <p className="mt-1 text-gray-500">Notification settings are currently under development.</p>
+  </div>
 );
 
-// --- InputField Component ---
 interface InputFieldProps {
   label: string;
   name: string;
   type?: string;
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  disabled?: boolean;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
 }
 
-const InputField: FC<InputFieldProps> = ({
-  label,
-  name,
-  type = "text",
-  value,
-  onChange,
-  disabled = false,
-}) => (
+const InputField: FC<InputFieldProps> = ({ label, name, type = "text", value, onChange, placeholder }) => (
   <div>
-    <label htmlFor={name} className="block text-sm font-medium text-gray-700">
+    <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">
       {label}
     </label>
     <input
@@ -539,121 +584,8 @@ const InputField: FC<InputFieldProps> = ({
       name={name}
       value={value}
       onChange={onChange}
-      disabled={disabled}
-      className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 disabled:bg-gray-100 sm:text-sm"
+      placeholder={placeholder}
+      className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm"
     />
-  </div>
-);
-
-interface ChangePasswordRequest {
-  CurrentPassword: string;
-  NewPassword: string;
-}
- interface PasswordState {
-  currentPassword: string;
-  newPassword: string;
-  confirmPassword: string; 
-}
-async function changePassword(
-  request: ChangePasswordRequest
-): Promise<{ success: boolean; message: string }> {
-  const token = localStorage.getItem("accessToken");
-  if (!token) {
-    return { success: false, message: "Authentication token not found." };
-  }
-  try {
-    const response = await fetch(`${apiUrl}/change-password`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(request),
-    });
-
-    const responseData = await response.json();
-
-    if (response.ok) {
-      return {
-        success: true,
-        message: responseData.message || "Password updated successfully.",
-      };
-    } else {
-      return {
-        success: false,
-        message: responseData.message || "Failed to update password.",
-      };
-    }
-  } catch (error) {
-    console.error("API call error:", error);
-    return { success: false, message: "Network error during password change." };
-  }
-}
-
-interface SecurityTabProps {
-  passwords: {
-    currentPassword: string;
-    newPassword: string;
-    confirmPassword: string;
-  };
-  onPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onPasswordSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-}
-const SecurityTab: FC<SecurityTabProps> = ({
-  passwords,
-  onPasswordChange,
-  onPasswordSubmit,
-}) => (
-  <div>
-    <h2 className="text-xl font-bold text-gray-900">Password & Security</h2>
-    <p className="mt-1 text-sm text-gray-500">
-      Update your password and secure your account.
-    </p>
-    <div className="space-y-6 border-t pt-6 mt-6">
-      <InputField
-        label="Current Password"
-        name="currentPassword"
-        type="password"
-        value={passwords.currentPassword}
-        onChange={onPasswordChange}
-      />
-      <InputField
-        label="New Password"
-        name="newPassword"
-        type="password"
-        value={passwords.newPassword}
-        onChange={onPasswordChange}
-      />
-      <InputField
-        label="Confirm New Password"
-        name="confirmPassword"
-        type="password"
-        value={passwords.confirmPassword}
-        onChange={onPasswordChange}
-      />
-    </div>
-    <div className="flex justify-end space-x-4 border-t pt-6 mt-6">
-      <Button
-        type="submit"
-        className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
-        onClick={handleConfirmAction}
-      >
-        Update Password
-      </Button>
-    </div>
-  </div>
-);
-
-const NotificationsTab = () => (
-  <div>
-    <h2 className="text-xl font-bold text-gray-900">Notifications</h2>
-    <p className="mt-1 text-sm text-gray-500">
-      Manage how you receive notifications.
-    </p>
-    <div className="space-y-6 border-t pt-6 mt-6">
-      <p className="text-gray-600">
-        Notification settings will be available soon.
-      </p>
-    </div>
   </div>
 );

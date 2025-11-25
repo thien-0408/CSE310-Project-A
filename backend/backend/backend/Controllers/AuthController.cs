@@ -45,7 +45,7 @@ namespace backend.Controllers
                 FullName = request.FullName,
                 Email = request.Email,
                 User = user,
-                AvatarUrl = "/user-avatars/default_avatar.jpg"
+                AvatarUrl = "/user_avatars/default_avatar.jpg"
             };
             context.Users.Add(user); //add to db
             await context.Profiles.AddAsync(profile);

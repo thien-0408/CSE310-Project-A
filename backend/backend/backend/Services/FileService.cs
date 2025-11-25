@@ -36,18 +36,29 @@
         {
             if (file is null || file.Length == 0)
             {
-                throw new ArgumentException("You selected an emty file!");
+                throw new ArgumentException("You selected an empty file!");
             }
+
             var wwwrootPath = _environment.WebRootPath;
             var uploadPath = Path.Combine(wwwrootPath, folder);
+
+            // --- FIX STARTS HERE ---
+            // Check if the directory exists, if not, create it.
+            if (!Directory.Exists(uploadPath))
+            {
+                Directory.CreateDirectory(uploadPath);
+            }
+            // --- FIX ENDS HERE ---
+
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
             var filePath = Path.Combine(uploadPath, fileName);
+
             using (var stream = new FileStream(filePath, FileMode.Create))
             {
                 await file.CopyToAsync(stream);
             }
-            return $"/{folder.Replace("\\", "/")}/{fileName}";
 
+            return $"/{folder.Replace("\\", "/")}/{fileName}";
         }
     }
 }

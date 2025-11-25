@@ -24,35 +24,44 @@ namespace backend.Controllers
         }
         //Edit profile
         [Authorize]
-        [HttpPut("profile")]
-        public async Task<ActionResult<UserProfileDto>> UpdateProfile([FromForm]UpdateProfileDto request)
+        [HttpPut("update-profile")]
+        public async Task<ActionResult<UserProfileDto>> UpdateProfile([FromForm] UpdateProfileDto request)
         {
             var userId = GetUserIdFromToken();
             if (userId == Guid.Empty) return Unauthorized();
 
-            //var updatedProfile = await _authService.UpdateProfileAsync(userId, request);
             var profile = await _context.Profiles
-                             .FirstOrDefaultAsync(p => p.UserId == userId);
-            if(request.Avatar is null)
-            {
-                return BadRequest("Avatar is required");
-            }
-            var avatarUrl = await _fileService.UploadFile(request.Avatar, "user_avatars");
-            // Update
-            var profileUpdate = new Profile
-            {
-                Bio = request.Bio,
-                FullName = request.FullName,
-                TargetScore = request.TargetScore,
-                Email = request.Email,
-                PhoneNumber = request.PhoneNumber,
-                DateOfBirth = request.DateOfBirth,
-                AvatarUrl = avatarUrl,
-            };
+                                        .FirstOrDefaultAsync(p => p.UserId == userId);
 
+            if (profile == null)
+            {
+                return NotFound("Profile not found");
+            }
+
+            // 3. Handle Avatar (Only update if a new file is provided)
+            if (request.Avatar != null)
+            {
+                // Optional: Delete old avatar from disk here if you want to save space
+
+                var avatarUrl = await _fileService.UploadFile(request.Avatar, "user_avatars");
+                profile.AvatarUrl = avatarUrl; // Update the URL
+            }
+            // If request.Avatar is null, we do NOTHING (keep the old AvatarUrl)
+
+            // 4. Update the other fields on the EXISTING 'profile' object
+            // Note: We check if values are null/empty to avoid wiping data if the frontend sends nulls, 
+            // or you can assign directly if your frontend always sends full data.
+            profile.Bio = request.Bio;
+            profile.FullName = request.FullName;
+            profile.TargetScore = request.TargetScore;
+            profile.Email = request.Email;
+            profile.PhoneNumber = request.PhoneNumber;
+            profile.DateOfBirth = request.DateOfBirth;
+
+            // 5. Save changes to the tracked entity
             await _context.SaveChangesAsync();
 
-            return Ok();
+            return Ok(profile); // Return the updated profile
         }
 
         private Guid GetUserIdFromToken()

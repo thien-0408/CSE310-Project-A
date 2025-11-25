@@ -34,6 +34,7 @@ import TestHistorySection from "@/components/ui/testhistory";
 import FooterUser from "@/components/ui/footeruser";
 import ScrollTop from "@/components/ui/scroll-top";
 import AuthGuard from "@/components/auth/AuthGuard";
+import { ImHeadphones } from "react-icons/im";
 
 {
   /*Score */
@@ -114,8 +115,8 @@ export default function UserDashBoard() {
                   >
                     <Card className=" text-center flex flex-col rounded-sm border-1 shadow-sm hover:shadow-md p-6 hover:scale-105 transition-transform duration-300">
                       <div className="flex justify-center items-center">
-                        <div className="w-16 h-16 flex items-center justify-center">
-                          <i className="fa-solid fa-headphones text-[#4b91e2] text-5xl "></i>
+                        <div className="w-16 h-16 flex items-center justify-center mb-3">
+                          <ImHeadphones className ="text-[#4b91e2] text-5xl" />
                         </div>
                       </div>
                       <div className="flex-1 flex flex-col justify-between">
@@ -146,7 +147,7 @@ export default function UserDashBoard() {
                   >
                     <Card className=" text-center flex flex-col rounded-sm border-1 shadow-sm hover:shadow-md p-6 hover:scale-105 transition-transform duration-300">
                       <div className="flex justify-center items-center ">
-                        <div className="w-16 h-16 flex items-center justify-center">
+                        <div className="w-16 h-16 flex items-center justify-center mb-3">
                           <FaBook className="text-[#4b91e2] text-5xl" />
                         </div>
                       </div>
@@ -178,7 +179,7 @@ export default function UserDashBoard() {
                   >
                     <Card className=" text-center flex flex-col rounded-sm border-1 shadow-sm hover:shadow-md p-6 hover:scale-105 transition-transform duration-300">
                       <div className="flex justify-center items-center ">
-                        <div className="w-16 h-16 flex items-center justify-center">
+                        <div className="w-16 h-16 flex items-center justify-center mb-3">
                           <FaPencilAlt className="text-[#4b91e2] text-5xl " />
                         </div>
                       </div>
@@ -210,7 +211,7 @@ export default function UserDashBoard() {
                   >
                     <Card className=" text-center flex flex-col rounded-sm border-1 shadow-sm hover:shadow-md p-6 hover:scale-105 transition-transform duration-300">
                       <div className="flex justify-center items-center">
-                        <div className="w-16 h-16 flex items-center justify-center">
+                        <div className="w-16 h-16 flex items-center justify-center mb-3">
                           <GiConversation
                             className="text-[#4b91e2]"
                             size={50}

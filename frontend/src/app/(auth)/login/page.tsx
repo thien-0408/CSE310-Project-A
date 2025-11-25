@@ -20,9 +20,11 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import Link from "next/link";
 
-interface AuthPayload {
-  role: "User" | "Admin";
-  // ...
+// Define the interface for the decoded token
+interface DecodedToken {
+  "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"?: string | string[];
+  role?: string | string[];
+  sub?: string;
 }
 
 export default function LoginPage() {
@@ -46,6 +48,7 @@ export default function LoginPage() {
       password: "",
     },
   });
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     setApiError(null);
@@ -58,28 +61,42 @@ export default function LoginPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        // Values match with Login
         body: JSON.stringify(values),
       });
 
       if (!response.ok) {
-        // Get error from server
         const errorMessage = await response.text();
         setApiError(errorMessage || "Invalid username or password");
         setIsLoading(false);
         return;
       }
 
-      //Get token
       const tokens = await response.json();
 
-      //Save token into local storage
       localStorage.setItem("accessToken", tokens.accessToken);
       localStorage.setItem("refreshToken", tokens.refreshToken);
-      router.push("/dashboard");
-      console.log("Login successful! Tokens received:", tokens);
+
+      //Decode token to get user role
+      try {
+        const decoded: DecodedToken = jwtDecode(tokens.accessToken);
+        
+        const roleClaim = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] || decoded.role;
+        const userRole = Array.isArray(roleClaim) ? roleClaim[0] : roleClaim;
+
+        console.log(userRole);
+
+        if (userRole === "Admin") {
+            router.push("/admin");
+        } else {
+            router.push("/dashboard");
+        }
+
+      } catch (decodeError) {
+        console.error("Token decoding failed:", decodeError);
+        router.push("/dashboard");
+      }
+
     } catch (error) {
-      // Handle internet error
       console.error("Login failed:", error);
       setApiError("Failed to connect to the server. Please try again.");
       setIsLoading(false);

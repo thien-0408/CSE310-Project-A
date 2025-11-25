@@ -395,9 +395,29 @@
     ]
   },
   {
+    "ContainingType": "backend.Controllers.MilestoneController",
+    "Method": "GetEvents",
+    "RelativePath": "api/milestone/get-events",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[backend.Entities.MileStone, backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "backend.Controllers.UserController",
     "Method": "UpdateProfile",
-    "RelativePath": "api/user/profile",
+    "RelativePath": "api/user/update-profile",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,

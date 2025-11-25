@@ -1,10 +1,4 @@
 "use client";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
 import { CgProfile } from "react-icons/cg";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { IoLogOut } from "react-icons/io5";
@@ -25,221 +19,207 @@ import { UserProfile } from "@/types/userProfile";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation"; 
 
-
-
 export default function NavBarUser() {
-  const [profile, setProfile] = useState<UserProfile | null>(null);  const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const router = useRouter();
   const pathname = usePathname(); 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5151";
-  //CSS for nav bar 
+
   const getLinkClassName = (href: string) => {
     const isActive = pathname === href;
     
-    const baseClasses = "font-medium px-4 py-3 rounded-full transition-all duration-300";
-      if (isActive) {
-      return `${baseClasses} text-white bg-gradient-to-r from-[#00c6ff] to-[#0072ff] bg-blue-100 shadow-sm font-bold`;
+    if (isActive) {
+      return "relative font-semibold px-6 py-2.5 text-blue-600 transition-all duration-300 after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-blue-400 after:via-blue-600 after:to-cyan-400 after:rounded-full";
     }
-      return `${baseClasses} hover:text-white hover:bg-gradient-to-r from-[#00c6ff] to-[#0072ff] hover:bg-blue-100`;
+    
+    return "relative font-medium px-6 py-2.5 text-gray-600 hover:text-blue-600 transition-all duration-300 after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 hover:after:w-full after:h-0.5 after:bg-gradient-to-r after:from-blue-400 after:via-blue-600 after:to-cyan-400 after:rounded-full after:transition-all after:duration-300";
   };
 
-  const handleLogout = async () =>{
+  const handleLogout = async () => {
     const token = localStorage.getItem("accessToken");
     if(token){
       try{
-        await fetch (`${apiUrl}/api/Auth/logout`,{
+        await fetch(`${apiUrl}/api/Auth/logout`,{
           method: "POST",
           headers: {
             "Authorization": `Bearer ${token}`
           }
         });
       }catch (error){
-        console.error("There're something wrong");
+        console.error("There're something wrong", error);
       }
     }
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
-    window.location.href= "/"
+    window.location.href = "/"
   }
-  const handleProfile = () =>{
+
+  const handleProfile = () => {
     router.push("/profile")
   }
-   async function getUserProfile(token: string): Promise<UserProfile | null> {
-      const endpoint: string = `${apiUrl}/api/Auth/profile`;
-      try {
-        const response = await fetch(endpoint, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json", 
-            "Authorization": `Bearer ${token}`, 
-          },
-        });
-        if (!response.ok) {
-          const errorBody = await response.json().catch(() => ({ message: 'Unexpected error' }));
-          console.error(`Error ${response.status} when getting profile:`, errorBody);
-          return null;
-        }
-        const data: UserProfile = await response.json();
-        console.log(data);
-        
-        return data;
-    
-      } catch (error) {
-        console.error("Error when trying to connect:", error);
+
+  async function getUserProfile(token: string): Promise<UserProfile | null> {
+    const endpoint: string = `${apiUrl}/api/Auth/profile`;
+    try {
+      const response = await fetch(endpoint, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json", 
+          "Authorization": `Bearer ${token}`, 
+        },
+      });
+      if (!response.ok) {
+        const errorBody = await response.json().catch(() => ({ message: 'Unexpected error' }));
+        console.error(`Error ${response.status} when getting profile:`, errorBody);
         return null;
       }
-    }
-    function getStoredToken(): string | null {
-      if (typeof window !== 'undefined') {
-        return localStorage.getItem('accessToken'); 
-      }
+      const data: UserProfile = await response.json();
+      console.log(data);
+      
+      return data;
+  
+    } catch (error) {
+      console.error("Error when trying to connect:", error);
       return null;
     }
+  }
+
+  function getStoredToken(): string | null {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('accessToken'); 
+    }
+    return null;
+  }
+
   useEffect(() => {
-      // Call API in useeffect
-      async function loadUserProfileData() {
-        const token = getStoredToken(); 
-        setLoading(true); 
-  
-        if (!token) {
-          console.warn("Can't find token");
-          setError(true);
-          setLoading(false);
-          return;
-        }
-        
-        console.log("Loading profile with token...");
-  
-        const userProfile = await getUserProfile(token); 
-        
-        if (userProfile) {
-          console.log("Profile loaded");
-          setProfile(userProfile);
-        } else {
-          console.error("Fail to load profile");
-          setError(true);
-        }
-        setLoading(false); 
+    async function loadUserProfileData() {
+      const token = getStoredToken(); 
+      setLoading(true); 
+
+      if (!token) {
+        console.warn("Can't find token");
+        setError(true);
+        setLoading(false);
+        return;
       }
-  
-      loadUserProfileData();
-    }, []); 
+      
+      console.log("Loading profile with token...");
 
-    
-  
-    return (
-    <header className="w-full  bg-white shadow-sm border-b">
-      <div className=" mx-auto px-4 py-2 container">
+      const userProfile = await getUserProfile(token); 
+      
+      if (userProfile) {
+        console.log("Profile loaded");
+        setProfile(userProfile);
+      } else {
+        console.error("Fail to load profile");
+        setError(true);
+      }
+      setLoading(false); 
+    }
+
+    loadUserProfileData();
+  }, []); 
+
+  return (
+    <header className="w-full bg-white shadow-sm sticky top-0 z-50 border-b border-gray-100">
+      <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          {/* Left Side: Logo + Navigation */}
-          
-            {/* Logo and Brand */}
-             <div className="flex items-center shrink-0">
-            <Link href={'/'} className="flex items-center gap-2">
-              <Image
-                src="/assets/logo.png"
-                alt="IELTS Sprint Logo"
-                width={32} 
-                height={32}
-                quality={100}
-                className="object-contain"
-              />
-              <h1 className="text-2xl font-bold italic bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8] bg-clip-text text-transparent hidden sm:block">
-                IELTS Sprint
-              </h1>
-            </Link>
-          </div>
+         
+          {/* Logo & Brand */}
+          <div className="flex items-center shrink-0">
             
-
-            {/* Navigation Menu - flows naturally from logo */}
-            <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2">
-            <NavigationMenu className=" p-3 px-12 shadow-lg rounded-full"> 
-              <NavigationMenuList className="flex items-center space-x-1">
-                
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <Link 
-                      href="/" 
-                      className={getLinkClassName('/dashboard')}
-                    >
-                      Dashboard
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <Link 
-                      href="/reading" 
-                      className={getLinkClassName('/practice')}
-                    >
-                      Practice
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <Link 
-                      href="/listening" 
-                      className={getLinkClassName('/view-tests')}
-                    >
-                      Tests
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <Link 
-                      href="/profile" 
-                      className={getLinkClassName('/profile')}
-                    >
-                      Profile
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-
-              </NavigationMenuList>
-            </NavigationMenu>
           </div>
-          
 
-          {/* Right Side: avatar */}
-          <div className="flex items-center space-x-4">
-            {/* Avatar */}
+          {/* Main Navigation */}
+          <nav className="hidden md:block">
+            <ul className="flex items-center gap-1">
+                <li>
+                  <Link href={'#'} className="flex items-center gap-3 group">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-lg blur-sm opacity-0 hover:opacity-70 transition-opacity duration-300"></div>
+                <Image
+                  src="/assets/logo.png"
+                  alt="IELTS Sprint Logo"
+                  width={40}
+                  height={40}
+                  quality={100}
+                  className="object-contain relative z-10 transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+            </Link>
+                </li>
+              <li>
+                <Link href="/dashboard" className={getLinkClassName('/dashboard')}>
+                  Dashboard
+                </Link>
+              </li>
+
+              <li>
+                <Link href="/practice" className={getLinkClassName('/practice')}>
+                  Practice
+                </Link>
+              </li>
+
+              <li>
+                <Link href="/tests" className={getLinkClassName('/tests')}>
+                  Tests
+                </Link>
+              </li>
+
+              <li>
+                <Link href="/profile" className={getLinkClassName('/profile')}>
+                  Profile
+                </Link>
+              </li>
+
+            </ul>
+          </nav>
+
+          {/* Avatar Dropdown */}
+          <div className="flex items-center shrink-0">
             <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Avatar className="cursor-pointer hover:ring-2 hover:ring-blue-500 hover:ring-offset-1 transition-all">
+              <DropdownMenuTrigger className="focus:outline-none">
+                <Avatar className="cursor-pointer hover:ring-2 hover:ring-blue-500 hover:ring-offset-2 transition-all duration-300 border-2 border-transparent hover:border-blue-100">
                   <AvatarImage src={apiUrl + profile?.avatarUrl} />
-                  <AvatarFallback className="bg-blue-100 text-blue-700">
-                    ISP
+                  <AvatarFallback className="bg-gradient-to-br from-blue-500 to-cyan-400 text-white font-semibold">
+                    {profile?.fullName?.charAt(0).toUpperCase() || 'ISP'}
                   </AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuContent align="end" className="w-56 mt-2">
+                <DropdownMenuLabel className="font-semibold text-gray-700">
+                  My Account
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleProfile}>
-                  <CgProfile />
-                  Profile
+                <DropdownMenuItem 
+                  onClick={handleProfile}
+                  className="cursor-pointer hover:bg-blue-50 transition-colors"
+                >
+                  <CgProfile className="mr-2 h-4 w-4 text-blue-600" />
+                  <span>Profile</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <MdOutlineAttachMoney />
-                  Billing
+                <DropdownMenuItem className="cursor-pointer hover:bg-blue-50 transition-colors">
+                  <MdOutlineAttachMoney className="mr-2 h-4 w-4 text-blue-600" />
+                  <span>Billing</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <HiUserGroup />
-                  Team
+                <DropdownMenuItem className="cursor-pointer hover:bg-blue-50 transition-colors">
+                  <HiUserGroup className="mr-2 h-4 w-4 text-blue-600" />
+                  <span>Team</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleLogout} >
-                    <IoLogOut/>
-                  Log out
+                <DropdownMenuSeparator />
+                <DropdownMenuItem 
+                  onClick={handleLogout}
+                  className="cursor-pointer hover:bg-red-50 text-red-600 transition-colors"
+                >
+                  <IoLogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
+
         </div>
       </div>
     </header>

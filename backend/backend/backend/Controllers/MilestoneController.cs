@@ -4,6 +4,7 @@ using backend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace backend.Controllers
@@ -36,6 +37,18 @@ namespace backend.Controllers
             await _context.MileStones.AddAsync(mileStone);
             await _context.SaveChangesAsync();
             return Ok(mileStone);
+        }
+        [Authorize]
+        [HttpGet("get-events")]
+        public async Task<ActionResult<List<MileStone>>> GetEvents()
+        {
+            var userId = GetUserIdFromToken();
+            if (userId == Guid.Empty)
+            {
+                return Unauthorized();
+            }
+            var events = await _context.MileStones.Where(e => e.UserId == userId).ToListAsync();
+            return Ok(events);
         }
         private Guid GetUserIdFromToken()
         {

@@ -10,8 +10,10 @@ import ListeningDiagramLabeling from "./ListeningTypes/DiagramLabeling";
 import ListeningMapLabeling from "./ListeningTypes/Map";
 import MatchingInformation from "./ListeningTypes/MatchingInformation";
 import IELTSCountdownTimer from "@/components/ui/coutdownTimer";
-
 import CustomAudioPlayer from "./ui/CustomAudioPlayer";
+import IELTSTimer from "@/components/ui/coutdownTimer";
+import { ChevronLeft, FileText } from "lucide-react";
+import Link from "next/link";
 
 interface Props {
   listeningData: ListeningData;
@@ -43,20 +45,64 @@ const ListeningRenderer: React.FC<Props> = ({
   return (
     <>
     
-      <header className="w-full bg-white shadow-sm border-b sticky top-0 z-50">
-        <div className="flex items-center gap-4 px-4 py-2">
-          {/* --- Left div--- */}
-          <div className="flex items-center gap-3 flex-none lg:ml-4"></div>
-          {/*Audio player bar */}
-          <div className="flex-1 flex justify-center">
-            <CustomAudioPlayer src={listeningData.audioUrl} />
+      <header className="w-full bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm h-[72px]">
+      <div className="h-full px-4 flex items-center justify-between gap-4">
+        
+        {/* --- LEFT: Context & Navigation --- */}
+        <div className="flex items-center gap-3 flex-none w-[200px] lg:w-[250px]">
+          <Link 
+            href="/dashboard" 
+            className="p-2 text-gray-500 hover:bg-gray-100 rounded-full transition-colors"
+            title="Thoát bài thi"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </Link>
+          
+          <div className="hidden sm:flex flex-col">
+            <div className="flex items-center gap-1 text-xs text-gray-500">
+              <FileText className="w-3 h-3" />
+              <span>IELTS Listening</span>
+            </div>
           </div>
-          {/* ---Right div--- */}
-          <div className="flex-none hidden md:block"></div>
         </div>
-      </header>
+
+        {/* --- CENTER: Audio Player --- */}
+        {/* Flex-1 để chiếm khoảng trống còn lại, max-w để không bị bè ra quá mức trên màn hình to */}
+        <div className="flex-1 flex justify-center max-w-2xl">
+          <CustomAudioPlayer src={listeningData.audioUrl} />
+        </div>
+
+        {/* --- RIGHT: Timer & Actions --- */}
+        <div className="flex items-center justify-end gap-3 flex-none w-[200px] lg:w-[250px]">
+          
+          {/* Timer được đưa vào đây. 
+              Sử dụng className để override style cũ nếu cần (ví dụ bỏ shadow hoặc đổi màu nền cho hợp navbar) 
+          */}
+          <div className="hidden md:block transform scale-90"> 
+             <IELTSTimer 
+                onTimeUpdate={(s) => console.log(s)} 
+                // Truyền class để Timer trông gọn hơn trong Navbar
+                className="flex-row !gap-0" 
+             />
+          </div>
+
+          <div className="h-8 w-[1px] bg-gray-300 mx-1 hidden md:block"></div>
+
+          
+        </div>
+
+      </div>
       
-      <IELTSCountdownTimer></IELTSCountdownTimer>
+      {/* Mobile Only: Timer Bar 
+          Nếu màn hình quá nhỏ (điện thoại), Timer trên Navbar sẽ chật, 
+          ta đưa nó xuống 1 thanh mỏng bên dưới */}
+      <div className="md:hidden bg-blue-50 border-b border-blue-100 p-1 flex justify-center">
+         <IELTSTimer 
+            className="scale-75 origin-center !flex-row" 
+            onTimeUpdate={(s) => {}}
+         />
+      </div>
+    </header>
       <div className="max-w-5xl mx-auto p-6">
         {/* Header */}
         <div className="mb-6">
