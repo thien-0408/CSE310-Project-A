@@ -38,19 +38,13 @@ namespace backend.Controllers
                 return NotFound("Profile not found");
             }
 
-            // 3. Handle Avatar (Only update if a new file is provided)
+            // Only update if a new file is provided
             if (request.Avatar != null)
-            {
-                // Optional: Delete old avatar from disk here if you want to save space
-
+            {                
                 var avatarUrl = await _fileService.UploadFile(request.Avatar, "user_avatars");
                 profile.AvatarUrl = avatarUrl; // Update the URL
             }
-            // If request.Avatar is null, we do NOTHING (keep the old AvatarUrl)
 
-            // 4. Update the other fields on the EXISTING 'profile' object
-            // Note: We check if values are null/empty to avoid wiping data if the frontend sends nulls, 
-            // or you can assign directly if your frontend always sends full data.
             profile.Bio = request.Bio;
             profile.FullName = request.FullName;
             profile.TargetScore = request.TargetScore;
@@ -58,11 +52,15 @@ namespace backend.Controllers
             profile.PhoneNumber = request.PhoneNumber;
             profile.DateOfBirth = request.DateOfBirth;
 
-            // 5. Save changes to the tracked entity
             await _context.SaveChangesAsync();
-
-            return Ok(profile); // Return the updated profile
+            return Ok(profile); 
         }
+
+        //Call api to take the test 
+        //[Authorize]
+        //[HttpPost("attempt-test/{id}")]
+
+       
 
         private Guid GetUserIdFromToken()
         {

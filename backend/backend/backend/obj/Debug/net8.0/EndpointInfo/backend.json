@@ -619,6 +619,112 @@
         }
       }
     },
+    "/api/listening-test/add-listening-test": {
+      "post": {
+        "tags": [
+          "ListeningTest"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Title": {
+                    "type": "string"
+                  },
+                  "TestType": {
+                    "type": "string"
+                  },
+                  "Skill": {
+                    "type": "string"
+                  },
+                  "QuestionRange": {
+                    "type": "string"
+                  },
+                  "SubTitle": {
+                    "type": "string"
+                  },
+                  "AudioDuration": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Audio": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "Image": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "JsonFile": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "Parts": {
+                    "type": "string"
+                  }
+                }
+              },
+              "encoding": {
+                "Title": {
+                  "style": "form"
+                },
+                "TestType": {
+                  "style": "form"
+                },
+                "Skill": {
+                  "style": "form"
+                },
+                "QuestionRange": {
+                  "style": "form"
+                },
+                "SubTitle": {
+                  "style": "form"
+                },
+                "AudioDuration": {
+                  "style": "form"
+                },
+                "Audio": {
+                  "style": "form"
+                },
+                "Image": {
+                  "style": "form"
+                },
+                "JsonFile": {
+                  "style": "form"
+                },
+                "Parts": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListeningTest"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListeningTest"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListeningTest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/milestone/generate-event": {
       "post": {
         "tags": [
@@ -697,6 +803,174 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/MileStone"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reading-test/add-reading-test": {
+      "post": {
+        "tags": [
+          "ReadingTest"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Title": {
+                    "type": "string"
+                  },
+                  "TestType": {
+                    "type": "string"
+                  },
+                  "Skill": {
+                    "type": "string"
+                  },
+                  "TotalDuration": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "QuestionRange": {
+                    "type": "string"
+                  },
+                  "Subtitle": {
+                    "type": "string"
+                  },
+                  "Image": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "Parts": {
+                    "type": "string"
+                  }
+                }
+              },
+              "encoding": {
+                "Title": {
+                  "style": "form"
+                },
+                "TestType": {
+                  "style": "form"
+                },
+                "Skill": {
+                  "style": "form"
+                },
+                "TotalDuration": {
+                  "style": "form"
+                },
+                "QuestionRange": {
+                  "style": "form"
+                },
+                "Subtitle": {
+                  "style": "form"
+                },
+                "Image": {
+                  "style": "form"
+                },
+                "Parts": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadingTest"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadingTest"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadingTest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reading-test/get-all": {
+      "get": {
+        "tags": [
+          "ReadingTest"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReadingTest"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReadingTest"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReadingTest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/test/fetch-tests": {
+      "get": {
+        "tags": [
+          "Test"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TestSummaryDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TestSummaryDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TestSummaryDto"
                   }
                 }
               }
@@ -1229,6 +1503,275 @@
         },
         "additionalProperties": false
       },
+      "QuestionAnswer": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "index": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "questionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "question": {
+            "$ref": "#/components/schemas/ReadingQuestion"
+          }
+        },
+        "additionalProperties": false
+      },
+      "QuestionOption": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "index": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "questionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "text": {
+            "type": "string",
+            "nullable": true
+          },
+          "question": {
+            "$ref": "#/components/schemas/ReadingQuestion"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReadingPart": {
+        "type": "object",
+        "properties": {
+          "partId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "testId": {
+            "type": "string",
+            "nullable": true
+          },
+          "partNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "partTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "passageTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "skill": {
+            "type": "string",
+            "nullable": true
+          },
+          "thumbnailUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "testDuration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "questionRange": {
+            "type": "string",
+            "nullable": true
+          },
+          "text": {
+            "type": "string",
+            "nullable": true
+          },
+          "test": {
+            "$ref": "#/components/schemas/ReadingTest"
+          },
+          "sections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReadingSection"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReadingQuestion": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "questionNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sectionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "questionText": {
+            "type": "string",
+            "nullable": true
+          },
+          "diagramLabelsJson": {
+            "type": "string",
+            "nullable": true
+          },
+          "section": {
+            "$ref": "#/components/schemas/ReadingSection"
+          },
+          "answers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuestionAnswer"
+            },
+            "nullable": true
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuestionOption"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReadingSection": {
+        "type": "object",
+        "properties": {
+          "sectionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sectionNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "partId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sectionRange": {
+            "type": "string",
+            "nullable": true
+          },
+          "sectionTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "questionType": {
+            "type": "string",
+            "nullable": true
+          },
+          "instructions": {
+            "type": "string",
+            "nullable": true
+          },
+          "wordLimit": {
+            "type": "string",
+            "nullable": true
+          },
+          "gapFillText": {
+            "type": "string",
+            "nullable": true
+          },
+          "tableJson": {
+            "type": "string",
+            "nullable": true
+          },
+          "optionRange": {
+            "type": "string",
+            "nullable": true
+          },
+          "part": {
+            "$ref": "#/components/schemas/ReadingPart"
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReadingQuestion"
+            },
+            "nullable": true
+          },
+          "sectionOptions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SectionOption"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReadingTest": {
+        "required": [
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "testId": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "testType": {
+            "type": "string",
+            "nullable": true
+          },
+          "skill": {
+            "type": "string",
+            "nullable": true
+          },
+          "totalDuration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "questionRange": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "subtitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "button": {
+            "type": "string",
+            "nullable": true
+          },
+          "parts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReadingPart"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "RefreshTokenRequestDto": {
         "type": "object",
         "properties": {
@@ -1269,6 +1812,31 @@
         },
         "additionalProperties": false
       },
+      "SectionOption": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sectionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "text": {
+            "type": "string",
+            "nullable": true
+          },
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "section": {
+            "$ref": "#/components/schemas/ReadingSection"
+          }
+        },
+        "additionalProperties": false
+      },
       "TestResult": {
         "type": "object",
         "properties": {
@@ -1300,6 +1868,44 @@
           },
           "listeningTest": {
             "$ref": "#/components/schemas/ListeningTest"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TestSummaryDto": {
+        "type": "object",
+        "properties": {
+          "testId": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "testType": {
+            "type": "string",
+            "nullable": true
+          },
+          "skill": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "subTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "button": {
+            "type": "string",
+            "nullable": true
+          },
+          "testTaken": {
+            "type": "integer",
+            "format": "int64"
           }
         },
         "additionalProperties": false

@@ -164,7 +164,6 @@ function TeamMember({ name, role, desc, image }: { name: string, role: string, d
       <div className="w-24 h-24 mx-auto relative mb-4">
         {/* Placeholder for avatar */}
         <div className="w-full h-full rounded-full bg-gray-200 overflow-hidden relative">
-           {/* If you have real images, use Next Image here */}
            <Image src={image} alt={name} fill className="object-cover" /> 
         </div>
       </div>

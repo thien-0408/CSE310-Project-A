@@ -15,7 +15,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "backend.Entities.User",
+        "Type": "backend.Entities.User.User",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -51,7 +51,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "backend.Entities.User",
+        "Type": "backend.Entities.User.User",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -77,7 +77,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "backend.Entities.User",
+        "Type": "backend.Entities.User.User",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -103,7 +103,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "backend.Entities.User",
+        "Type": "backend.Entities.User.User",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -123,7 +123,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[backend.Entities.User, backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[backend.Entities.User.User, backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -143,7 +143,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "backend.Entities.User",
+        "Type": "backend.Entities.User.User",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -317,7 +317,78 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[backend.Entities.ListeningTest, backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[backend.Entities.Listening.ListeningTest, backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "backend.Controllers.ListeningTestController",
+    "Method": "AddListeningTest",
+    "RelativePath": "api/listening-test/add-listening-test",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "TestType",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Skill",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "QuestionRange",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "SubTitle",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "AudioDuration",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Audio",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "Image",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "JsonFile",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "Parts",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "backend.Entities.Listening.ListeningTest",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -358,7 +429,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "backend.Entities.ListeningTest",
+        "Type": "backend.Entities.Listening.ListeningTest",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -405,6 +476,107 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.List\u00601[[backend.Entities.MileStone, backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "backend.Controllers.ReadingTestController",
+    "Method": "AddReadingTest",
+    "RelativePath": "api/reading-test/add-reading-test",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "TestType",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Skill",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "TotalDuration",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "QuestionRange",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Subtitle",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Image",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "Parts",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "backend.Entities.Reading.ReadingTest",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "backend.Controllers.ReadingTestController",
+    "Method": "GetAllReadingTests",
+    "RelativePath": "api/reading-test/get-all",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[backend.Entities.Reading.ReadingTest, backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "backend.Controllers.TestController",
+    "Method": "GetAllTests",
+    "RelativePath": "api/test/fetch-tests",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[backend.Models.TestSummaryDto, backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",

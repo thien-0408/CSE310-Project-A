@@ -2,6 +2,7 @@
 using backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.IdentityModel.Tokens.Experimental;
 using Microsoft.OpenApi.Models;
@@ -15,7 +16,12 @@ builder.Services.AddControllers();
 
 //Add CORS
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // Dòng này giúp bỏ qua vòng lặp tham chiếu
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    });
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,

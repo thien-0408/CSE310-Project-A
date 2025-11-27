@@ -3,7 +3,6 @@ import { Montserrat, Roboto } from "next/font/google";
 import "./globals.css";
 import AOSInitializer from '@/components/OASInitializer';
 import 'aos/dist/aos.css';
-import Loader from "@/components/ui/Loader";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",

@@ -1,0 +1,348 @@
+{
+  "testId": 7,
+  "title": "Cambridge IELTS 18 - Test 1",
+  "testType": "full_test",
+  "skill": "listening",
+  "audioUrl": "/listening_audios/cam18_test1_full.mp3",
+  "imageUrl": "/listening_images/cam18_cover.jpg",
+  "questionRange": "1-40",
+  "subTitle": "Official Cambridge Practice Material",
+  "button": "Start Now",
+  "audioDuration": 30,
+  "jsonFileUrl": "",
+  "parts": [
+    {
+      "partNumber": 1,
+      "partTitle": "Social/Transactional Conversation",
+      "context": "The housing officer takes some details from the girl.",
+      "questionRange": "1-10",
+      "partAudioUrl": "/listening_audios/cam18_test1_part1.mp3",
+      "sections": [
+        {
+          "sectionNumber": 1,
+          "sectionRange": "Questions 1-5",
+          "sectionTitle": "PERSONAL DETAILS FOR HOMESTAY APPLICATION",
+          "questionType": "form_completion",
+          "instructions": "Complete the form below. Write NO MORE THAN THREE WORDS AND/OR A NUMBER.",
+          "wordLimit": "NO MORE THAN THREE WORDS AND/OR A NUMBER",
+          "mapImageUrl": null,
+          "maxAnswers": null,
+          "questions": [
+            {
+              "questionNumber": 1,
+              "questionText": "First name",
+              "label": "First name",
+              "value": null,
+              "isInput": true,
+              "wordLimit": "ONE WORD",
+              "answers": [
+                { "answerText": "Thien" },
+                { "answerText": "THIEN" }
+              ],
+              "questionOptions": []
+            },
+            {
+              "questionNumber": 101,
+              "questionText": "Family name",
+              "label": "Family name",
+              "value": "Yuichini",
+              "isInput": false,
+              "wordLimit": null,
+              "answers": [],
+              "questionOptions": []
+            },
+            {
+              "questionNumber": 2,
+              "questionText": "Passport number",
+              "label": "Passport number",
+              "value": null,
+              "isInput": true,
+              "wordLimit": "ONE WORD AND/OR A NUMBER",
+              "answers": [
+                { "answerText": "1234567" }
+              ],
+              "questionOptions": []
+            },
+            {
+              "questionNumber": 3,
+              "questionText": "Course enrolled",
+              "label": "Course enrolled",
+              "value": null,
+              "isInput": true,
+              "wordLimit": "TWO WORDS",
+              "answers": [
+                { "answerText": "Skibidi toilet" }
+              ],
+              "questionOptions": []
+            }
+          ]
+        },
+        {
+          "sectionNumber": 2,
+          "sectionRange": "Questions 6-10",
+          "sectionTitle": "Accommodation Preferences",
+          "questionType": "multiple_choice",
+          "instructions": "Choose the correct letter, A, B, C or D.",
+          "wordLimit": null,
+          "mapImageUrl": null,
+          "maxAnswers": null,
+          "questions": [
+            {
+              "questionNumber": 6,
+              "questionText": "What type of accommodation does the student prefer?",
+              "label": null,
+              "value": null,
+              "isInput": false,
+              "wordLimit": null,
+              "answers": [
+                { "answerText": "C" }
+              ],
+              "questionOptions": [
+                { "key": "A", "text": "A shared apartment with other students" },
+                { "key": "B", "text": "A private studio apartment" },
+                { "key": "C", "text": "A homestay with a local family" },
+                { "key": "D", "text": "University dormitory" }
+              ]
+            },
+            {
+              "questionNumber": 7,
+              "questionText": "What is the student's main concern about the homestay?",
+              "label": null,
+              "value": null,
+              "isInput": false,
+              "wordLimit": null,
+              "answers": [
+                { "answerText": "A" }
+              ],
+              "questionOptions": [
+                { "key": "A", "text": "The distance from university" },
+                { "key": "B", "text": "The cost of accommodation" },
+                { "key": "C", "text": "Dietary restrictions" },
+                { "key": "D", "text": "Internet connection" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "partNumber": 2,
+      "partTitle": "Social Talk / Monologue",
+      "context": "A guide giving a talk.",
+      "questionRange": "11-20",
+      "partAudioUrl": "/listening_audios/cam18_test1_part2.mp3",
+      "sections": [
+        {
+          "sectionNumber": 3,
+          "sectionRange": "Questions 11-14",
+          "sectionTitle": "General Information",
+          "questionType": "short_answer",
+          "instructions": "Answer the questions below. Write NO MORE THAN THREE WORDS AND/OR A NUMBER.",
+          "wordLimit": "NO MORE THAN THREE WORDS",
+          "mapImageUrl": null,
+          "maxAnswers": null,
+          "questions": [
+            {
+              "questionNumber": 11,
+              "questionText": "Although the girl is not a vegetarian, she doesn't eat a lot of meat. Her favourite food is",
+              "label": null,
+              "value": null,
+              "isInput": true,
+              "wordLimit": "ONE WORD",
+              "answers": [
+                { "answerText": "pasta" }
+              ],
+              "questionOptions": []
+            }
+          ]
+        },
+        {
+          "sectionNumber": 4,
+          "sectionRange": "Questions 15-16",
+          "sectionTitle": "Family Preferences",
+          "questionType": "multiple_answer",
+          "instructions": "Choose TWO letters, A-D.",
+          "wordLimit": null,
+          "mapImageUrl": null,
+          "maxAnswers": 2,
+          "questions": [
+            {
+              "questionNumber": 15,
+              "questionText": "Which kind of family does the girl prefer?",
+              "label": null,
+              "value": null,
+              "isInput": false,
+              "wordLimit": null,
+              "answers": [
+                { "answerText": "B" },
+                { "answerText": "C" }
+              ],
+              "questionOptions": [
+                { "key": "A", "text": "A big family with many young children" },
+                { "key": "B", "text": "A family without smoker or drinkers" },
+                { "key": "C", "text": "A family without any pets" },
+                { "key": "D", "text": "A family with many animals or pets" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "partNumber": 3,
+      "partTitle": "Academic Discussion",
+      "context": "Two students discussing their project.",
+      "questionRange": "21-32",
+      "partAudioUrl": "/listening_audios/cam18_test1_part3.mp3",
+      "sections": [
+        {
+          "sectionNumber": 7,
+          "sectionRange": "Questions 24-28",
+          "sectionTitle": "Excavation Projects Next Week",
+          "questionType": "diagram_labeling",
+          "instructions": "Complete the flow chart below. Write the correct letter, A-I, next to Questions 24-28.",
+          "wordLimit": "A-I",
+          "mapImageUrl": "/listening_images/diagram_process.jpg",
+          "maxAnswers": null,
+          "questions": [
+            {
+              "questionNumber": 24,
+              "questionText": "Take",
+              "label": null,
+              "value": null,
+              "isInput": true,
+              "wordLimit": null,
+              "answers": [
+                { "answerText": "H" }
+              ],
+              "questionOptions": [
+                { "key": "A", "text": "some soil samples" },
+                { "key": "B", "text": "some photographs" },
+                { "key": "C", "text": "objects to team leader" },
+                { "key": "D", "text": "labels on objects" },
+                { "key": "E", "text": "a record sheet" },
+                { "key": "F", "text": "a unit number" },
+                { "key": "G", "text": "further analysis of objects" },
+                { "key": "H", "text": "tools from the site hut" },
+                { "key": "I", "text": "a comprehensive plan" }
+              ]
+            },
+            {
+              "questionNumber": 25,
+              "questionText": "And your team leader for",
+              "label": null,
+              "value": null,
+              "isInput": true,
+              "wordLimit": null,
+              "answers": [
+                { "answerText": "I" }
+              ],
+              "questionOptions": []
+            }
+          ]
+        },
+        {
+          "sectionNumber": 8,
+          "sectionRange": "Questions 29-32",
+          "sectionTitle": "The Elmsden Way",
+          "questionType": "map_labeling",
+          "instructions": "Label the map below.",
+          "wordLimit": null,
+          "mapImageUrl": "/listening_images/map_elmsden.jpg",
+          "maxAnswers": null,
+          "questions": [
+            {
+              "questionNumber": 29,
+              "questionText": "Rocks",
+              "label": null,
+              "value": null,
+              "isInput": true,
+              "wordLimit": null,
+              "answers": [
+                { "answerText": "A" }
+              ],
+              "questionOptions": [
+                { "key": "A", "text": "Cycle route" },
+                { "key": "B", "text": "River Cleve" },
+                { "key": "C", "text": "Railway line" },
+                { "key": "D", "text": "Main road" },
+                { "key": "E", "text": "Woods" },
+                { "key": "F", "text": "Bridge" },
+                { "key": "G", "text": "Café" },
+                { "key": "H", "text": "Car park" },
+                { "key": "I", "text": "Information center" }
+              ]
+            },
+            {
+              "questionNumber": 30,
+              "questionText": "Colleen Nature Reserve",
+              "label": null,
+              "value": null,
+              "isInput": true,
+              "wordLimit": null,
+              "answers": [
+                { "answerText": "D" }
+              ],
+              "questionOptions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "partNumber": 4,
+      "partTitle": "Academic Lecture",
+      "context": "A lecture about architecture history.",
+      "questionRange": "33-40",
+      "partAudioUrl": "/listening_audios/cam18_test1_part4.mp3",
+      "sections": [
+        {
+          "sectionNumber": 9,
+          "sectionRange": "Questions 33-38",
+          "sectionTitle": "Descriptions",
+          "questionType": "matching_information",
+          "instructions": "What description applies to each of the following structures? Choose SIX answers from the box.",
+          "wordLimit": null,
+          "mapImageUrl": null,
+          "maxAnswers": null,
+          "questions": [
+            {
+              "questionNumber": 33,
+              "questionText": "the 'house of the future' (1957)",
+              "label": null,
+              "value": null,
+              "isInput": true,
+              "wordLimit": null,
+              "answers": [
+                { "answerText": "A" }
+              ],
+              "questionOptions": [
+                { "key": "A", "text": "easy to transport" },
+                { "key": "B", "text": "not much room inside" },
+                { "key": "C", "text": "made from recycled materials" },
+                { "key": "D", "text": "designed to promote technology" },
+                { "key": "E", "text": "never actually built" },
+                { "key": "F", "text": "easy to keep clean" },
+                { "key": "G", "text": "very strong construction" },
+                { "key": "H", "text": "futuristic design" },
+                { "key": "I", "text": "light and airy" }
+              ]
+            },
+            {
+              "questionNumber": 34,
+              "questionText": "the 'wonderhouse' (1964)",
+              "label": null,
+              "value": null,
+              "isInput": true,
+              "wordLimit": null,
+              "answers": [
+                { "answerText": "D" }
+              ],
+              "questionOptions": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

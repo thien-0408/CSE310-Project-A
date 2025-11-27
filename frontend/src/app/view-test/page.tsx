@@ -24,18 +24,6 @@ import Loader from "@/components/ui/Loader";
 import NavBar from "@/components/ui/navbar";
 import { useRouter, useSearchParams } from "next/navigation";
 
-
-type TestData = {
-  id: number;
-  testType: string;
-  skill: string;
-  image: string;
-  views: number;
-  passage: number;
-  title: string;
-  subtitle: string[];
-  button: string;
-};
 interface ConfirmModalProps {
   message: string;
   onConfirm: () => void;
@@ -54,233 +42,55 @@ const filterTypes = [
 ];
 const filterPassage = [1, 2, 3];
 
-const TESTS: TestData[] = [
-  // Page 1
-  {
-    id: 1,
-    testType: "separated",
-    skill: "reading",
-    image: "/testdata/reading.png",
-    views: 13879,
-    passage: 2,
-    title: "[Reading] - Digital Marketing Trends",
-    subtitle: ["Gap Filling", "Gap Filling", "Multiple Choice"],
-    button: "Try Now!",
-  },
-  {
-    id: 2,
-    skill: "listening",
-    testType: "separated",
-    image: "/testdata/listening.png",
-    views: 12,
-    passage: 2,
-    title: "[Full Test] - Psychology of Color",
-    subtitle: ["Gap Filling", "Gap Filling", "Multiple Choice"],
-    button: "Try Now!",
-  },
-  {
-    id: 3,
-    skill: "writing",
-    testType: "separated",
-    image: "/testdata/writing.jpg",
-    views: 13879,
-    passage: 2,
-    title: "[Listening] - Urban Migration",
-    subtitle: ["Gap Filling", "Gap Filling", "Multiple Choice"],
-    button: "Try Now!",
-  },
-  {
-    id: 4,
-    skill: "listening",
-    testType: "full_test",
-    image: "/testdata/reading.png",
-    views: 13879,
-    passage: 2,
-    title: "[Full Test] - The History of Jazz",
-    subtitle: ["Gap Filling", "Gap Filling", "Multiple Choice"],
-    button: "Try Now!",
-  },
-  {
-    id: 5,
-    skill: "writing",
-    testType: "separated",
-    image: "/testdata/listening.png",
-    views: 13879,
-    passage: 2,
-    title: "[Writing] - Task 1: Bar Chart",
-    subtitle: ["Gap Filling", "Gap Filling", "Multiple Choice"],
-    button: "Try Now!",
-  },
-  {
-    id: 6,
-    skill: "speaking",
-    testType: "separated",
-    image: "/testdata/reading.png",
-    views: 13879,
-    passage: 2,
-    title: "[Speaking] - Part 2: A Memorable Trip",
-    subtitle: ["Gap Filling", "Gap Filling", "Multiple Choice"],
-    button: "Try Now!",
-  },
-  // Page 2
-  {
-    id: 7,
-    testType: "separated",
-    skill: "reading",
-    image: "/testdata/reading.png",
-    views: 13879,
-    passage: 2,
-    title: "[Reading] - Artificial Intelligence",
-    subtitle: ["Gap Filling", "Gap Filling", "Multiple Choice"],
-    button: "Try Now!",
-  },
-  {
-    id: 8,
-    skill: "reading",
-    testType: "full_test",
-    image: "/testdata/reading.png",
-    views: 12,
-    passage: 2,
-    title: "[Full Test] - Marine Biology",
-    subtitle: ["Gap Filling", "Gap Filling", "Multiple Choice"],
-    button: "Try Now!",
-  },
-  {
-    id: 9,
-    skill: "listening",
-    testType: "separated",
-    image: "/testdata/reading.png",
-    views: 13879,
-    passage: 2,
-    title: "[Listening] - University Lecture",
-    subtitle: ["Gap Filling", "Gap Filling", "Multiple Choice"],
-    button: "Try Now!",
-  },
-  {
-    id: 10,
-    skill: "listening",
-    testType: "full_test",
-    image: "/testdata/reading.png",
-    views: 13879,
-    passage: 2,
-    title: "[Full Test] - Phone Conversation",
-    subtitle: ["Gap Filling", "Gap Filling", "Multiple Choice"],
-    button: "Try Now!",
-  },
-  {
-    id: 11,
-    skill: "writing",
-    testType: "separated",
-    image: "/testdata/reading.png",
-    views: 13879,
-    passage: 2,
-    title: "[Writing] - Task 2: Climate Change",
-    subtitle: ["Gap Filling", "Gap Filling", "Multiple Choice"],
-    button: "Try Now!",
-  },
-  {
-    id: 12,
-    skill: "speaking",
-    testType: "separated",
-    image: "/testdata/reading.png",
-    views: 13879,
-    passage: 2,
-    title: "[Speaking] - Part 1: Hobbies",
-    subtitle: ["Gap Filling", "Gap Filling", "Multiple Choice"],
-    button: "Try Now!",
-  },
-  // Page 3
-  {
-    id: 13,
-    testType: "separated",
-    skill: "reading",
-    image: "/testdata/reading.png",
-    views: 13879,
-    passage: 2,
-    title: "[Reading] - Sustainable Agriculture",
-    subtitle: ["Gap Filling", "Gap Filling", "Multiple Choice"],
-    button: "Try Now!",
-  },
-  {
-    id: 14,
-    skill: "reading",
-    testType: "full_test",
-    image: "/testdata/reading.png",
-    views: 12,
-    passage: 2,
-    title: "[Full Test] - Renewable Energy",
-    subtitle: ["Gap Filling", "Gap Filling", "Multiple Choice"],
-    button: "Try Now!",
-  },
-  {
-    id: 15,
-    skill: "listening",
-    testType: "separated",
-    image: "/testdata/reading.png",
-    views: 13879,
-    passage: 2,
-    title: "[Listening] - Radio Broadcast",
-    subtitle: ["Gap Filling", "Gap Filling", "Multiple Choice"],
-    button: "Try Now!",
-  },
-  {
-    id: 16,
-    skill: "listening",
-    testType: "full_test",
-    image: "/testdata/reading.png",
-    views: 13879,
-    passage: 2,
-    title: "[Full Test] - Guided Tour",
-    subtitle: ["Gap Filling", "Gap Filling", "Multiple Choice"],
-    button: "Try Now!",
-  },
-  {
-    id: 17,
-    skill: "writing",
-    testType: "separated",
-    image: "/testdata/reading.png",
-    views: 13879,
-    passage: 2,
-    title: "[Writing] - Task 1: Line Graph",
-    subtitle: ["Gap Filling", "Gap Filling", "Multiple Choice"],
-    button: "Try Now!",
-  },
-  {
-    id: 18,
-    skill: "speaking",
-    testType: "separated",
-    image: "/testdata/reading.png",
-    views: 13879,
-    passage: 2,
-    title: "[Speaking] - Part 3: Technology",
-    subtitle: ["Gap Filling", "Gap Filling", "Multiple Choice"],
-    button: "Try Now!",
-  },
-  // Page 4
-  {
-    id: 19,
-    testType: "separated",
-    skill: "reading",
-    image: "/testdata/reading.png",
-    views: 13879,
-    passage: 2,
-    title: "[Reading] - The Pyramids",
-    subtitle: ["Gap Filling", "Gap Filling", "Multiple Choice"],
-    button: "Try Now!",
-  },
-  {
-    id: 20,
-    skill: "reading",
-    testType: "full_test",
-    image: "/testdata/reading.png",
-    views: 12,
-    passage: 2,
-    title: "[Full Test] - Ancient Civilizations",
-    subtitle: ["Gap Filling", "Gap Filling", "Multiple Choice"],
-    button: "Try Now!",
-  },
-];
+type TestData = {
+  testId: string;
+  testType: string;
+  skill: string;
+  imageUrl: string;
+  testTaken: number;
+  title: string;
+  subTitle: string[];
+  button: string;
+};
+export const fetchTestsData = async (): Promise<TestData[]> => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch("http://localhost:5151/api/test/fetch-tests", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) throw new Error("Network response was not ok");
 
+    const rawData = await response.json();
+    console.log(rawData);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return rawData.map((item: any) => {
+      const processedSubtitle = item.subTitle
+        ? item.subTitle
+            .split(".")
+            .map((s: string) => s.trim())
+            .filter((s: string) => s.length > 0)
+        : [];
+      return {
+        testId: item.testId,
+        title: item.title,
+        testType: item.testType,
+        skill: item.skill,
+        imageUrl: item.imageUrl,
+        testTaken: item.testTaken,
+        button: item.button,
+        subTitle: processedSubtitle,
+      };
+    });
+  } catch (error) {
+    console.error("Fetch error:", error);
+    return [];
+  }
+};
 const ITEMS_PER_PAGE = 6;
 
 export default function ViewTests() {
@@ -290,9 +100,17 @@ export default function ViewTests() {
   const [selectedSkills, setSelectedSkills] = useState<Set<string>>(new Set());
   const [selectedTypes, setSelectedTypes] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
-   const searchParams = useSearchParams();
-     const skillParam = searchParams.get("skill"); // ví dụ ?skill=listening
+  const searchParams = useSearchParams();
+  const skillParam = searchParams.get("skill"); // ?skill=listening
+  const [tests, setTests] = useState<TestData[]>([]);
+  useEffect(() => {
+    const loadData = async () => {
+      const data = await fetchTestsData();
+      setTests(data);
+    };
 
+    loadData();
+  }, []);
   const [confirmModal, setConfirmModal] = useState<ConfirmModalProps>({
     isVisible: false,
     message: "",
@@ -315,11 +133,7 @@ export default function ViewTests() {
   }) => {
     if (!isVisible) return null;
     return (
-      <div
-        data-aos="fade"
-        data-aos-duration="300"
-        className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600/50 backdrop-blur-sm transition-opacity duration-300"
-      >
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600/50 backdrop-blur-sm transition-opacity duration-300">
         <div className="bg-white rounded-4xl p-8 max-w-md w-full shadow-2xl border border-gray-200">
           <p className="text-center text-gray-700 mb-6 text-lg">{message}</p>
           <div className="flex justify-center gap-4">
@@ -368,10 +182,10 @@ export default function ViewTests() {
       newSet.add(value);
     }
     setFilter(newSet);
-    setCurrentPage(1); // Reset về trang 1 khi filter
+    setCurrentPage(1); // Reset to first page on filter change
   };
 
-  const filteredTests = TESTS.filter((test) => {
+  const filteredTests = tests.filter((test) => {
     const matchesTitle = test.title
       .toLowerCase()
       .includes(appliedSearch.toLowerCase()); // Lọc bằng appliedSearch
@@ -410,15 +224,15 @@ export default function ViewTests() {
   }
 
   return (
-    <>
-    <NavBar></NavBar>
+    <div  className="min-h-screen flex flex-col">
+      <NavBar></NavBar>
       <ConfirmModal
         isVisible={confirmModal.isVisible}
         message={confirmModal.message}
         onConfirm={confirmModal.onConfirm}
         onCancel={confirmModal.onCancel}
       />
-      <section className="tracking-tight">
+      <section data-aos = "fade-left" className="tracking-tight flex-1">
         <div className="">
           <div className="container mx-auto px-4 py-10">
             <div className="flex gap-8">
@@ -545,26 +359,23 @@ export default function ViewTests() {
                 </div>
 
                 {/* Grid Display */}
-                {filteredTests.length > 0 ? (
-                  <div
-                    data-aos="fade"
-                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"
-                  >
+                {currentItems.length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
                     {currentItems.map((test) => (
                       <Card
-                        key={test.id}
+                        key={test.testId}
                         className="p-0 overflow-hidden rounded-xl border relative group hover:scale-105 transition-all duration-500 flex flex-col" // Thêm flex flex-col
                       >
                         <div className="relative h-40 w-full bg-gray-100">
                           <Image
-                            src={test.image}
+                            src={test.imageUrl}
                             fill
                             className="object-cover rounded-t-xl"
                             alt={test.title}
                           />
                           <div className="absolute top-2 right-2 bg-black/60 text-white text-xs rounded-full px-2 py-1 flex items-center gap-1">
                             <span>👁️</span>
-                            <span>{test.views.toLocaleString()}</span>
+                            <span>{test.testTaken.toLocaleString()}</span>
                           </div>
                         </div>
                         <CardContent className="p-3 flex flex-col flex-grow">
@@ -576,17 +387,19 @@ export default function ViewTests() {
                               {test.skill.charAt(0).toUpperCase() +
                                 test.skill.slice(1)}
                             </Badge>
+
+                            {/* Add passage number later here --------------------------------------------------------------*/}
                             <Badge
                               variant="secondary"
-                              className="p-2 w-20 rounded-full"
-                            >{`Passage ${test.passage}`}</Badge>
+                              className="p-2 w-20 rounded-full "
+                            >{`Passage 1`}</Badge>
                           </div>
 
                           <CardTitle className="text-base font-bold leading-tight hover:text-blue-600">
                             {test.title}
                           </CardTitle>
                           <div className="text-xs text-gray-600 mt-2 space-y-1">
-                            {test.subtitle.map((s, idx) => (
+                            {test.subTitle.map((s, idx) => (
                               <div key={idx}>{s}</div>
                             ))}
                           </div>
@@ -677,6 +490,6 @@ export default function ViewTests() {
           </PaginationContent>
         </Pagination>
       </footer>
-    </>
+    </div>
   );
 }

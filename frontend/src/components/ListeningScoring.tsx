@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
-import { CheckCircle, XCircle } from "lucide-react";
+import { CheckCircle, XCircle, AlertCircle } from "lucide-react";
 import { ListeningData, UserAnswer, ScoreResult } from "@/types/listening";
+
 interface ScoringProps {
   listeningData: ListeningData;
   userAnswers: UserAnswer[];
@@ -13,6 +14,7 @@ const ListeningScoring: React.FC<ScoringProps> = ({
   userAnswers,
   onClose,
 }) => {
+  // --- EXISTING LOGIC (Unchanged) ---
   const scoreAnswers = (): ScoreResult[] => {
     const results: ScoreResult[] = [];
 
@@ -252,7 +254,10 @@ const ListeningScoring: React.FC<ScoringProps> = ({
           });
         });
       }
-      if (section.questionType === "matching_information" && section.questions) {
+      if (
+        section.questionType === "matching_information" &&
+        section.questions
+      ) {
         section.questions.forEach((question) => {
           const userAnswer = userAnswers.find(
             (ua) =>
@@ -290,10 +295,9 @@ const ListeningScoring: React.FC<ScoringProps> = ({
   const results = scoreAnswers();
   const totalScore = results.reduce((sum, result) => sum + result.points, 0);
   const maxPossibleScore = results.length;
-  const percentage =
-    maxPossibleScore > 0
-      ? Math.round((totalScore / maxPossibleScore) * 100)
-      : 0;
+  // Percentage is calculated but using maxPossibleScore from length
+  // Note: multiple_answer might have points > 1 if configured that way, but maxPossibleScore is count of results.
+  // Assuming 1 result object per question item.
 
   const getQuestionTypeDisplay = (type: string): string => {
     const typeMap: Record<string, string> = {
@@ -357,6 +361,7 @@ const ListeningScoring: React.FC<ScoringProps> = ({
 
     return String(answer);
   };
+
   const resultsBySection = results.reduce((acc, result) => {
     if (!acc[result.sectionId]) {
       acc[result.sectionId] = [];
@@ -365,33 +370,41 @@ const ListeningScoring: React.FC<ScoringProps> = ({
     return acc;
   }, {} as Record<number, ScoreResult[]>);
 
+  // --- NEW RENDER DESIGN ---
+
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-      <div className="mb-6">
-        <h2 className="text-3xl font-bold text-gray-800 mb-4">
-          Listening Test Results - Part {listeningData.partNumber}
-        </h2>
-        <div className="bg-gradient-to-r from-blue-500 to-green-500 text-white p-6 rounded-lg">
-          <div className="flex justify-between items-center">
-            <div>
-              <p className="text-xl font-semibold">Overall Score</p>
-              <p className="text-3xl font-bold">
-                {totalScore}/{maxPossibleScore}
-              </p>
-            </div>
-            <div className="text-right">
-              <p className="text-xl font-semibold">Percentage</p>
-              <p className="text-3xl font-bold">{percentage}%</p>
-            </div>
-          </div>
+    <div className="bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col max-h-[85vh] w-full max-w-4xl mx-auto my-8 animate-in fade-in zoom-in-95 duration-300">
+      
+      {/* Header: Score Summary */}
+      <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white flex justify-between items-center sticky top-0 z-10">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+            <AlertCircle className="text-blue-600" />
+            Listening Test Results
+          </h2>
+          <p className="text-sm text-gray-500 mt-1">
+            Part {listeningData.partNumber} • Review your performance details below.
+          </p>
+        </div>
+        <div className="text-right bg-white px-4 py-2 rounded-xl border border-gray-100 shadow-sm">
+          <span
+            className={`block text-3xl font-extrabold ${
+              totalScore / maxPossibleScore >= 0.5
+                ? "text-green-600"
+                : "text-orange-500"
+            }`}
+          >
+            {totalScore}{" "}
+            <span className="text-gray-300 text-xl">/</span> {maxPossibleScore}
+          </span>
+          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+            Total Score
+          </span>
         </div>
       </div>
 
-      <div className="space-y-6">
-        <h3 className="text-xl font-semibold text-gray-800">
-          Question Details
-        </h3>
-
+      {/* Content: Scrollable Area */}
+      <div className="flex-1 overflow-y-auto p-6 space-y-8 bg-gray-50/50">
         {Object.entries(resultsBySection).map(([sectionId, sectionResults]) => {
           const section = listeningData.sections.find(
             (s) => s.sectionId === parseInt(sectionId)
@@ -400,79 +413,90 @@ const ListeningScoring: React.FC<ScoringProps> = ({
           return (
             <div key={sectionId} className="space-y-4">
               {section?.sectionTitle && (
-                <h4 className="text-lg font-semibold text-blue-700 mt-4">
-                  {section.sectionTitle}
-                </h4>
+                <div className="flex items-center gap-2 mb-2 px-1">
+                  <div className="h-4 w-1 bg-blue-500 rounded-full"></div>
+                  <h4 className="text-sm font-bold text-gray-500 uppercase tracking-wider">
+                    {section.sectionTitle}
+                  </h4>
+                </div>
               )}
 
               {sectionResults.map((result) => (
                 <div
                   key={`${result.sectionId}-${result.questionId}`}
-                  className={`p-4 rounded-lg border-2 ${
+                  className={`p-4 rounded-xl border-l-[6px] transition-all shadow-sm bg-white ${
                     result.isCorrect
-                      ? "border-green-200 bg-green-50"
-                      : "border-red-200 bg-red-50"
+                      ? "border-l-green-500 border-t border-r border-b border-green-100/50"
+                      : "border-l-red-500 border-t border-r border-b border-red-100/50"
                   }`}
                 >
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center space-x-2">
+                  <div className="flex items-start gap-4">
+                    {/* Status Icon */}
+                    <div className="mt-1 flex-shrink-0">
                       {result.isCorrect ? (
-                        <CheckCircle className="text-green-600 w-5 h-5" />
+                        <CheckCircle className="w-6 h-6 text-green-500 fill-green-50" />
                       ) : (
-                        <XCircle className="text-red-600 w-5 h-5" />
+                        <XCircle className="w-6 h-6 text-red-500 fill-red-50" />
                       )}
-                      <span className="font-semibold text-gray-700">
-                        Question {result.questionId}
-                      </span>
-                      <span className="text-sm text-gray-500 bg-gray-200 px-2 py-1 rounded">
-                        {getQuestionTypeDisplay(result.questionType)}
-                      </span>
                     </div>
-                    <div className="text-right">
-                      <span
-                        className={`font-bold ${
-                          result.isCorrect ? "text-green-600" : "text-red-600"
-                        }`}
-                      >
-                        {result.points} pts
-                      </span>
-                    </div>
-                  </div>
 
-                  <p className="text-gray-800 mb-3">{result.questionText}</p>
+                    {/* Content */}
+                    <div className="flex-1 w-full">
+                      <div className="flex justify-between items-start mb-3">
+                        <h4 className="font-bold text-gray-800 text-base flex items-center gap-2 flex-wrap">
+                          Question {result.questionId}
+                          <span className="text-xs font-normal px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full border border-gray-200">
+                            {getQuestionTypeDisplay(result.questionType)}
+                          </span>
+                        </h4>
+                        <span className={`text-xs font-bold px-2 py-1 rounded ${result.isCorrect ? "text-green-700 bg-green-50" : "text-red-700 bg-red-50"}`}>
+                            {result.points} pts
+                        </span>
+                      </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-sm font-medium text-gray-600 mb-1">
-                        Your Answer:
+                      <p className="text-gray-600 text-sm mb-4">
+                        {result.questionText}
                       </p>
-                      <p
-                        className={`p-2 rounded ${
-                          result.isCorrect
-                            ? "bg-green-100 text-green-800"
-                            : "bg-red-100 text-red-800"
-                        }`}
-                      >
-                        {formatAnswer(
-                          result.userAnswer,
-                          result.questionType,
-                          result.sectionId,
-                          result.questionId
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* User Answer */}
+                        <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                          <span className="text-[10px] font-bold text-gray-400 uppercase block mb-1 tracking-wider">
+                            Your Answer
+                          </span>
+                          <div
+                            className={`text-sm font-semibold break-words ${
+                              result.isCorrect
+                                ? "text-green-700"
+                                : "text-red-600"
+                            }`}
+                          >
+                            {formatAnswer(
+                              result.userAnswer,
+                              result.questionType,
+                              result.sectionId,
+                              result.questionId
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Correct Answer - Display only if incorrect */}
+                        {!result.isCorrect && (
+                          <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
+                            <span className="text-[10px] font-bold text-blue-400 uppercase block mb-1 tracking-wider">
+                              Correct Answer
+                            </span>
+                            <div className="text-sm font-semibold text-blue-800 break-words">
+                              {formatAnswer(
+                                result.correctAnswer,
+                                result.questionType,
+                                result.sectionId,
+                                result.questionId
+                              )}
+                            </div>
+                          </div>
                         )}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-600 mb-1">
-                        Correct Answer:
-                      </p>
-                      <p className="p-2 bg-blue-100 text-blue-800 rounded">
-                        {formatAnswer(
-                          result.correctAnswer,
-                          result.questionType,
-                          result.sectionId,
-                          result.questionId
-                        )}
-                      </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -480,13 +504,20 @@ const ListeningScoring: React.FC<ScoringProps> = ({
             </div>
           );
         })}
+
+        {results.length === 0 && (
+          <div className="text-center py-10 text-gray-400">
+            No questions found to score.
+          </div>
+        )}
       </div>
 
+      {/* Footer */}
       {onClose && (
-        <div className="mt-6 text-center">
+        <div className="p-4 border-t border-gray-200 bg-white flex justify-end sticky bottom-0 z-10">
           <button
             onClick={onClose}
-            className="px-6 py-3 bg-[#336699] text-white rounded-3xl hover:bg-blue-700 transition-colors"
+            className="px-8 py-2.5 bg-gray-900 text-white rounded-lg font-medium hover:bg-black hover:shadow-lg active:transform active:scale-95 transition-all duration-200"
           >
             Close Results
           </button>

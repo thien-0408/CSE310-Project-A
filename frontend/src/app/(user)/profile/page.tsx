@@ -4,7 +4,11 @@ import { useState, useEffect, FC, ChangeEvent, FormEvent, useMemo, useCallback }
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import NavBarUser from "@/components/ui/navbarforuser";
+import { RiCloseCircleFill } from "react-icons/ri";
+
 import AuthGuard from "@/components/auth/AuthGuard";
+import { IoCamera } from "react-icons/io5";
+import { FaBellSlash } from "react-icons/fa";
 
 // --- Types ---
 export interface UserProfile {
@@ -172,8 +176,8 @@ export default function ProfilePage() {
     }
   };
 
-  if (loading) return <div className="p-10 text-center">Loading profile...</div>;
-  if (!profile) return <div className="p-10 text-center">Please log in to view profile.</div>;
+  if (loading) return <div className="">Loading profile...</div>;
+  if (!profile) return <div className="p-10 text-center text-xl bg-red-500 text-white rounded-2xl">Please log in to view profile.</div>;
 
   return (
     <>
@@ -193,7 +197,8 @@ export default function ProfilePage() {
               onClick={() => removeToast(toast.id)}
               className="ml-4 text-white hover:text-gray-200"
             >
-              <i className="fas fa-times"></i>
+              <RiCloseCircleFill />
+
             </button>
           </div>
         ))}
@@ -208,7 +213,7 @@ export default function ProfilePage() {
           `,
         }}
       >
-        <div className="container mx-auto max-w-6xl p-4 sm:p-6 lg:p-8">
+        <div data-aos = "fade-right" data-aos-duration = "500" className="container mx-auto max-w-6xl p-4 sm:p-6 lg:p-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-8 tracking-tighter">
             Profile{" "}
             <span className="bg-gradient-to-b from-[#0b8ff4] to-[#02f0c8] bg-clip-text text-transparent">
@@ -351,7 +356,7 @@ const EditProfileForm: FC<EditProfileFormProps> = ({ profile: initialProfile, on
   const ieltsScores = Array.from({ length: 19 }, (_, i) => (i * 0.5).toFixed(1));
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
+    <form data-aos = "fade-left" data-aos-duration = "500" onSubmit={handleSubmit} className="space-y-8">
       <div>
         <h2 className="text-xl font-bold text-gray-900">Personal Information</h2>
         <p className="mt-1 text-sm text-gray-500">Update your photo and personal details.</p>
@@ -372,7 +377,8 @@ const EditProfileForm: FC<EditProfileFormProps> = ({ profile: initialProfile, on
             htmlFor="avatar-upload"
             className="cursor-pointer inline-flex items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-semibold text-blue-600 shadow-sm ring-1 ring-inset ring-blue-300 hover:bg-blue-50"
           >
-            <i className="fas fa-camera mr-2"></i> Change Photo
+            <IoCamera className="mr-2 text-2xl" />
+            Change Photo
           </label>
           <input
             id="avatar-upload"
@@ -382,7 +388,6 @@ const EditProfileForm: FC<EditProfileFormProps> = ({ profile: initialProfile, on
             onChange={handleFileChange}
             accept="image/*"
           />
-          <p className="mt-2 text-xs text-red-500 font-medium">* Required for update</p>
         </div>
       </div>
 
@@ -557,7 +562,7 @@ const SecurityTab: FC<SecurityTabProps> = ({ onSubmit }) => {
 const NotificationsTab = () => (
   <div className="text-center py-10">
     <div className="inline-block p-4 rounded-full bg-gray-100 mb-4">
-        <i className="fas fa-bell-slash text-gray-400 text-2xl"></i>
+      <FaBellSlash className="text-gray-400 text-3xl" />
     </div>
     <h2 className="text-xl font-bold text-gray-900">Notifications</h2>
     <p className="mt-1 text-gray-500">Notification settings are currently under development.</p>

@@ -102,6 +102,8 @@ export default function RegisterPage() {
     >
       <Form {...form}>
         <form
+          data-aos = "fade-up" data-aos-duration="500"
+
           onSubmit={form.handleSubmit(onSubmit) }
           className="w-full max-w-md"
         >

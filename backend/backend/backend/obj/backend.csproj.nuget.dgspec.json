@@ -80,6 +80,10 @@
               "target": "Package",
               "version": "[8.14.0, )"
             },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.4, )"
+            },
             "Scalar.AspNetCore": {
               "target": "Package",
               "version": "[2.9.0, )"

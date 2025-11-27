@@ -1,5 +1,5 @@
 ﻿using backend.Data;
-using backend.Entities;
+using backend.Entities.User;
 using backend.Models;
 using backend.Services;
 using Microsoft.AspNetCore.Authorization;

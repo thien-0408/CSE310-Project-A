@@ -22,7 +22,7 @@ namespace backend.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("backend.Entities.ListeningAnswer", b =>
+            modelBuilder.Entity("backend.Entities.Listening.ListeningAnswer", b =>
                 {
                     b.Property<string>("AnswerId")
                         .HasColumnType("nvarchar(450)");
@@ -43,7 +43,7 @@ namespace backend.Migrations
                     b.ToTable("ListeningAnswers");
                 });
 
-            modelBuilder.Entity("backend.Entities.ListeningOption", b =>
+            modelBuilder.Entity("backend.Entities.Listening.ListeningOption", b =>
                 {
                     b.Property<int>("OptionId")
                         .ValueGeneratedOnAdd()
@@ -77,7 +77,7 @@ namespace backend.Migrations
                     b.ToTable("ListeningOptionChoices");
                 });
 
-            modelBuilder.Entity("backend.Entities.ListeningPart", b =>
+            modelBuilder.Entity("backend.Entities.Listening.ListeningPart", b =>
                 {
                     b.Property<string>("PartId")
                         .HasColumnType("nvarchar(450)");
@@ -111,7 +111,7 @@ namespace backend.Migrations
                     b.ToTable("ListeningParts");
                 });
 
-            modelBuilder.Entity("backend.Entities.ListeningQuestion", b =>
+            modelBuilder.Entity("backend.Entities.Listening.ListeningQuestion", b =>
                 {
                     b.Property<string>("QuestionId")
                         .HasColumnType("nvarchar(450)");
@@ -150,7 +150,7 @@ namespace backend.Migrations
                     b.ToTable("ListeningQuestions");
                 });
 
-            modelBuilder.Entity("backend.Entities.ListeningSection", b =>
+            modelBuilder.Entity("backend.Entities.Listening.ListeningSection", b =>
                 {
                     b.Property<string>("SectionId")
                         .HasColumnType("nvarchar(450)");
@@ -200,7 +200,7 @@ namespace backend.Migrations
                     b.ToTable("ListeningSections");
                 });
 
-            modelBuilder.Entity("backend.Entities.ListeningTest", b =>
+            modelBuilder.Entity("backend.Entities.Listening.ListeningTest", b =>
                 {
                     b.Property<int>("TestId")
                         .ValueGeneratedOnAdd()
@@ -272,7 +272,234 @@ namespace backend.Migrations
                     b.ToTable("MileStones");
                 });
 
-            modelBuilder.Entity("backend.Entities.Profile", b =>
+            modelBuilder.Entity("backend.Entities.Reading.QuestionAnswer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Index")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("QuestionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("QuestionAnswer");
+                });
+
+            modelBuilder.Entity("backend.Entities.Reading.QuestionOption", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Index")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("QuestionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("QuestionOptions");
+                });
+
+            modelBuilder.Entity("backend.Entities.Reading.ReadingPart", b =>
+                {
+                    b.Property<Guid>("PartId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("PartNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PartTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PassageTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("QuestionRange")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Skill")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TestDuration")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TestId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("ntext");
+
+                    b.Property<string>("ThumbnailUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PartId");
+
+                    b.HasIndex("TestId");
+
+                    b.ToTable("ReadingParts");
+                });
+
+            modelBuilder.Entity("backend.Entities.Reading.ReadingQuestion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("DiagramLabelsJson")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("QuestionNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("QuestionText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("SectionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SectionId");
+
+                    b.ToTable("ReadingQuestions");
+                });
+
+            modelBuilder.Entity("backend.Entities.Reading.ReadingSection", b =>
+                {
+                    b.Property<Guid>("SectionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("GapFillText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Instructions")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OptionRange")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PartId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("QuestionType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SectionNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SectionRange")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SectionTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TableJson")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WordLimit")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SectionId");
+
+                    b.HasIndex("PartId");
+
+                    b.ToTable("ReadingSections");
+                });
+
+            modelBuilder.Entity("backend.Entities.Reading.ReadingTest", b =>
+                {
+                    b.Property<string>("TestId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Button")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("QuestionRange")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Skill")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Subtitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TestType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("TotalDuration")
+                        .HasColumnType("int");
+
+                    b.HasKey("TestId");
+
+                    b.ToTable("ReadingTests");
+                });
+
+            modelBuilder.Entity("backend.Entities.Reading.SectionOption", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Key")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("SectionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SectionId");
+
+                    b.ToTable("SectionOptions");
+                });
+
+            modelBuilder.Entity("backend.Entities.User.Profile", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -312,7 +539,7 @@ namespace backend.Migrations
                     b.ToTable("Profiles");
                 });
 
-            modelBuilder.Entity("backend.Entities.TestResult", b =>
+            modelBuilder.Entity("backend.Entities.User.TestResult", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -341,7 +568,7 @@ namespace backend.Migrations
                     b.ToTable("UserTestResult");
                 });
 
-            modelBuilder.Entity("backend.Entities.User", b =>
+            modelBuilder.Entity("backend.Entities.User.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -373,9 +600,9 @@ namespace backend.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("backend.Entities.ListeningAnswer", b =>
+            modelBuilder.Entity("backend.Entities.Listening.ListeningAnswer", b =>
                 {
-                    b.HasOne("backend.Entities.ListeningQuestion", "Question")
+                    b.HasOne("backend.Entities.Listening.ListeningQuestion", "Question")
                         .WithMany("Answers")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -384,13 +611,13 @@ namespace backend.Migrations
                     b.Navigation("Question");
                 });
 
-            modelBuilder.Entity("backend.Entities.ListeningOption", b =>
+            modelBuilder.Entity("backend.Entities.Listening.ListeningOption", b =>
                 {
-                    b.HasOne("backend.Entities.ListeningSection", null)
+                    b.HasOne("backend.Entities.Listening.ListeningSection", null)
                         .WithMany("Options")
                         .HasForeignKey("ListeningSectionSectionId");
 
-                    b.HasOne("backend.Entities.ListeningQuestion", "Question")
+                    b.HasOne("backend.Entities.Listening.ListeningQuestion", "Question")
                         .WithMany("QuestionOptions")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -399,9 +626,9 @@ namespace backend.Migrations
                     b.Navigation("Question");
                 });
 
-            modelBuilder.Entity("backend.Entities.ListeningPart", b =>
+            modelBuilder.Entity("backend.Entities.Listening.ListeningPart", b =>
                 {
-                    b.HasOne("backend.Entities.ListeningTest", "ListeningTest")
+                    b.HasOne("backend.Entities.Listening.ListeningTest", "ListeningTest")
                         .WithMany("Parts")
                         .HasForeignKey("TestId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -410,9 +637,9 @@ namespace backend.Migrations
                     b.Navigation("ListeningTest");
                 });
 
-            modelBuilder.Entity("backend.Entities.ListeningQuestion", b =>
+            modelBuilder.Entity("backend.Entities.Listening.ListeningQuestion", b =>
                 {
-                    b.HasOne("backend.Entities.ListeningSection", "Section")
+                    b.HasOne("backend.Entities.Listening.ListeningSection", "Section")
                         .WithMany("Questions")
                         .HasForeignKey("SectionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -421,9 +648,9 @@ namespace backend.Migrations
                     b.Navigation("Section");
                 });
 
-            modelBuilder.Entity("backend.Entities.ListeningSection", b =>
+            modelBuilder.Entity("backend.Entities.Listening.ListeningSection", b =>
                 {
-                    b.HasOne("backend.Entities.ListeningPart", "TestPart")
+                    b.HasOne("backend.Entities.Listening.ListeningPart", "TestPart")
                         .WithMany("Sections")
                         .HasForeignKey("PartId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -432,26 +659,92 @@ namespace backend.Migrations
                     b.Navigation("TestPart");
                 });
 
-            modelBuilder.Entity("backend.Entities.Profile", b =>
+            modelBuilder.Entity("backend.Entities.Reading.QuestionAnswer", b =>
                 {
-                    b.HasOne("backend.Entities.User", "User")
+                    b.HasOne("backend.Entities.Reading.ReadingQuestion", "Question")
+                        .WithMany("Answers")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Question");
+                });
+
+            modelBuilder.Entity("backend.Entities.Reading.QuestionOption", b =>
+                {
+                    b.HasOne("backend.Entities.Reading.ReadingQuestion", "Question")
+                        .WithMany("Options")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Question");
+                });
+
+            modelBuilder.Entity("backend.Entities.Reading.ReadingPart", b =>
+                {
+                    b.HasOne("backend.Entities.Reading.ReadingTest", "Test")
+                        .WithMany("Parts")
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Test");
+                });
+
+            modelBuilder.Entity("backend.Entities.Reading.ReadingQuestion", b =>
+                {
+                    b.HasOne("backend.Entities.Reading.ReadingSection", "Section")
+                        .WithMany("Questions")
+                        .HasForeignKey("SectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Section");
+                });
+
+            modelBuilder.Entity("backend.Entities.Reading.ReadingSection", b =>
+                {
+                    b.HasOne("backend.Entities.Reading.ReadingPart", "Part")
+                        .WithMany("Sections")
+                        .HasForeignKey("PartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Part");
+                });
+
+            modelBuilder.Entity("backend.Entities.Reading.SectionOption", b =>
+                {
+                    b.HasOne("backend.Entities.Reading.ReadingSection", "Section")
+                        .WithMany("SectionOptions")
+                        .HasForeignKey("SectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Section");
+                });
+
+            modelBuilder.Entity("backend.Entities.User.Profile", b =>
+                {
+                    b.HasOne("backend.Entities.User.User", "User")
                         .WithOne("Profile")
-                        .HasForeignKey("backend.Entities.Profile", "UserId")
+                        .HasForeignKey("backend.Entities.User.Profile", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("backend.Entities.TestResult", b =>
+            modelBuilder.Entity("backend.Entities.User.TestResult", b =>
                 {
-                    b.HasOne("backend.Entities.ListeningTest", "ListeningTest")
+                    b.HasOne("backend.Entities.Listening.ListeningTest", "ListeningTest")
                         .WithMany()
                         .HasForeignKey("TestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("backend.Entities.User", "User")
+                    b.HasOne("backend.Entities.User.User", "User")
                         .WithMany("Results")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -462,31 +755,55 @@ namespace backend.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("backend.Entities.ListeningPart", b =>
+            modelBuilder.Entity("backend.Entities.Listening.ListeningPart", b =>
                 {
                     b.Navigation("Sections");
                 });
 
-            modelBuilder.Entity("backend.Entities.ListeningQuestion", b =>
+            modelBuilder.Entity("backend.Entities.Listening.ListeningQuestion", b =>
                 {
                     b.Navigation("Answers");
 
                     b.Navigation("QuestionOptions");
                 });
 
-            modelBuilder.Entity("backend.Entities.ListeningSection", b =>
+            modelBuilder.Entity("backend.Entities.Listening.ListeningSection", b =>
                 {
                     b.Navigation("Options");
 
                     b.Navigation("Questions");
                 });
 
-            modelBuilder.Entity("backend.Entities.ListeningTest", b =>
+            modelBuilder.Entity("backend.Entities.Listening.ListeningTest", b =>
                 {
                     b.Navigation("Parts");
                 });
 
-            modelBuilder.Entity("backend.Entities.User", b =>
+            modelBuilder.Entity("backend.Entities.Reading.ReadingPart", b =>
+                {
+                    b.Navigation("Sections");
+                });
+
+            modelBuilder.Entity("backend.Entities.Reading.ReadingQuestion", b =>
+                {
+                    b.Navigation("Answers");
+
+                    b.Navigation("Options");
+                });
+
+            modelBuilder.Entity("backend.Entities.Reading.ReadingSection", b =>
+                {
+                    b.Navigation("Questions");
+
+                    b.Navigation("SectionOptions");
+                });
+
+            modelBuilder.Entity("backend.Entities.Reading.ReadingTest", b =>
+                {
+                    b.Navigation("Parts");
+                });
+
+            modelBuilder.Entity("backend.Entities.User.User", b =>
                 {
                     b.Navigation("Profile")
                         .IsRequired();

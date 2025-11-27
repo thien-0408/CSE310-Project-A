@@ -68,10 +68,18 @@ export default function NavBar() {
               </li>
 
               <li>
+                <Link href="/view-test" className={getLinkClassName('/view-test')}>
+                  Test Bank
+                </Link>
+              </li>
+              
+              <li>
                 <Link href="/about" className={getLinkClassName('/about')}>
                   About Us
                 </Link>
               </li>
+
+              
 
             </ul>
           </nav>

@@ -106,6 +106,7 @@ export default function LoginPage() {
   return (
     <>
       <div
+        data-aost = "zoom-in" data-aos-duration="500"
         className="flex justify-center items-center min-h-screen"
         style={{
           backgroundImage: `
@@ -115,6 +116,7 @@ export default function LoginPage() {
       >
         <Form {...form}>
           <form
+          data-aos = "fade-up" data-aos-duration="500"
             onSubmit={form.handleSubmit(onSubmit)}
             className="w-full max-w-md"
           >

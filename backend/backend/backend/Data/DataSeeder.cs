@@ -1,5 +1,5 @@
 ﻿using backend.Data;
-using backend.Entities;
+using backend.Entities.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
