@@ -1,29 +1,47 @@
 "use client";
 import React from "react";
-
 import MultipleChoice from "@/components/QuestionTypes/MultipleChoice";
-import TrueFalseNotGiven from "./QuestionTypes/TrueFalseNotGiven";
-import YesNoNotGiven from "./QuestionTypes/YesNoNotGiven";
-import MatchingHeadings from "./QuestionTypes/MatchingHeadings";
-import SentenceCompletion from "./QuestionTypes/SentenceCompletion";
-import SummaryCompletion from "./QuestionTypes/SummaryCompletion";
-import TableCompletion from "./QuestionTypes/TableCompletion";
-import DiagramCompletion from "./QuestionTypes/DiagramCompletion";
-import ShortAnswer from "./QuestionTypes/ShortAnswer";
-import GapFilling from "./QuestionTypes/GapFilling";
-import MatchingNames from "./QuestionTypes/MatchingNames";
+import TrueFalseNotGiven from "@/components/QuestionTypes/TrueFalseNotGiven";
+import YesNoNotGiven from "@/components/QuestionTypes/YesNoNotGiven";
+import MatchingHeadings from "@/components/QuestionTypes/MatchingHeadings";
+import SentenceCompletion from "@/components/QuestionTypes/SentenceCompletion";
+import SummaryCompletion from "@/components/QuestionTypes/SummaryCompletion";
+import TableCompletion from "@/components/QuestionTypes/TableCompletion";
+import DiagramCompletion from "@/components/QuestionTypes/DiagramCompletion";
+import ShortAnswer from "@/components/QuestionTypes/ShortAnswer";
+import GapFilling from "@/components/QuestionTypes/GapFilling";
+import MatchingNames from "@/components/QuestionTypes/MatchingNames";
 
-// Import interfaces từ file types
-import type { ReadingSection } from "../types/reading";
+import { ReadingSection } from "@/types/ReadingInterfaces";
 
 interface Props {
   sections: ReadingSection[];
-  onAnswerChange: (questionId: number, answer: unknown) => void;
+  onAnswerChange: (questionId: string, answer: unknown) => void;
 }
+const InstructionBlock = ({ type }: { type: "YES" | "TRUE" }) => {
+  const isYes = type === "YES";
+  const label1 = isYes ? "YES" : "TRUE";
+  const label2 = isYes ? "NO" : "FALSE";
+  return (
+    <div className="mb-6 bg-gray-50 border border-gray-200 rounded-lg p-5 shadow-sm">
+      <div className="grid grid-cols-[100px_1fr] gap-y-2 gap-x-4 text-sm">
+        <span className="font-bold text-blue-700">{label1}</span>
+        <span className="text-gray-600">if the statement agrees with the views of the writer</span>
+
+        <span className="font-bold text-blue-700">{label2}</span>
+        <span className="text-gray-600">if the statement contradicts the views of the writer</span>
+
+        <span className="font-bold text-blue-700">NOT GIVEN</span>
+        <span className="text-gray-600">if it is impossible to say what the writer thinks about this</span>
+      </div>
+    </div>
+  );
+};
 
 const QuestionRenderer: React.FC<Props> = ({ sections, onAnswerChange }) => {
   const renderSectionQuestions = (section: ReadingSection) => {
-    const { questionType, questions } = section;
+  const { questionType, questions } = section;
+  
 
     switch (questionType) {
       case "multiple_choice":
@@ -31,59 +49,59 @@ const QuestionRenderer: React.FC<Props> = ({ sections, onAnswerChange }) => {
           <MultipleChoice
             key={q.id}
             id={q.id}
-            question={q.question}
-            options={q.options ?? []}
-            onAnswerChange={(answer) => onAnswerChange(q.id, answer)}
+            questionNumber={q.questionNumber}
+            question={q.questionText}
+            options={q.options?.map((o) => o.text) ?? []}
+            onAnswerChange={(_id, value) => onAnswerChange(q.id, value)}
           />
         ));
 
       case "true_false_not_given":
-        return questions.map((q) => (
-          <TrueFalseNotGiven
-            key={q.id}
-            id={q.id}
-            question={q.question}
-            options={["True", "False", "Not Given"]}
-            onAnswerChange={(answer) => onAnswerChange(q.id, answer)}
-          />
-        ));
+        return (
+          <div key={section.sectionId} className="mb-8">
+            <InstructionBlock type="TRUE" />
+            <div className="space-y-2">
+              {questions.map((q) => (
+                <TrueFalseNotGiven 
+                  key={q.id}
+                  id={q.id}
+                  questionNumber={q.questionNumber}
+                  question={q.questionText}
+                  options={["True", "False", "Not Given"]}
+                  onAnswerChange={(_id, value) => onAnswerChange(q.id, value)}
+                />
+              ))}
+            </div>
+          </div>
+        );
 
-      case "yes_no_not_given":
-        return questions.map((q) => (
-          <YesNoNotGiven
-            key={q.id}
-            id={q.id}
-            question={q.question}
-            options={["Yes", "No", "Not Given"]}
-            onAnswerChange={(answer) => onAnswerChange(q.id, answer)}
-          />
-        ));
+     case "yes_no_not_given":
+        return (
+          <div key={section.sectionId} className="mb-8">
+            <InstructionBlock type="YES" />
+
+            <div className="space-y-2">
+              {questions.map((q) => (
+                <YesNoNotGiven
+                  key={q.id}
+                  id={q.id}
+                  questionNumber={q.questionNumber} 
+                  question={q.questionText}
+                  options={["Yes", "No", "Not Given"]}
+                  onAnswerChange={(_id, value) => onAnswerChange(q.id, value)}
+                />
+              ))}
+            </div>
+          </div>
+        );
 
       case "matching_headings":
-        // Matching headings: headings ở section level, paragraphs ở question level
         return (
           <MatchingHeadings
-            key={`section-${section.sectionId}`}
-            id={section.sectionId}
-            question={
-              section.instructions || "Match the headings with the paragraphs."
-            }
-            headings={section.headings ?? []}
-            // Tạo array paragraphs từ questions
-            paragraphs={questions.map((q) => q.question)}
-            options={[]} // Không dùng options cho matching headings
-            onAnswerChange={(answer) => {
-              // answer là object: { "Paragraph A": "ii", "Paragraph B": "i" }
-              // Cần map sang từng question individual
-              questions.forEach((q, idx) => {
-                const paragraphKey = q.question; // "Paragraph A", "Paragraph B"...
-                const selectedHeading = (answer as Record<string, string>)[
-                  paragraphKey
-                ];
-                if (selectedHeading) {
-                  onAnswerChange(q.id, selectedHeading);
-                }
-              });
+            key={section.sectionId}
+            section={section}
+            onAnswerChange={(questionId, answer) => {
+              onAnswerChange(questionId, answer);
             }}
           />
         );
@@ -93,41 +111,51 @@ const QuestionRenderer: React.FC<Props> = ({ sections, onAnswerChange }) => {
           <SentenceCompletion
             key={q.id}
             id={q.id}
-            question={q.question}
-            wordLimit={q.wordLimit || section.wordLimit}
+            question={q.questionText}
+            wordLimit={section.wordLimit || ""}
             onAnswerChange={(answer) => onAnswerChange(q.id, answer)}
           />
         ));
 
       case "summary_completion":
+        let summaryOptions: string[] = [];
+        if (section.optionRange) {
+          summaryOptions = section.optionRange.split(",");
+        }
+
         return questions.map((q) => (
           <SummaryCompletion
             key={q.id}
             id={q.id}
-            question={q.question}
-            options={section.options ?? []}
-            // wordLimit={section.wordLimit}
-            range={q.range}
-            questionRange={q.questionRange}
+            question={q.questionText}
+            options={summaryOptions}
+            range=""
+            questionRange=""
             onAnswerChange={(answer) => onAnswerChange(q.id, answer)}
           />
         ));
 
       case "table_completion":
-        if (section.table) {
-          return (
-            <TableCompletion
-              key={section.sectionId}
-              id={section.sectionId}
-              instructions={section.instructions || "Complete the table"}
-              table={section.table}
-              onAnswerChange={(answers) => {
-                Object.entries(answers).forEach(([qId, ans]) => {
-                  onAnswerChange(parseInt(qId), ans);
-                });
-              }}
-            />
-          );
+        if (section.tableJson) {
+          try {
+            const tableData = JSON.parse(section.tableJson);
+            return (
+              <TableCompletion
+                key={section.sectionId}
+                id={section.sectionId}
+                instructions={section.instructions}
+                table={tableData}
+                questions={section.questions}
+                onAnswerChange={(answers) => {
+                  Object.entries(answers).forEach(([qId, ans]) => {
+                    onAnswerChange(qId, ans);
+                  });
+                }}
+              />
+            );
+          } catch (e) {
+            return <div className="text-red-500">Error parsing table data</div>;
+          }
         }
         return null;
 
@@ -136,13 +164,11 @@ const QuestionRenderer: React.FC<Props> = ({ sections, onAnswerChange }) => {
           <DiagramCompletion
             key={section.sectionId}
             id={section.sectionId}
-            instructions={section.instructions || "Label the diagram"}
-            questions={section.questions} // Mảng question chứa 'diagram'
-            // Nếu có ảnh trong data (ví dụ section.image), bạn có thể truyền vào:
-            // image={section.text} (hoặc field nào chứa URL ảnh)
+            instructions={section.instructions}
+            questions={section.questions}
             onAnswerChange={(answers) => {
               Object.entries(answers).forEach(([qId, ans]) => {
-                onAnswerChange(parseInt(qId), ans);
+                onAnswerChange(qId, ans);
               });
             }}
           />
@@ -153,90 +179,65 @@ const QuestionRenderer: React.FC<Props> = ({ sections, onAnswerChange }) => {
           <ShortAnswer
             key={q.id}
             id={q.id}
-            question={q.question}
-            // wordLimit={q.wordLimit || section.wordLimit}
+            question={q.questionText}
+            wordLimit={section.wordLimit || ""}
             onAnswerChange={(answer) => onAnswerChange(q.id, answer)}
           />
         ));
 
       case "gap_filling":
-        if (section.text) {
-          // Case 1: Text chung (Summary Completion / Gap Filling đoạn văn)
-          return (
-            <GapFilling
-              key={`gap-section-${section.sectionId}`}
-              id={section.sectionId}
-              question={section.instructions || "Complete the text below."}
-              text={section.text}
-              // Map questions thành format Blank[] mà GapFilling cần
-              blanks={section.questions.map((q) => ({
-                index: q.id,
-                answer: q.answer as string,
-              }))}
-              wordLimit={section.wordLimit || ""}
-              // Quan trọng: Xử lý khi user nhập liệu
-              onAnswerChange={(currentSectionAnswers) => {
-                Object.entries(currentSectionAnswers).forEach(([qId, ans]) => {
-                  onAnswerChange(parseInt(qId), ans);
-                });
-              }}
-            />
-          );
-        } else {
-          // Case 2: Sentence Completion (Mỗi câu hỏi có text riêng)
-          // Logic này của bạn ĐÚNG, nhưng cần đảm bảo GapFilling handle tốt
-          // trường hợp text ngắn chỉ có 1 chỗ trống.
-          return section.questions.map((q) => (
-            <GapFilling
-              key={`gap-q-${q.id}`}
-              id={q.id}
-              question={section.instructions || ""}
-              text={q.question}
-              blanks={[{ index: q.id, answer: q.answer as string }]}
-              wordLimit={section.wordLimit}
-              onAnswerChange={(answers) => {
-                if (answers[q.id]) {
-                  onAnswerChange(q.id, answers[q.id]);
-                }
-              }}
-            />
-          ));
+        let finalText = section.gapFillText;
+        if (!finalText && questions.length > 0) {
+          finalText = questions.map((q) => q.questionText).join(" ");
         }
+
+        if (!finalText) return null;
+        return (
+          <GapFilling
+            key={section.sectionId}
+            id={section.sectionId}
+            question={section.instructions}
+            text={finalText}
+            questions={questions}
+            wordLimit={section.wordLimit || ""}
+            onAnswerChange={(currentSectionAnswers) => {
+              Object.entries(currentSectionAnswers).forEach(([qId, ans]) => {
+                onAnswerChange(qId, ans);
+              });
+            }}
+            blanks={[]}
+          />
+        );
 
       case "matching_names":
         return (
           <MatchingNames
             key={section.sectionId}
-            id={section.sectionId}
-            instructions={section.instructions || "Match the items"}
-            questions={section.questions} // Truyền thẳng mảng questions từ JSON
-            options={section.options || []}
-            onAnswerChange={(answers) => {
-              Object.entries(answers).forEach(([qId, ans]) => {
-                onAnswerChange(parseInt(qId), ans);
-              });
+            section={section}
+            onAnswerChange={(questionId, value) => {
+              onAnswerChange(questionId, value);
             }}
           />
         );
 
       default:
         return (
-          <p key={section.sectionId} className="text-red-500">
-            ⚠️ Loại câu hỏi không được hỗ trợ: {questionType}
+          <p
+            key={section.sectionId}
+            className="text-red-500 font-bold p-4 border border-red-300 bg-red-50"
+          >
+            ⚠️ Unknown Question Type: {questionType}
           </p>
         );
     }
   };
 
   return (
-    <div className="space-y-8">
+    <div className="">
       {sections.map((section) => (
-        <div
-          key={section.sectionId}
-          className="p-4  rounded-lg shadow-sm bg-white"
-        >
+        <div key={section.sectionId} className="">
           {/* Section Header */}
-          <div className="mb-4 border-b pb-3">
+          {/* <div className="mb-4 border-b pb-3">
             {section.sectionRange && (
               <p className="text-sm text-blue-600 font-semibold mb-1">
                 {section.sectionRange}
@@ -257,8 +258,7 @@ const QuestionRenderer: React.FC<Props> = ({ sections, onAnswerChange }) => {
                 Word limit: {section.wordLimit}
               </p>
             )}
-          </div>
-
+          </div> */}
           {/* Section Questions */}
           <div className="space-y-6">{renderSectionQuestions(section)}</div>
         </div>

@@ -1,6 +1,8 @@
 ﻿using backend.Data;
 using backend.Entities;
+using backend.Entities.User;
 using backend.Models;
+using backend.Models.ReadingDto;
 using backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -56,12 +58,77 @@ namespace backend.Controllers
             return Ok(profile); 
         }
 
+
         //Call api to take the test 
-        //[Authorize]
-        //[HttpPost("attempt-test/{id}")]
+        [Authorize]
+        [HttpPost("attempt-test/{id}")]
+        public async Task<ActionResult<ReadingTestResult>> AttemptTest(string id)
+        {
+            var userId = GetUserIdFromToken();
+            if (userId == Guid.Empty) return Unauthorized();
+            var test = await _context.ReadingTests.FindAsync(id);
+            if (test == null)
+            {
+                return NotFound("Test not found");
+            }
+            var testAttempt = new ReadingTestResult
+            {
+                Id = Guid.NewGuid(),
+                UserId = userId,
+                TestId = id,
+                Skill = "reading",
+                IsCompleted = false,
+                TakenDate = DateTime.UtcNow,
+                Title = test.Title
+            };
+            _context.ReadingTestResults.Add(testAttempt);
+            await _context.SaveChangesAsync();
+            return Ok(testAttempt);
+        }
+        [Authorize]
+        [HttpPost("submit-test/{resultId}")]
+        public async Task<ActionResult<ReadingTestResult>> SubmitTest(string resultId, [FromQuery] double accuracy)
+        {
+            var userId = GetUserIdFromToken();
+            if (userId == Guid.Empty) return Unauthorized();
+            if (!Guid.TryParse(resultId, out var parsedResultId))
+            {
+                return BadRequest("Invalid Result ID");
+            }
+            var testAttempt = await _context.ReadingTestResults
+                                           .FirstOrDefaultAsync(r => r.Id == parsedResultId && r.UserId == userId);
 
-       
+            if (testAttempt == null)
+            {
+                return NotFound("Test attempt not found");
+            }
 
+            testAttempt.Score = accuracy;
+            testAttempt.IsCompleted = true;
+            testAttempt.FinishDate = DateTime.UtcNow; 
+
+            await _context.SaveChangesAsync();
+            return Ok(testAttempt);
+        }
+        [Authorize]
+        [HttpGet("test-history")]
+        public async Task<ActionResult<IEnumerable<GetResultDto>>> GetTestHistory()
+        {
+            var userId = GetUserIdFromToken();
+            if (userId == Guid.Empty) return Unauthorized();
+            var readingHistory = await _context.ReadingTestResults.Where(r => r.UserId == userId)
+                .OrderByDescending(r => r.TakenDate).Select(r => new GetResultDto
+                {
+                    TestId = Guid.Parse(r.TestId),
+                    Accuracy = r.Score,
+                    IsCompleted = r.IsCompleted,
+                    Skill = r.Skill,
+                    Title = r.Title,
+                    TakenDate = r.TakenDate,
+                    FinishDate = (DateTime)r.FinishDate
+                }).ToListAsync();
+            return Ok(readingHistory);
+        }
         private Guid GetUserIdFromToken()
         {
             var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

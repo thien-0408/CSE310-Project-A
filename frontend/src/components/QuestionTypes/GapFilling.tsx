@@ -1,84 +1,108 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Blank } from "@/types/reading"; 
+import { ReadingQuestion } from "@/types/ReadingInterfaces";
 
 interface Props {
-  id: number; // Section ID
-  question: string; // Instructions
+  id: string;
+  question: string;
   text: string;
-  blanks: Blank[];
+  questions?: ReadingQuestion[];
+  blanks?: unknown[];
   wordLimit?: string;
-  onAnswerChange?: (answers: Record<number, string>) => void;
+  onAnswerChange?: (answers: Record<string, string>) => void;
 }
 
 const GapFilling: React.FC<Props> = ({
   id,
   question,
   text,
-  blanks,
+  questions,
   wordLimit,
   onAnswerChange,
 }) => {
-  const storageKey = `section-gap-${id}`; 
-  const [answers, setAnswers] = useState<Record<number, string>>({});
+  const storageKey = `section-gap-${id}`;
+  const [answers, setAnswers] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    const saved = localStorage.getItem(storageKey);
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        setAnswers(parsed);
-        if (onAnswerChange) onAnswerChange(parsed);
-      } catch (e) {
-        console.error("Error parsing saved answers", e);
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          setAnswers(parsed);
+          if (onAnswerChange) onAnswerChange(parsed);
+        } catch (e) {
+          console.error("Error parsing saved answers", e);
+        }
       }
     }
-  }, []); 
+  }, [storageKey]);
 
-  const handleChange = (questionId: number, value: string) => {
+  const handleChange = (questionId: string, value: string) => {
     const updated = { ...answers, [questionId]: value };
     setAnswers(updated);
     localStorage.setItem(storageKey, JSON.stringify(updated));
-    
     if (onAnswerChange) onAnswerChange(updated);
   };
 
-  const validIds = new Set(blanks.map((b) => b.index));
+  const getQuestionIdByNumber = (num: number): string | undefined => {
+    if (questions) {
+      const q = questions.find((x) => x.questionNumber === num);
+      return q?.id;
+    }
+    return undefined;
+  };
+
+  const splitRegex = /(___?\d+___?)/g;
+  const matchRegex = /___?(\d+)___?/;
 
   return (
-    <div className="p-6 mb-6 bg-white rounded-xl">
+    <div className="p-6 mb-6 bg-white rounded-xl shadow-sm border border-gray-100">
+      {/* Instructions */}
+      {question && <h3 className="font-bold text-gray-800 mb-2">{question}</h3>}
+
       {wordLimit && (
-        <p className="text-sm text-gray-500 mb-4 italic font-medium">
+        <p className="text-sm text-red-500 mb-4 italic font-medium border-l-2 border-red-500 pl-2">
           {wordLimit}
         </p>
       )}
 
-      <div className="leading-loose text-gray-700 text-base">
-        {text.split(/(___\d+___)/g).map((part, i) => {
-          const match = part.match(/___(\d+)___/);
-          
+      {/* Paragraph Content */}
+      <div className="leading-8 text-gray-800 text-base text-justify">
+        {text.split(splitRegex).map((part, i) => {
+          const match = part.match(matchRegex);
+
           if (match) {
-            const questionId = parseInt(match[1], 10);
-            
-            if (validIds.has(questionId)) {
+            const questionNumber = parseInt(match[1], 10);
+            const questionId = getQuestionIdByNumber(questionNumber);
+
+            if (questionId) {
               return (
-                <span key={i} className="inline-flex items-center mx-1 relative">
-                  <span className="flex items-center justify-center w-8 h-8 bg-blue-500 text-white rounded-full text-md font-bold flex-shrink-0 border border-gray-200">
-                    {questionId}
+                <span
+                  key={i}
+                  className="inline-flex items-center mx-1 align-middle"
+                >
+                  {/* Badge số thứ tự */}
+                  <span className="flex items-center justify-center w-6 h-6 bg-blue-600 text-white rounded-full text-xs font-bold mr-1 shadow-sm">
+                    {questionNumber}
                   </span>
                   <input
                     type="text"
                     value={answers[questionId] || ""}
                     onChange={(e) => handleChange(questionId, e.target.value)}
-                    className="font-semibold border-b-2 border-gray-300 bg-blue-50/50 px-2 py-0.5 w-32 text-center focus:border-blue-500 focus:bg-white focus:outline-none transition-all  text-blue-700"
+                    className="font-semibold border-b-2 border-gray-300 bg-blue-50 px-2 py-0.5 w-32 text-center text-blue-700 focus:border-blue-600 focus:bg-white focus:outline-none transition-all rounded-t-sm"
                     autoComplete="off"
+                    placeholder="..."
                   />
                 </span>
               );
             }
-            return <span key={i} className="text-red-500 font-bold">[Invalid ID: {questionId}]</span>;
+            return (
+              <span key={i} className="text-red-500 font-bold mx-1">
+                [Error Q{questionNumber}]
+              </span>
+            );
           }
-          
           return <span key={i}>{part}</span>;
         })}
       </div>

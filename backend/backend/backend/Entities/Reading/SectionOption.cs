@@ -13,10 +13,8 @@ namespace backend.Entities.Reading
         [ForeignKey(nameof(SectionId))]
         public Guid SectionId { get; set; }
 
-        // Ví dụ: "i. Experiments on typing skills" hoặc "A. David Attenborough"
         public string Text { get; set; } = string.Empty;
 
-        // Tùy chọn: Lưu key riêng nếu cần (ví dụ "A", "i", "ii")
         public string? Key { get; set; }
 
         public virtual ReadingSection Section { get; set; }

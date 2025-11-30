@@ -185,8 +185,8 @@ export default function CreateReadingTest() {
       let globalQuestionCounter = 1;
 
       const formattedParts = parts.map((part, pIndex) => ({
-          ...part,
           PartNumber: pIndex + 1,
+          Text: part.text,
           Sections: part.sections.map((section, sIndex) => {
               const processedQuestions = section.questions.map((q) => {
                   const qNum = globalQuestionCounter++;
@@ -226,6 +226,7 @@ export default function CreateReadingTest() {
       formData.append("Skill", "Reading");
       formData.append("TotalDuration", totalDuration.toString());
       formData.append("Parts", JSON.stringify(formattedParts));
+      console.log(formData);
 
       if (imageFile) formData.append("Image", imageFile);
 

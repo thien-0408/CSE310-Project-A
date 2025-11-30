@@ -42,14 +42,14 @@ export interface ReadingSection {
   questions: ReadingQuestion[];
 }
 
-export interface ReadingData {
-  id: number;
-  partNumber: number; 
-  // title: string;
-  // passageContent: string; 
-  sections: ReadingSection[];
-  testDuration: number;
-  passageTitle: string;
-  questionRange: string;
+// export interface ReadingData {
+//   id: number;
+//   partNumber: number; 
+//   // title: string;
+//   // passageContent: string; 
+//   sections: ReadingSection[];
+//   testDuration: number;
+//   passageTitle: string;
+//   questionRange: string;
   
-}
+// }

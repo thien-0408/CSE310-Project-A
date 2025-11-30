@@ -17,7 +17,6 @@ namespace backend.Controllers
         {
             _context = context;
         }
-        [Authorize(Roles ="Admin")]
         [HttpGet("fetch-tests")]
         public async Task<ActionResult<IEnumerable<TestSummaryDto>>> GetAllTests()
         {
@@ -27,10 +26,10 @@ namespace backend.Controllers
                 Title = t.Title,
                 TestType = t.TestType,
                 Skill = "reading", 
-                ImageUrl = "http://localhost:5151/" + t.ImageUrl,
+                ImageUrl = t.ImageUrl,
                 SubTitle = t.Subtitle ?? "",
                 Button = "Start Now",
-                TestTaken = 213123 
+                TestTaken = GetRandomNumber()
             });
 
             var listeningQuery = _context.ListeningTests.Select(t => new TestSummaryDto
@@ -39,7 +38,7 @@ namespace backend.Controllers
                 Title = t.Title,
                 TestType = t.TestType,
                 Skill = "listening",
-                ImageUrl = "http://localhost:5151/" + t.ImageUrl,
+                ImageUrl = t.ImageUrl,
                 SubTitle = t.SubTitle ?? "",
                 Button = "Try Now",
                 TestTaken = 150000
@@ -49,6 +48,11 @@ namespace backend.Controllers
                         .Concat(listeningQuery) 
                         .ToListAsync();
             return Ok(allTests);
+        }
+        private int GetRandomNumber()
+        {
+            Random random = new Random();
+            return random.Next(1, 10000);
         }
     }
 }

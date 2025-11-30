@@ -19,7 +19,7 @@ public class ReadingTest
     public string? QuestionRange { get; set; } // "1-40"
     public string? ImageUrl { get; set; }
     public string? Subtitle { get; set; }
-    public string? Button { get; set; } = "Try Now";
+    public string? Button { get; set; } = string.Empty;
 
     // Navigation Property
     public virtual ICollection<ReadingPart> Parts { get; set; } = new List<ReadingPart>();

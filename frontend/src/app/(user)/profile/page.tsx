@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, FC, ChangeEvent, FormEvent, useMemo, useCallback } from "react";
+import { useState, useEffect, FC, ChangeEvent, FormEvent, useMemo } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import NavBarUser from "@/components/ui/navbarforuser";

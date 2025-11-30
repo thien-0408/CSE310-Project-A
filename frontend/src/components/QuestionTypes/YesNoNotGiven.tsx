@@ -1,78 +1,71 @@
 "use client";
 import React, { useState, useEffect } from "react";
+
 interface Props {
-  id: number;
+  id: string;
+  questionNumber: number; 
   question: string;
   options?: string[];
-  onAnswerChange?: (answer: number) => void;
+  onAnswerChange?: (questionId: string, value: string) => void;
 }
 
 const defaultOptions = ["Yes", "No", "Not Given"];
 
 const YesNoNotGiven: React.FC<Props> = ({
   id,
+  questionNumber,
   question,
   options = defaultOptions,
   onAnswerChange,
 }) => {
   const storageKey = `question-ynng-${id}`;
-  const [selected, setSelected] = useState<number | null>(null);
+  const [selected, setSelected] = useState<string>("");
 
   useEffect(() => {
-    const saved = localStorage.getItem(storageKey);
-    if (saved !== null) {
-      const savedIndex = parseInt(saved, 10);
-      setSelected(savedIndex);
-      if (onAnswerChange) {
-        onAnswerChange(savedIndex);
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        setSelected(saved);
+        // Đảm bảo cập nhật lại state cha khi load lại trang
+        if (onAnswerChange) onAnswerChange(id, saved); 
       }
     }
-  }, [storageKey]);
+  }, [id, storageKey]);
 
   const handleChange = (value: string) => {
-    const index = parseInt(value, 10);
-    setSelected(index);
-    localStorage.setItem(storageKey, index.toString());
-    if (onAnswerChange) {
-      onAnswerChange(index);
-    }
+    setSelected(value);
+    localStorage.setItem(storageKey, value);
+    if (onAnswerChange) onAnswerChange(id, value);
   };
 
   return (
-    <div className="p-4 mb-2">
-      <div className="grid grid-cols-[1fr_2fr] p-4 bg-[#f3f4f6] rounded-sm my-4 tracking-tight">
-        <div className="space-y-2">
-          <h2 className="font-bold text-[#407db9]">YES.</h2>
-          <h2 className="font-bold text-[#407db9]">NO.</h2>
-          <h2 className="font-bold text-[#407db9]">NOT GIVEN.</h2>
-        </div>
-
-        <div className="space-y-2 font-medium">
-          <p>If the statement agrees with the views of the writer</p>
-          <p>If the statement contradicts the views of the writer </p>
-          <p>If it is impossible to say what the writer thinks about</p>
-        </div>
+    <div className="flex items-start gap-4 mb-4 p-3 bg-white rounded border border-gray-100 hover:border-gray-200 transition-colors">
+      {/* Badge Số thứ tự */}
+      <div className="flex-shrink-0 flex items-center justify-center w-8 h-8 bg-blue-600 text-white rounded-full font-bold text-sm mt-1">
+        {questionNumber}
       </div>
 
-      <div className="flex items-center gap-2">
-      <p className="font-semibold mb-2 flex items-center gap-2"><span className="flex items-center justify-center w-7 h-7 bg-blue-500 text-white rounded-full text-lg font-bold flex-shrink-0">{id}</span></p>
+      <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-3">
+        {/* Dropdown chọn đáp án */}
         <select
-          value={selected !== null ? selected : ""}
+          value={selected}
           onChange={(e) => handleChange(e.target.value)}
-          className="border border-gray-300 rounded-md p-2 font-medium text-gray-700 bg-white hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-150 ease-in-out"
+          className={`border rounded px-3 py-2 text-sm font-semibold min-w-[130px] focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors cursor-pointer
+            ${selected ? "border-blue-500 bg-blue-50 text-blue-700" : "border-gray-300 text-gray-700 bg-white"}
+          `}
         >
-          <option value=""></option>
+          <option value="" disabled>Select Answer</option>
           {options.map((opt, i) => (
-            <option
-              key={i}
-              value={i}
-              className="text-left font-medium text-gray-900"
-            >
+            <option key={i} value={opt}>
               {opt}
             </option>
           ))}
         </select>
-        <p className="font-semibold">{question}</p>
+
+        {/* Nội dung câu hỏi */}
+        <p className="text-gray-800 text-base leading-relaxed font-medium">
+          {question}
+        </p>
       </div>
     </div>
   );

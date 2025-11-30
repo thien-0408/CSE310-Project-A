@@ -19,7 +19,7 @@ namespace backend.Entities.Reading
         public int TestDuration { get; set; } // minutes
         public string? QuestionRange { get; set; } // "1-13"
 
-        [Column(TypeName = "ntext")] // Lưu văn bản dài
+        [Column(TypeName = "ntext")] 
         public string Text { get; set; } = string.Empty;
 
         // Navigation

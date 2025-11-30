@@ -513,9 +513,9 @@ export default function HomePage() {
           </div>
         </section>
         {/*Success path*/}
-        <section data-aos="flip-left">
+        <section >
           <div className="w-full bg-gray-50 flex flex-col items-center py-30 sm:flex-row lg:px-60 lg:py-30 p-10 tracking-tight">
-            <div className="flex-1">
+            <div data-aos="flip-left" className="flex-1">
               {/**Image section */}
               <Image
                 src="/assets/success-path.jpg"
@@ -527,7 +527,7 @@ export default function HomePage() {
               ></Image>
             </div>
 
-            <div className="flex-1">
+            <div data-aos="flip-left" className="flex-1">
               {/**Caption */}
               <div className="pb-4">
                 <h1 className="text-3xl font-extrabold">Your Path to IELTS</h1>

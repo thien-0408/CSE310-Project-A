@@ -1,80 +1,64 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 
 interface Props {
-  id: number;
+  id: string; // GUID
   question: string;
-  options?: string[];
-  onAnswerChange?: (answer: number) => void;
+  questionNumber: number;
+  options: string[]; // ["True", "False", "Not Given"]
+  onAnswerChange?: (questionId: string, value: string) => void;
 }
-
-const defaultOptions = ["True", "False", "Not Given"];
 
 const TrueFalseNotGiven: React.FC<Props> = ({
   id,
   question,
-  options = defaultOptions,
+  questionNumber,
+  options,
   onAnswerChange,
 }) => {
   const storageKey = `question-tfng-${id}`;
-  const [selected, setSelected] = useState<number | null>(null);
+  const [selected, setSelected] = useState<string>("");
 
   useEffect(() => {
-    const saved = localStorage.getItem(storageKey);
-    if (saved !== null) {
-      const savedIndex = parseInt(saved, 10);
-      setSelected(savedIndex);
-      if (onAnswerChange) {
-        onAnswerChange(savedIndex);
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        setSelected(saved);
+        if (onAnswerChange) onAnswerChange(id, saved);
       }
     }
-  }, [storageKey]);
+  }, [id, storageKey]);
 
   const handleChange = (value: string) => {
-    const index = parseInt(value, 10);
-    setSelected(index);
-    localStorage.setItem(storageKey, index.toString());
-    if (onAnswerChange) {
-      onAnswerChange(index);
-    }
+    setSelected(value);
+    localStorage.setItem(storageKey, value);
+    if (onAnswerChange) onAnswerChange(id, value);
   };
 
   return (
-    <div className="p-4 mb-2">
-      <div className="grid grid-cols-[1fr_2fr] p-4 bg-gray-100 rounded-sm my-4 tracking-tight ">
-        <div className="space-y-2">
-          <h2 className="font-bold text-[#407db9]">TRUE.</h2>
-          <h2 className="font-bold text-[#407db9]">FALSE.</h2>
-          <h2 className="font-bold text-[#407db9]">NOT GIVEN.</h2>
-        </div>
-
-        <div className="space-y-2 font-medium">
-          <p>If the statement agrees with the information</p>
-          <p>If the statement contradicts the information</p>
-          <p>If there is no information on this</p>
-        </div>
+    <div className="flex items-start gap-4 mb-6 bg-white  hover:border-gray-200 transition-colors">
+      <div className="flex-shrink-0 flex items-center justify-center w-8 h-8 bg-blue-600 text-white rounded-full font-bold text-sm mt-1">
+        {questionNumber}
       </div>
 
-      <div className="flex items-center gap-2">
-        <p className="font-semibold mb-2 flex items-center gap-2">
-          <span className="flex items-center justify-center w-7 h-7 bg-blue-500 text-white rounded-full text-lg font-bold flex-shrink-0">
-            {id}
-          </span>
-        </p>
+      <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-3">
         <select
-          value={selected !== null ? selected : ""}
+          value={selected}
           onChange={(e) => handleChange(e.target.value)}
-          className="border border-gray-300 rounded-md p-2 font-medium text-gray-700 bg-white hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-150 ease-in-out"
+          className={`border rounded px-3 py-2 text-sm font-semibold min-w-[130px] focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors cursor-pointer
+            ${selected ? "border-blue-500 bg-blue-50 text-blue-700" : "border-gray-300 text-gray-700 bg-white"}
+          `}
         >
-          <option value=""></option>
+          <option value="" disabled>Select Answer</option>
           {options.map((opt, i) => (
-            <option key={i} value={i} className="text-left font-medium">
+            <option key={i} value={opt}>
               {opt}
             </option>
           ))}
         </select>
-        <p className="font-semibold">{question}</p>
+        <p className="text-gray-800 text-base leading-relaxed font-medium">
+          {question}
+        </p>
       </div>
     </div>
   );

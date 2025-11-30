@@ -166,7 +166,7 @@ const TextHighlighter: React.FC<TextHighlighterProps> = ({ content, passageId })
           {/* Nút xóa highlight */}
           <button
             onClick={() => removeHighlight(highlight.id)}
-            className="absolute -top-2 -right-2 hidden group-hover:block bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs"
+            className="absolute -top-2 -right-2  group-hover:block bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs"
           >
             ×
           </button>

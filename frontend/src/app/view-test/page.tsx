@@ -52,14 +52,13 @@ type TestData = {
   subTitle: string[];
   button: string;
 };
+
 export const fetchTestsData = async (): Promise<TestData[]> => {
   try {
-    const token = localStorage.getItem("token");
     const response = await fetch("http://localhost:5151/api/test/fetch-tests", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
     });
     if (!response.ok) throw new Error("Network response was not ok");
@@ -70,10 +69,12 @@ export const fetchTestsData = async (): Promise<TestData[]> => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return rawData.map((item: any) => {
       const processedSubtitle = item.subTitle
-        ? item.subTitle
-            .split(".")
-            .map((s: string) => s.trim())
-            .filter((s: string) => s.length > 0)
+        ? Array.isArray(item.subTitle)
+          ? item.subTitle 
+          : item.subTitle
+              .split(".")
+              .map((s: string) => s.trim())
+              .filter((s: string) => s.length > 0)
         : [];
       return {
         testId: item.testId,
@@ -103,6 +104,8 @@ export default function ViewTests() {
   const searchParams = useSearchParams();
   const skillParam = searchParams.get("skill"); // ?skill=listening
   const [tests, setTests] = useState<TestData[]>([]);
+  
+  // State load data
   useEffect(() => {
     const loadData = async () => {
       const data = await fetchTestsData();
@@ -111,6 +114,7 @@ export default function ViewTests() {
 
     loadData();
   }, []);
+
   const [confirmModal, setConfirmModal] = useState<ConfirmModalProps>({
     isVisible: false,
     message: "",
@@ -154,22 +158,34 @@ export default function ViewTests() {
       </div>
     );
   };
-  const handleTest = () => {
-    setConfirmModal({
-      isVisible: true,
-      message: "Please Login",
-      onConfirm: () => {
-        router.push("/login");
-      },
-      onCancel: () =>
-        setConfirmModal({
-          isVisible: false,
-          message: "",
-          onConfirm: () => {},
-          onCancel: () => {},
-        }),
-    });
+
+  // --- LOGIC MỚI: Xử lý nút Start Now ---
+  const handleTest = (testId: string, skill: string) => {
+    const token = localStorage.getItem("token"); // Kiểm tra token
+    
+    if (!token) {
+      // Chưa đăng nhập -> Hiện Modal
+      setConfirmModal({
+        isVisible: true,
+        message: "You must be logged in to take the test.",
+        onConfirm: () => {
+          router.push("/login");
+        },
+        onCancel: () =>
+          setConfirmModal({
+            isVisible: false,
+            message: "",
+            onConfirm: () => {},
+            onCancel: () => {},
+          }),
+      });
+    } else {
+      // Đã đăng nhập -> Chuyển hướng đến trang làm bài với ID
+      // Cấu trúc URL: /tests/reading/{guid} hoặc /tests/listening/{guid}
+      router.push(`/tests/${skill.toLowerCase()}/${testId}`);
+    }
   };
+
   const handleFilterChange = (
     value: string,
     filterSet: Set<string>,
@@ -238,7 +254,6 @@ export default function ViewTests() {
             <div className="flex gap-8">
               {/* Sidebar Filter */}
               <aside className="w-72 rounded-lg border p-6 flex flex-col space-y-6">
-                {/* ... (Code filter của bạn giữ nguyên) ... */}
                 <div className="">
                   <h3 className="font-semibold mb-4">Skill</h3>
                   <div className="space-y-2 ml-2">
@@ -364,18 +379,19 @@ export default function ViewTests() {
                     {currentItems.map((test) => (
                       <Card
                         key={test.testId}
-                        className="p-0 overflow-hidden rounded-xl border relative group hover:scale-105 transition-all duration-500 flex flex-col" // Thêm flex flex-col
+                        className="p-0 overflow-hidden rounded-xl border relative group hover:scale-105 transition-all duration-500 flex flex-col"
                       >
                         <div className="relative h-40 w-full bg-gray-100">
                           <Image
-                            src={test.imageUrl}
+                            // Xử lý URL ảnh nếu API trả về đường dẫn tương đối
+                            src={"http://localhost:5151"+test.imageUrl}
                             fill
                             className="object-cover rounded-t-xl"
                             alt={test.title}
                           />
                           <div className="absolute top-2 right-2 bg-black/60 text-white text-xs rounded-full px-2 py-1 flex items-center gap-1">
                             <span>👁️</span>
-                            <span>{test.testTaken.toLocaleString()}</span>
+                            <span>{test.testTaken}</span>
                           </div>
                         </div>
                         <CardContent className="p-3 flex flex-col flex-grow">
@@ -388,7 +404,6 @@ export default function ViewTests() {
                                 test.skill.slice(1)}
                             </Badge>
 
-                            {/* Add passage number later here --------------------------------------------------------------*/}
                             <Badge
                               variant="secondary"
                               className="p-2 w-20 rounded-full "
@@ -405,12 +420,10 @@ export default function ViewTests() {
                           </div>
 
                           <div className="mt-auto">
-                            {" "}
-                            {/* Thêm mt-auto */}
                             <Button
                               className="mt-3 w-full bg-white text-blue-400 border-2 border-blue-400 hover:bg-blue-400 hover:text-white"
                               size="sm"
-                              onClick={handleTest}
+                              onClick={() => handleTest(test.testId, test.skill)}
                             >
                               {test.button}
                             </Button>

@@ -41,6 +41,7 @@ namespace backend.Models.ReadingDto
         public object? Table { get; set; }
         public string? Text { get; set; } // Gap fill text
         public List<string>? Options { get; set; } // Summary options
+        public List<string>? MatchingOptions { get; set; }
 
         public List<ReadingQuestionDto> Questions { get; set; } = new();
     }

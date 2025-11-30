@@ -539,10 +539,14 @@ namespace backend.Migrations
                     b.ToTable("Profiles");
                 });
 
-            modelBuilder.Entity("backend.Entities.User.TestResult", b =>
+            modelBuilder.Entity("backend.Entities.User.ReadingTestResult", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("FinishDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsCompleted")
                         .HasColumnType("bit");
@@ -550,11 +554,20 @@ namespace backend.Migrations
                     b.Property<double>("Score")
                         .HasColumnType("float");
 
+                    b.Property<string>("Skill")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("TakenDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TestId")
-                        .HasColumnType("int");
+                    b.Property<string>("TestId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -565,7 +578,7 @@ namespace backend.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserTestResult");
+                    b.ToTable("ReadingTestResults");
                 });
 
             modelBuilder.Entity("backend.Entities.User.User", b =>
@@ -736,9 +749,9 @@ namespace backend.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("backend.Entities.User.TestResult", b =>
+            modelBuilder.Entity("backend.Entities.User.ReadingTestResult", b =>
                 {
-                    b.HasOne("backend.Entities.Listening.ListeningTest", "ListeningTest")
+                    b.HasOne("backend.Entities.Reading.ReadingTest", "ReadingTest")
                         .WithMany()
                         .HasForeignKey("TestId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -750,7 +763,7 @@ namespace backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ListeningTest");
+                    b.Navigation("ReadingTest");
 
                     b.Navigation("User");
                 });

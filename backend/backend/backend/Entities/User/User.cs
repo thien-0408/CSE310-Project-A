@@ -10,6 +10,6 @@
         public DateTime? RefreshExpireTime { get; set; }
         public Profile Profile { get; set; } = null!; //User's profile
         public bool IsActive { get; set; } = true;
-        public virtual ICollection<TestResult> Results { get; set; } = new List<TestResult>();
+        public virtual ICollection<ReadingTestResult> Results { get; set; } = new List<ReadingTestResult>();
     }
 }

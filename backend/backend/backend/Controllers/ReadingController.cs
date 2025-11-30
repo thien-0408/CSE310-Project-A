@@ -1,5 +1,6 @@
 ﻿using backend.Data;
 using backend.Entities.Reading;
+using backend.Models;
 using backend.Models.ReadingDto;
 using backend.Services; // Namespace chứa IFileService
 using Microsoft.AspNetCore.Authorization;
@@ -27,7 +28,6 @@ namespace backend.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ReadingTest>> AddReadingTest([FromForm] CreateReadingTestDto request)
         {
-            // 1. Validate & Parse JSON
             List<ReadingPartDto> partsList;
             try
             {
@@ -42,7 +42,7 @@ namespace backend.Controllers
                 return BadRequest($"JSON Error: {ex.Message}");
             }
 
-            // 2. Upload Image
+            // Upload Image
             string imageUrl = string.Empty;
             if (request.Image != null)
             {
@@ -105,6 +105,17 @@ namespace backend.Controllers
                                 {
                                     Text = secDto.Headings[i],
                                     Key = (i + 1).ToString() 
+                                });
+                            }
+                        }
+                        if (secDto.MatchingOptions != null)
+                        {
+                            for (int i = 0; i < secDto.MatchingOptions.Count; i++)
+                            {
+                                section.SectionOptions.Add(new SectionOption
+                                {
+                                    Text = secDto.MatchingOptions[i],
+                                    Key = ((char)('A' + i)).ToString() // Tự sinh key A, B, C...
                                 });
                             }
                         }
@@ -201,6 +212,9 @@ namespace backend.Controllers
                     .ThenInclude(p => p.Sections)
                         .ThenInclude(s => s.Questions)
                             .ThenInclude(q => q.Options)
+                            .Include(t => t.Parts)
+            .ThenInclude(p => p.Sections)
+                .ThenInclude(s => s.SectionOptions)
                 .AsSplitQuery()
                 .ToListAsync();
             foreach (var test in tests)
@@ -234,6 +248,60 @@ namespace backend.Controllers
                 }
             }
             return Ok(tests);
+        }
+        [HttpGet("{id:guid}")]
+        // Lưu ý: Đổi return type thành ReadingTest để trả về full dữ liệu
+        public async Task<ActionResult<ReadingTest>> GetTestById(Guid id)
+        {
+            var test = await _context.ReadingTests
+                // 1. Load Answers
+                .Include(t => t.Parts)
+                    .ThenInclude(p => p.Sections)
+                        .ThenInclude(s => s.Questions)
+                            .ThenInclude(q => q.Answers)
+
+                // 2. Load Options (cho trắc nghiệm A,B,C,D)
+                .Include(t => t.Parts)
+                    .ThenInclude(p => p.Sections)
+                        .ThenInclude(s => s.Questions)
+                            .ThenInclude(q => q.Options)
+
+                // 3. [QUAN TRỌNG] Load SectionOptions (cho Matching Headings/Names)
+                // --- BẠN ĐANG THIẾU ĐOẠN NÀY ---
+                .Include(t => t.Parts)
+                    .ThenInclude(p => p.Sections)
+                        .ThenInclude(s => s.SectionOptions)
+                // --------------------------------
+
+                .AsSplitQuery()
+                .FirstOrDefaultAsync(t => t.TestId == id.ToString());
+
+            if (test == null)
+            {
+                return NotFound(new { message = "Not found" });
+            }
+
+            // Logic sắp xếp (Sort) giữ nguyên
+            if (test.Parts != null)
+            {
+                test.Parts = test.Parts.OrderBy(p => p.PartNumber).ToList();
+                foreach (var part in test.Parts)
+                {
+                    part.Sections = part.Sections.OrderBy(s => s.SectionNumber).ToList();
+                    foreach (var section in part.Sections)
+                    {
+                        section.Questions = section.Questions.OrderBy(q => q.QuestionNumber).ToList();
+
+                        // Sort thêm SectionOptions cho đẹp (A->Z hoặc theo ID)
+                        if (section.SectionOptions != null)
+                        {
+                            section.SectionOptions = section.SectionOptions.OrderBy(o => o.Id).ToList();
+                        }
+                    }
+                }
+            }
+
+            return Ok(test);
         }
     }
 }

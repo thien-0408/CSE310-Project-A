@@ -20,7 +20,7 @@ namespace backend.Data
         public DbSet<ListeningQuestion> ListeningQuestions { get; set; }
         public DbSet<ListeningOption> ListeningOptionChoices { get; set; }
         public DbSet<ListeningAnswer> ListeningAnswers { get; set; }
-        public DbSet<TestResult> UserTestResult { get; set; }
+        public DbSet<ReadingTestResult> ReadingTestResults { get; set; } 
         //--------------------------------------------------------------------------
         //Reading
         public DbSet<ReadingTest> ReadingTests { get; set; }

@@ -256,9 +256,9 @@ export default function Listening() {
         {/*Student's comments */}
 
         {/*Success path*/}
-        <section data-aos="flip-left" data-aos-duration="500">
+        <section data-aos-duration="500">
           <div className="w-full bg-gray-50 flex flex-col items-center py-30 sm:flex-row lg:px-60 lg:py-30 p-10 tracking-tight">
-            <div className="flex-1">
+            <div data-aos="flip-left" className="flex-1">
               {/**Image section */}
               <Image
                 src="/assets/listening-section.jpg"
@@ -270,7 +270,7 @@ export default function Listening() {
               ></Image>
             </div>
 
-            <div className="flex-1">
+            <div data-aos="flip-left" className="flex-1">
               {/**Caption */}
               <div className="pb-4">
                 <h1 className="text-3xl font-extrabold">Your Path to IELTS</h1>

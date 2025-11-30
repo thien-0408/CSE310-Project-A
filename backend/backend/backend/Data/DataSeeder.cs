@@ -35,7 +35,7 @@ namespace backend.Data
                         UserId = adminUser.Id, // FK to userAmdin
                         User = adminUser,     // Optional
 
-                        FullName = "Admin Default",
+                        FullName = "Admin",
                         Email = "admin@example.com",
                         Bio = "Call me daddy",
                         TargetScore = 0.0f,
