@@ -14,7 +14,7 @@ namespace backend.Entities.User
 
         public Guid UserId { get; set; } // FK
         [ForeignKey("UserId")]
-        public User? User { get; set; }
+        public User User { get; set; }
         public string? AvatarUrl { get; set; }
     }
 }

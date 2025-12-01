@@ -1,10 +1,22 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import NavBarUser from "@/components/ui/navbarforuser";
-import { FaPlusCircle, FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
-import * as React from "react";
-import { Card, CardContent } from "@/components/ui/card";
+
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import NavBarUser from "@/components/ui/navbarforuser";
+import FooterUser from "@/components/ui/footeruser";
+import ScrollTop from "@/components/ui/scroll-top";
+import RecentAcivity from "@/components/ui/recentact";
+import AuthGuard from "@/components/auth/AuthGuard";
+import { 
+  Plus, Calendar,  Clock, ChevronRight, 
+   Target, Activity, CheckCircle2, 
+  X,  
+} from "lucide-react";
+
+// Charts
 import {
   XAxis,
   YAxis,
@@ -13,19 +25,12 @@ import {
   ResponsiveContainer,
   BarChart,
   Bar,
+  
 } from "recharts";
-import FooterUser from "@/components/ui/footeruser";
-import RecentAcivity from "@/components/ui/recentact";
-import ScrollTop from "@/components/ui/scroll-top";
-import Link from "next/link";
+
 import { UserProfile } from "@/types/userProfile";
-import { useState, useEffect } from "react";
-import AuthGuard from "@/components/auth/AuthGuard";
-import { format } from "date-fns"; // Optional: You can install date-fns or use native JS date formatting
 
 // --- Types ---
-
-// The structure received from GET api/milestone/get-events
 interface MilestoneResponse {
   id: string;
   date: string;
@@ -34,74 +39,88 @@ interface MilestoneResponse {
   userId: string;
 }
 
-// The structure sent to POST api/milestone/generate-event
 interface CreateMilestoneDto {
   Date: string;
   Title: string;
   Description: string;
 }
 
+// --- Mock Data (Updated to Accuracy %) ---
 const stats = [
   {
-    icon: "fa-medal",
-    label: "Above average",
-    subtext: "Overall Band Score",
-    value: "7.5",
+    icon: Activity,
+    label: "Overall Accuracy",
+    subtext: "Compared to last week",
+    value: "78%",
+    trend: "+5%",
+    color: "text-blue-600",
+    bgColor: "bg-blue-50",
   },
   {
-    icon: "fa-circle-check",
-    label: "Keep up the great work!",
-    subtext: "Practice Completion",
+    icon: CheckCircle2,
+    label: "Completion Rate",
+    subtext: "Practice exercises",
     value: "85%",
+    trend: "+12%",
+    color: "text-green-600",
+    bgColor: "bg-green-50",
   },
   {
-    icon: "fa-bullseye",
-    label: "Based on last 5 tests",
-    subtext: "Average Test Score",
-    value: "7.0",
+    icon: Target,
+    label: "Average Score",
+    subtext: "Last 5 mock tests",
+    value: "72%",
+    trend: "-2%",
+    color: "text-orange-600",
+    bgColor: "bg-orange-50",
   },
 ];
 
+// Converted Band Score (0-9) to Accuracy (0-100) for the Chart
 const moduleProgressData = [
-  { module: "Listening", current: 9.0 },
-  { module: "Reading", current: 8.5 },
-  { module: "Writing", current: 6.5 },
-  { module: "Speaking", current: 6.0 },
+  { module: "Listening", accuracy: 85 }, // ~Band 8.0-8.5
+  { module: "Reading", accuracy: 78 },   // ~Band 7.5
+  { module: "Writing", accuracy: 65 },   // ~Band 6.0-6.5
+  { module: "Speaking", accuracy: 70 },  // ~Band 6.5-7.0
 ];
 
 const modules = [
   {
     img: "/demo/reading-picture.jpg",
     title: "Advanced Reading Strategies",
-    desc: "Techniques for skimming, scanning, and understanding complex texts quickly.",
+    desc: "Techniques for skimming, scanning, and understanding complex texts.",
     tags: ["Reading", "Advanced"],
+    color: "bg-purple-100 text-purple-700",
   },
   {
     img: "/demo/writing-picture.jpg",
     title: "Essay Structure for Task 2",
-    desc: "Master the argumentative and discursive essay structures for IELTS Writing Task 2.",
+    desc: "Master the argumentative and discursive essay structures.",
     tags: ["Writing", "Intermediate"],
+    color: "bg-blue-100 text-blue-700",
   },
   {
     img: "/demo/speaking-picture.jpg",
     title: "Pronunciation Practice",
-    desc: "Improve your English pronunciation and intonation for higher speaking scores.",
+    desc: "Improve intonation for higher speaking coherence.",
     tags: ["Speaking", "Beginner"],
+    color: "bg-orange-100 text-orange-700",
   },
   {
     img: "/demo/listening-picture.jpg",
-    title: "Listening for Specific Information",
-    desc: "Develop your ability to identify key details in spoken English conversations and lectures.",
+    title: "Listening for Details",
+    desc: "Identify key details in spoken English conversations.",
     tags: ["Listening", "Intermediate"],
+    color: "bg-green-100 text-green-700",
   },
 ];
 
 export default function UserDashBoard() {
+  // State
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  // --- Milestone State ---
+  
+  // Milestones State
   const [milestones, setMilestones] = useState<MilestoneResponse[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newEvent, setNewEvent] = useState<CreateMilestoneDto>({
@@ -113,64 +132,51 @@ export default function UserDashBoard() {
 
   const apiUrl: string = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5151";
 
+  // --- Helpers ---
   function getStoredToken(): string | null {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("accessToken");
-    }
+    if (typeof window !== "undefined") return localStorage.getItem("accessToken");
     return null;
   }
 
-  // Get User Profile
-  async function getUserProfile(token: string): Promise<UserProfile | null> {
-    const endpoint: string = `${apiUrl}/api/Auth/profile`;
+  const formatDate = (dateString: string) => {
     try {
-      const response = await fetch(endpoint, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const date = new Date(dateString);
+      return date.toLocaleDateString("en-US", { year: 'numeric', month: 'short', day: 'numeric' });
+    } catch {
+      return dateString;
+    }
+  };
 
-      if (!response.ok) return null;
-      return await response.json();
+  // --- API Functions ---
+  async function getUserProfile(token: string): Promise<UserProfile | null> {
+    try {
+      const response = await fetch(`${apiUrl}/api/Auth/profile`, {
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      });
+      return response.ok ? await response.json() : null;
     } catch (error) {
-      console.error("Error connecting to profile API:", error);
+      console.error("Profile API error:", error);
       return null;
     }
   }
 
-  // Get Events (GET)
   async function fetchMilestones(token: string) {
     try {
       const response = await fetch(`${apiUrl}/api/milestone/get-events`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       });
-
       if (response.ok) {
         const data: MilestoneResponse[] = await response.json();
-        // Sort by date 
         const sorted = data.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
         setMilestones(sorted);
-      } else {
-        console.error("Failed to fetch milestones");
       }
     } catch (error) {
-      console.error("Error fetching milestones:", error);
+      console.error("Milestones API error:", error);
     }
   }
 
-  // Create Event (POST)
   async function createMilestone() {
-    if (!newEvent.Title || !newEvent.Date) {
-      alert("Please fill in Title and Date");
-      return;
-    }
-
+    if (!newEvent.Title || !newEvent.Date) return alert("Please fill in Title and Date");
     const token = getStoredToken();
     if (!token) return;
 
@@ -178,310 +184,322 @@ export default function UserDashBoard() {
     try {
       const response = await fetch(`${apiUrl}/api/milestone/generate-event`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(newEvent),
       });
 
       if (response.ok) {
-        await fetchMilestones(token); 
+        await fetchMilestones(token);
         setIsModalOpen(false);
         setNewEvent({ Title: "", Date: "", Description: "" });
       } else {
         alert("Failed to create event.");
       }
     } catch (error) {
-      console.error("Error creating event:", error);
+      console.error("Create event error:", error);
     } finally {
       setIsSubmitting(false);
     }
   }
 
+  // --- Effect ---
   useEffect(() => {
     async function loadData() {
       const token = getStoredToken();
-      setLoading(true);
-
       if (!token) {
-        setError(true);
         setLoading(false);
         return;
       }
-
-      // Load Profile
       const userProfile = await getUserProfile(token);
       if (userProfile) setProfile(userProfile);
-      else setError(true);
-
-      // Load Milestones
       await fetchMilestones(token);
-
       setLoading(false);
     }
-
     loadData();
   }, []);
 
-  // Helper to format date
-  const formatDate = (dateString: string) => {
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' });
-    } catch {
-      return dateString;
-    }
-  };
-
   return (
-    <>
-      <div className="sticky top-0 z-50">
+    <div className="min-h-screen bg-slate-50/50">
+      <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
         <NavBarUser />
       </div>
+
       <AuthGuard>
-        <main className="p-4 md:p-10 lg:px-30 pt-1">
-          <div className="container mx-auto">
+        <main className="container mx-auto px-4 py-8 md:px-6 lg:px-8 space-y-10">
+          
+          {/* 1. Hero Section - Clean & Welcoming */}
+          <section className="relative overflow-hidden rounded-3xl bg-white shadow-sm border border-gray-100 p-8 lg:p-12">
+            <div className="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-blue-50 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
             
-            {/* Section 1: Hero */}
-            <section data-aos="fade" className="p-4 tracking-tighter">
-              <div className="grid grid-cols-1 md:grid-cols-2">
-                <div className="p-8 px-15 rounded-l-2xl shadow-sm bg-gray-100">
-                  <div className="mb-8">
-                    <h1 className="text-3xl font-extrabold mb-4">
-                      Good Morning,{" "}
-                      <span className="bg-gradient-to-b from-[#00B4DB] to-[#0083B0] bg-clip-text text-transparent">
-                        {profile?.fullName}
-                      </span>
-                    </h1>
-                    <p>Ready to master your IELTS with confidence?</p>
-                  </div>
-                  <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg shadow-lg">
-                    <Link href={"/tests"}>Continue Practicing</Link>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-gray-500 font-medium mb-2 uppercase tracking-wider text-sm">Welcome back</h2>
+                  <h1 className="text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight">
+                    Hello, <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">{profile?.fullName || "Student"}</span>
+                  </h1>
+                </div>
+                <p className="text-lg text-gray-600 max-w-md">
+                  Ready to boost your accuracy today? Let&apos;s verify your progress and keep the momentum going.
+                </p>
+                <div className="flex gap-4 pt-2">
+                  <Button asChild size="lg" className="rounded-full bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-600/20 px-8">
+                    <Link href="/tests">Start Practicing</Link>
+                  </Button>
+                  <Button asChild variant="outline" size="lg" className="rounded-full border-gray-300 hover:bg-gray-50 text-gray-700">
+                    <Link href="/analytics">View Reports</Link>
                   </Button>
                 </div>
-                <div className="relative overflow-hidden w-full h-64 md:h-full shadow-sm rounded-r-2xl bg-white">
-                  <Image src="/demo/user-home-dashboard.png" alt="Study Picture" fill className="object-contain" sizes="20" />
-                </div>
               </div>
-            </section>
+              <div className="relative h-[300px] w-full hidden lg:block">
+                 {/* Replace with a better illustration if available */}
+                <Image src="/demo/user-home-dashboard.png" alt="Hero" fill className="object-contain" priority />
+              </div>
+            </div>
+          </section>
 
-            {/* Section 2: Stats */}
-            <section data-aos="fade" className="p-4">
-              <h1 className="text-2xl font-extrabold tracking-tighter">
-                Your <span className="text-blue-500">Performance</span> Snapshot
-              </h1>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-15 py-5">
-                {stats.map((card, index) => (
-                  <div key={index} className="p-5 py-8 hover:scale-105 transition-all duration-300 rounded-xl shadow-sm border border-gray-100 bg-white">
-                    <div className="grid grid-cols-1 md:grid-cols-2 items-center">
-                      <div className="text-center pb-2">
-                        <i className={`fa-solid ${card.icon} text-[#4b91e2] text-5xl`}></i>
-                        <p className="text-center pt-4 text-sm font-medium text-gray-600">{card.label}</p>
-                      </div>
+          {/* 2. Key Metrics (Accuracy Focused) */}
+          <section>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {stats.map((stat, index) => {
+                const Icon = stat.icon;
+                return (
+                  <Card key={index} className="border-none shadow-sm hover:shadow-md transition-shadow duration-300">
+                    <CardContent className="p-6 flex items-start justify-between">
                       <div>
-                        <p className="text-center pb-3 text-xs text-gray-400">{card.subtext}</p>
-                        <h1 className="text-4xl font-extrabold text-center text-gray-800">{card.value}</h1>
+                        <p className="text-sm font-medium text-gray-500 mb-1">{stat.label}</p>
+                        <h3 className="text-3xl font-bold text-gray-900">{stat.value}</h3>
+                        <div className="flex items-center mt-2 gap-2">
+                            <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${stat.trend.startsWith('+') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                                {stat.trend}
+                            </span>
+                            <span className="text-xs text-gray-400">{stat.subtext}</span>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* Section 3: Charts */}
-            <section data-aos="fade" className="tracking-tighter bg-white mb-10 mx-4">
-              <div className="p-8 rounded-xl border-2 border-gray-100 shadow-md">
-                <h1 className="text-3xl font-extrabold pb-4">
-                  Skill <span className="text-blue-500">Performance</span>
-                </h1>
-                <p className="text-gray-900 font-medium">Your current performance across key IELTS skills.</p>
-                <div className="grid grid-cols-1 lg:grid-cols-1 gap-8 pt-8 px-0 md:px-10">
-                  <Card className="border-0 shadow-none">
-                    <CardContent className="pl-0">
-                      <ResponsiveContainer width="100%" height={300}>
-                        <BarChart data={moduleProgressData}>
-                          <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                          <XAxis dataKey="module" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "#666" }} />
-                          <YAxis domain={[0, 9]} axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "#666" }} />
-                          <Tooltip cursor={{fill: '#f3f4f6'}} />
-                          <Bar dataKey="current" fill="#3b82f6" name="Score" radius={[4, 4, 0, 0]} barSize={40} />
-                        </BarChart>
-                      </ResponsiveContainer>
+                      <div className={`p-3 rounded-xl ${stat.bgColor}`}>
+                        <Icon className={`w-6 h-6 ${stat.color}`} />
+                      </div>
                     </CardContent>
                   </Card>
-                </div>
-              </div>
-            </section>
+                );
+              })}
+            </div>
+          </section>
 
-            {/* Section 4: Upcoming Milestones (CAROUSEL) */}
-            <section data-aos="fade" className="p-4">
-              <div className="flex justify-between items-center mb-4">
-                <h1 className="text-2xl font-extrabold tracking-tighter">
-                  Upcoming <span className="text-blue-600">Milestones</span>
-                </h1>
-                {/* Optional: Add navigation arrows here if desired */}
-              </div>
+          {/* 3. Analytics Chart (Accuracy 0-100) */}
+          <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2">
+              <Card className="border-none shadow-sm h-full">
+                <CardHeader>
+                  <CardTitle className="flex items-center justify-between">
+                    <span>Skill Accuracy Analysis</span>
+                    <Button variant="ghost" size="sm" className="text-gray-400 font-normal">
+                      Last 30 Days <ChevronRight className="w-4 h-4 ml-1"/>
+                    </Button>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-[300px] w-full mt-4">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={moduleProgressData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }} barSize={50}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                        <XAxis 
+                          dataKey="module" 
+                          axisLine={false} 
+                          tickLine={false} 
+                          tick={{ fill: '#64748b', fontSize: 13 }} 
+                          dy={10}
+                        />
+                        <YAxis 
+                          axisLine={false} 
+                          tickLine={false} 
+                          tick={{ fill: '#64748b', fontSize: 12 }} 
+                          domain={[0, 100]} // Scale 0-100
+                          tickFormatter={(value) => `${value}%`}
+                        />
+                        <Tooltip 
+                          cursor={{ fill: '#f8fafc' }}
+                          contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                        />
+                        <Bar 
+                          dataKey="accuracy" 
+                          name="Accuracy (%)" 
+                          fill="#3b82f6" 
+                          radius={[6, 6, 0, 0]} 
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
-              {/* Carousel Container */}
-              <div className="w-full relative">
-                <div className="flex overflow-x-auto pb-6 gap-6 snap-x no-scrollbar items-stretch">
-                  
-                  {/* Map Events from API */}
-                  {milestones.length > 0 ? (
-                    milestones.map((item) => (
-                      <div
-                        key={item.id}
-                        className="min-w-[280px] w-[280px] md:min-w-[320px] snap-center flex flex-col justify-between p-6 border border-gray-100 shadow-md rounded-xl hover:shadow-lg transition-all duration-300 bg-white"
-                      >
-                        <div>
-                          <div className="flex items-start justify-between mb-4">
-                            <div className="bg-blue-50 text-blue-600 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide border border-blue-100">
-                              Event
-                            </div>
-                            <FaCalendarAlt className="text-gray-300" />
-                          </div>
-                          
-                          <h1 className="text-lg font-bold text-gray-800 line-clamp-2 mb-2">
-                            {item.eventTitle}
-                          </h1>
-                          
-                          <div className="flex items-center text-sm text-gray-500 mb-3">
-                            <i className="fa-regular fa-clock mr-2"></i>
-                            {formatDate(item.date)}
-                          </div>
-                          
-                          <p className="text-sm text-gray-600 line-clamp-3 bg-gray-50 p-3 rounded-md">
-                            {item.eventDetail}
-                          </p>
+            {/* 4. Recent Activity (Sidebar style) */}
+            <div className="lg:col-span-1">
+               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 h-full">
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="font-bold text-gray-900 text-lg">Recent Activity</h3>
+                    <Link href="#" className="text-blue-600 text-sm hover:underline">View All</Link>
+                  </div>
+                  {/* Reuse your existing component, but ensure it fits the container */}
+                  <RecentAcivity /> 
+               </div>
+            </div>
+          </section>
+
+          {/* 5. Milestones (Horizontal Scroll) */}
+          <section>
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">Upcoming Milestones</h2>
+                <p className="text-gray-500 text-sm mt-1">Track your exams and preparation goals.</p>
+              </div>
+              <Button onClick={() => setIsModalOpen(true)} size="sm" className="bg-gray-900 text-white hover:bg-black gap-2">
+                <Plus className="w-4 h-4" /> Add Event
+              </Button>
+            </div>
+
+            <div className="w-full relative group">
+              <div className="flex overflow-x-auto pb-8 gap-5 snap-x no-scrollbar">
+                
+                {milestones.length > 0 ? (
+                  milestones.map((item) => (
+                    <div
+                      key={item.id}
+                      className="min-w-[300px] w-[300px] snap-center bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+                    >
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
+                          <Calendar className="w-5 h-5" />
                         </div>
-                        
-                        <Button
-                          variant="ghost"
-                          className="mt-4 w-full text-blue-600 hover:bg-blue-50 hover:text-blue-700 justify-start px-0"
-                        >
-                          View Details &rarr;
-                        </Button>
+                        <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Event</span>
                       </div>
-                    ))
-                  ) : (
-                    // Empty state if no events
-                    <div className="min-w-[280px] flex items-center justify-center text-gray-400 text-sm italic">
-                      No upcoming events found.
+                      
+                      <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-1">{item.eventTitle}</h3>
+                      
+                      <div className="flex items-center text-sm text-gray-500 mb-4 gap-2">
+                        <Clock className="w-4 h-4" />
+                        {formatDate(item.date)}
+                      </div>
+                      
+                      <p className="text-sm text-gray-600 line-clamp-2 mb-4 h-10">
+                        {item.eventDetail}
+                      </p>
+                      
+                      <div className="w-full h-1 bg-gray-100 rounded-full overflow-hidden">
+                        <div className="h-full bg-indigo-500 w-1/3 rounded-full"></div>
+                      </div>
                     </div>
-                  )}
-
-                  {/* Add New Event Button (Placed at the End) */}
-                  <div 
-                    onClick={() => setIsModalOpen(true)}
-                    className="min-w-[100px] md:min-w-[150px] snap-center cursor-pointer flex flex-col justify-center items-center border-2 border-dashed border-gray-300 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-all duration-300 group"
-                  >
-                     <FaPlusCircle className="text-4xl text-gray-300 group-hover:text-blue-500 transition-colors mb-2" />
-                     <span className="text-gray-500 font-medium group-hover:text-blue-600 text-sm">Add Event</span>
+                  ))
+                ) : (
+                  <div className="w-full py-12 text-center bg-white rounded-2xl border border-dashed border-gray-200">
+                    <Calendar className="w-10 h-10 text-gray-300 mx-auto mb-3" />
+                    <p className="text-gray-500 font-medium">No upcoming events.</p>
+                    <p className="text-gray-400 text-sm">Add a milestone to stay on track.</p>
                   </div>
+                )}
+              </div>
+            </div>
+          </section>
 
+          {/* 6. Recommended Practice */}
+          <section className="pb-10">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Recommended Modules</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {modules.map((mod, i) => (
+                <div key={i} className="group bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300">
+                  <div className="relative h-40 w-full overflow-hidden">
+                    <Image 
+                        src={mod.img} 
+                        fill 
+                        alt={mod.title} 
+                        className="object-cover group-hover:scale-105 transition-transform duration-500" 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60"></div>
+                    <div className="absolute bottom-3 left-3">
+                       <span className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide bg-white/90 text-gray-800`}>
+                         {mod.tags[0]}
+                       </span>
+                    </div>
+                  </div>
+                  <div className="p-5">
+                    <h3 className="font-bold text-gray-900 mb-2 line-clamp-1" title={mod.title}>{mod.title}</h3>
+                    <p className="text-sm text-gray-500 line-clamp-2 mb-4 min-h-[40px]">{mod.desc}</p>
+                    <Button variant="outline" className="w-full rounded-lg hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 group-hover:border-blue-500 group-hover:text-blue-600 transition-colors">
+                      Start Now
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </section>
+              ))}
+            </div>
+          </section>
 
-            {/* Section 5: Recommended Practice */}
-            <section data-aos="fade" className="p-4 tracking-tighter">
-              <h1 className="text-2xl font-extrabold ">
-                Recommended <span className="text-blue-600">Practice</span>
-              </h1>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-5 mx-1 lg:mx-40">
-                {modules.map(({ img, title, desc, tags }, i) => (
-                  <div key={i} className="rounded-2xl shadow-sm overflow-hidden bg-white border border-gray-100">
-                    <div className="relative w-full h-48">
-                      <Image src={img} fill alt={title} className="object-cover" sizes="20"/>
-                    </div>
-                    <div className="px-8 py-6">
-                      <h1 className="text-lg font-bold text-gray-800 mb-2">{title}</h1>
-                      <p className="pb-4 font-normal text-gray-600 text-sm">{desc}</p>
-                      <div className="flex flex-wrap gap-2">
-                        {tags.map((tag, j) => (
-                          <span key={j} className={`py-1 px-3 rounded-full text-xs font-medium ${j === 0 ? "bg-blue-100 text-blue-700" : "bg-gray-100 text-gray-600"}`}>
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                      <Button className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 mt-6 w-full rounded-md">
-                        Start Module
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* Section 6: Recent Activity */}
-            <section data-aos="fade" className="p-4 tracking-tighter">
-              <h1 className="text-2xl font-extrabold mb-10">
-                Recent <span className="text-blue-500">Activity</span>
-              </h1>
-              <RecentAcivity />
-            </section>
-          </div>
         </main>
       </AuthGuard>
 
-      {/* --- ADD EVENT MODAL --- */}
+      {/* --- MODAL --- */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden">
-            <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-              <h2 className="text-xl font-bold text-gray-800">Add New Milestone</h2>
-              <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-gray-600 transition-colors">
-                <i className="fa-solid fa-xmark text-xl"></i>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden border border-gray-100">
+            <div className="p-6 border-b border-gray-100 flex justify-between items-center">
+              <h2 className="text-xl font-bold text-gray-900">Create Milestone</h2>
+              <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-gray-600 transition-colors bg-gray-50 p-2 rounded-full hover:bg-gray-100">
+                <X className="w-5 h-5" />
               </button>
             </div>
             
-            <div className="p-6 space-y-4">
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Event Title</label>
-                <input 
-                  type="text" 
-                  value={newEvent.Title}
-                  onChange={(e) => setNewEvent({...newEvent, Title: e.target.value})}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-sm"
-                  placeholder="e.g. Speaking Mock Test"
-                />
+            <div className="p-6 space-y-5">
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700">Event Title</label>
+                <div className="relative">
+                    <Target className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                    <input 
+                    type="text" 
+                    value={newEvent.Title}
+                    onChange={(e) => setNewEvent({...newEvent, Title: e.target.value})}
+                    className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm"
+                    placeholder="e.g. Official IELTS Exam"
+                    />
+                </div>
               </div>
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Date</label>
-                <input 
-                  type="date" 
-                  value={newEvent.Date}
-                  onChange={(e) => setNewEvent({...newEvent, Date: e.target.value})}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-sm"
-                />
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700">Date</label>
+                <div className="relative">
+                    <Calendar className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                    <input 
+                    type="date" 
+                    value={newEvent.Date}
+                    onChange={(e) => setNewEvent({...newEvent, Date: e.target.value})}
+                    className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm"
+                    />
+                </div>
               </div>
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Details / Location</label>
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700">Description</label>
                 <textarea 
                   rows={3}
                   value={newEvent.Description}
                   onChange={(e) => setNewEvent({...newEvent, Description: e.target.value})}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all resize-none text-sm"
-                  placeholder="Enter specific details..."
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all resize-none text-sm"
+                  placeholder="Add details about location, preparation needed, etc."
                 />
               </div>
             </div>
 
-            <div className="p-6 pt-2 flex gap-3">
+            <div className="p-6 pt-2 flex gap-3 bg-gray-50/50">
               <Button 
                 variant="outline" 
                 onClick={() => setIsModalOpen(false)}
-                className="flex-1 border-gray-300 hover:bg-gray-100 text-gray-700"
+                className="flex-1 bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
               >
                 Cancel
               </Button>
               <Button 
                 onClick={createMilestone}
                 disabled={isSubmitting}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                className="flex-1 bg-gray-900 hover:bg-black text-white"
               >
-                {isSubmitting ? "Creating..." : "Create Event"}
+                {isSubmitting ? "Saving..." : "Save Event"}
               </Button>
             </div>
           </div>
@@ -490,6 +508,6 @@ export default function UserDashBoard() {
 
       <FooterUser />
       <ScrollTop />
-    </>
+    </div>
   );
 }

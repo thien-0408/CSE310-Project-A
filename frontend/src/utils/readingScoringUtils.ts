@@ -16,7 +16,7 @@ export const normalizeText = (text: unknown): string => {
 export interface ScoreResult {
   totalScore: number;
   totalQuestions: number;
-  accuracy: number;
+  accuracy: string;
   details: unknown[];
 }
 
@@ -106,7 +106,7 @@ export const calculateReadingScore = (
 
   const totalQuestions = allQuestions.length;
   // Accuracy ở đây là tổng điểm số câu đúng
-  const accuracy = totalScore;
+  const accuracy = (totalScore/totalQuestions*100).toFixed(2);
 
   return {
     totalScore,

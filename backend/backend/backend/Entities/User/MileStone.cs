@@ -1,4 +1,6 @@
-﻿namespace backend.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace backend.Entities.User
 {
     public class MileStone
     {
@@ -7,6 +9,8 @@
         public string EventTitle { get; set; } = string.Empty;
         public string EventDetail { get; set; } = string.Empty;
         public Guid UserId { get; set; }
+        [ForeignKey("UserId")]
+        public User? User { get; set; }
 
     }
 }

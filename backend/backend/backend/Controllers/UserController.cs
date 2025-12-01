@@ -129,7 +129,7 @@ namespace backend.Controllers
             {
                 return NotFound("Test attempt not found");
             }
-
+            testAttempt.FinishDate = DateTime.UtcNow;
             testAttempt.Score = 0;
             testAttempt.IsCompleted = false;
             await _context.SaveChangesAsync();

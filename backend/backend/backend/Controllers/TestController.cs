@@ -49,6 +49,27 @@ namespace backend.Controllers
                         .ToListAsync();
             return Ok(allTests);
         }
+        [Authorize(Roles ="Admin")]
+        [HttpDelete("delete-test/{testId}")]
+        public async Task<ActionResult> DeleteTest(Guid testId)
+        {
+            var readingTest = await _context.ReadingTests.FindAsync(testId);
+            if (readingTest is null)
+            {
+                var listeningTest = await _context.ListeningTests.FindAsync(testId);
+                if (listeningTest is null)
+                {
+                    return NotFound("Test not found");
+                }
+                _context.ListeningTests.Remove(listeningTest);
+            }
+            else
+            {
+                _context.ReadingTests.Remove(readingTest);
+            }
+            await _context.SaveChangesAsync();
+            return Ok("Test deleted successfully");
+        } 
         private int GetRandomNumber()
         {
             Random random = new Random();

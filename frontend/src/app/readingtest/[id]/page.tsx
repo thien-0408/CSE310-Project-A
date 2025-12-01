@@ -142,53 +142,40 @@ export default function ReadingTest() {
       isVisible: true,
       message: "Are you sure you want to drop the test?",
       onConfirm: async () => {
-        // --- BẮT ĐẦU DEBUG ---
-        console.log("🚀 Starting Drop Test Process...");
-        
         try {
           const resultId = localStorage.getItem("currentResultId");
           const token = localStorage.getItem("accessToken");
 
-          // 1. Kiểm tra dữ liệu đầu vào
           if (!resultId || !token) {
-            console.error("❌ Missing Data:", { resultId, hasToken: !!token });
-            // Nếu không có ID, vẫn cho thoát nhưng log cảnh báo
+            console.error("Missing Data:", { resultId, hasToken: !!token });
           } else {
-            console.log("📡 Calling API Drop Test with ID:", resultId);
+            console.log("alling API Drop Test with ID:", resultId);
             
             const response = await fetch(
-              `http://localhost:5151/api/user/drop-test/${resultId}`, // Bạn khẳng định api/user là đúng
+              `http://localhost:5151/api/user/drop-test/${resultId}`, 
               {
                 method: "POST",
                 headers: {
-                  "Content-Type": "application/json", // Nên thêm Content-Type dù body rỗng
+                  "Content-Type": "application/json",
                   Authorization: `Bearer ${token}`,
                 },
               }
             );
 
-            // 2. Kiểm tra trạng thái phản hồi
-            console.log("📩 API Response Status:", response.status);
+            console.log(response.status);
 
             if (response.ok) {
               console.log("✅ Drop Test Success!");
-              // Xóa ID để tránh submit nhầm lần sau
               localStorage.removeItem("currentResultId"); 
             } else {
-              // Nếu lỗi (400, 404, 500), đọc nội dung lỗi từ server
               const errorText = await response.text();
-              console.error("⚠️ Drop Test Failed:", errorText);
+              console.error("Drop Test Failed:", errorText);
             }
           }
         } catch (e) {
-          // Chỉ nhảy vào đây nếu mất mạng hoặc lỗi code
-          console.error("❌ Network/Code Error:", e);
+          console.error("Network/Code Error:", e);
         }
-        
-        // --- ĐIỀU HƯỚNG ---
-        console.log("👋 Navigating to /tests...");
         setExit(true);
-        router.push("/tests");
       },
       onCancel: () =>
         setConfirmModal({
@@ -288,18 +275,15 @@ export default function ReadingTest() {
         const resultStats = calculateReadingScore(readingData.sections, userAnswers);
         console.log("Calculated Accuracy:", resultStats.accuracy); // Log để debug
 
-        // 2. Call API Submit
         try {
             const resultId = localStorage.getItem("currentResultId");
             const token = localStorage.getItem("accessToken");
             
             if (!resultId) {
                 console.warn("No Result ID found to submit.");
-                // Có thể hiển thị thông báo lỗi cho user ở đây
             }
 
             if (resultId && token) {
-                // 👇 SỬA URL: đổi 'api/user' -> 'api/reading-test'
                 const response = await fetch(
                     `http://localhost:5151/api/user/submit-test/${resultId}?accuracy=${resultStats.accuracy}`,
                     {
@@ -309,12 +293,10 @@ export default function ReadingTest() {
                         },
                     }
                 );
-
-                // 👇 THÊM LOGIC KIỂM TRA RESPONSE
                 if (response.ok) {
                     const data = await response.json();
                     console.log("Submit success:", data);
-                    localStorage.removeItem("currentResultId"); // Clear sau khi nộp
+                    localStorage.removeItem("currentResultId"); 
                 } else {
                     console.error("Submit failed with status:", response.status);
                     const errorText = await response.text();
