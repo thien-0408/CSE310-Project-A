@@ -6,16 +6,10 @@ interface Props {
   section: ReadingSection;
   onAnswerChange?: (questionId: string, value: string) => void;
 }
-
-// ... (các import giữ nguyên)
-
 const MatchingNames: React.FC<Props> = ({ section, onAnswerChange }) => {
-  // 1. Tạo key storage
-  // Sử dụng optional chaining để tránh lỗi nếu section null
   const sectionId = section?.sectionId || "unknown";
   const storageKey = `matching-names-${sectionId}`;
 
-  // 2. State lưu đáp án (Bỏ state 'selected' gây lỗi chọn trùng)
   const [answers, setAnswers] = useState<Record<string, string>>({});
 
   // 3. Load saved answers
@@ -27,7 +21,6 @@ const MatchingNames: React.FC<Props> = ({ section, onAnswerChange }) => {
           const parsed = JSON.parse(saved);
           setAnswers(parsed);
           
-          // Chỉ đồng bộ lên cha một lần khi load xong
           if (onAnswerChange) {
             Object.entries(parsed).forEach(([qId, val]) => {
               onAnswerChange(qId, val as string);

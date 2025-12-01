@@ -144,7 +144,7 @@ export default function NavBarUser() {
                   alt="IELTS Sprint Logo"
                   width={40}
                   height={40}
-                  quality={100}
+                  sizes="20"
                   className="object-contain relative z-10 transition-transform duration-300 group-hover:scale-105"
                 />
               </div>

@@ -40,7 +40,6 @@ const YesNoNotGiven: React.FC<Props> = ({
 
   return (
     <div className="flex items-start gap-4 mb-4 p-3 bg-white rounded border border-gray-100 hover:border-gray-200 transition-colors">
-      {/* Badge Số thứ tự */}
       <div className="flex-shrink-0 flex items-center justify-center w-8 h-8 bg-blue-600 text-white rounded-full font-bold text-sm mt-1">
         {questionNumber}
       </div>
@@ -62,7 +61,6 @@ const YesNoNotGiven: React.FC<Props> = ({
           ))}
         </select>
 
-        {/* Nội dung câu hỏi */}
         <p className="text-gray-800 text-base leading-relaxed font-medium">
           {question}
         </p>

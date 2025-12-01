@@ -120,7 +120,7 @@ export default function UserDashBoard() {
     return null;
   }
 
-  // API 1: Get User Profile
+  // Get User Profile
   async function getUserProfile(token: string): Promise<UserProfile | null> {
     const endpoint: string = `${apiUrl}/api/Auth/profile`;
     try {
@@ -140,7 +140,7 @@ export default function UserDashBoard() {
     }
   }
 
-  // API 2: Get Events (GET)
+  // Get Events (GET)
   async function fetchMilestones(token: string) {
     try {
       const response = await fetch(`${apiUrl}/api/milestone/get-events`, {
@@ -153,7 +153,7 @@ export default function UserDashBoard() {
 
       if (response.ok) {
         const data: MilestoneResponse[] = await response.json();
-        // Sort by date (optional, but good for UX)
+        // Sort by date 
         const sorted = data.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
         setMilestones(sorted);
       } else {
@@ -164,7 +164,7 @@ export default function UserDashBoard() {
     }
   }
 
-  // API 3: Create Event (POST)
+  // Create Event (POST)
   async function createMilestone() {
     if (!newEvent.Title || !newEvent.Date) {
       alert("Please fill in Title and Date");
@@ -186,7 +186,6 @@ export default function UserDashBoard() {
       });
 
       if (response.ok) {
-        // Refresh the list after successful add
         await fetchMilestones(token); 
         setIsModalOpen(false);
         setNewEvent({ Title: "", Date: "", Description: "" });
@@ -262,7 +261,7 @@ export default function UserDashBoard() {
                   </Button>
                 </div>
                 <div className="relative overflow-hidden w-full h-64 md:h-full shadow-sm rounded-r-2xl bg-white">
-                  <Image src="/demo/user-home-dashboard.png" alt="Study Picture" fill className="object-contain" />
+                  <Image src="/demo/user-home-dashboard.png" alt="Study Picture" fill className="object-contain" sizes="20" />
                 </div>
               </div>
             </section>
@@ -394,7 +393,7 @@ export default function UserDashBoard() {
                 {modules.map(({ img, title, desc, tags }, i) => (
                   <div key={i} className="rounded-2xl shadow-sm overflow-hidden bg-white border border-gray-100">
                     <div className="relative w-full h-48">
-                      <Image src={img} fill alt={title} className="object-cover" />
+                      <Image src={img} fill alt={title} className="object-cover" sizes="20"/>
                     </div>
                     <div className="px-8 py-6">
                       <h1 className="text-lg font-bold text-gray-800 mb-2">{title}</h1>

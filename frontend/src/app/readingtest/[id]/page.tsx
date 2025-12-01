@@ -22,10 +22,12 @@ import type {
   ReadingData,
   ReadingTestResponse,
 } from "@/types/ReadingInterfaces";
+import { calculateReadingScore } from "@/utils/readingScoringUtils";
 
-// Interface for user answers
+// --- UTILITY FOR SCORING (Inline or imported) ---
+// You should ideally move this to utils/readingScoringUtils.ts
 interface UserAnswer {
-  questionId: string; //
+  questionId: string;
   answer: unknown;
 }
 
@@ -42,8 +44,7 @@ export default function ReadingTest() {
   );
 
   // --- LOGIC FETCH API ---
-  // --- LOGIC FETCH API BY ID ---
- useEffect(() => {
+  useEffect(() => {
     if (!testId) return;
     if (hasFetched.current) return;
     hasFetched.current = true;
@@ -70,32 +71,35 @@ export default function ReadingTest() {
         setDataResponse(testData);
 
         console.log("Fetched Test Data:", testData);
-        
+
         if (testData && testData.parts && testData.parts.length > 0) {
           setReadingData(testData.parts[0]);
           try {
-            const token = localStorage.getItem("accessToken"); 
+            const token = localStorage.getItem("accessToken");
 
             if (token) {
               const attemptResponse = await fetch(
                 `http://localhost:5151/api/user/attempt-test/${testId}`,
                 {
-                  method: "POST", 
+                  method: "POST",
                   headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}` 
+                    Authorization: `Bearer ${token}`,
                   },
                 }
               );
 
               if (attemptResponse.ok) {
                 const attemptData = await attemptResponse.json();
-              if (attemptData && attemptData.id) {
+                if (attemptData && attemptData.id) {
                   localStorage.setItem("currentResultId", attemptData.id);
-                  console.log("Attempt recorded successfully. Result ID:", attemptData.id);
+                  console.log("Attempt id:", attemptData.id);
                 }
               } else {
-                console.warn("Failed to record test attempt:", attemptResponse.statusText);
+                console.warn(
+                  "Failed to record test attempt:",
+                  attemptResponse.statusText
+                );
               }
             } else {
               console.warn("No access token found. User might be guest.");
@@ -103,12 +107,9 @@ export default function ReadingTest() {
           } catch (attemptError) {
             console.error("Error calling attempt-test API:", attemptError);
           }
-          // ============================================================
-
         } else {
           setError("Test data is empty or invalid structure");
         }
-
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         console.error("Fetch Error:", err);
@@ -134,11 +135,58 @@ export default function ReadingTest() {
     onCancel: () => void;
     isVisible: boolean;
   }
+
+  // --- HANDLE EXIT (DROP TEST) ---
   const handleExit = () => {
     setConfirmModal({
       isVisible: true,
       message: "Are you sure you want to drop the test?",
-      onConfirm: () => {
+      onConfirm: async () => {
+        // --- BẮT ĐẦU DEBUG ---
+        console.log("🚀 Starting Drop Test Process...");
+        
+        try {
+          const resultId = localStorage.getItem("currentResultId");
+          const token = localStorage.getItem("accessToken");
+
+          // 1. Kiểm tra dữ liệu đầu vào
+          if (!resultId || !token) {
+            console.error("❌ Missing Data:", { resultId, hasToken: !!token });
+            // Nếu không có ID, vẫn cho thoát nhưng log cảnh báo
+          } else {
+            console.log("📡 Calling API Drop Test with ID:", resultId);
+            
+            const response = await fetch(
+              `http://localhost:5151/api/user/drop-test/${resultId}`, // Bạn khẳng định api/user là đúng
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json", // Nên thêm Content-Type dù body rỗng
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+
+            // 2. Kiểm tra trạng thái phản hồi
+            console.log("📩 API Response Status:", response.status);
+
+            if (response.ok) {
+              console.log("✅ Drop Test Success!");
+              // Xóa ID để tránh submit nhầm lần sau
+              localStorage.removeItem("currentResultId"); 
+            } else {
+              // Nếu lỗi (400, 404, 500), đọc nội dung lỗi từ server
+              const errorText = await response.text();
+              console.error("⚠️ Drop Test Failed:", errorText);
+            }
+          }
+        } catch (e) {
+          // Chỉ nhảy vào đây nếu mất mạng hoặc lỗi code
+          console.error("❌ Network/Code Error:", e);
+        }
+        
+        // --- ĐIỀU HƯỚNG ---
+        console.log("👋 Navigating to /tests...");
         setExit(true);
         router.push("/tests");
       },
@@ -200,9 +248,7 @@ export default function ReadingTest() {
 
   const totalQuestions = allQuestions.length;
 
-  //Update user answer function
   const handleAnswerChange = (questionId: string, answer: unknown) => {
-    // Sửa ID thành string
     setUserAnswers((prevAnswers) => {
       const existingAnswerIndex = prevAnswers.findIndex(
         (a) => a.questionId === questionId
@@ -234,7 +280,52 @@ export default function ReadingTest() {
     window.addEventListener("mouseup", handleMouseUp);
   }
 
-  const handleSubmit = () => {
+  // --- HANDLE SUBMIT TEST ---
+  const handleSubmit = async () => {
+    // 1. Calculate Score Client-side
+    if (readingData) {
+        // Hàm tính điểm (đã có ở trên)
+        const resultStats = calculateReadingScore(readingData.sections, userAnswers);
+        console.log("Calculated Accuracy:", resultStats.accuracy); // Log để debug
+
+        // 2. Call API Submit
+        try {
+            const resultId = localStorage.getItem("currentResultId");
+            const token = localStorage.getItem("accessToken");
+            
+            if (!resultId) {
+                console.warn("No Result ID found to submit.");
+                // Có thể hiển thị thông báo lỗi cho user ở đây
+            }
+
+            if (resultId && token) {
+                // 👇 SỬA URL: đổi 'api/user' -> 'api/reading-test'
+                const response = await fetch(
+                    `http://localhost:5151/api/user/submit-test/${resultId}?accuracy=${resultStats.accuracy}`,
+                    {
+                        method: "POST",
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+
+                // 👇 THÊM LOGIC KIỂM TRA RESPONSE
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log("Submit success:", data);
+                    localStorage.removeItem("currentResultId"); // Clear sau khi nộp
+                } else {
+                    console.error("Submit failed with status:", response.status);
+                    const errorText = await response.text();
+                    console.error("Error details:", errorText);
+                }
+            }
+        } catch (e) {
+            console.error("Network error submitting test:", e);
+        }
+    }
+
     setShowScoring(true);
     setConfirmModal({ ...confirmModal, isVisible: false });
   };
@@ -259,9 +350,10 @@ export default function ReadingTest() {
   if (showScoring) {
     return (
       <>
-        <Loader></Loader>
+        {/* You might want to remove <Loader> here or use a better loading state if needed */}
         <QuestionScoring
           sections={readingData.sections}
+          // Assuming QuestionScoring expects UserAnswer[], which it does
           userAnswers={userAnswers}
           onClose={() => setShowScoring(false)}
         />
@@ -283,9 +375,16 @@ export default function ReadingTest() {
         <div className="mx-auto px-4 py-3">
           <div className="grid grid-cols-3 items-center">
             <div className="flex items-center space-x-8 justify-self-start">
-              <h1 className="font-bold text-gray-700">
-                {readingData.partTitle}
-              </h1>
+              <Button className="rounded-4xl bg-gray-200 text-gray-800 hover:bg-gray-300">
+                <GrPrevious />
+              </Button>
+
+              <h3 className="text-gray-800 text-md">
+                Question {userAnswers.length} of {totalQuestions}
+              </h3>
+              <Button className="rounded-4xl bg-gray-200 text-gray-800 hover:bg-gray-300">
+                <GrNext />
+              </Button>
             </div>
 
             <div className="justify-self-center">
@@ -308,6 +407,14 @@ export default function ReadingTest() {
                         onClick={handleExit}
                       />
                     </NavigationMenuItem>
+                    <NavigationMenuItem>
+                      <Button
+                        className="rounded-3xl bg-[#407db9] hover:bg-[#336699] transition-all duration-300"
+                        onClick={handleSubmit}
+                      >
+                        Submit
+                      </Button>
+                    </NavigationMenuItem>
                   </NavigationMenuList>
                 </NavigationMenuList>
               </NavigationMenu>
@@ -327,7 +434,7 @@ export default function ReadingTest() {
             <div className="relative w-full h-64 rounded-xl overflow-hidden mb-6 group">
               <Image
                 src={
-                  "http://localhost:5151"+dataResponse?.imageUrl ||
+                  "http://localhost:5151" + dataResponse?.imageUrl ||
                   "/testdata/repImage/DSC06942-1-1536x1024-1.jpg"
                 }
                 sizes=""
@@ -368,27 +475,6 @@ export default function ReadingTest() {
           />
         </div>
       </div>
-
-      {/* Footer */}
-      <footer className="sticky bottom-0 w-full bg-white shadow-inner border-t p-3 flex items-center justify-center space-x-5">
-        <div>
-          <h3 className="text-gray-800 text-md">
-            Question {userAnswers.length} of {totalQuestions}
-          </h3>
-        </div>
-        <Button className="rounded-4xl bg-gray-200 text-gray-800 hover:bg-gray-300">
-          <GrPrevious />
-        </Button>
-        <Button className="rounded-4xl bg-gray-200 text-gray-800 hover:bg-gray-300">
-          <GrNext />
-        </Button>
-        <Button
-          className="rounded-3xl bg-[#407db9] hover:bg-[#336699] transition-all duration-300"
-          onClick={handleSubmit}
-        >
-          Submit
-        </Button>
-      </footer>
     </>
   );
 }

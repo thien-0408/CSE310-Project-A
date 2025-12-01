@@ -4,7 +4,6 @@ import { CheckCircle, XCircle, AlertCircle } from "lucide-react";
 import type {
   ReadingSection,
   ReadingQuestion,
-  QuestionAnswer,
 } from "@/types/ReadingInterfaces";
 
 // --- TYPE DEFINITIONS ---
@@ -138,6 +137,7 @@ const QuestionScoring: React.FC<ScoringProps> = ({
       totalQuestions: allQuestions.length,
     };
   }, [sections, userAnswers]);
+  const accuracy = results.totalScore / results.totalQuestions * 100;
 
   // --- RENDER ---
 
@@ -153,6 +153,17 @@ const QuestionScoring: React.FC<ScoringProps> = ({
           <p className="text-sm text-gray-500 mt-1">
             Review your performance details below.
           </p>
+        </div>
+
+        {/*Show percentage */}
+        <div className="text-left bg-white px-4 py-2 rounded-xl border border-gray-100 shadow-sm mr-6">
+          <span className={`text-3xl font-extrabold ${
+              accuracy >= 50 ? "text-green-600" : "text-orange-500"
+            }`}>
+              {accuracy} %
+            {/* {results.totalScore / results.totalQuestions * 100} % Accuracy */}
+
+          </span>
         </div>
         <div className="text-right bg-white px-4 py-2 rounded-xl border border-gray-100 shadow-sm">
           <span

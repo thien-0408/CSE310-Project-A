@@ -85,6 +85,8 @@ namespace backend.Controllers
             await _context.SaveChangesAsync();
             return Ok(testAttempt);
         }
+
+        //Submit
         [Authorize]
         [HttpPost("submit-test/{resultId}")]
         public async Task<ActionResult<ReadingTestResult>> SubmitTest(string resultId, [FromQuery] double accuracy)
@@ -111,6 +113,30 @@ namespace backend.Controllers
             return Ok(testAttempt);
         }
         [Authorize]
+        [HttpPost("drop-test/{resultId}")]
+        public async Task<ActionResult<ReadingTestResult>> DropTest(string resultId)
+        {
+            var userId = GetUserIdFromToken();
+            if (userId == Guid.Empty) return Unauthorized();
+            if (!Guid.TryParse(resultId, out var parsedResultId))
+            {
+                return BadRequest("Invalid Result ID");
+            }
+            var testAttempt = await _context.ReadingTestResults
+                                           .FirstOrDefaultAsync(r => r.Id == parsedResultId && r.UserId == userId);
+
+            if (testAttempt == null)
+            {
+                return NotFound("Test attempt not found");
+            }
+
+            testAttempt.Score = 0;
+            testAttempt.IsCompleted = false;
+            await _context.SaveChangesAsync();
+            return Ok(testAttempt);
+        }
+        //Get history
+        [Authorize]
         [HttpGet("test-history")]
         public async Task<ActionResult<IEnumerable<GetResultDto>>> GetTestHistory()
         {
@@ -128,6 +154,33 @@ namespace backend.Controllers
                     FinishDate = (DateTime)r.FinishDate
                 }).ToListAsync();
             return Ok(readingHistory);
+        }
+
+        //Get best result for each test
+        [Authorize]
+        [HttpGet("test-best-results")]
+        public async Task<ActionResult<IEnumerable<GetResultDto>>> GetUserBestResults()
+        {
+            var userId = GetUserIdFromToken();
+            if (userId == Guid.Empty) return Unauthorized();
+
+            var bestResults = await _context.ReadingTestResults
+                .Where(r => r.UserId == userId && r.IsCompleted) 
+                .GroupBy(r => r.TestId) 
+                .Select(g => new GetResultDto
+                {
+                    TestId = Guid.Parse(g.Key),
+                    Accuracy = g.Max(x => x.Score),
+                    Title = g.FirstOrDefault().Title,
+                    Skill = g.FirstOrDefault().Skill,
+                    TakenDate = g.OrderByDescending(x => x.Score).FirstOrDefault().TakenDate,
+                    FinishDate = (DateTime)g.OrderByDescending(x => x.Score).FirstOrDefault().FinishDate,
+
+                    IsCompleted = true
+                })
+                .ToListAsync();
+
+            return Ok(bestResults);
         }
         private Guid GetUserIdFromToken()
         {
