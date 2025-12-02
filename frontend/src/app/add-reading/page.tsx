@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Plus, Trash2, Save, Image as ImageIcon, Type, FileText, Grid, List as ListIcon } from "lucide-react";
+import { Plus, Trash2, Save, Image as ImageIcon, Type, FileText, Grid } from "lucide-react";
 
 // --- TYPES ---
 type Question = {
@@ -295,7 +295,7 @@ export default function CreateReadingTest() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6 pb-24 font-sans text-gray-800">
+    <div className="min-h-screen bg-gray-50  pb-24 font-sans text-gray-800">
       <div className="max-w-7xl mx-auto space-y-6">
         
         {/* HEADER */}

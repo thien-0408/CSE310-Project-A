@@ -76,7 +76,6 @@ const stats = [
   },
 ];
 
-// Converted Band Score (0-9) to Accuracy (0-100) for the Chart
 const moduleProgressData = [
   { module: "Listening", accuracy: 85 }, // ~Band 8.0-8.5
   { module: "Reading", accuracy: 78 },   // ~Band 7.5
@@ -228,7 +227,7 @@ export default function UserDashBoard() {
         <main className="container mx-auto px-4 py-8 md:px-6 lg:px-8 space-y-10">
           
           {/* 1. Hero Section - Clean & Welcoming */}
-          <section className="relative overflow-hidden rounded-3xl bg-white shadow-sm border border-gray-100 p-8 lg:p-12">
+          <section data-aos ="fade-right" data-aos-duration="500" className="relative overflow-hidden rounded-3xl bg-white shadow-sm border border-gray-100 p-8 lg:p-12">
             <div className="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-blue-50 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
@@ -259,7 +258,7 @@ export default function UserDashBoard() {
           </section>
 
           {/* 2. Key Metrics (Accuracy Focused) */}
-          <section>
+          <section data-aos ="fade-left" data-aos-duration="500">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {stats.map((stat, index) => {
                 const Icon = stat.icon;
@@ -287,7 +286,7 @@ export default function UserDashBoard() {
           </section>
 
           {/* 3. Analytics Chart (Accuracy 0-100) */}
-          <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <section data-aos ="fade-up" data-aos-duration="500" className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
               <Card className="border-none shadow-sm h-full">
                 <CardHeader>
@@ -348,7 +347,7 @@ export default function UserDashBoard() {
           </section>
 
           {/* 5. Milestones (Horizontal Scroll) */}
-          <section>
+          <section data-aos ="fade-right" data-aos-duration="500">
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h2 className="text-2xl font-bold text-gray-900">Upcoming Milestones</h2>
@@ -403,7 +402,7 @@ export default function UserDashBoard() {
           </section>
 
           {/* 6. Recommended Practice */}
-          <section className="pb-10">
+          <section data-aos ="fade-left" data-aos-duration="500" className="pb-10">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Recommended Modules</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {modules.map((mod, i) => (
@@ -505,7 +504,6 @@ export default function UserDashBoard() {
           </div>
         </div>
       )}
-
       <FooterUser />
       <ScrollTop />
     </div>

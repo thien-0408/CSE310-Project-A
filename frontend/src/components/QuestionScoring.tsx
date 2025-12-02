@@ -161,8 +161,6 @@ const QuestionScoring: React.FC<ScoringProps> = ({
               accuracy >= 50 ? "text-green-600" : "text-orange-500"
             }`}>
               {accuracy} %
-            {/* {results.totalScore / results.totalQuestions * 100} % Accuracy */}
-
           </span>
         </div>
         <div className="text-right bg-white px-4 py-2 rounded-xl border border-gray-100 shadow-sm">

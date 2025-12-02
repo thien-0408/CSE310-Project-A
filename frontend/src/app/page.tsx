@@ -522,7 +522,6 @@ export default function HomePage() {
                 alt=""
                 width={450}
                 height={350}
-                quality={100}
                 className="rounded-md mb-4"
               ></Image>
             </div>

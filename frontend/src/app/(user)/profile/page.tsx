@@ -5,7 +5,6 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import NavBarUser from "@/components/ui/navbarforuser";
 import { RiCloseCircleFill } from "react-icons/ri";
-
 import AuthGuard from "@/components/auth/AuthGuard";
 import { IoCamera } from "react-icons/io5";
 import { FaBellSlash } from "react-icons/fa";

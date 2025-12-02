@@ -147,7 +147,7 @@ export default function RegisterPage() {
             <h1 className="text-3xl font-bold tracking-tight text-gray-900">
               Create an account
             </h1>
-            <p className="text-sm text-muted-foreground text-gray-500">
+            <p className="text-sm  text-gray-500">
               Enter your information below to get started
             </p>
           </div>

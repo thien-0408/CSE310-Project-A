@@ -34,6 +34,7 @@ import { GoAlertFill } from "react-icons/go";
 import Image from "next/image";
 import { Avatar } from "@/components/ui/avatar";
 import { IoLogOut } from "react-icons/io5";
+import CreateReadingTest from "../add-reading/page";
 
 //---------------------------------------
 //Types
@@ -178,348 +179,9 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
 // --- ADD TEST TAB ---
 
 const AddTestTab = () => {
-  const [skill, setSkill] = useState<"Reading" | "Listening">("Listening");
-  const [partNumber, setPartNumber] = useState<number>(1);
-  const [audioDuration, setAudioDuration] = useState<number>(0);
-  const [resourceContent, setResourceContent] = useState<string>(""); // Reading passage
-  const [questions, setQuestions] = useState<Question[]>([]);
-
-  // Helper để reset form khi đổi skill
-  useEffect(() => {
-    setQuestions([]);
-    setPartNumber(1);
-    setResourceContent("");
-    setAudioDuration(0);
-  }, [skill]);
-
-  const handleAddQuestion = () => {
-    const newId = questions.length + 1;
-    setQuestions([
-      ...questions,
-      {
-        id: newId,
-        questionType:
-          skill === "Listening"
-            ? LISTENING_QUESTION_TYPES[0]
-            : READING_QUESTION_TYPES[0],
-        questionText: "",
-        answer: "",
-      },
-    ]);
-  };
-
-  const handleRemoveQuestion = (id: number) => {
-    setQuestions(questions.filter((q) => q.id !== id));
-  };
-
-  const handleQuestionChange = (
-    id: number,
-    field: keyof Question,
-    value: string
-  ) => {
-    setQuestions(
-      questions.map((q) => (q.id === id ? { ...q, [field]: value } : q))
-    );
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Render to server
-    console.log("Submitting Test:", {
-      skill,
-      partNumber,
-      audioDuration: skill === "Listening" ? audioDuration : undefined,
-      resourceContent: skill === "Reading" ? resourceContent : undefined,
-      questions,
-    });
-    alert(`Created ${skill} Test successfully! (Check console for data)`);
-  };
-
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-      <div className="p-6 border-b border-gray-100">
-        <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-          <MdAddCircleOutline className="text-blue-600" size={24} />
-          Add New Test
-        </h2>
-        <p className="text-gray-500 text-sm mt-1">
-          Create a new Reading or Listening test module.
-        </p>
-      </div>
-
-      <div className="p-6">
-        <form onSubmit={handleSubmit}>
-          {/* Skill Selection */}
-          <div className="mb-8">
-            <label className="block text-sm font-medium text-gray-700 mb-3">
-              Select Skill
-            </label>
-            <div className="flex gap-4">
-              <button
-                type="button"
-                onClick={() => setSkill("Listening")}
-                className={`flex-1 py-4 px-6 rounded-xl border-2 flex items-center justify-center gap-3 transition-all ${
-                  skill === "Listening"
-                    ? "border-blue-500 bg-blue-50 text-blue-700 shadow-sm"
-                    : "border-gray-200 hover:border-gray-300 text-gray-600"
-                }`}
-              >
-                <Headphones size={24} />
-                <span className="font-semibold">Listening</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setSkill("Reading")}
-                className={`flex-1 py-4 px-6 rounded-xl border-2 flex items-center justify-center gap-3 transition-all ${
-                  skill === "Reading"
-                    ? "border-purple-500 bg-purple-50 text-purple-700 shadow-sm"
-                    : "border-gray-200 hover:border-gray-300 text-gray-600"
-                }`}
-              >
-                <BookOpen size={24} />
-                <span className="font-semibold">Reading</span>
-              </button>
-            </div>
-          </div>
-
-          {/* General Info */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Part Number
-              </label>
-              <input
-                type="number"
-                min="1"
-                max="4"
-                value={partNumber}
-                onChange={(e) => setPartNumber(parseInt(e.target.value))}
-                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-              />
-            </div>
-
-            {skill === "Listening" ? (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Audio Duration (seconds)
-                </label>
-                <div className="relative">
-                  <input
-                    type="number"
-                    min="0"
-                    value={audioDuration}
-                    onChange={(e) => setAudioDuration(parseInt(e.target.value))}
-                    className="w-full px-4 py-2 pl-10 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                  />
-                  <Activity
-                    className="absolute left-3 top-2.5 text-gray-400"
-                    size={18}
-                  />
-                </div>
-              </div>
-            ) : (
-              <div className="md:col-span-2">
-                {/* Placeholder for reading layout, usually doesn't have explicit duration */}
-              </div>
-            )}
-          </div>
-
-          {/* Resource Upload Area */}
-          <div className="mb-8">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {skill === "Listening" ? "Audio File" : "Passage Content"}
-            </label>
-
-            {skill === "Listening" ? (
-              <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:bg-gray-50 transition cursor-pointer">
-                <FileAudio className="mx-auto h-12 w-12 text-gray-400 mb-3" />
-                <p className="text-sm text-gray-600 font-medium">
-                  Click to upload MP3/WAV file
-                </p>
-
-                {/*Edit input file here */}
-                <p className="text-xs text-gray-400 mt-1">Max size: 10MB</p>
-                <input type="file" />
-              </div>
-            ) : (
-              <div className="space-y-4">
-                <textarea
-                  rows={8}
-                  value={resourceContent}
-                  onChange={(e) => setResourceContent(e.target.value)}
-                  placeholder="Paste reading passage text here..."
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 outline-none transition"
-                ></textarea>
-                <div className="border-2 border-dashed border-gray-300 rounded-xl p-4 text-center hover:bg-gray-50 transition cursor-pointer">
-                  <FileText className="mx-auto h-8 w-8 text-gray-400 mb-2" />
-                  <span className="text-sm text-gray-600">
-                    Or upload a PDF/Image of the passage
-                  </span>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Questions Section */}
-          <div className="border-t border-gray-200 pt-8">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-800">
-                Questions ({questions.length})
-              </h3>
-              <button
-                type="button"
-                onClick={handleAddQuestion}
-                className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium flex items-center gap-2 transition"
-              >
-                <Plus size={16} /> Add Question
-              </button>
-            </div>
-
-            <div className="space-y-4">
-              {questions.map((q, index) => (
-                <div
-                  key={q.id}
-                  className="bg-gray-50 p-4 rounded-xl border border-gray-200 relative group"
-                >
-                  <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-start">
-                    {/* Question ID */}
-                    <div className="md:col-span-1 flex justify-center pt-2">
-                      <span className="w-8 h-8 rounded-full bg-white border border-gray-300 flex items-center justify-center text-sm font-bold text-gray-600">
-                        {index + 1}
-                      </span>
-                    </div>
-
-                    {/* Question Type */}
-                    <div className="md:col-span-3">
-                      <label className="block text-xs font-medium text-gray-500 mb-1">
-                        Type
-                      </label>
-                      <select
-                        value={q.questionType}
-                        onChange={(e) =>
-                          handleQuestionChange(
-                            q.id,
-                            "questionType",
-                            e.target.value
-                          )
-                        }
-                        className="w-full px-3 py-2 rounded-md border border-gray-300 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
-                      >
-                        {(skill === "Listening"
-                          ? LISTENING_QUESTION_TYPES
-                          : READING_QUESTION_TYPES
-                        ).map((type) => (
-                          <option key={type} value={type}>
-                            {type}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    {/* Answer */}
-                    <div className="md:col-span-7 space-y-3">
-                      {/* Question Text (Prompt) */}
-                      <div>
-                        <label className="block text-xs font-medium text-gray-500 mb-1">
-                          Question Prompt
-                        </label>
-                        <input
-                          type="text"
-                          value={q.questionText}
-                          onChange={(e) =>
-                            handleQuestionChange(
-                              q.id,
-                              "questionText",
-                              e.target.value
-                            )
-                          }
-                          placeholder="Enter the question content..."
-                          className="w-full px-3 py-2 rounded-md border border-gray-300 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
-                        />
-                      </div>
-
-                      {/* Actual Answer */}
-                      <div>
-                        <label className="block text-xs font-medium text-gray-500 mb-1">
-                          Correct Answer
-                        </label>
-                        <input
-                          type="text"
-                          value={q.answer}
-                          onChange={(e) =>
-                            handleQuestionChange(q.id, "answer", e.target.value)
-                          }
-                          placeholder="Enter correct answer"
-                          className="w-full px-3 py-2 rounded-md border border-gray-300 text-sm font-medium text-green-700 bg-green-50 focus:ring-2 focus:ring-green-500 outline-none"
-                        />
-                      </div>
-
-                      {/* Show Option field if Multiple Choice */}
-                      {q.questionType === "MultipleChoice" && (
-                        <div>
-                          <label className="block text-xs font-medium text-gray-500 mb-1">
-                            Options (Optional)
-                          </label>
-                          <input
-                            type="text"
-                            placeholder="A. Cat | B. Dog | C. Mouse"
-                            className="w-full px-3 py-2 rounded-md border border-gray-300 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
-                            onChange={(e) =>
-                              handleQuestionChange(
-                                q.id,
-                                "options",
-                                e.target.value
-                              )
-                            }
-                          />
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Delete Button */}
-                    <div className="md:col-span-1 flex justify-end">
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveQuestion(q.id)}
-                        className="text-gray-400 hover:text-red-500 transition p-2"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-
-              {questions.length === 0 && (
-                <div className="text-center py-8 text-gray-400 border-2 border-dashed border-gray-200 rounded-xl">
-                  <HelpCircle className="mx-auto h-10 w-10 mb-2 opacity-50" />
-                  <p>No questions added yet.</p>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="mt-8 flex justify-end gap-3">
-            <button
-              type="button"
-              className="px-6 py-2.5 rounded-lg text-gray-600 hover:bg-gray-100 font-medium transition"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className={`px-8 py-2.5 rounded-lg text-white font-medium shadow-md transition flex items-center gap-2 ${
-                skill === "Listening"
-                  ? "bg-blue-600 hover:bg-blue-700 shadow-blue-200"
-                  : "bg-purple-600 hover:bg-purple-700 shadow-purple-200"
-              }`}
-            >
-              <Save size={18} /> Save Test
-            </button>
-          </div>
-        </form>
-      </div>
+    <div className="bg-white  border-gray-100 overflow-hidden">
+      <CreateReadingTest></CreateReadingTest>
     </div>
   );
 };
@@ -1054,7 +716,7 @@ const AdminDashboard = () => {
 
       // --- CASE MỚI: ADD TEST ---
       case "add-test":
-        return <AddTestTab />;
+        return <AddTestTab/>;
 
       case "settings":
         return (
@@ -1107,9 +769,6 @@ const AdminDashboard = () => {
               <h1 className="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
                 ISP AdminPanel
               </h1>
-              <p className="text-xs text-gray-400 font-medium tracking-wide">
-                V1.0.0
-              </p>
             </div>
           </div>
 
@@ -1169,7 +828,7 @@ const AdminDashboard = () => {
                     : "text-gray-400 group-hover:text-gray-600"
                 }
               />
-              Add Test
+              Add Reading Test
             </button>
 
             <button
@@ -1200,7 +859,7 @@ const AdminDashboard = () => {
               <h2 className="text-2xl font-bold text-gray-800">
                 {activeTab === "dashboard" && "Dashboard Overview"}
                 {activeTab === "users" && "User Management"}
-                {activeTab === "add-test" && "Create New Test"}
+                {activeTab === "add-test" && "Create New Reading Test"}
                 {activeTab === "settings" && "System Configuration"}
               </h2>
               <p className="text-gray-500 text-sm mt-1">

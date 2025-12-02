@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { useAuth } from '@/types/useAuth'; // Thay thế đường dẫn
+import { useAuth } from '@/types/useAuth'; 
 
 interface AuthGuardProps {
   children: React.ReactNode;

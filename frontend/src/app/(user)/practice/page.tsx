@@ -32,7 +32,12 @@ import NavBarUser from "@/components/ui/navbarforuser";
 import FooterUser from "@/components/ui/footeruser";
 import ScrollTop from "@/components/ui/scroll-top";
 import AuthGuard from "@/components/auth/AuthGuard";
-import Loader from "@/components/ui/Loader";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"; 
 
 // --- Interfaces ---
 interface TestHistoryItem {
@@ -52,9 +57,91 @@ const accuracyData = [
   { name: "Writing", accuracy: 55, fill: "#f59e0b" },   // Amber
 ];
 
+// --- Helper Functions (Moved outside component or keep inside if prefer) ---
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
+const getSkillIcon = (skill: string) => {
+  switch (skill.toLowerCase()) {
+    case "reading": return <BookOpen className="w-4 h-4" />;
+    case "listening": return <Headphones className="w-4 h-4" />;
+    case "writing": return <PenTool className="w-4 h-4" />;
+    default: return <History className="w-4 h-4" />;
+  }
+};
+
+const getSkillColor = (skill: string) => {
+   switch (skill.toLowerCase()) {
+    case "reading": return "text-green-600 bg-green-50 border-green-200";
+    case "listening": return "text-blue-600 bg-blue-50 border-blue-200";
+    case "writing": return "text-amber-600 bg-amber-50 border-amber-200";
+    default: return "text-gray-600 bg-gray-50 border-gray-200";
+  }
+};
+
+// --- Sub-component: History Item Row  ---
+const HistoryItemRow = ({ test }: { test: TestHistoryItem }) => (
+  <div 
+      className="group flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl border border-gray-100 bg-white hover:bg-gray-50 hover:border-blue-100 transition-all duration-200"
+  >
+      {/* Left: Icon & Title */}
+      <div className="flex items-start gap-4 mb-3 sm:mb-0">
+          <div className={`p-3 rounded-lg border ${getSkillColor(test.skill)}`}>
+              {getSkillIcon(test.skill)}
+          </div>
+          <div>
+              <h4 className="font-semibold text-gray-900 group-hover:text-blue-700 transition-colors">
+                  {test.title || "Untitled Test"}
+              </h4>
+              <div className="flex items-center gap-3 mt-1">
+                  <Badge variant="secondary" className="text-[10px] uppercase tracking-wider font-bold bg-gray-100 text-gray-500">
+                      {test.skill}
+                  </Badge>
+                  <span className="text-xs text-gray-400 flex items-center gap-1">
+                      <Clock className="w-3 h-3" /> {formatDate(test.takenDate)}
+                  </span>
+              </div>
+          </div>
+      </div>
+
+      {/* Right: Accuracy & Status */}
+      <div className="flex items-center gap-6 pl-14 sm:pl-0">
+          <div className="text-right">
+              <span className="block text-xs text-gray-400 uppercase font-semibold">Accuracy</span>
+              <span className={`text-lg font-bold ${
+                  test.accuracy >= 80 ? 'text-green-600' :
+                  test.accuracy >= 50 ? 'text-blue-600' : 'text-red-500'
+              }`}>
+                  {test.accuracy}%
+              </span>
+          </div>
+          <div>
+              {test.isCompleted ? (
+                  <div className="flex flex-col items-center">
+                      <CheckCircle2 className="w-5 h-5 text-green-500" />
+                      <span className="text-[10px] text-green-600 font-medium">Done</span>
+                  </div>
+              ) : (
+                  <div className="flex flex-col items-center">
+                      <div className="w-5 h-5 rounded-full border-2 border-dashed border-gray-300" />
+                      <span className="text-[10px] text-gray-400 font-medium">Draft</span>
+                  </div>
+              )}
+          </div>
+      </div>
+  </div>
+);
+
 export default function PracticePage() {
   const [history, setHistory] = useState<TestHistoryItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isViewAllOpen, setIsViewAllOpen] = useState(false); // State cho Modal
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5151";
 
   // --- API Fetching ---
@@ -85,35 +172,8 @@ export default function PracticePage() {
     fetchHistory();
   }, [apiUrl]);
 
-  // --- Helpers ---
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
-
-  const getSkillIcon = (skill: string) => {
-    switch (skill.toLowerCase()) {
-      case "reading": return <BookOpen className="w-4 h-4" />;
-      case "listening": return <Headphones className="w-4 h-4" />;
-      case "writing": return <PenTool className="w-4 h-4" />;
-      default: return <History className="w-4 h-4" />;
-    }
-  };
-
-  const getSkillColor = (skill: string) => {
-     switch (skill.toLowerCase()) {
-      case "reading": return "text-green-600 bg-green-50 border-green-200";
-      case "listening": return "text-blue-600 bg-blue-50 border-blue-200";
-      case "writing": return "text-amber-600 bg-amber-50 border-amber-200";
-      default: return "text-gray-600 bg-gray-50 border-gray-200";
-    }
-  };
-
-  if (loading) return <Loader />;
+  // Logic cắt chuỗi: Chỉ lấy 5 phần tử đầu
+  const recentHistory = history.slice(0, 5);
 
   return (
     <div className="min-h-screen bg-slate-50/50">
@@ -136,8 +196,8 @@ export default function PracticePage() {
             </div>
           </div>
 
-          {/* 2. Practice Modules Grid (Removed Speaking) */}
-          <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* 2. Practice Modules Grid */}
+          <section data-aos ="fade-right" data-aos-duration="500" className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Listening */}
             <Card className="group hover:shadow-lg transition-all duration-300 border-gray-200 hover:border-blue-200">
               <CardContent className="p-8 flex flex-col items-center text-center h-full">
@@ -153,7 +213,7 @@ export default function PracticePage() {
                     <span>Progress</span>
                     <span>70%</span>
                   </div>
-                  <Progress value={70} className="h-2 bg-blue-100" /> {/* Blue indicator */}
+                  <Progress value={70} className="h-2 bg-blue-100" /> 
                   <Button className="w-full bg-white text-blue-600 border border-blue-200 hover:bg-blue-50 hover:border-blue-300">
                     Start Listening
                   </Button>
@@ -176,7 +236,7 @@ export default function PracticePage() {
                     <span>Progress</span>
                     <span>45%</span>
                   </div>
-                  <Progress value={45} className="h-2 bg-green-100" /> {/* Green indicator */}
+                  <Progress value={45} className="h-2 bg-green-100" /> 
                   <Button className="w-full bg-white text-green-600 border border-green-200 hover:bg-green-50 hover:border-green-300">
                     <Link href="/tests">Start Reading</Link>
                   </Button>
@@ -199,7 +259,7 @@ export default function PracticePage() {
                     <span>Progress</span>
                     <span>30%</span>
                   </div>
-                  <Progress value={30} className="h-2 bg-amber-100" /> {/* Amber indicator */}
+                  <Progress value={30} className="h-2 bg-amber-100" />
                   <Button className="w-full bg-white text-amber-600 border border-amber-200 hover:bg-amber-50 hover:border-amber-300">
                     Start Writing
                   </Button>
@@ -212,7 +272,7 @@ export default function PracticePage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
             {/* Left Col: Analytics Chart (Accuracy 0-100) */}
-            <div className="lg:col-span-1 space-y-8">
+            <div data-aos ="fade-up" data-aos-duration="500" className="lg:col-span-1 space-y-8">
               <Card className="border-none shadow-sm h-full">
                 <CardHeader>
                   <CardTitle className="text-lg font-bold flex items-center gap-2">
@@ -275,7 +335,7 @@ export default function PracticePage() {
             </div>
 
             {/* Right Col: Test History List */}
-            <div className="lg:col-span-2">
+            <div data-aos ="fade-left" data-aos-duration="500" className="lg:col-span-2">
               <Card className="border-none shadow-sm min-h-[500px]">
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                   <div>
@@ -285,69 +345,29 @@ export default function PracticePage() {
                     </CardTitle>
                     <CardDescription>Your latest practice attempts.</CardDescription>
                   </div>
-                  <Button variant="ghost" size="sm" className="text-blue-600 hover:text-blue-700">
-                    View All <ArrowRight className="w-4 h-4 ml-1" />
-                  </Button>
+                  
+                  {/* Nút View All: Chỉ hiện nếu history > 5 */}
+                  {history.length > 5 && (
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="text-blue-600 hover:text-blue-700"
+                      onClick={() => setIsViewAllOpen(true)}
+                    >
+                      View All <ArrowRight className="w-4 h-4 ml-1" />
+                    </Button>
+                  )}
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4 mt-2">
-                    {history.length === 0 ? (
+                    {recentHistory.length === 0 ? (
                         <div className="text-center py-12">
                             <AlertCircle className="w-10 h-10 text-gray-300 mx-auto mb-3" />
                             <p className="text-gray-500">No history found. Start a test to see results!</p>
                         </div>
                     ) : (
-                        history.map((test) => (
-                        <div 
-                            key={test.testId + test.takenDate} // Composite key just in case
-                            className="group flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl border border-gray-100 bg-white hover:bg-gray-50 hover:border-blue-100 transition-all duration-200"
-                        >
-                            {/* Left: Icon & Title */}
-                            <div className="flex items-start gap-4 mb-3 sm:mb-0">
-                                <div className={`p-3 rounded-lg border ${getSkillColor(test.skill)}`}>
-                                    {getSkillIcon(test.skill)}
-                                </div>
-                                <div>
-                                    <h4 className="font-semibold text-gray-900 group-hover:text-blue-700 transition-colors">
-                                        {test.title || "Untitled Test"}
-                                    </h4>
-                                    <div className="flex items-center gap-3 mt-1">
-                                        <Badge variant="secondary" className="text-[10px] uppercase tracking-wider font-bold bg-gray-100 text-gray-500">
-                                            {test.skill}
-                                        </Badge>
-                                        <span className="text-xs text-gray-400 flex items-center gap-1">
-                                            <Clock className="w-3 h-3" /> {formatDate(test.takenDate)}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Right: Accuracy & Status */}
-                            <div className="flex items-center gap-6 pl-14 sm:pl-0">
-                                <div className="text-right">
-                                    <span className="block text-xs text-gray-400 uppercase font-semibold">Accuracy</span>
-                                    <span className={`text-lg font-bold ${
-                                        test.accuracy >= 80 ? 'text-green-600' :
-                                        test.accuracy >= 50 ? 'text-blue-600' : 'text-red-500'
-                                    }`}>
-                                        {test.accuracy}%
-                                    </span>
-                                </div>
-                                <div>
-                                    {test.isCompleted ? (
-                                        <div className="flex flex-col items-center">
-                                            <CheckCircle2 className="w-5 h-5 text-green-500" />
-                                            <span className="text-[10px] text-green-600 font-medium">Done</span>
-                                        </div>
-                                    ) : (
-                                        <div className="flex flex-col items-center">
-                                            <div className="w-5 h-5 rounded-full border-2 border-dashed border-gray-300" />
-                                            <span className="text-[10px] text-gray-400 font-medium">Draft</span>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
+                        recentHistory.map((test) => (
+                          <HistoryItemRow key={test.testId + test.takenDate} test={test} />
                         ))
                     )}
                   </div>
@@ -356,6 +376,25 @@ export default function PracticePage() {
             </div>
           </div>
         </main>
+
+        {/* --- MODAL VIEW ALL HISTORY --- */}
+        <Dialog open={isViewAllOpen} onOpenChange={setIsViewAllOpen}>
+          <DialogContent className="max-w-3xl w-full max-h-[85vh] flex flex-col">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2 text-xl">
+                 <History className="w-5 h-5" /> Full Test History
+              </DialogTitle>
+            </DialogHeader>
+            
+            {/* Scroll Area cho danh sách dài */}
+            <div className="flex-1 overflow-y-auto pr-2 mt-4 space-y-4 p-1">
+               {history.map((test) => (
+                  <HistoryItemRow key={`modal-${test.testId}-${test.takenDate}`} test={test} />
+               ))}
+            </div>
+          </DialogContent>
+        </Dialog>
+
       </AuthGuard>
       <FooterUser />
       <ScrollTop />

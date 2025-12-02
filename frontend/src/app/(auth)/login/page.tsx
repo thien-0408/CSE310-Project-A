@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import Link from "next/link";
 import { Loader2, Mail, Lock, Github } from "lucide-react"; // Import Icons
@@ -142,7 +141,7 @@ export default function LoginPage() {
             <h1 className="text-3xl font-bold tracking-tight text-gray-900">
               Welcome back
             </h1>
-            <p className="text-sm text-muted-foreground text-gray-500">
+            <p className="text-sm  text-gray-500">
               Enter your credentials to access your account
             </p>
           </div>

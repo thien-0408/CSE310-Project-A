@@ -165,7 +165,7 @@ export default function ReadingTest() {
             console.log(response.status);
 
             if (response.ok) {
-              console.log("✅ Drop Test Success!");
+              console.log("Drop Test Success!");
               localStorage.removeItem("currentResultId"); 
             } else {
               const errorText = await response.text();
