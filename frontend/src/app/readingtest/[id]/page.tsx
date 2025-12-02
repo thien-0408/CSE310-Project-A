@@ -25,7 +25,6 @@ import type {
 import { calculateReadingScore } from "@/utils/readingScoringUtils";
 
 // --- UTILITY FOR SCORING (Inline or imported) ---
-// You should ideally move this to utils/readingScoringUtils.ts
 interface UserAnswer {
   questionId: string;
   answer: unknown;
@@ -176,6 +175,7 @@ export default function ReadingTest() {
           console.error("Network/Code Error:", e);
         }
         setExit(true);
+        window.location.href = "/tests";
       },
       onCancel: () =>
         setConfirmModal({
@@ -408,8 +408,8 @@ export default function ReadingTest() {
       {/* Main Content */}
       <div className="flex h-screen overflow-hidden font-roboto">
         {/* Passage Column */}
-        <div
-          className="overflow-y-auto border-r"
+        <div 
+          className="overflow-y-auto border-r custom-scrollbar"
           style={{ width: `${leftWidth}%` }}
         >
           <div className="p-6 px-15 text-md">
@@ -450,13 +450,26 @@ export default function ReadingTest() {
         ></div>
 
         {/* Questions Column */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-6 custom-scrollbar">
           <QuestionRenderer
             sections={readingData.sections}
             onAnswerChange={handleAnswerChange}
           />
         </div>
       </div>
+     <style jsx global>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background-color: #cbd5e1;
+          border-radius: 20px;
+        }
+      `}</style>
     </>
+    
   );
 }

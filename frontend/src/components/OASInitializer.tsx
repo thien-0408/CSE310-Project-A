@@ -8,11 +8,11 @@ export default function AOSInitializer({ children }: { children: React.ReactNode
   // This useEffect will run on the client side
   useEffect(() => {
     AOS.init({
-      duration: 1000, // Animation duration
-      once: true,    // Animation only runs once
-      offset: 100,   // Offset (px) from the original trigger point
+      duration: 500, 
+      once: true,    
+      offset: 100,   
     });
-  }, []); // Empty dependency array ensures this runs only once
+  }, []); 
 
   return (
     <>

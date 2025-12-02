@@ -32,6 +32,18 @@ namespace backend.Controllers
                 TestTaken = GetRandomNumber()
             });
 
+            var writingQuery = _context.WritingTests.Select(t => new TestSummaryDto
+            {
+                TestId = t.Id,
+                Title = t.Title,
+                TestType = t.TestType,
+                Skill = "writing",
+                ImageUrl = t.ImageUrl ?? "",
+                SubTitle = t.Subtitle ?? "",
+                Button = "Start Now",
+                TestTaken = GetRandomNumber()
+            });
+
             var listeningQuery = _context.ListeningTests.Select(t => new TestSummaryDto
             {
                 TestId = t.TestId.ToString(),
@@ -45,7 +57,7 @@ namespace backend.Controllers
             });
 
             var allTests = await readingQuery
-                        .Concat(listeningQuery) 
+                        .Concat(writingQuery) 
                         .ToListAsync();
             return Ok(allTests);
         }
@@ -53,10 +65,10 @@ namespace backend.Controllers
         [HttpDelete("delete-test/{testId}")]
         public async Task<ActionResult> DeleteTest(Guid testId)
         {
-            var readingTest = await _context.ReadingTests.FindAsync(testId);
+            var readingTest = await _context.ReadingTests.FindAsync(testId.ToString());
             if (readingTest is null)
             {
-                var listeningTest = await _context.ListeningTests.FindAsync(testId);
+                var listeningTest = await _context.ListeningTests.FindAsync(testId.ToString());
                 if (listeningTest is null)
                 {
                     return NotFound("Test not found");

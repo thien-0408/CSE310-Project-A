@@ -2,6 +2,7 @@
 using backend.Entities.Listening;
 using backend.Entities.Reading;
 using backend.Entities.User;
+using backend.Entities.Writing;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Data
@@ -30,6 +31,12 @@ namespace backend.Data
         public DbSet<SectionOption> SectionOptions { get; set; }
         public DbSet<QuestionOption> QuestionOptions { get; set; }
 
+        //--------------------------------------------------------------------------
+        //Writing
+        public DbSet<WritingTest> WritingTests { get; set; }
+        public DbSet<WritingSubmission> WritingSubmissions { get; set; }
+        public DbSet<WritingResult> WritingResults { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -51,6 +58,11 @@ namespace backend.Data
                 .HasMany(s => s.Questions)
                 .WithOne(q => q.Section)
                 .HasForeignKey(q => q.SectionId)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<WritingSubmission>()
+                .HasOne(s => s.Result) 
+                .WithOne(r => r.Submission) 
+                .HasForeignKey<WritingResult>(r => r.SubmissionId) 
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

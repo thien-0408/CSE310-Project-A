@@ -1020,6 +1020,30 @@
         }
       }
     },
+    "/api/test/delete-test/{testId}": {
+      "delete": {
+        "tags": [
+          "Test"
+        ],
+        "parameters": [
+          {
+            "name": "testId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/user/update-profile": {
       "put": {
         "tags": [
@@ -1196,6 +1220,46 @@
         }
       }
     },
+    "/api/user/drop-test/{resultId}": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "resultId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadingTestResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadingTestResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadingTestResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/user/test-history": {
       "get": {
         "tags": [
@@ -1226,6 +1290,172 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/GetResultDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/test-best-results": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetResultDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetResultDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetResultDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/writing-test/add": {
+      "post": {
+        "tags": [
+          "WritingTest"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "Title",
+                  "Topic"
+                ],
+                "type": "object",
+                "properties": {
+                  "Title": {
+                    "type": "string"
+                  },
+                  "Subtitle": {
+                    "type": "string"
+                  },
+                  "Topic": {
+                    "type": "string"
+                  },
+                  "Image": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "Skill": {
+                    "type": "string"
+                  },
+                  "Duration": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "TestType": {
+                    "type": "string"
+                  }
+                }
+              },
+              "encoding": {
+                "Title": {
+                  "style": "form"
+                },
+                "Subtitle": {
+                  "style": "form"
+                },
+                "Topic": {
+                  "style": "form"
+                },
+                "Image": {
+                  "style": "form"
+                },
+                "Skill": {
+                  "style": "form"
+                },
+                "Duration": {
+                  "style": "form"
+                },
+                "TestType": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WritingTest"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WritingTest"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WritingTest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/writing-test/get-tests": {
+      "get": {
+        "tags": [
+          "WritingTest"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WritingTest"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WritingTest"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WritingTest"
                   }
                 }
               }
@@ -1629,6 +1859,9 @@
           "userId": {
             "type": "string",
             "format": "uuid"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
           }
         },
         "additionalProperties": false
@@ -2244,6 +2477,151 @@
           },
           "avatarUrl": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WritingResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "submissionId": {
+            "type": "string",
+            "nullable": true
+          },
+          "submission": {
+            "$ref": "#/components/schemas/WritingSubmission"
+          },
+          "overallScore": {
+            "type": "number",
+            "format": "double"
+          },
+          "taskResponseScore": {
+            "type": "number",
+            "format": "double"
+          },
+          "coherenceCohesionScore": {
+            "type": "number",
+            "format": "double"
+          },
+          "lexicalResourceScore": {
+            "type": "number",
+            "format": "double"
+          },
+          "grammaticalRangeAccuracyScore": {
+            "type": "number",
+            "format": "double"
+          },
+          "generalFeedback": {
+            "type": "string",
+            "nullable": true
+          },
+          "grammarFeedback": {
+            "type": "string",
+            "nullable": true
+          },
+          "vocabularyFeedback": {
+            "type": "string",
+            "nullable": true
+          },
+          "gradedDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WritingSubmission": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "testId": {
+            "type": "string",
+            "nullable": true
+          },
+          "writingTest": {
+            "$ref": "#/components/schemas/WritingTest"
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "wordCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "submittedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "result": {
+            "$ref": "#/components/schemas/WritingResult"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WritingTest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "topic": {
+            "type": "string",
+            "nullable": true
+          },
+          "skill": {
+            "type": "string",
+            "nullable": true
+          },
+          "subtitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "testType": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "submissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WritingSubmission"
+            },
             "nullable": true
           }
         },

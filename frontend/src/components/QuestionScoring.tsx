@@ -137,7 +137,7 @@ const QuestionScoring: React.FC<ScoringProps> = ({
       totalQuestions: allQuestions.length,
     };
   }, [sections, userAnswers]);
-  const accuracy = results.totalScore / results.totalQuestions * 100;
+  const accuracy = Math.round(results.totalScore / results.totalQuestions * 100);
 
   // --- RENDER ---
 

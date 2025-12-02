@@ -615,6 +615,127 @@ namespace backend.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("backend.Entities.User.WritingResult", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<double>("CoherenceCohesionScore")
+                        .HasColumnType("float");
+
+                    b.Property<string>("GeneralFeedback")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("GradedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("GrammarFeedback")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("GrammaticalRangeAccuracyScore")
+                        .HasColumnType("float");
+
+                    b.Property<double>("LexicalResourceScore")
+                        .HasColumnType("float");
+
+                    b.Property<double>("OverallScore")
+                        .HasColumnType("float");
+
+                    b.Property<string>("SubmissionId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<double>("TaskResponseScore")
+                        .HasColumnType("float");
+
+                    b.Property<string>("VocabularyFeedback")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubmissionId")
+                        .IsUnique();
+
+                    b.ToTable("WritingResults");
+                });
+
+            modelBuilder.Entity("backend.Entities.User.WritingSubmission", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("SubmittedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TestId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("WordCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TestId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("WritingSubmissions");
+                });
+
+            modelBuilder.Entity("backend.Entities.Writing.WritingTest", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Skill")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Subtitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TestType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Topic")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WritingTests");
+                });
+
             modelBuilder.Entity("backend.Entities.Listening.ListeningAnswer", b =>
                 {
                     b.HasOne("backend.Entities.Listening.ListeningQuestion", "Question")
@@ -781,6 +902,36 @@ namespace backend.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("backend.Entities.User.WritingResult", b =>
+                {
+                    b.HasOne("backend.Entities.User.WritingSubmission", "Submission")
+                        .WithOne("Result")
+                        .HasForeignKey("backend.Entities.User.WritingResult", "SubmissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Submission");
+                });
+
+            modelBuilder.Entity("backend.Entities.User.WritingSubmission", b =>
+                {
+                    b.HasOne("backend.Entities.Writing.WritingTest", "WritingTest")
+                        .WithMany("Submissions")
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backend.Entities.User.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("WritingTest");
+                });
+
             modelBuilder.Entity("backend.Entities.Listening.ListeningPart", b =>
                 {
                     b.Navigation("Sections");
@@ -835,6 +986,16 @@ namespace backend.Migrations
                         .IsRequired();
 
                     b.Navigation("Results");
+                });
+
+            modelBuilder.Entity("backend.Entities.User.WritingSubmission", b =>
+                {
+                    b.Navigation("Result");
+                });
+
+            modelBuilder.Entity("backend.Entities.Writing.WritingTest", b =>
+                {
+                    b.Navigation("Submissions");
                 });
 #pragma warning restore 612, 618
         }

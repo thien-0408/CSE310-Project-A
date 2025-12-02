@@ -4,11 +4,10 @@ import { useState, useEffect, FC, ChangeEvent, FormEvent, useMemo } from "react"
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import NavBarUser from "@/components/ui/navbarforuser";
-import { RiCloseCircleFill } from "react-icons/ri";
 import AuthGuard from "@/components/auth/AuthGuard";
 import { IoCamera } from "react-icons/io5";
 import { FaBellSlash } from "react-icons/fa";
-
+import { useToast } from "@/components/ui/ToastNotification";
 // --- Types ---
 export interface UserProfile {
   id: string;
@@ -27,13 +26,6 @@ interface ChangePasswordRequest {
   CurrentPassword: string;
   NewPassword: string;
 }
-
-interface ToastMessage {
-  id: number;
-  message: string;
-  type: "success" | "error";
-}
-
 // --- Helper Components ---
 interface IconProps {
   icon: string;
@@ -50,22 +42,7 @@ export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("edit-profile");
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
-  const [toasts, setToasts] = useState<ToastMessage[]>([]);
-
-  // --- Toast Handler ---
-  const showToast = (message: string, type: "success" | "error" = "success") => {
-    const id = Date.now();
-    setToasts((prev) => [...prev, { id, message, type }]);
-    // Auto remove after 3 seconds
-    setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, 3000);
-  };
-
-  const removeToast = (id: number) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
-  };
-
+  const { showToast, ToastComponent } = useToast();
   // --- Fetch Profile ---
   useEffect(() => {
     const fetchProfile = async () => {
@@ -184,23 +161,7 @@ export default function ProfilePage() {
       
       {/* Toast Container */}
       <div className="fixed top-24 right-5 z-50 flex flex-col gap-2">
-        {toasts.map((toast) => (
-          <div
-            key={toast.id}
-            className={`flex items-center w-80 p-4 rounded-lg shadow-lg text-white transition-all duration-300 animate-in slide-in-from-right-10 ${
-              toast.type === "success" ? "bg-green-500" : "bg-red-500"
-            }`}
-          >
-            <div className="flex-1 text-sm font-medium">{toast.message}</div>
-            <button
-              onClick={() => removeToast(toast.id)}
-              className="ml-4 text-white hover:text-gray-200"
-            >
-              <RiCloseCircleFill />
-
-            </button>
-          </div>
-        ))}
+        <ToastComponent></ToastComponent>
       </div>
 
       <div
@@ -489,12 +450,6 @@ const SecurityTab: FC<SecurityTabProps> = ({ onSubmit }) => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (passwords.newPassword !== passwords.confirmPassword) {
-      // We can use a prop callback or context for toast here, 
-      // but for simplicity in this component structure, we might rely on HTML validation 
-      // or passed down handlers. Assuming parent handles the API logic toast.
-      // Ideally, pass a specific onError handler. 
-      // For this implementation, I will rely on standard Alert for client-side validation failures
-      // inside this sub-component to keep props simple, or you can pass setToast down.
       alert("New passwords do not match."); 
       return;
     }

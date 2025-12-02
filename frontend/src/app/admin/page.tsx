@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Shield,
   Users,
@@ -9,15 +9,6 @@ import {
   Plus,
   Trash2,
   Bell,
-  Save,
-  CheckCircle,
-  XCircle,
-  AlertCircle,
-  BookOpen,
-  Headphones,
-  FileAudio,
-  FileText,
-  HelpCircle,
   UserMinus,
 } from "lucide-react";
 import {
@@ -26,70 +17,20 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MdAddCircleOutline } from "react-icons/md";
 import { TbLivePhoto } from "react-icons/tb";
 import { LiaBanSolid } from "react-icons/lia";
 import { GoAlertFill } from "react-icons/go";
-
 import Image from "next/image";
-import { Avatar } from "@/components/ui/avatar";
 import { IoLogOut } from "react-icons/io5";
 import CreateReadingTest from "../add-reading/page";
-
+import AdminTestManager from "../manage-test/page";
+import { useToast } from "@/components/ui/ToastNotification";
 //---------------------------------------
-//Types
-const LISTENING_QUESTION_TYPES = [
-  "DiagramLabeling",
-  "FormCompletion",
-  "Map",
-  "MatchingInformation",
-  "MultipleChoice",
-  "NoteCompletion",
-  "ShortAnswer",
-];
-
-const READING_QUESTION_TYPES = [
-  "DiagramCompletion",
-  "GapFilling",
-  "MatchingHeadings",
-  "MatchingNames",
-  "MultipleChoice",
-  "SentenceCompletion",
-  "ShortAnswer",
-  "SummaryCompletion",
-  "TableCompletion",
-  "TrueFalseNotGiven",
-  "YesNoNotGiven",
-];
-
-interface Question {
-  id: number;
-  questionType: string;
-  questionText: string;
-  answer: string;
-  options?: string;
-}
-
-interface TestData {
-  id: string;
-  skill: "Reading" | "Listening";
-  partNumber: number;
-  resourceFile: File | null;
-  resourceContent?: string;
-  audioDuration?: number;
-  questions: Question[];
-}
-
 interface User {
   id: string;
   userName: string;
   userRole: "User" | "Admin";
   isActived: boolean;
-}
-interface NotificationProps {
-  message: string;
-  type: "success" | "error" | "warning";
-  onClose?: () => void;
 }
 interface ConfirmModalProps {
   message: string;
@@ -97,43 +38,6 @@ interface ConfirmModalProps {
   onCancel: () => void;
   isVisible: boolean;
 }
-
-//-----------------------------------------------
-// --- NOTIFICATION COMPONENT ---
-const Notification: React.FC<NotificationProps> = ({ message, type }) => {
-  if (!message) return null;
-  let iconComponent;
-  switch (type) {
-    case "success":
-      iconComponent = <CheckCircle className="text-green-500" size={24} />;
-      break;
-    case "error":
-      iconComponent = <XCircle className="text-red-500" size={24} />;
-      break;
-    case "warning":
-      iconComponent = <AlertCircle className="text-yellow-500" size={24} />;
-      break;
-  }
-  return (
-    <div className="fixed top-4 right-4 z-50 animate-in fade-in slide-in-from-top-5">
-      <div className="bg-white rounded-lg shadow-xl border-l-4 border-l-current p-4 flex items-center gap-3 min-w-[300px]">
-        <div
-          className={`${
-            type === "success"
-              ? "text-green-500"
-              : type === "error"
-              ? "text-red-500"
-              : "text-yellow-500"
-          }`}
-        >
-          {iconComponent}
-        </div>
-        <p className="text-gray-800 font-medium">{message}</p>
-      </div>
-    </div>
-  );
-};
-
 //-------------------------------------------------
 //Confirm modal
 const ConfirmModal: React.FC<ConfirmModalProps> = ({
@@ -188,16 +92,10 @@ const AddTestTab = () => {
 //--------------------------------------------------------------------------
 // --- 3. MAIN ADMIN DASHBOARD ---
 const AdminDashboard = () => {
-  // Update: Added 'add-test' to state
+  const { showToast, ToastComponent } = useToast();
   const [activeTab, setActiveTab] = useState("dashboard");
   const [users, setUsers] = useState<User[]>([]);
-
   const [isLoading, setIsLoading] = useState(true);
-  const [notification, setNotification] = useState<{
-    message: string;
-    type: "success" | "error" | "warning";
-  } | null>(null);
-  const notificationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [addUserName, setAddUserName] = useState<string>("");
   const [addUserPassword, setAddUserPassword] = useState<string>("");
   const [addUserRole, setAddUserRole] = useState<string>("");
@@ -210,19 +108,6 @@ const AdminDashboard = () => {
     onCancel: () => {},
   });
   // ... (System Config State - Keeping as placeholder)
-
-  const showNotification = useCallback(
-    (message: string, type: "success" | "error" | "warning" = "success") => {
-      if (notificationTimeoutRef.current) {
-        clearTimeout(notificationTimeoutRef.current);
-      }
-      setNotification({ message, type });
-      notificationTimeoutRef.current = setTimeout(() => {
-        setNotification({ message: "", type: "success" });
-      }, 3000);
-    },
-    []
-  );
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 800);
@@ -252,7 +137,7 @@ const AdminDashboard = () => {
       console.log(userData);
       setUsers(userData);
     } catch (err) {
-      showNotification("Error fetching users", "error");
+      showToast("Error fetching users", "error");
     }
   };
   const createAccount: string = `${apiUrl}/api/Admin/create-account`;
@@ -308,8 +193,9 @@ const AdminDashboard = () => {
               },
             }
           );
-          showNotification(`User ${userName} deactivated successfully`);
+          showToast(`User ${userName} deactivated successfully`, "success");
           if (!response.ok) {
+            showToast(`Error deactivating user ${userName}`, "error")
             const error = await response.text();
             throw new Error(error || "Failed to deactivate User");
           }
@@ -343,10 +229,14 @@ const AdminDashboard = () => {
             }
           );
           if (!response.ok) {
+            showToast(`Error activating user ${userName}`, "error");
             const error = await response.text();
             throw new Error(error || "Failed to activate User");
           }
-          showNotification(`User ${userName} activated successfully`);
+          showToast(
+            `User ${userName} activated successfully`,
+            "success"
+          );
           fetchUsers(); //fetch again to render
         } catch (error) {
           console.error(error);
@@ -416,12 +306,12 @@ const AdminDashboard = () => {
           setUsers((prevUsers) =>
             prevUsers.filter((user) => user.userName !== userName)
           );
-          showNotification(
+          showToast(
             `User ${userToRemove.userName} deleted successfully`,
             "success"
           );
         } catch (error) {
-          showNotification(`Error deleting user`);
+          showToast(`Error deleting user`,"error");
         } finally {
           setConfirmModal((prev) => ({ ...prev, isVisible: false }));
         }
@@ -433,25 +323,24 @@ const AdminDashboard = () => {
 
   const handleAddUser = async (e: React.FormEvent) => {
     e.preventDefault();
-
     let hasError = false;
     if (!addUserName.trim()) {
       hasError = true;
-      showNotification("Please enter a username", "error");
+      showToast("Please enter a username", "error");
     }
     if (!addUserPassword.trim()) {
       hasError = true;
-      showNotification("Please enter a password", "error");
+      showToast("Please enter a password", "error");
     }
     if (!addUserRole) {
       hasError = true;
-      showNotification("Please select a role", "error");
+      showToast("Please select a role", "error");
     }
 
     if (hasError) return;
 
     if (users.some((user) => user.userName === addUserName.toLowerCase())) {
-      showNotification("A user with this username already exists", "error");
+      showToast("A user with this username already exists", "error");
       return;
     }
 
@@ -466,9 +355,9 @@ const AdminDashboard = () => {
       setAddUserPassword("");
       setAddUserRole("");
 
-      showNotification(`User ${addUserName} created successfully!`, "success");
+      showToast(`User ${addUserName} created successfully!`, "success");
     } catch (error) {
-      showNotification(`Error creating user: error`);
+      showToast(`Error creating user: error`, "error");
     } finally {
     }
   };
@@ -495,60 +384,72 @@ const AdminDashboard = () => {
     switch (activeTab) {
       case "dashboard":
         return (
-          /* Total User*/
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div className=" p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4 bg-gradient-to-br from-blue-500 to-purple-500 hover:scale-105 transition duration-300">
-              <div className="p-3 bg-blue-100 rounded-xl text-blue-600">
-                <Users size={24} />
+          <>
+            {/*Total users */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              <ToastComponent></ToastComponent>
+              <div className=" p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4 bg-gradient-to-br from-blue-500 to-purple-500 hover:scale-105 transition duration-300">
+                <div className="p-3 bg-blue-100 rounded-xl text-blue-600">
+                  <Users size={24} />
+                </div>
+                <div>
+                  <p className="text-sm text-white font-medium">Total Users</p>
+                  <h3 className="text-2xl font-bold text-white">
+                    {totalUsers}
+                  </h3>
+                </div>
               </div>
-              <div>
-                <p className="text-sm text-white font-medium">Total Users</p>
-                <h3 className="text-2xl font-bold text-white">{totalUsers}</h3>
+
+              {/* Active users*/}
+              <div className=" p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4 bg-gradient-to-br from-green-500 to-teal-500 hover:scale-105  transition duration-300">
+                <div className="p-3 bg-blue-100 rounded-xl text-blue-600">
+                  <TbLivePhoto size={24} />
+                </div>
+                <div>
+                  <p className="text-sm text-white font-medium">Active Users</p>
+                  <h3 className="text-2xl font-bold text-white">
+                    {activeUsers}
+                  </h3>
+                </div>
+              </div>
+
+              {/* Deactivate users */}
+              <div className=" p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4 bg-gradient-to-br from-red-500 to-pink-500 hover:scale-105 transition duration-300">
+                <div className="p-3 bg-blue-50 rounded-xl text-blue-600">
+                  <LiaBanSolid size={24} />
+                </div>
+                <div>
+                  <p className="text-sm text-white font-medium">
+                    Inactive Users
+                  </p>
+                  <h3 className="text-2xl font-bold text-white">
+                    {inactiveUsers}
+                  </h3>
+                </div>
+              </div>
+
+              {/* Admin*/}
+              <div className="p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4 bg-gradient-to-r from-[#00c6ff] to-[#0072ff] hover:scale-105 duration-300">
+                <div className="p-3 bg-green-50 rounded-xl text-green-600">
+                  <Shield size={24} />
+                </div>
+                <div>
+                  <p className="text-sm text-white font-medium">Admin</p>
+                  <h3 className="text-2xl font-bold text-white">{admin}</h3>
+                </div>
               </div>
             </div>
 
-            {/* Active users*/}
-            <div className=" p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4 bg-gradient-to-br from-green-500 to-teal-500 hover:scale-105  transition duration-300">
-              <div className="p-3 bg-blue-100 rounded-xl text-blue-600">
-                <TbLivePhoto size={24} />
-              </div>
-              <div>
-                <p className="text-sm text-white font-medium">Active Users</p>
-                <h3 className="text-2xl font-bold text-white">{activeUsers}</h3>
-              </div>
-            </div>
-
-            {/* Deactivate users */}
-            <div className=" p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4 bg-gradient-to-br from-red-500 to-pink-500 hover:scale-105 transition duration-300">
-              <div className="p-3 bg-blue-50 rounded-xl text-blue-600">
-                <LiaBanSolid size={24} />
-              </div>
-              <div>
-                <p className="text-sm text-white font-medium">Inactive Users</p>
-                <h3 className="text-2xl font-bold text-white">
-                  {inactiveUsers}
-                </h3>
-              </div>
-            </div>
-
-            {/* Admin*/}
-            <div className="p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4 bg-gradient-to-r from-[#00c6ff] to-[#0072ff] hover:scale-105 duration-300">
-              <div className="p-3 bg-green-50 rounded-xl text-green-600">
-                <Shield size={24} />
-              </div>
-              <div>
-                <p className="text-sm text-white font-medium">Admin</p>
-                <h3 className="text-2xl font-bold text-white">{admin}</h3>
-              </div>
-            </div>
-          </div>
+            <AdminTestManager></AdminTestManager>
+          </>
         );
-
       //------------------------------------------------------------------------------------------------
       //User management tab
       case "users":
         return (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <ToastComponent></ToastComponent>
+
             <div className="p-6 border-b border-gray-100 flex justify-between items-center">
               <h2 className="text-xl font-bold text-gray-800">
                 User Management
@@ -714,9 +615,9 @@ const AdminDashboard = () => {
           </div>
         );
 
-      // --- CASE MỚI: ADD TEST ---
+      // --- ADD TEST ---
       case "add-test":
-        return <AddTestTab/>;
+        return <AddTestTab />;
 
       case "settings":
         return (
@@ -739,13 +640,6 @@ const AdminDashboard = () => {
   // Left sidebar
   return (
     <>
-      {notification && (
-        <Notification
-          message={notification.message}
-          type={notification.type}
-          onClose={() => setNotification(null)}
-        />
-      )}
       <ConfirmModal
         isVisible={confirmModal.isVisible}
         message={confirmModal.message}

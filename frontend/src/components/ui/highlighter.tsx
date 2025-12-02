@@ -27,7 +27,6 @@ const TextHighlighter: React.FC<TextHighlighterProps> = ({ content, passageId })
   const [pendingHighlight, setPendingHighlight] = useState<Highlight | null>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // Load highlights từ localStorage
   useEffect(() => {
     const saved = localStorage.getItem(`highlights-${passageId}`);
     if (saved) {
@@ -35,7 +34,6 @@ const TextHighlighter: React.FC<TextHighlighterProps> = ({ content, passageId })
     }
   }, [passageId]);
 
-  // Save highlights vào localStorage
   useEffect(() => {
     if (highlights.length > 0) {
       localStorage.setItem(`highlights-${passageId}`, JSON.stringify(highlights));
@@ -52,11 +50,9 @@ const TextHighlighter: React.FC<TextHighlighterProps> = ({ content, passageId })
       return;
     }
 
-    // Lấy vị trí của text được chọn
     const range = selection.getRangeAt(0);
     const rect = range.getBoundingClientRect();
 
-    // Tính toán vị trí của menu
     const menuX = rect.left + rect.width / 2;
     const menuY = rect.top - 60;
 
@@ -64,7 +60,6 @@ const TextHighlighter: React.FC<TextHighlighterProps> = ({ content, passageId })
     setMenuPosition({ x: menuX, y: menuY });
     setShowMenu(true);
 
-    // Lưu range để dùng sau
     if (contentRef.current) {
       const textContent = contentRef.current.textContent || '';
       const start = textContent.indexOf(selectedText);
@@ -125,13 +120,11 @@ const TextHighlighter: React.FC<TextHighlighterProps> = ({ content, passageId })
     localStorage.removeItem(`highlights-${passageId}`);
   };
 
-  // Render text với highlights
   const renderHighlightedText = () => {
     if (highlights.length === 0) {
       return <div>{content}</div>;
     }
 
-    // Sắp xếp highlights theo vị trí
     const sortedHighlights = [...highlights].sort((a, b) => a.range.start - b.range.start);
     
     let lastIndex = 0;
@@ -156,14 +149,12 @@ const TextHighlighter: React.FC<TextHighlighterProps> = ({ content, passageId })
         >
           {content.substring(highlight.range.start, highlight.range.end)}
           
-          {/* Tooltip hiển thị note */}
           {highlight.note && (
             <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap z-10">
               {highlight.note}
             </span>
           )}
           
-          {/* Nút xóa highlight */}
           <button
             onClick={() => removeHighlight(highlight.id)}
             className="absolute -top-2 -right-2  group-hover:block bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs"
@@ -313,6 +304,7 @@ const TextHighlighter: React.FC<TextHighlighterProps> = ({ content, passageId })
       >
         {renderHighlightedText()}
       </div>
+      
 
       {/* Highlights Summary (Optional) */}
       {highlights.length > 0 && (
@@ -341,36 +333,4 @@ const TextHighlighter: React.FC<TextHighlighterProps> = ({ content, passageId })
     </div>
   );
 };
-
-// Demo Component
-// const HighlighterDemo = () => {
-//   const sampleText = `A
-// Conservationists have put the final touches to a giant artificial reef they have been assembling at the world-renowned Zoological Society of London (London Zoo). Samples of the planet's most spectacular corals – vivid green branching coral, yellow scroll, blue ridge and many more species – have been added to the giant tank along with fish that thrive in their presence: blue tang, clownfish and many others. The reef is in the zoo's new gallery, Tiny Giants, which is dedicated to the minuscule invertebrate creatures that sustain life across the planet.
-
-// B
-// Corals are composed of tiny animals, known as polyps, with tentacles for capturing small marine creatures in the sea water. These polyps are transparent but get their brilliant tones of pink, orange, blue, green, etc. from algae that live within them, which in turn get protection, while their photosynthesizing of the sun's rays provides nutrients for the polyps.
-
-// C
-// As a result, coral reefs are often described as the 'rainforests of the sea', though the comparison is dismissed by some naturalists, including David Attenborough. 'People say you cannot beat the rainforest,' Attenborough has stated. 'But that is simply not true. You go there and the first thing you think is: where are the birds? Where are the animals? They are hiding in the trees, of course. No, if you want beauty and wildlife, you want a coral reef.'`;
-
-//   return (
-//     <div className="max-w-4xl mx-auto p-6">
-//       <h1 className="text-3xl font-bold mb-6">IELTS Reading - Text Highlighter</h1>
-      
-//       <div className="bg-gray-50 p-4 rounded-lg mb-4">
-//         <p className="text-sm text-gray-600">
-//           📌 Instructions: Select any text to highlight it with different colors or add notes
-//         </p>
-//       </div>
-
-//       <div className="bg-white rounded-lg shadow-lg p-6">
-//         <TextHighlighter 
-//           content={sampleText}
-//           passageId="passage-1"
-//         />
-//       </div>
-//     </div>
-//   );
-// };
-
 export default TextHighlighter;

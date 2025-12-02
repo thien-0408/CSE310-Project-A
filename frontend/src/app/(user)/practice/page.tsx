@@ -37,27 +37,10 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"; 
+} from "@/components/ui/dialog";
+import { TestHistoryItem } from "@/types/dataRetrieve"; 
 
-// --- Interfaces ---
-interface TestHistoryItem {
-  testId: string;
-  accuracy: number;
-  isCompleted: boolean;
-  skill: string;
-  takenDate: string;
-  finishDate: string;
-  title: string;
-}
-
-// --- Mock Data for Charts (Accuracy %) ---
-const accuracyData = [
-  { name: "Listening", accuracy: 65, fill: "#3b82f6" }, // Blue
-  { name: "Reading", accuracy: 78, fill: "#10b981" },   // Green
-  { name: "Writing", accuracy: 55, fill: "#f59e0b" },   // Amber
-];
-
-// --- Helper Functions (Moved outside component or keep inside if prefer) ---
+// --- Helper Functions  ---
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString("en-US", {
     month: "short",
@@ -141,8 +124,16 @@ const HistoryItemRow = ({ test }: { test: TestHistoryItem }) => (
 export default function PracticePage() {
   const [history, setHistory] = useState<TestHistoryItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isViewAllOpen, setIsViewAllOpen] = useState(false); // State cho Modal
+  const [isViewAllOpen, setIsViewAllOpen] = useState(false); 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5151";
+  const avgReadingAccuracy = history.length > 0 
+                                ? Math.round(history.reduce((a, b) => a + b.accuracy, 0) / history.length) 
+                                : 0;
+  const accuracyData = [
+  { name: "Listening", accuracy: 65, fill: "#3b82f6" }, // Blue
+  { name: "Reading", accuracy: avgReadingAccuracy, fill: "#10b981" },   // Green
+  { name: "Writing", accuracy: 55, fill: "#f59e0b" },   // Amber
+];
 
   // --- API Fetching ---
   useEffect(() => {
@@ -323,10 +314,7 @@ export default function PracticePage() {
                     <div className="p-4 bg-gray-50 rounded-xl text-center">
                         <p className="text-xs text-gray-500 uppercase font-semibold">Avg. Accuracy</p>
                         <p className="text-2xl font-bold text-blue-600">
-                             {history.length > 0 
-                                ? Math.round(history.reduce((a, b) => a + b.accuracy, 0) / history.length) 
-                                : 0
-                             }%
+                             {avgReadingAccuracy}%
                         </p>
                     </div>
                   </div>
