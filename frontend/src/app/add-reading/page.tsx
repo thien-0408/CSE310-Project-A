@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Plus, Trash2, Save, Image as ImageIcon, Type, FileText, Grid } from "lucide-react";
+import { Plus, Trash2, Save, Image as ImageIcon, Type, Grid } from "lucide-react";
 
 // --- TYPES ---
 type Question = {
@@ -295,13 +295,13 @@ export default function CreateReadingTest() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50  pb-24 font-sans text-gray-800">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gray-50  pb-24 font-sans text-gray-800 mt-5">
+      <div className=" mx-auto space-y-6">
         
         {/* HEADER */}
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row justify-between items-start gap-4">
             <div className="space-y-4 flex-1 w-full">
-                <h1 className="text-2xl font-bold flex items-center gap-2"><FileText className="text-blue-600"/> Create Reading Test</h1>
+                <h1 className="text-2xl font-bold flex items-center gap-2"> Create Reading Test</h1>
                 
                 {/* 3. UI FOR TITLE & SUBTITLE */}
                 <div className="space-y-2">
@@ -347,7 +347,7 @@ export default function CreateReadingTest() {
 
         {/* PARTS LOOP */}
         {parts.map((part, pIdx) => (
-            <div key={pIdx} className="bg-white rounded-xl shadow border-l-4 border-emerald-500 overflow-hidden">
+            <div key={pIdx} className="bg-white rounded-xl shadow overflow-hidden">
                 <div className="bg-emerald-50 p-4 border-b border-emerald-100 flex justify-between items-center">
                     <div className="flex gap-4 items-center flex-1">
                         <span className="font-bold text-emerald-800 whitespace-nowrap">PART {pIdx + 1}</span>

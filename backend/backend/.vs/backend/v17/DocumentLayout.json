@@ -7,32 +7,56 @@
       "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\controllers\\writingtestcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\controllers\\testcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\controllers\\testcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\entities\\reading\\readingtest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\entities\\reading\\readingtest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\controllers\\readingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\controllers\\readingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\entities\\writing\\writingtest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\entities\\writing\\writingtest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\models\\writingdto\\writingdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\models\\writingdto\\writingdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\controllers\\testcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\controllers\\testcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\controllers\\readingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\controllers\\readingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\controllers\\milestonecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\controllers\\milestonecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\entities\\user\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\entities\\user\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\entities\\user\\writingsubmission.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\entities\\user\\writingsubmission.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\entities\\user\\testresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\entities\\user\\testresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\entities\\user\\writingresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\entities\\user\\writingresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\data\\userdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\data\\userdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\entities\\writing\\writingtest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\entities\\writing\\writingtest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\entities\\reading\\readingtest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\entities\\reading\\readingtest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\models\\readingdto\\readingdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -43,18 +67,6 @@
       "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\models\\readingdto\\getreadingtestdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\data\\userdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\data\\userdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\entities\\user\\writingresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\entities\\user\\writingresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\entities\\user\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\entities\\user\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\entities\\user\\profile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\entities\\user\\profile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -63,20 +75,8 @@
       "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\entities\\user\\milestone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\entities\\user\\testresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\entities\\user\\testresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\controllers\\milestonecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\controllers\\milestonecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\controllers\\listeningtestcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\controllers\\listeningtestcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\migrations\\20251201105344_adduserintomilestone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -200,6 +200,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\migrations\\20251202103140_addcolumnskill.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\migrations\\20251202103140_addcolumnskill.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\admin\\onedrive\\m\u00E1y t\u00EDnh\\cse310-project-a\\backend\\backend\\backend\\migrations\\20251203075947_addcolumnisread.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\migrations\\20251203075947_addcolumnisread.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -217,6 +221,189 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 50,
+              "Title": "20251203075947_addColumnIsRead.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Migrations\\20251203075947_addColumnIsRead.cs",
+              "RelativeDocumentMoniker": "backend\\Migrations\\20251203075947_addColumnIsRead.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Migrations\\20251203075947_addColumnIsRead.cs",
+              "RelativeToolTip": "backend\\Migrations\\20251203075947_addColumnIsRead.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-03T07:59:47.264Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "WritingDtos.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Models\\WritingDto\\WritingDtos.cs",
+              "RelativeDocumentMoniker": "backend\\Models\\WritingDto\\WritingDtos.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Models\\WritingDto\\WritingDtos.cs",
+              "RelativeToolTip": "backend\\Models\\WritingDto\\WritingDtos.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAA2wAwAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-02T08:58:53.254Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "WritingTestController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\WritingTestController.cs",
+              "RelativeDocumentMoniker": "backend\\Controllers\\WritingTestController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\WritingTestController.cs",
+              "RelativeToolTip": "backend\\Controllers\\WritingTestController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-02T03:02:56.527Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "WritingSubmission.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\User\\WritingSubmission.cs",
+              "RelativeDocumentMoniker": "backend\\Entities\\User\\WritingSubmission.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\User\\WritingSubmission.cs",
+              "RelativeToolTip": "backend\\Entities\\User\\WritingSubmission.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAA1wBcAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-02T08:34:44.584Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ReadingController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\ReadingController.cs",
+              "RelativeDocumentMoniker": "backend\\Controllers\\ReadingController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\ReadingController.cs",
+              "RelativeToolTip": "backend\\Controllers\\ReadingController.cs",
+              "ViewState": "AgIAACEBAAAAAAAAAAAewC8BAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T09:20:51.625Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "backend\\Controllers\\UserController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\UserController.cs",
+              "RelativeToolTip": "backend\\Controllers\\UserController.cs",
+              "ViewState": "AgIAAPsAAAAAAAAAAAAAAAABAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-21T05:43:35.798Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "TestController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\TestController.cs",
+              "RelativeDocumentMoniker": "backend\\Controllers\\TestController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\TestController.cs",
+              "RelativeToolTip": "backend\\Controllers\\TestController.cs",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAswEoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-27T05:46:30.335Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "UserDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Data\\UserDbContext.cs",
+              "RelativeDocumentMoniker": "backend\\Data\\UserDbContext.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Data\\UserDbContext.cs",
+              "RelativeToolTip": "backend\\Data\\UserDbContext.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAUwCUAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-21T03:10:50.489Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "WritingResult.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\User\\WritingResult.cs",
+              "RelativeDocumentMoniker": "backend\\Entities\\User\\WritingResult.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\User\\WritingResult.cs",
+              "RelativeToolTip": "backend\\Entities\\User\\WritingResult.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAowBYAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-02T08:37:44.399Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "TestResult.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\User\\TestResult.cs",
+              "RelativeDocumentMoniker": "backend\\Entities\\User\\TestResult.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\User\\TestResult.cs",
+              "RelativeToolTip": "backend\\Entities\\User\\TestResult.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T09:18:40.197Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\User\\User.cs",
+              "RelativeDocumentMoniker": "backend\\Entities\\User\\User.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\User\\User.cs",
+              "RelativeToolTip": "backend\\Entities\\User\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T10:53:03.207Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "MilestoneController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\MilestoneController.cs",
+              "RelativeDocumentMoniker": "backend\\Controllers\\MilestoneController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\MilestoneController.cs",
+              "RelativeToolTip": "backend\\Controllers\\MilestoneController.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAAArwCsAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-21T05:43:21.333Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "WritingTest.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\Writing\\WritingTest.cs",
+              "RelativeDocumentMoniker": "backend\\Entities\\Writing\\WritingTest.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\Writing\\WritingTest.cs",
+              "RelativeToolTip": "backend\\Entities\\Writing\\WritingTest.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAQwBAAAABCAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-02T02:38:01.716Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "AdminController.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\AdminController.cs",
+              "RelativeDocumentMoniker": "backend\\Controllers\\AdminController.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\AdminController.cs",
+              "RelativeToolTip": "backend\\Controllers\\AdminController.cs",
+              "ViewState": "AgIAAHUAAAAAAAAAAAAUwIMAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-21T05:42:33.305Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ReadingDtos.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Models\\ReadingDto\\ReadingDtos.cs",
+              "RelativeDocumentMoniker": "backend\\Models\\ReadingDto\\ReadingDtos.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Models\\ReadingDto\\ReadingDtos.cs",
+              "RelativeToolTip": "backend\\Models\\ReadingDto\\ReadingDtos.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAwwAwAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T10:50:14.681Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 49,
               "Title": "20251202103140_addColumnSkill.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Migrations\\20251202103140_addColumnSkill.cs",
@@ -229,104 +416,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ReadingController.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\ReadingController.cs",
-              "RelativeDocumentMoniker": "backend\\Controllers\\ReadingController.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\ReadingController.cs",
-              "RelativeToolTip": "backend\\Controllers\\ReadingController.cs",
-              "ViewState": "AgIAACEBAAAAAAAAAAAewMkAAAAcAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-26T09:20:51.625Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "WritingTestController.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\WritingTestController.cs",
-              "RelativeDocumentMoniker": "backend\\Controllers\\WritingTestController.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\WritingTestController.cs",
-              "RelativeToolTip": "backend\\Controllers\\WritingTestController.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAAAC4AAAAsAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-02T03:02:56.527Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "WritingTest.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\Writing\\WritingTest.cs",
-              "RelativeDocumentMoniker": "backend\\Entities\\Writing\\WritingTest.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\Writing\\WritingTest.cs",
-              "RelativeToolTip": "backend\\Entities\\Writing\\WritingTest.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAwBAAAABCAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-02T02:38:01.716Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "ReadingDtos.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Models\\ReadingDto\\ReadingDtos.cs",
-              "RelativeDocumentMoniker": "backend\\Models\\ReadingDto\\ReadingDtos.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Models\\ReadingDto\\ReadingDtos.cs",
-              "RelativeToolTip": "backend\\Models\\ReadingDto\\ReadingDtos.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAwwAwAAAAyAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-26T10:50:14.681Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "WritingSubmission.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\User\\WritingSubmission.cs",
-              "RelativeDocumentMoniker": "backend\\Entities\\User\\WritingSubmission.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\User\\WritingSubmission.cs",
-              "RelativeToolTip": "backend\\Entities\\User\\WritingSubmission.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAqwBYAAAAyAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-02T08:34:44.584Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "UserController.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\UserController.cs",
-              "RelativeDocumentMoniker": "backend\\Controllers\\UserController.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\UserController.cs",
-              "RelativeToolTip": "backend\\Controllers\\UserController.cs",
-              "ViewState": "AgIAAD8AAAAAAAAAAAAAAEIAAAAuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-21T05:43:35.798Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "WritingDtos.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Models\\WritingDto\\WritingDtos.cs",
-              "RelativeDocumentMoniker": "backend\\Models\\WritingDto\\WritingDtos.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Models\\WritingDto\\WritingDtos.cs",
-              "RelativeToolTip": "backend\\Models\\WritingDto\\WritingDtos.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAgAAAA8AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-02T08:58:53.254Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "TestController.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\TestController.cs",
-              "RelativeDocumentMoniker": "backend\\Controllers\\TestController.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\TestController.cs",
-              "RelativeToolTip": "backend\\Controllers\\TestController.cs",
-              "ViewState": "AgIAACEAAAAAAAAAAAAAADgAAAAPAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-27T05:46:30.335Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 13,
               "Title": "ReadingTest.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\Reading\\ReadingTest.cs",
               "RelativeDocumentMoniker": "backend\\Entities\\Reading\\ReadingTest.cs",
@@ -338,7 +428,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 15,
               "Title": "GetReadingTestDtos.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Models\\ReadingDto\\GetReadingTestDtos.cs",
               "RelativeDocumentMoniker": "backend\\Models\\ReadingDto\\GetReadingTestDtos.cs",
@@ -362,18 +452,6 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "WritingResult.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\User\\WritingResult.cs",
-              "RelativeDocumentMoniker": "backend\\Entities\\User\\WritingResult.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\User\\WritingResult.cs",
-              "RelativeToolTip": "backend\\Entities\\User\\WritingResult.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAA9wAsAAAA5AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-02T08:37:44.399Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 48,
               "Title": "20251202084045_addWriting.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Migrations\\20251202084045_addWriting.cs",
@@ -386,43 +464,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "User.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\User\\User.cs",
-              "RelativeDocumentMoniker": "backend\\Entities\\User\\User.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\User\\User.cs",
-              "RelativeToolTip": "backend\\Entities\\User\\User.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-26T10:53:03.207Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "UserDbContext.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Data\\UserDbContext.cs",
-              "RelativeDocumentMoniker": "backend\\Data\\UserDbContext.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Data\\UserDbContext.cs",
-              "RelativeToolTip": "backend\\Data\\UserDbContext.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAowBAAAAATAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-21T03:10:50.489Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "TestResult.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\User\\TestResult.cs",
-              "RelativeDocumentMoniker": "backend\\Entities\\User\\TestResult.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\User\\TestResult.cs",
-              "RelativeToolTip": "backend\\Entities\\User\\TestResult.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-26T09:18:40.197Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 17,
               "Title": "MileStone.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\User\\MileStone.cs",
               "RelativeDocumentMoniker": "backend\\Entities\\User\\MileStone.cs",
@@ -434,7 +476,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 16,
               "Title": "Profile.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\User\\Profile.cs",
               "RelativeDocumentMoniker": "backend\\Entities\\User\\Profile.cs",
@@ -446,7 +488,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "ListeningTestController.cs",
               "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\ListeningTestController.cs",
               "RelativeDocumentMoniker": "backend\\Controllers\\ListeningTestController.cs",
@@ -455,30 +497,6 @@
               "ViewState": "AgIAAB4AAAAAAAAAAAAYwD0AAABkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-21T05:44:31.427Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "MilestoneController.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\MilestoneController.cs",
-              "RelativeDocumentMoniker": "backend\\Controllers\\MilestoneController.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\MilestoneController.cs",
-              "RelativeToolTip": "backend\\Controllers\\MilestoneController.cs",
-              "ViewState": "AgIAACUAAAAAAAAAAAArwCsAAAAsAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-21T05:43:21.333Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "AdminController.cs",
-              "DocumentMoniker": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\AdminController.cs",
-              "RelativeDocumentMoniker": "backend\\Controllers\\AdminController.cs",
-              "ToolTip": "C:\\Users\\ADMIN\\OneDrive\\M\u00E1y t\u00EDnh\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\AdminController.cs",
-              "RelativeToolTip": "backend\\Controllers\\AdminController.cs",
-              "ViewState": "AgIAAEsAAAAAAAAAAADwvxwAAAA1AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-21T05:42:33.305Z"
             },
             {
               "$type": "Document",

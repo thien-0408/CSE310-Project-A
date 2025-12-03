@@ -1,47 +1,63 @@
 "use client";
-
 import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+import { FcIdea } from "react-icons/fc";
 import NavBarUser from "@/components/ui/navbarforuser";
 import FooterUser from "@/components/ui/footeruser";
 import ScrollTop from "@/components/ui/scroll-top";
-import RecentAcivity from "@/components/ui/recentact";
-import { TestHistoryItem } from "@/types/dataRetrieve";
-import { MilestoneResponse } from "@/types/dataRetrieve";
 import AuthGuard from "@/components/auth/AuthGuard";
+import { CreateMilestoneDto } from "@/types/createDto"; 
 import {
   Plus,
   Calendar,
   Clock,
-  ChevronRight,
   Target,
   Activity,
   CheckCircle2,
   X,
+  Lightbulb,
+  Volume2,
 } from "lucide-react";
-
-// Charts
-import {
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-} from "recharts";
-
 import { UserProfile } from "@/types/userProfile";
+import { TestHistoryItem } from "@/types/dataRetrieve"; 
+import { MilestoneResponse } from "@/types/dataRetrieve";
+// --- Interfaces ---
 
-// --- Types --
-interface CreateMilestoneDto {
-  Date: string;
-  Title: string;
-  Description: string;
+
+interface DailyWord {
+  id: string;
+  word: string;
+  phonetic: string;
+  type: string; 
+  definition: string;
+  example: string;
 }
+interface DailyTip {
+  id: string;
+  title: string;
+  content: string;
+  category: "Grammar" | "Vocabulary" | "Exam Tip";
+}
+const mockDailyWords: DailyWord = 
+  {
+    id: "1",
+    word: "Ubiquitous",
+    phonetic: "/juːˈbɪk.wɪ.təs/",
+    type: "adjective",
+    definition: "Present, appearing, or found everywhere.",
+    example: "The mobile phone, that most ubiquitous of consumer-electronic appliances, is about to enter a new age.",
+  }
+;
+const mockDailyTip: DailyTip = {
+  id: "101",
+  category: "Grammar",
+  title: "Passive Voice in Reporting",
+  content: "Use passive voice (e.g., 'It is believed that...') in Writing Task 2 to sound more objective and academic."
+};
+
 const modules = [
   {
     img: "/demo/reading-picture.jpg",
@@ -58,13 +74,6 @@ const modules = [
     color: "bg-blue-100 text-blue-700",
   },
   {
-    img: "/demo/speaking-picture.jpg",
-    title: "Pronunciation Practice",
-    desc: "Improve intonation for higher speaking coherence.",
-    tags: ["Speaking", "Beginner"],
-    color: "bg-orange-100 text-orange-700",
-  },
-  {
     img: "/demo/listening-picture.jpg",
     title: "Listening for Details",
     desc: "Identify key details in spoken English conversations.",
@@ -78,6 +87,11 @@ export default function UserDashBoard() {
   const [history, setHistory] = useState<TestHistoryItem[]>([]);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  
+  // New State for Daily Content
+  const [dailyWord, setDailyWord] = useState<DailyWord | null>(null);
+  const [dailyTip, setDailyTip] = useState<DailyTip | null>(null);
+
   // Milestones State
   const [milestones, setMilestones] = useState<MilestoneResponse[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -86,9 +100,12 @@ export default function UserDashBoard() {
     Date: "",
     Description: "",
   });
-  // Stats Data
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const apiUrl: string = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5151";
+
+  // ---Calculating Stats---
   const stats = useMemo(() => {
-    // 1. Nếu chưa có dữ liệu, trả về default (0)
     if (!history || history.length === 0) {
       return [
         {
@@ -121,16 +138,16 @@ export default function UserDashBoard() {
       ];
     }
 
-    // Sort history by date
+    // Sort history by date (Newest first)
     const sortedHistory = [...history].sort(
       (a, b) => new Date(b.takenDate).getTime() - new Date(a.takenDate).getTime()
     );
 
-    // --- Overall ---
+    // --- Metric 1: Overall Accuracy ---
     const totalAccuracy = sortedHistory.reduce((acc, item) => acc + item.accuracy, 0);
     const overallAccuracy = Math.round(totalAccuracy / sortedHistory.length);
 
-    // Trend: compare 5 recent tests to overall accuracy
+    // Trend
     const recent5 = sortedHistory.slice(0, 5);
     const recent5Avg = recent5.length > 0 
       ? recent5.reduce((acc, item) => acc + item.accuracy, 0) / recent5.length 
@@ -138,11 +155,11 @@ export default function UserDashBoard() {
     const accuracyTrend = Math.round(recent5Avg - overallAccuracy);
     const accuracyTrendStr = accuracyTrend > 0 ? `+${accuracyTrend}%` : `${accuracyTrend}%`;
 
-    // --- Completion Rate ---
+    // --- Metric 2: Completion Rate ---
     const completedCount = sortedHistory.filter((item) => item.isCompleted).length;
     const completionRate = Math.round((completedCount / sortedHistory.length) * 100);
     
-    // Trend 
+    // Trend
     const recent5Completed = recent5.filter(i => i.isCompleted).length;
     const recentCompletionRate = recent5.length > 0 
       ? Math.round((recent5Completed / recent5.length) * 100) 
@@ -150,7 +167,7 @@ export default function UserDashBoard() {
     const completionTrend = recentCompletionRate - completionRate;
     const completionTrendStr = completionTrend > 0 ? `+${completionTrend}%` : `${completionTrend}%`;
 
-    // --- Metric 3: Average Score (Last 5) ---
+    // --- Metric 3: Average Score ---
     const prev5 = sortedHistory.slice(5, 10);
     const prev5Avg = prev5.length > 0 
       ? prev5.reduce((acc, item) => acc + item.accuracy, 0) / prev5.length 
@@ -159,7 +176,6 @@ export default function UserDashBoard() {
     const scoreTrendVal = Math.round(recent5Avg - prev5Avg);
     const scoreTrendStr = scoreTrendVal > 0 ? `+${scoreTrendVal}%` : `${scoreTrendVal}%`;
 
-    // --- Construct Stats Array ---
     return [
       {
         icon: Activity,
@@ -190,18 +206,6 @@ export default function UserDashBoard() {
       },
     ];
   }, [history]);
-  const avgReadingAccuracy = history.length > 0 
-                                ? Math.round(history.reduce((a, b) => a + b.accuracy, 0) / history.length) 
-                                : 0;
-  const moduleProgressData = [
-    { module: "Listening", accuracy: 85 }, // ~Band 8.0-8.5
-    { module: "Reading", accuracy: avgReadingAccuracy }, // ~Band 7.5
-    { module: "Writing", accuracy: 65 }, // ~Band 6.0-6.5
-    { module: "Speaking", accuracy: 70 }, // ~Band 6.5-7.0
-  ];
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const apiUrl: string =
-    process.env.NEXT_PUBLIC_API_URL || "http://localhost:5151";
 
   // --- Helpers ---
   function getStoredToken(): string | null {
@@ -212,11 +216,11 @@ export default function UserDashBoard() {
 
   const formatDate = (dateString: string) => {
     try {
-      const date = new Date(dateString);
-      return date.toLocaleDateString("en-US", {
-        year: "numeric",
+      return new Date(dateString).toLocaleDateString("en-US", {
         month: "short",
         day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
       });
     } catch {
       return dateString;
@@ -259,6 +263,13 @@ export default function UserDashBoard() {
     }
   }
 
+  // New function to fetch Daily Content
+  async function fetchDailyContent(token: string) {
+   //add later
+    setDailyWord(mockDailyWords);
+    setDailyTip(mockDailyTip);
+  }
+
   async function createMilestone() {
     if (!newEvent.Title || !newEvent.Date)
       return alert("Please fill in Title and Date");
@@ -290,36 +301,7 @@ export default function UserDashBoard() {
     }
   }
 
-  // Fetch Test History
-  useEffect(() => {
-    const fetchHistory = async () => {
-      try {
-        const token = localStorage.getItem("accessToken");
-        if (!token) return;
-
-        const response = await fetch(`${apiUrl}/api/user/test-history`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setHistory(data);
-          console.log("Fetched history:", data);
-        }
-      } catch (error) {
-        console.error("Failed to fetch history", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchHistory();
-  }, [apiUrl]);
-
-  // --- Effect ---
+  // --- Load Data Effect ---
   useEffect(() => {
     async function loadData() {
       const token = getStoredToken();
@@ -327,13 +309,32 @@ export default function UserDashBoard() {
         setLoading(false);
         return;
       }
+      
       const userProfile = await getUserProfile(token);
       if (userProfile) setProfile(userProfile);
+      
       await fetchMilestones(token);
+      await fetchDailyContent(token); // Load the new WOTD
+
+      try {
+        const historyRes = await fetch(`${apiUrl}/api/user/test-history`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (historyRes.ok) {
+          const historyData = await historyRes.json();
+          setHistory(historyData);
+        }
+      } catch (err) {
+        console.error("Failed to fetch history", err);
+      }
+
       setLoading(false);
     }
     loadData();
-  }, []);
+  }, [apiUrl]);
 
   return (
     <div className="min-h-screen bg-slate-50/50">
@@ -343,7 +344,8 @@ export default function UserDashBoard() {
 
       <AuthGuard>
         <main className="container mx-auto px-4 py-8 md:px-6 lg:px-8 space-y-10">
-          {/* 1. Hero Section - Clean & Welcoming */}
+          
+          {/* 1. Hero Section */}
           <section
             data-aos="fade-right"
             data-aos-duration="500"
@@ -387,7 +389,6 @@ export default function UserDashBoard() {
                 </div>
               </div>
               <div className="relative h-[300px] w-full hidden lg:block">
-                {/* Replace with a better illustration if available */}
                 <Image
                   src="/demo/user-home-dashboard.png"
                   alt="Hero"
@@ -399,7 +400,7 @@ export default function UserDashBoard() {
             </div>
           </section>
 
-          {/* 2. Key Metrics (Accuracy Focused) */}
+          {/* 2. Key Metrics */}
           <section data-aos="fade-left" data-aos-duration="500">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {stats.map((stat, index) => {
@@ -442,95 +443,94 @@ export default function UserDashBoard() {
             </div>
           </section>
 
-          {/* 3. Analytics Chart (Accuracy 0-100) */}
+          {/* 3. NEW: Daily Knowledge Section (Replaces Charts/History) */}
           <section
             data-aos="fade-up"
             data-aos-duration="500"
             className="grid grid-cols-1 lg:grid-cols-3 gap-8"
           >
+            {/* Left: Word of the Day (Takes 2/3 space) */}
             <div className="lg:col-span-2">
-              <Card className="border-none shadow-sm h-full">
-                <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
-                    <span>Skill Accuracy Analysis</span>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-gray-400 font-normal"
-                    >
-                      Last 30 Days <ChevronRight className="w-4 h-4 ml-1" />
-                    </Button>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="h-[300px] w-full mt-4">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={moduleProgressData}
-                        margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
-                        barSize={50}
-                      >
-                        <CartesianGrid
-                          strokeDasharray="3 3"
-                          vertical={false}
-                          stroke="#f1f5f9"
-                        />
-                        <XAxis
-                          dataKey="module"
-                          axisLine={false}
-                          tickLine={false}
-                          tick={{ fill: "#64748b", fontSize: 13 }}
-                          dy={10}
-                        />
-                        <YAxis
-                          axisLine={false}
-                          tickLine={false}
-                          tick={{ fill: "#64748b", fontSize: 12 }}
-                          domain={[0, 100]} // Scale 0-100
-                          tickFormatter={(value) => `${value}%`}
-                        />
-                        <Tooltip
-                          cursor={{ fill: "#f8fafc" }}
-                          contentStyle={{
-                            borderRadius: "12px",
-                            border: "none",
-                            boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
-                          }}
-                        />
-                        <Bar
-                          dataKey="accuracy"
-                          name="Accuracy (%)"
-                          fill="#3b82f6"
-                          radius={[6, 6, 0, 0]}
-                        />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
-                </CardContent>
+              <Card className="border-none shadow-md h-full bg-gradient-to-br from-indigo-600 to-violet-700 text-white overflow-hidden relative">
+                 {/* Decorative Background */}
+                 <div className="absolute top-0 right-0 p-8 opacity-70">
+                    <FcIdea className="w-48 h-48" />
+                 </div>
+                 
+                 <CardContent className="p-8 md:p-10 flex flex-col justify-between h-full relative z-10">
+                   {dailyWord ? (
+                     <>
+                        <div className="flex justify-between items-start">
+                           <div>
+                              <div className="flex items-center gap-2 mb-2 opacity-80">
+                                 <Lightbulb className="w-4 h-4" />
+                                 <span className="text-xs font-bold uppercase tracking-widest">Word of the Day</span>
+                              </div>
+                              <h2 className="text-4xl md:text-5xl font-serif font-bold mb-2 tracking-wide">
+                                 {dailyWord.word}
+                              </h2>
+                              <div className="flex items-center gap-3 text-indigo-200">
+                                 <span className="text-lg italic">{dailyWord.phonetic}</span>
+                                 <span className="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
+                                 <span className="italic">{dailyWord.type}</span>
+                                 <button className="p-2 hover:bg-white/10 rounded-full transition-colors" aria-label="Play pronunciation">
+                                    <Volume2 className="w-5 h-5" />
+                                 </button>
+                              </div>
+                           </div>
+                        </div>
+
+                        <div className="mt-8 space-y-6">
+                           <div>
+                              <p className="text-lg md:text-xl font-medium leading-relaxed text-indigo-50">
+                                 {dailyWord.definition}
+                              </p>
+                           </div>
+                           <div className="bg-white/10 p-4 rounded-xl border border-white/10">
+                              <p className="text-indigo-100 italic">
+                                 &quot;{dailyWord.example}&quot;
+                              </p>
+                           </div>
+                        </div>
+                     </>
+                   ) : (
+                      <div className="flex items-center justify-center h-full">
+                         <p className="text-indigo-200">Loading daily word...</p>
+                      </div>
+                   )}
+                 </CardContent>
               </Card>
             </div>
 
-            {/* 4. Recent Activity (Sidebar style) */}
+            {/* Right: Daily Tip (Takes 1/3 space) */}
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 h-full">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="font-bold text-gray-900 text-lg">
-                    Recent Activity
-                  </h3>
-                  <Link
-                    href="#"
-                    className="text-blue-600 text-sm hover:underline"
-                  >
-                    View All
-                  </Link>
-                </div>
-                {/* Reuse your existing component, but ensure it fits the container */}
-                <RecentAcivity />
-              </div>
+              <Card className="border-none shadow-sm h-full bg-orange-50/50 border-orange-100">
+                <CardContent className="p-6 h-full flex flex-col">
+                  <div className="flex items-center gap-2 mb-4">
+                     <span className="px-2 py-1 bg-orange-100 text-orange-700 text-[10px] font-bold uppercase rounded">
+                        {dailyTip?.category || "Tip"}
+                     </span>
+                  </div>
+                  
+                  {dailyTip ? (
+                     <>
+                        <h3 className="text-xl font-bold text-gray-900 mb-3">
+                           {dailyTip.title}
+                        </h3>
+                        <p className="text-gray-600 leading-relaxed flex-grow">
+                           {dailyTip.content}
+                        </p>
+                        
+                     </>
+                  ) : (
+                     <p className="text-gray-400 text-sm">Loading tip...</p>
+                  )}
+                </CardContent>
+              </Card>
             </div>
           </section>
 
-          {/* 5. Milestones (Horizontal Scroll) */}
+          {/* 4. Milestones */}
           <section data-aos="fade-right" data-aos-duration="500">
             <div className="flex items-center justify-between mb-6">
               <div>
@@ -544,7 +544,7 @@ export default function UserDashBoard() {
               <Button
                 onClick={() => setIsModalOpen(true)}
                 size="sm"
-                className="bg-gray-900 text-white hover:bg-black gap-2"
+                className="bg-blue-500 text-white hover:bg-blue-700 gap-2"
               >
                 <Plus className="w-4 h-4" /> Add Event
               </Button>
@@ -600,7 +600,7 @@ export default function UserDashBoard() {
             </div>
           </section>
 
-          {/* 6. Recommended Practice */}
+          {/* 5. Recommended Modules */}
           <section
             data-aos="fade-left"
             data-aos-duration="500"
@@ -609,7 +609,7 @@ export default function UserDashBoard() {
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
               Recommended Modules
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {modules.map((mod, i) => (
                 <div
                   key={i}
@@ -732,7 +732,7 @@ export default function UserDashBoard() {
               <Button
                 onClick={createMilestone}
                 disabled={isSubmitting}
-                className="flex-1 bg-gray-900 hover:bg-black text-white"
+                className="flex-1 bg-blue-500 text-white hover:bg-blue-700 text-white"
               >
                 {isSubmitting ? "Saving..." : "Save Event"}
               </Button>

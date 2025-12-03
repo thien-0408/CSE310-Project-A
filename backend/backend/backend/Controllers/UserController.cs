@@ -3,6 +3,7 @@ using backend.Entities;
 using backend.Entities.User;
 using backend.Models;
 using backend.Models.ReadingDto;
+using backend.Models.WritingDto;
 using backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -62,28 +63,67 @@ namespace backend.Controllers
         //Call api to take the test 
         [Authorize]
         [HttpPost("attempt-test/{id}")]
-        public async Task<ActionResult<ReadingTestResult>> AttemptTest(string id)
+        public async Task<ActionResult<object>> AttemptTest(string id)
         {
             var userId = GetUserIdFromToken();
             if (userId == Guid.Empty) return Unauthorized();
-            var test = await _context.ReadingTests.FindAsync(id);
-            if (test == null)
+
+            // --- CHECK 1: Có phải READING TEST không? ---
+            var readingTest = await _context.ReadingTests.FindAsync(id);
+            if (readingTest != null)
             {
-                return NotFound("Test not found");
+                var readingAttempt = new ReadingTestResult
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = userId,
+                    TestId = id,
+                    Skill = "Reading",
+                    IsCompleted = false,
+                    TakenDate = DateTime.UtcNow,
+                    FinishDate = DateTime.UtcNow,
+                    Title = readingTest.Title,
+                    Score = 0
+                };
+                _context.ReadingTestResults.Add(readingAttempt);
+                await _context.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    id = readingAttempt.Id,
+                    skill = "Reading",
+                    message = "Reading attempt started"
+                });
             }
-            var testAttempt = new ReadingTestResult
+
+            
+            if (Guid.TryParse(id, out var writingTestId))
             {
-                Id = Guid.NewGuid(),
-                UserId = userId,
-                TestId = id,
-                Skill = "reading",
-                IsCompleted = false,
-                TakenDate = DateTime.UtcNow,
-                Title = test.Title
-            };
-            _context.ReadingTestResults.Add(testAttempt);
-            await _context.SaveChangesAsync();
-            return Ok(testAttempt);
+                var writingTest = await _context.WritingTests.FindAsync(writingTestId);
+                if (writingTest != null)
+                {
+                    var writingAttempt = new WritingSubmission
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        UserId = userId,
+                        TestId = writingTestId.ToString(),
+                        Content = "", // Chưa làm gì
+                        WordCount = 0,
+                        SubmittedDate = DateTime.UtcNow,
+                        Status = "Draft" 
+                    };
+
+                    _context.WritingSubmissions.Add(writingAttempt);
+                    await _context.SaveChangesAsync();
+
+                    return Ok(new
+                    {
+                        id = writingAttempt.Id,
+                        skill = "Writing",
+                        message = "Writing attempt started"
+                    });
+                }
+            }
+            return NotFound(new { message = "Test ID not found in any skill category" });
         }
 
         //Submit
@@ -142,18 +182,40 @@ namespace backend.Controllers
         {
             var userId = GetUserIdFromToken();
             if (userId == Guid.Empty) return Unauthorized();
-            var readingHistory = await _context.ReadingTestResults.Where(r => r.UserId == userId)
-                .OrderByDescending(r => r.TakenDate).Select(r => new GetResultDto
+            var readingList = await _context.ReadingTestResults
+                .Where(r => r.UserId == userId)
+                .Select(r => new GetResultDto
                 {
                     TestId = Guid.Parse(r.TestId),
                     Accuracy = r.Score,
                     IsCompleted = r.IsCompleted,
-                    Skill = r.Skill,
+                    Skill = "Reading",
                     Title = r.Title,
                     TakenDate = r.TakenDate,
-                    FinishDate = (DateTime)r.FinishDate
-                }).ToListAsync();
-            return Ok(readingHistory);
+                    FinishDate = (DateTime)(r.FinishDate == DateTime.MinValue ? r.TakenDate : r.FinishDate)
+                })
+                .ToListAsync();
+            var writingList = await _context.WritingSubmissions
+                .Include(s => s.WritingTest)
+                .Include(s => s.Result)
+                .Where(s => s.UserId == userId)
+                .Select(s => new GetResultDto
+                {
+                    TestId = Guid.Parse(s.TestId),
+                    Accuracy = s.Result != null ? s.Result.OverallScore : 0,
+                    IsCompleted = s.Status != "Draft",
+                    Skill = "Writing",
+                    Title = s.WritingTest.Title,
+                    TakenDate = s.SubmittedDate,
+                    FinishDate = s.Result != null ? s.Result.GradedDate : s.SubmittedDate
+                })
+                .ToListAsync();
+            var combinedHistory = readingList
+                .Concat(writingList)
+                .OrderByDescending(r => r.TakenDate)
+                .ToList();
+
+            return Ok(combinedHistory);
         }
 
         //Get best result for each test
@@ -175,12 +237,35 @@ namespace backend.Controllers
                     Skill = g.FirstOrDefault().Skill,
                     TakenDate = g.OrderByDescending(x => x.Score).FirstOrDefault().TakenDate,
                     FinishDate = (DateTime)g.OrderByDescending(x => x.Score).FirstOrDefault().FinishDate,
-
                     IsCompleted = true
                 })
                 .ToListAsync();
 
             return Ok(bestResults);
+        }
+        [Authorize]
+        [HttpGet("notifications")]
+        public async Task<ActionResult<IEnumerable<NotificationDto>>> GetNotifications()
+        {
+            var userId = GetUserIdFromToken();
+
+            var notifications = await _context.WritingSubmissions
+                .Include(s => s.WritingTest)
+                .Include(s => s.Result)
+                .Where(s => s.UserId == userId && s.Status == "Graded")
+                .OrderByDescending(s => s.Result.GradedDate) 
+                .Take(10) 
+                .Select(s => new NotificationDto
+                {
+                    SubmissionId = s.Id,
+                    TestTitle = s.WritingTest.Title,
+                    Score = s.Result.OverallScore,
+                    GradedDate = s.Result.GradedDate,
+                    IsRead = false 
+                })
+                .ToListAsync();
+
+            return Ok(notifications);
         }
         private Guid GetUserIdFromToken()
         {

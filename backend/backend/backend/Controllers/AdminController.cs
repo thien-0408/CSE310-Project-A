@@ -3,6 +3,7 @@ using backend.Data;
 using backend.Entities;
 using backend.Entities.User;
 using backend.Models;
+using backend.Models.WritingDto;
 using backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -128,6 +129,7 @@ namespace backend.Controllers
             await _authService.LogoutAsync(userId);
             return Ok("Logged out successfully");
         }
+       
         private Guid GetUserIdFromToken()
         {
             var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

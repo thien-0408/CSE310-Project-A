@@ -61,26 +61,33 @@ namespace backend.Controllers
                         .ToListAsync();
             return Ok(allTests);
         }
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("delete-test/{testId}")]
         public async Task<ActionResult> DeleteTest(Guid testId)
         {
             var readingTest = await _context.ReadingTests.FindAsync(testId.ToString());
-            if (readingTest is null)
-            {
-                var listeningTest = await _context.ListeningTests.FindAsync(testId.ToString());
-                if (listeningTest is null)
-                {
-                    return NotFound("Test not found");
-                }
-                _context.ListeningTests.Remove(listeningTest);
-            }
-            else
+            if (readingTest != null)
             {
                 _context.ReadingTests.Remove(readingTest);
+                await _context.SaveChangesAsync();
+                return Ok("Reading test deleted successfully");
             }
-            await _context.SaveChangesAsync();
-            return Ok("Test deleted successfully");
+
+            var listeningTest = await _context.ListeningTests.FindAsync(testId.ToString());
+            if (listeningTest != null)
+            {
+                _context.ListeningTests.Remove(listeningTest);
+                await _context.SaveChangesAsync();
+                return Ok("Listening test deleted successfully");
+            }
+            var writingTest = await _context.WritingTests.FindAsync(testId.ToString());
+            if (writingTest != null)
+            {
+                _context.WritingTests.Remove(writingTest);
+                await _context.SaveChangesAsync();
+                return Ok("Writing test deleted successfully");
+            }
+            return NotFound("Test not found");
         }
         private int GetRandomNumber()
         {

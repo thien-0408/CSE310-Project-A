@@ -31,16 +31,19 @@ interface ConfirmModalProps {
   onCancel: () => void;
   isVisible: boolean;
 }
+
 const filterSkills = [
   { skill: "Writing", icon: <LuPencilLine /> },
   { skill: "Reading", icon: <FiBook /> },
   { skill: "Listening", icon: <SlEarphones /> },
   { skill: "Speaking", icon: <HiOutlineMicrophone /> },
 ];
+
 const filterTypes = [
   { id: "separated", label: "Separated Test" },
   { id: "full_test", label: "Full Test" },
 ];
+
 const filterPassage = [1, 2, 3];
 
 type TestData = {
@@ -54,9 +57,12 @@ type TestData = {
   button: string;
 };
 
+// API URL (Nên đưa vào env)
+const API_URL = "http://localhost:5151";
+
 export const fetchTestsData = async (): Promise<TestData[]> => {
   try {
-    const response = await fetch("http://localhost:5151/api/test/fetch-tests", {
+    const response = await fetch(`${API_URL}/api/test/fetch-tests`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -77,11 +83,15 @@ export const fetchTestsData = async (): Promise<TestData[]> => {
               .map((s: string) => s.trim())
               .filter((s: string) => s.length > 0)
         : [];
+      
+      // Fallback skill mặc định nếu null
+      const skill = item.skill ? item.skill.toLowerCase() : "reading";
+
       return {
         testId: item.testId,
         title: item.title,
         testType: item.testType,
-        skill: item.skill,
+        skill: skill,
         imageUrl: item.imageUrl,
         testTaken: item.testTaken,
         button: item.button,
@@ -93,6 +103,7 @@ export const fetchTestsData = async (): Promise<TestData[]> => {
     return [];
   }
 };
+
 const ITEMS_PER_PAGE = 6;
 
 export default function ViewTests() {
@@ -103,14 +114,17 @@ export default function ViewTests() {
   const [selectedTypes, setSelectedTypes] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const searchParams = useSearchParams();
-  const skillParam = searchParams.get("skill"); // ?skill=listening
+  const skillParam = searchParams.get("skill"); 
   const [tests, setTests] = useState<TestData[]>([]);
+  const [isLoading, setIsLoading] = useState(true); // Default loading true
 
   // State load data
   useEffect(() => {
     const loadData = async () => {
+      setIsLoading(true);
       const data = await fetchTestsData();
       setTests(data);
+      setIsLoading(false);
     };
 
     loadData();
@@ -123,7 +137,7 @@ export default function ViewTests() {
     onCancel: () => {},
   });
 
-  //hook for render skill
+  // Hook for render skill from URL params
   useEffect(() => {
     if (skillParam) {
       setSelectedSkills(new Set([skillParam.toLowerCase()]));
@@ -160,9 +174,31 @@ export default function ViewTests() {
     );
   };
 
+  // --- LOGIC MỚI: Xử lý điều hướng theo Skill ---
   const handleTest = (testId: string, skill: string) => {
-    router.push(`readingtest/${testId}`);
+    const normalizedSkill = skill.toLowerCase().trim();
+
+    switch (normalizedSkill) {
+      case "reading":
+        router.push(`/readingtest/${testId}`);
+        break;
+      case "writing":
+        router.push(`/writingtest/${testId}`);
+        break;
+      case "listening":
+        router.push(`/listeningtest/${testId}`);
+        break;
+      case "speaking":
+        router.push(`/speakingtest/${testId}`);
+        break;
+      default:
+        // Mặc định fallback nếu không xác định được skill
+        console.warn("Unknown skill, fallback to reading");
+        router.push(`/reading-test/${testId}`);
+        break;
+    }
   };
+
   const handleFilterChange = (
     value: string,
     filterSet: Set<string>,
@@ -178,13 +214,18 @@ export default function ViewTests() {
     setCurrentPage(1);
   };
 
+  // --- LOGIC MỚI: Xử lý tìm kiếm thực sự ---
   const filteredTests = tests.filter((test) => {
-    const matchesTitle = test.title.toLowerCase();
+    // Sửa lỗi logic cũ: phải dùng .includes() để so sánh
+    const matchesTitle = test.title.toLowerCase().includes(appliedSearch.toLowerCase());
+    
     const matchesSkill =
       selectedSkills.size === 0 || selectedSkills.has(test.skill.toLowerCase());
+    
     const matchesType =
       selectedTypes.size === 0 ||
       selectedTypes.has(test.testType.toLowerCase());
+      
     return matchesTitle && matchesSkill && matchesType;
   });
 
@@ -192,28 +233,18 @@ export default function ViewTests() {
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const currentItems = filteredTests.slice(startIndex, endIndex); // Cut current items
-  const [isLoading, setLoading] = useState(false);
 
   // handle page navigation
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
-      setLoading(true);
+      setIsLoading(true);
       setTimeout(() => {
         setCurrentPage(page);
-        setLoading(false); // turn loader off
+        setIsLoading(false); // turn loader off
+        window.scrollTo(0, 0);
       }, 300);
-      setCurrentPage(page);
-      window.scrollTo(0, 0);
     }
   };
-  if (isLoading) {
-    return (
-      <>
-        <Loader></Loader>
-      </>
-    );
-  }
-
   return (
     <AuthGuard>
       <div className="min-h-screen flex flex-col">
@@ -316,16 +347,17 @@ export default function ViewTests() {
                         All Test <span className="text-blue-600">Samples</span>
                       </h1>
                     </div>
+                    {/* --- LOGIC MỚI: Xử lý Search Bar --- */}
                     <div className="flex gap-2">
                       <Button
                         variant="ghost"
                         className="font-semibold text-gray-700 px-2"
                         onClick={() => {
                           setTitleSearch("");
-                          setAppliedSearch("");
+                          setAppliedSearch(""); // Clear search filter
                           setSelectedSkills(new Set());
                           setSelectedTypes(new Set());
-                          setCurrentPage(1); // Reset trang
+                          setCurrentPage(1);
                         }}
                       >
                         All
@@ -335,13 +367,20 @@ export default function ViewTests() {
                         className="w-64 border-2 border-gray-300 bg-white"
                         value={titleSearch}
                         onChange={(e) => setTitleSearch(e.target.value)}
+                        // Cho phép ấn Enter để tìm
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                setAppliedSearch(titleSearch);
+                                setCurrentPage(1);
+                            }
+                        }}
                       />
                       <Button
                         variant="ghost"
                         className="ml-1 text-blue-400 font-bold px-2"
                         onClick={() => {
-                          setAppliedSearch(titleSearch);
-                          setCurrentPage(1); // Reset page
+                          setAppliedSearch(titleSearch); // Apply filter
+                          setCurrentPage(1);
                         }}
                       >
                         Search
@@ -350,7 +389,9 @@ export default function ViewTests() {
                   </div>
 
                   {/* Grid Display */}
-                  {currentItems.length > 0 ? (
+                  {isLoading ? (
+                     <Loader /> // Hiển thị Loader khi chuyển trang
+                  ) : currentItems.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
                       {currentItems.map((test) => (
                         <Card
@@ -359,7 +400,8 @@ export default function ViewTests() {
                         >
                           <div className="relative h-40 w-full bg-gray-100 ">
                             <Image
-                              src={"http://localhost:5151" + test.imageUrl}
+                              // Xử lý ảnh mặc định nếu API trả về đường dẫn không hợp lệ
+                              src={test.imageUrl ? (test.imageUrl.startsWith("http") ? test.imageUrl : `${API_URL}${test.imageUrl}`) : "/placeholder.jpg"}
                               fill
                               className="object-cover rounded-t-xl group-hover:scale-105 transition-transform duration-300 "
                               sizes="20"
@@ -380,10 +422,10 @@ export default function ViewTests() {
                                   test.skill.slice(1)}
                               </Badge>
 
-                              <Badge
+                              {/* <Badge
                                 variant="secondary"
                                 className="p-2 w-20 rounded-full "
-                              >{`Passage 1`}</Badge>
+                              ></Badge> */}
                             </div>
 
                             <CardTitle className="text-base font-bold leading-tight hover:text-blue-600">

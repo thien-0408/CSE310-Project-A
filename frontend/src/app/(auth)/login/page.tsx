@@ -121,7 +121,7 @@ export default function LoginPage() {
               &quot;Mastering IELTS <br/> has never been easier.&quot;
             </h1>
             <p className="text-blue-200 text-lg">
-              Join thousands of students achieving their dream scores with our AI-powered platform.
+              Join thousands of students achieving their dream scores with our platform.
             </p>
           </div>
           <div className="flex items-center gap-2 text-sm text-blue-200">
@@ -131,8 +131,8 @@ export default function LoginPage() {
       </div>
 
       {/* Right side*/}
-      <div data-aos = "fade-down" data-aos-duration = "500" className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="mx-auto grid w-full max-w-[400px] gap-6">
+      <div data-aos = "fade-down" data-aos-duration = "500" className="flex items-center justify-center py-12 px-4 sm:px-6 bg-white">
+        <div className="mx-auto grid w-full max-w-[450px] gap-6">
           
           <div className="flex flex-col space-y-2 text-center">
             <div className="lg:hidden flex justify-center mb-4">

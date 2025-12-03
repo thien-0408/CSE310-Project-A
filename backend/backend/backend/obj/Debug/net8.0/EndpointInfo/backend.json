@@ -1426,7 +1426,95 @@
         }
       }
     },
-    "/api/writing-test/get-tests": {
+    "/api/writing-test/get-test/{id}": {
+      "get": {
+        "tags": [
+          "WritingTest"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WritingTest"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WritingTest"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WritingTest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/writing-test/submit": {
+      "post": {
+        "tags": [
+          "WritingTest"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitWritingDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitWritingDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitWritingDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WritingSubmission"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WritingSubmission"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WritingSubmission"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/writing-test/pending": {
       "get": {
         "tags": [
           "WritingTest"
@@ -1439,7 +1527,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WritingTest"
+                    "$ref": "#/components/schemas/WritingSubmissionSummaryDto"
                   }
                 }
               },
@@ -1447,7 +1535,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WritingTest"
+                    "$ref": "#/components/schemas/WritingSubmissionSummaryDto"
                   }
                 }
               },
@@ -1455,11 +1543,66 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WritingTest"
+                    "$ref": "#/components/schemas/WritingSubmissionSummaryDto"
                   }
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/writing-test/user-submission/{id}": {
+      "get": {
+        "tags": [
+          "WritingTest"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/writing-test/grade": {
+      "post": {
+        "tags": [
+          "WritingTest"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GradeWritingSubmissionDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GradeWritingSubmissionDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GradeWritingSubmissionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
           }
         }
       }
@@ -1535,6 +1678,48 @@
             "format": "date-time"
           },
           "title": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GradeWritingSubmissionDto": {
+        "type": "object",
+        "properties": {
+          "submissionId": {
+            "type": "string",
+            "nullable": true
+          },
+          "taskResponse": {
+            "type": "number",
+            "format": "double"
+          },
+          "coherenceCohesion": {
+            "type": "number",
+            "format": "double"
+          },
+          "lexicalResource": {
+            "type": "number",
+            "format": "double"
+          },
+          "grammaticalRange": {
+            "type": "number",
+            "format": "double"
+          },
+          "grammerFeedback": {
+            "type": "string",
+            "nullable": true
+          },
+          "vocabularyFeedback": {
+            "type": "string",
+            "nullable": true
+          },
+          "overallScore": {
+            "type": "number",
+            "format": "double"
+          },
+          "generalFeedback": {
             "type": "string",
             "nullable": true
           }
@@ -2319,6 +2504,24 @@
         },
         "additionalProperties": false
       },
+      "SubmitWritingDto": {
+        "type": "object",
+        "properties": {
+          "testId": {
+            "type": "string",
+            "nullable": true
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "wordCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "TestSummaryDto": {
         "type": "object",
         "properties": {
@@ -2574,6 +2777,36 @@
           },
           "result": {
             "$ref": "#/components/schemas/WritingResult"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WritingSubmissionSummaryDto": {
+        "type": "object",
+        "properties": {
+          "submissionId": {
+            "type": "string",
+            "nullable": true
+          },
+          "testTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "userEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "submittedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

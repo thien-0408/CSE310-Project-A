@@ -25,6 +25,10 @@ import { IoLogOut } from "react-icons/io5";
 import CreateReadingTest from "../add-reading/page";
 import AdminTestManager from "../manage-test/page";
 import { useToast } from "@/components/ui/ToastNotification";
+import AdminWritingGrading from "@/components/ui/WritingManagement";
+import { FaPenAlt } from "react-icons/fa";
+import { Button } from "@/components/ui/button";
+import CreateWritingTest from "@/components/ui/AddWritingTest";
 //---------------------------------------
 interface User {
   id: string;
@@ -68,6 +72,8 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
           >
             Cancel
           </button>
+
+
           <button
             className="px-6 py-3 rounded-3xl bg-red-500 text-white font-medium hover:bg-red-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
             onClick={onConfirm}
@@ -195,7 +201,7 @@ const AdminDashboard = () => {
           );
           showToast(`User ${userName} deactivated successfully`, "success");
           if (!response.ok) {
-            showToast(`Error deactivating user ${userName}`, "error")
+            showToast(`Error deactivating user ${userName}`, "error");
             const error = await response.text();
             throw new Error(error || "Failed to deactivate User");
           }
@@ -233,10 +239,7 @@ const AdminDashboard = () => {
             const error = await response.text();
             throw new Error(error || "Failed to activate User");
           }
-          showToast(
-            `User ${userName} activated successfully`,
-            "success"
-          );
+          showToast(`User ${userName} activated successfully`, "success");
           fetchUsers(); //fetch again to render
         } catch (error) {
           console.error(error);
@@ -311,7 +314,7 @@ const AdminDashboard = () => {
             "success"
           );
         } catch (error) {
-          showToast(`Error deleting user`,"error");
+          showToast(`Error deleting user`, "error");
         } finally {
           setConfirmModal((prev) => ({ ...prev, isVisible: false }));
         }
@@ -386,7 +389,7 @@ const AdminDashboard = () => {
         return (
           <>
             {/*Total users */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 mt-8">
               <ToastComponent></ToastComponent>
               <div className=" p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4 bg-gradient-to-br from-blue-500 to-purple-500 hover:scale-105 transition duration-300">
                 <div className="p-3 bg-blue-100 rounded-xl text-blue-600">
@@ -448,7 +451,7 @@ const AdminDashboard = () => {
       case "users":
         return (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <ToastComponent></ToastComponent>
+            <ToastComponent></ToastComponent>
 
             <div className="p-6 border-b border-gray-100 flex justify-between items-center">
               <h2 className="text-xl font-bold text-gray-800">
@@ -618,7 +621,10 @@ const AdminDashboard = () => {
       // --- ADD TEST ---
       case "add-test":
         return <AddTestTab />;
-
+      case "grading":
+        return <AdminWritingGrading></AdminWritingGrading>;
+      case "add-writing":
+        return <CreateWritingTest/>
       case "settings":
         return (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -651,17 +657,22 @@ const AdminDashboard = () => {
         {/* Sidebar */}
         <aside className="w-72 bg-white border-r border-gray-200 fixed h-full z-10 transition-all duration-300 hidden lg:block">
           <div className="p-6 flex items-center gap-3 border-b border-gray-100">
-            <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-white rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-200">
-              <Image
-                src={"/assets/logo.png"}
-                alt="logo"
-                width={100}
-                height={100}
-              ></Image>
-            </div>
+            <div className="h-10 flex items-center justify-center rounded-full bg-indigo-100 text-indigo-600 font-bold">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger>
+                        <span className="p-4">A</span>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DropdownMenuItem onClick={handleLogout}>
+                          <IoLogOut />
+                          Log out
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
             <div>
-              <h1 className="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
-                ISP AdminPanel
+              <h1 className="text-md font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+                Admin Dashboard
               </h1>
             </div>
           </div>
@@ -725,6 +736,46 @@ const AdminDashboard = () => {
               Add Reading Test
             </button>
 
+            {/* Add Writing Button*/}
+            <button
+              onClick={() => setActiveTab("add-writing")}
+              className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 group ${
+                activeTab === "add-writing"
+                  ? "bg-blue-50 text-blue-600 font-semibold shadow-sm"
+                  : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+              }`}
+            >
+              <Plus
+                size={20}
+                className={
+                  activeTab === "add-writing"
+                    ? "text-blue-600"
+                    : "text-gray-400 group-hover:text-gray-600"
+                }
+              />
+              Add Writing Test
+            </button>
+
+            {/* Grading test*/}
+            <button
+              onClick={() => setActiveTab("grading")}
+              className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 group ${
+                activeTab === "grading"
+                  ? "bg-blue-50 text-blue-600 font-semibold shadow-sm"
+                  : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+              }`}
+            >
+              <FaPenAlt
+                size={20}
+                className={
+                  activeTab === "grading"
+                    ? "text-blue-600"
+                    : "text-gray-400 group-hover:text-gray-600"
+                }
+              />
+              Grading
+            </button>
+
             <button
               onClick={() => setActiveTab("settings")}
               className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 group ${
@@ -747,46 +798,9 @@ const AdminDashboard = () => {
         </aside>
 
         {/* Main Content */}
-        <main className="lg:ml-72 flex-1 p-8 overflow-y-auto h-screen">
-          <header className="flex justify-between items-center mb-8">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-800">
-                {activeTab === "dashboard" && "Dashboard Overview"}
-                {activeTab === "users" && "User Management"}
-                {activeTab === "add-test" && "Create New Reading Test"}
-                {activeTab === "settings" && "System Configuration"}
-              </h2>
-              <p className="text-gray-500 text-sm mt-1">
-                Welcome back, Administrator
-              </p>
-            </div>
-
-            <div className="flex items-center gap-4">
-              {/* Header Actions (Notification, Avatar) */}
-              <button className="p-2 text-gray-400 hover:text-gray-600 relative">
-                <Bell size={20} />
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
-              </button>
-              <div className="w-10 h-10 bg-gray-200 rounded-full overflow-hidden border-2 border-white shadow-sm">
-                {/* <Image src="..." /> placeholder */}
-                <div className="w-full h-full flex items-center justify-center bg-indigo-100 text-indigo-600 font-bold">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger>
-                      <p>A</p>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuItem onClick={handleLogout}>
-                        <IoLogOut />
-                        Log out
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-              </div>
-            </div>
-          </header>
-
+        <main className="lg:ml-72 px-3  flex-1 overflow-y-auto h-screen">
           {/* Content Render */}
+
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
             {renderContent()}
           </div>

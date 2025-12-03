@@ -332,10 +332,9 @@ export default function ReadingTest() {
   if (showScoring) {
     return (
       <>
-        {/* You might want to remove <Loader> here or use a better loading state if needed */}
+        <Loader></Loader>
         <QuestionScoring
           sections={readingData.sections}
-          // Assuming QuestionScoring expects UserAnswer[], which it does
           userAnswers={userAnswers}
           onClose={() => setShowScoring(false)}
         />

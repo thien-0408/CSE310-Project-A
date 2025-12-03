@@ -18,7 +18,7 @@ import { useRouter } from 'next/navigation';
 import { UserProfile } from "@/types/userProfile";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation"; 
-
+import NotificationDropdown from "@/components/ui/NotificationDropdown";
 export default function NavBarUser() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -176,10 +176,13 @@ export default function NavBarUser() {
 
             </ul>
           </nav>
+         
+
 
           {/* Avatar Dropdown */}
-          <div className="flex items-center shrink-0">
+          <div className="flex items-center shrink-0 gap-4">
             <DropdownMenu>
+               <NotificationDropdown></NotificationDropdown>
               <DropdownMenuTrigger className="focus:outline-none">
                 <Avatar className="cursor-pointer hover:ring-2 hover:ring-blue-500 hover:ring-offset-2 transition-all duration-300 border-2 border-transparent hover:border-blue-100">
                   <AvatarImage src={apiUrl + profile?.avatarUrl} />

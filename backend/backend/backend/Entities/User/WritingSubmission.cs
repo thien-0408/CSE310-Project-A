@@ -21,5 +21,6 @@ namespace backend.Entities.User
         public DateTime SubmittedDate { get; set; } = DateTime.UtcNow;
         public string Status { get; set; } = string.Empty;
         public WritingResult? Result { get; set; }
+        public bool IsRead { get; set; } = false;
     }
 }
