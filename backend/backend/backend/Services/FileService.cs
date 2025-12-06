@@ -42,14 +42,12 @@
             var wwwrootPath = _environment.WebRootPath;
             var uploadPath = Path.Combine(wwwrootPath, folder);
 
-            // --- FIX STARTS HERE ---
-            // Check if the directory exists, if not, create it.
+           
             if (!Directory.Exists(uploadPath))
             {
                 Directory.CreateDirectory(uploadPath);
             }
-            // --- FIX ENDS HERE ---
-
+           
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
             var filePath = Path.Combine(uploadPath, fileName);
 

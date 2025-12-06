@@ -53,7 +53,7 @@ namespace backend.Controllers
             {
                 var test = new ReadingTest
                 {
-                    TestId = Guid.NewGuid().ToString(), 
+                    TestId = Guid.NewGuid().ToString(),
                     Title = request.Title,
                     TestType = request.TestType,
                     Skill = request.Skill,
@@ -69,7 +69,7 @@ namespace backend.Controllers
                     var part = new ReadingPart
                     {
                         PartId = Guid.NewGuid(), // NEW GUID
-                        PartNumber = partDto.PartNumber, 
+                        PartNumber = partDto.PartNumber,
                         PartTitle = partDto.PartTitle,
                         PassageTitle = partDto.PassageTitle,
                         Text = partDto.Text,
@@ -104,7 +104,7 @@ namespace backend.Controllers
                                 section.SectionOptions.Add(new SectionOption
                                 {
                                     Text = secDto.Headings[i],
-                                    Key = (i + 1).ToString() 
+                                    Key = (i + 1).ToString()
                                 });
                             }
                         }
@@ -126,7 +126,7 @@ namespace backend.Controllers
                             var question = new ReadingQuestion
                             {
                                 Id = Guid.NewGuid(), // NEW GUID
-                                QuestionNumber = qDto.QuestionNumber, 
+                                QuestionNumber = qDto.QuestionNumber,
                                 QuestionText = qDto.Question,
                                 DiagramLabelsJson = qDto.Diagram != null ? JsonConvert.SerializeObject(qDto.Diagram) : null,
                                 Answers = new List<QuestionAnswer>(),
@@ -141,7 +141,7 @@ namespace backend.Controllers
                                     question.Options.Add(new QuestionOption
                                     {
                                         Id = Guid.NewGuid(),
-                                        Index = i, 
+                                        Index = i,
                                         Text = qDto.Options[i]
                                     });
                                 }
@@ -198,7 +198,7 @@ namespace backend.Controllers
                 AddAns(answerData.ToString(), 0);
             }
         }
-    
+
         [HttpGet("get-all")]
         public async Task<ActionResult<IEnumerable<ReadingTest>>> GetAllReadingTests()
         {
@@ -225,7 +225,7 @@ namespace backend.Controllers
                 foreach (var part in test.Parts)
                 {
                     part.Sections = part.Sections
-                        .Where(s => s.SectionNumber > 0) 
+                        .Where(s => s.SectionNumber > 0)
                         .OrderBy(s => s.SectionNumber)
                         .ToList();
 
@@ -250,24 +250,19 @@ namespace backend.Controllers
             return Ok(tests);
         }
         [HttpGet("{id:guid}")]
-        // Lưu ý: Đổi return type thành ReadingTest để trả về full dữ liệu
         public async Task<ActionResult<ReadingTest>> GetTestById(Guid id)
         {
             var test = await _context.ReadingTests
-                // 1. Load Answers
                 .Include(t => t.Parts)
                     .ThenInclude(p => p.Sections)
                         .ThenInclude(s => s.Questions)
                             .ThenInclude(q => q.Answers)
 
-                // 2. Load Options (cho trắc nghiệm A,B,C,D)
                 .Include(t => t.Parts)
                     .ThenInclude(p => p.Sections)
                         .ThenInclude(s => s.Questions)
                             .ThenInclude(q => q.Options)
 
-                // 3. [QUAN TRỌNG] Load SectionOptions (cho Matching Headings/Names)
-                // --- BẠN ĐANG THIẾU ĐOẠN NÀY ---
                 .Include(t => t.Parts)
                     .ThenInclude(p => p.Sections)
                         .ThenInclude(s => s.SectionOptions)
@@ -281,7 +276,6 @@ namespace backend.Controllers
                 return NotFound(new { message = "Not found" });
             }
 
-            // Logic sắp xếp (Sort) giữ nguyên
             if (test.Parts != null)
             {
                 test.Parts = test.Parts.OrderBy(p => p.PartNumber).ToList();
@@ -292,7 +286,6 @@ namespace backend.Controllers
                     {
                         section.Questions = section.Questions.OrderBy(q => q.QuestionNumber).ToList();
 
-                        // Sort thêm SectionOptions cho đẹp (A->Z hoặc theo ID)
                         if (section.SectionOptions != null)
                         {
                             section.SectionOptions = section.SectionOptions.OrderBy(o => o.Id).ToList();

@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import NavBarUser from "@/components/ui/navbarforuser";
 import AuthGuard from "@/components/auth/AuthGuard";
 import { IoCamera } from "react-icons/io5";
-import { FaBellSlash } from "react-icons/fa";
 import { useToast } from "@/components/ui/ToastNotification";
 // --- Types ---
 export interface UserProfile {
@@ -166,12 +165,7 @@ export default function ProfilePage() {
 
       <div
         className="min-h-screen bg-gray-50 text-gray-800"
-        style={{
-          backgroundImage: `
-            linear-gradient(135deg, rgba(248,250,252,1) 0%, rgba(219,234,254,0.7) 30%, rgba(165,180,252,0.5) 60%, rgba(129,140,248,0.6) 100%),
-            radial-gradient(circle at 20% 30%, rgba(255,255,255,0.6) 0%, transparent 40%)
-          `,
-        }}
+        
       >
         <div data-aos = "fade-right" data-aos-duration = "500" className="container mx-auto max-w-6xl p-4 sm:p-6 lg:p-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-8 tracking-tighter">
@@ -198,12 +192,7 @@ export default function ProfilePage() {
                     isActive={activeTab === "security"}
                     onClick={() => setActiveTab("security")}
                   />
-                  <SidebarLink
-                    icon="fa-bell"
-                    label="Notifications"
-                    isActive={activeTab === "notifications"}
-                    onClick={() => setActiveTab("notifications")}
-                  />
+                  
                 </ul>
               </aside>
 
@@ -216,7 +205,6 @@ export default function ProfilePage() {
                   {activeTab === "security" && (
                     <SecurityTab onSubmit={handlePasswordChange} />
                   )}
-                  {activeTab === "notifications" && <NotificationsTab />}
                 </div>
               </main>
             </div>
@@ -468,7 +456,7 @@ const SecurityTab: FC<SecurityTabProps> = ({ onSubmit }) => {
   const isFormValid = passwords.currentPassword && passwords.newPassword && passwords.confirmPassword;
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form data-aos = "fade-right" data-aos-duration = "500" onSubmit={handleSubmit}>
       <h2 className="text-xl font-bold text-gray-900">Password & Security</h2>
       <p className="mt-1 text-sm text-gray-500">Ensure your account is using a strong password.</p>
       
@@ -513,15 +501,7 @@ const SecurityTab: FC<SecurityTabProps> = ({ onSubmit }) => {
   );
 };
 
-const NotificationsTab = () => (
-  <div className="text-center py-10">
-    <div className="inline-block p-4 rounded-full bg-gray-100 mb-4">
-      <FaBellSlash className="text-gray-400 text-3xl" />
-    </div>
-    <h2 className="text-xl font-bold text-gray-900">Notifications</h2>
-    <p className="mt-1 text-gray-500">Notification settings are currently under development.</p>
-  </div>
-);
+
 
 interface InputFieldProps {
   label: string;

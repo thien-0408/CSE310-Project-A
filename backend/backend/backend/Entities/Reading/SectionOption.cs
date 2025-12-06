@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend.Entities.Reading
 {
-    // Bảng này lưu danh sách Headings hoặc danh sách Tên người (David Attenborough...)
     public class SectionOption
     {
         [Key]

@@ -1,16 +1,14 @@
-'use client';
+"use client";
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
-
-import { Question } from "@/types/listening";
+import { ListeningQuestion, ListeningOption } from "@/types/listening";
 
 interface Props {
-  sectionId: number;
+  sectionId: string; // GUID
   title: string;
   instruction: string;
-  options: Array<{ key: string; text: string }>; 
-  questions: Question[];
-  onAnswerChange?: (sectionId: number, questionId: number, answer: string) => void;
+  options: ListeningOption[]; // Các lựa chọn trong Box (A, B, C...)
+  questions: ListeningQuestion[]; // Các câu hỏi (1, 2, 3...)
+  onAnswerChange?: (questionId: string, answer: string) => void;
 }
 
 const MatchingInformation: React.FC<Props> = ({
@@ -21,88 +19,88 @@ const MatchingInformation: React.FC<Props> = ({
   questions,
   onAnswerChange,
 }) => {
-  const [answers, setAnswers] = useState<Record<number, string>>({});
+  const [answers, setAnswers] = useState<Record<string, string>>({});
 
-  // Load từ localStorage
   useEffect(() => {
-    const storageKey = `listening-map-${sectionId}`;
-    const saved = localStorage.getItem(storageKey);
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      setAnswers(parsed);
-      Object.entries(parsed).forEach(([qId, answer]) => {
-        if (onAnswerChange) {
-          onAnswerChange(sectionId, parseInt(qId), answer as string);
-        }
-      });
+    const storageKey = `listening-matching-${sectionId}`;
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          setAnswers(parsed);
+          Object.entries(parsed).forEach(([qId, val]) => {
+            if (onAnswerChange) onAnswerChange(qId, val as string);
+          });
+        } catch (e) { console.error(e); }
+      }
     }
   }, [sectionId]);
 
-  const handleChange = (questionId: number, value: string) => {
+  const handleChange = (questionId: string, value: string) => {
     const updated = { ...answers, [questionId]: value };
     setAnswers(updated);
     
-    const storageKey = `listening-map-${sectionId}`;
-    localStorage.setItem(storageKey, JSON.stringify(updated));
+    localStorage.setItem(`listening-matching-${sectionId}`, JSON.stringify(updated));
     
     if (onAnswerChange) {
-      onAnswerChange(sectionId, questionId, value);
+      onAnswerChange(questionId, value);
     }
   };
 
   return (
-    <div className="p-6 mb-6 bg-white border border-gray-200 rounded-lg">
+    <div className="p-6 mb-6 bg-white border border-gray-200 rounded-lg shadow-sm">
       {/* Header */}
-      <div className="mb-4">
+      <div className="mb-6">
         <h3 className="text-lg font-bold text-gray-800 mb-2">{title}</h3>
-        <p className="text-gray-700 mb-2">{instruction}</p>
+        <p className="text-gray-600 italic text-sm">{instruction}</p>
       </div>
 
-      
-
-      {/* Options List */}
+      {/* Options Box (List A, B, C) */}
       {options && options.length > 0 && (
-        <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <p className="font-semibold text-gray-800 mb-3">Options:</p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div className="mb-8 p-4 bg-blue-50 border border-blue-100 rounded-lg">
+          <p className="font-bold text-blue-900 mb-3 text-xs uppercase tracking-wide">Options Box</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-6">
             {options.map((option) => (
-              <div key={option.key} className="flex items-start gap-2">
+              <div key={option.id} className="flex items-start gap-2 text-sm">
                 <span className="font-bold text-blue-700 min-w-[20px]">{option.key}</span>
-                <span className="text-gray-800">{option.text}</span>
+                <span className="text-gray-700">{option.text}</span>
               </div>
             ))}
           </div>
         </div>
       )}
 
-      {/* Questions */}
+      {/* Questions List */}
       <div className="space-y-3">
         {questions.map((question) => (
           <div 
             key={question.id} 
-            className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg border border-gray-200"
+            className="flex flex-col sm:flex-row sm:items-center gap-4 p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors"
           >
-            {/* Question number */}
-            <div className="flex items-center justify-center w-10 h-10 bg-blue-500 text-white rounded-full text-lg font-bold flex-shrink-0">
-              {question.id}
+            {/* Question Info */}
+            <div className="flex items-center gap-3 flex-1">
+              <div className="flex items-center justify-center w-8 h-8 bg-blue-600 text-white rounded-full text-sm font-bold flex-shrink-0 shadow-sm">
+                {question.questionNumber}
+              </div>
+              <span className="text-gray-800 font-medium">{question.questionText}</span>
             </div>
             
-            {/* Dropdown */}
-            <select
-              value={answers[question.id] || ""}
-              onChange={(e) => handleChange(question.id, e.target.value)}
-              className="px-4 py-2 border-2 border-gray-300 rounded focus:outline-none focus:border-blue-500 min-w-[100px]"
-            >
-              <option value="">Select</option>
-              {options.map((opt) => (
-                <option key={opt.key} value={opt.key}>
-                  {opt.key}
-                </option>
-              ))}
-            </select>
-            
-            {/* Label */}
-            <span className="text-gray-800 flex-1">{question.question}</span>
+            {/* Dropdown Selection */}
+            <div className="sm:w-48 pl-11 sm:pl-0">
+              <select
+                value={answers[question.id] || ""}
+                onChange={(e) => handleChange(question.id, e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-sm cursor-pointer shadow-sm"
+              >
+                <option value="">Select option...</option>
+                {options.map((opt) => (
+                  <option key={opt.id} value={opt.key}>
+                    {opt.key}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         ))}
       </div>

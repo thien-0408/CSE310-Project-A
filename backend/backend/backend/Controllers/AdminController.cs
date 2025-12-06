@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
 using backend.Data;
 using backend.Entities;
+using backend.Entities.Notification;
 using backend.Entities.User;
 using backend.Models;
 using backend.Models.WritingDto;
@@ -129,7 +130,72 @@ namespace backend.Controllers
             await _authService.LogoutAsync(userId);
             return Ok("Logged out successfully");
         }
-       
+        [Authorize(Roles = "Admin")]
+        [HttpPost("add-daily-word")]
+        public async Task<ActionResult<DailyWord>> AddDailyWord([FromBody] DailyWord request)
+        {
+            var existingWord = await _context.DailyWords.FirstOrDefaultAsync();
+
+            if (existingWord == null)
+            {
+                var newWord = new DailyWord
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Word = request.Word,
+                    Phonetic = request.Phonetic,
+                    Type = request.Type,
+                    Definition = request.Definition,
+                    Example = request.Example,
+                };
+
+                await _context.DailyWords.AddAsync(newWord);
+                await _context.SaveChangesAsync();
+                return Ok(newWord);
+            }
+            else
+            {
+                existingWord.Word = request.Word;
+                existingWord.Phonetic = request.Phonetic;
+                existingWord.Type = request.Type;
+                existingWord.Definition = request.Definition;
+                existingWord.Example = request.Example;
+                _context.DailyWords.Update(existingWord);
+                await _context.SaveChangesAsync();
+                return Ok(existingWord);
+            }
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpPost("add-daily-tip")]
+        public async Task<ActionResult<DailyTip>> AddDailyTip([FromBody] DailyTip request)
+        {
+            var existingTip = await _context.DailyTips.FirstOrDefaultAsync();
+
+            if (existingTip == null)
+            {
+                var newTip = new DailyTip
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Title = request.Title,
+                    Content = request.Content,
+                    Category = request.Category
+                };
+
+                await _context.DailyTips.AddAsync(newTip);
+                await _context.SaveChangesAsync();
+
+                return Ok(newTip);
+            }
+            else
+            {
+                existingTip.Title = request.Title;
+                existingTip.Content = request.Content;
+                existingTip.Category = request.Category;
+                _context.DailyTips.Update(existingTip);
+                await _context.SaveChangesAsync();
+
+                return Ok(existingTip);
+            }
+        }
         private Guid GetUserIdFromToken()
         {
             var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

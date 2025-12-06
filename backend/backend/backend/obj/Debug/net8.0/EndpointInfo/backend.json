@@ -282,6 +282,102 @@
         }
       }
     },
+    "/api/admin/add-daily-word": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DailyWord"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DailyWord"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DailyWord"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyWord"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyWord"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyWord"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/add-daily-tip": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DailyTip"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DailyTip"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DailyTip"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyTip"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyTip"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyTip"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/auth/register": {
       "post": {
         "tags": [
@@ -510,159 +606,58 @@
         }
       }
     },
-    "/api/listening-test/upload-json-test": {
+    "/api/listening/create-listening": {
       "post": {
         "tags": [
-          "ListeningTest"
+          "Listening"
         ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
                 "required": [
-                  "JsonFile"
+                  "PartsJson",
+                  "Title"
                 ],
-                "type": "object",
-                "properties": {
-                  "JsonFile": {
-                    "type": "string",
-                    "format": "binary"
-                  },
-                  "title": {
-                    "type": "string"
-                  },
-                  "testType": {
-                    "type": "string"
-                  },
-                  "audioDuration": {
-                    "type": "integer",
-                    "format": "int32"
-                  }
-                }
-              },
-              "encoding": {
-                "JsonFile": {
-                  "style": "form"
-                },
-                "title": {
-                  "style": "form"
-                },
-                "testType": {
-                  "style": "form"
-                },
-                "audioDuration": {
-                  "style": "form"
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ListeningTest"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ListeningTest"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ListeningTest"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/listening-test": {
-      "get": {
-        "tags": [
-          "ListeningTest"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ListeningTest"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ListeningTest"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ListeningTest"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/listening-test/add-listening-test": {
-      "post": {
-        "tags": [
-          "ListeningTest"
-        ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
                 "type": "object",
                 "properties": {
                   "Title": {
                     "type": "string"
                   },
-                  "TestType": {
-                    "type": "string"
-                  },
-                  "Skill": {
+                  "SubTitle": {
                     "type": "string"
                   },
                   "QuestionRange": {
-                    "type": "string"
-                  },
-                  "SubTitle": {
                     "type": "string"
                   },
                   "AudioDuration": {
                     "type": "integer",
                     "format": "int32"
                   },
-                  "Audio": {
-                    "type": "string",
-                    "format": "binary"
-                  },
-                  "Image": {
-                    "type": "string",
-                    "format": "binary"
-                  },
-                  "JsonFile": {
-                    "type": "string",
-                    "format": "binary"
-                  },
-                  "Parts": {
+                  "PartsJson": {
                     "type": "string"
+                  },
+                  "TestAudioFile": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "TestImageFile": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "PartAudioFiles": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  },
+                  "SectionMapImages": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
                   }
                 }
               },
@@ -670,37 +665,74 @@
                 "Title": {
                   "style": "form"
                 },
-                "TestType": {
-                  "style": "form"
-                },
-                "Skill": {
+                "SubTitle": {
                   "style": "form"
                 },
                 "QuestionRange": {
                   "style": "form"
                 },
-                "SubTitle": {
-                  "style": "form"
-                },
                 "AudioDuration": {
                   "style": "form"
                 },
-                "Audio": {
+                "PartsJson": {
                   "style": "form"
                 },
-                "Image": {
+                "TestAudioFile": {
                   "style": "form"
                 },
-                "JsonFile": {
+                "TestImageFile": {
                   "style": "form"
                 },
-                "Parts": {
+                "PartAudioFiles": {
+                  "style": "form"
+                },
+                "SectionMapImages": {
                   "style": "form"
                 }
               }
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListeningTest"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListeningTest"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListeningTest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/listening/get-test/{id}": {
+      "get": {
+        "tags": [
+          "Listening"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -1149,24 +1181,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReadingTestResult"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReadingTestResult"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReadingTestResult"
-                }
-              }
-            }
+            "description": "Success"
           }
         }
       }
@@ -1198,24 +1213,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReadingTestResult"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReadingTestResult"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReadingTestResult"
-                }
-              }
-            }
+            "description": "Success"
           }
         }
       }
@@ -1238,24 +1236,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReadingTestResult"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReadingTestResult"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReadingTestResult"
-                }
-              }
-            }
+            "description": "Success"
           }
         }
       }
@@ -1329,6 +1310,102 @@
                   "items": {
                     "$ref": "#/components/schemas/GetResultDto"
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/notifications": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NotificationDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NotificationDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NotificationDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/daily-word": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyWord"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyWord"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyWord"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/daily-tip": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyWord"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyWord"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyWord"
                 }
               }
             }
@@ -1606,6 +1683,46 @@
           }
         }
       }
+    },
+    "/api/writing-test/delete/submission/{id}": {
+      "delete": {
+        "tags": [
+          "WritingTest"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WritingSubmission"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WritingSubmission"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WritingSubmission"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1647,6 +1764,50 @@
           "newPassword": {
             "minLength": 6,
             "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DailyTip": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "category": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DailyWord": {
+        "type": "object",
+        "properties": {
+          "word": {
+            "type": "string",
+            "nullable": true
+          },
+          "phonetic": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "definition": {
+            "type": "string",
+            "nullable": true
+          },
+          "example": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1727,59 +1888,47 @@
         "additionalProperties": false
       },
       "ListeningAnswer": {
-        "required": [
-          "answerText",
-          "questionId"
-        ],
         "type": "object",
         "properties": {
-          "answerId": {
+          "id": {
             "type": "string",
             "nullable": true
           },
-          "questionId": {
-            "minLength": 1,
-            "type": "string"
+          "listeningQuestionId": {
+            "type": "string",
+            "nullable": true
+          },
+          "listeningQuestion": {
+            "$ref": "#/components/schemas/ListeningQuestion"
           },
           "answerText": {
-            "maxLength": 500,
-            "minLength": 1,
-            "type": "string"
-          },
-          "question": {
-            "$ref": "#/components/schemas/ListeningQuestion"
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
       },
       "ListeningOption": {
-        "required": [
-          "key",
-          "questionId",
-          "text"
-        ],
         "type": "object",
         "properties": {
-          "optionId": {
-            "type": "integer",
-            "format": "int32"
+          "id": {
+            "type": "string",
+            "nullable": true
           },
-          "questionId": {
-            "minLength": 1,
-            "type": "string"
+          "listeningQuestionId": {
+            "type": "string",
+            "nullable": true
+          },
+          "listeningQuestion": {
+            "$ref": "#/components/schemas/ListeningQuestion"
           },
           "key": {
-            "maxLength": 10,
-            "minLength": 1,
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "text": {
-            "maxLength": 1000,
-            "minLength": 1,
-            "type": "string"
-          },
-          "question": {
-            "$ref": "#/components/schemas/ListeningQuestion"
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1787,13 +1936,16 @@
       "ListeningPart": {
         "type": "object",
         "properties": {
-          "partId": {
+          "id": {
             "type": "string",
             "nullable": true
           },
-          "testId": {
-            "type": "integer",
-            "format": "int32"
+          "listeningTestId": {
+            "type": "string",
+            "nullable": true
+          },
+          "listeningTest": {
+            "$ref": "#/components/schemas/ListeningTest"
           },
           "partNumber": {
             "type": "integer",
@@ -1815,9 +1967,6 @@
             "type": "string",
             "nullable": true
           },
-          "listeningTest": {
-            "$ref": "#/components/schemas/ListeningTest"
-          },
           "sections": {
             "type": "array",
             "items": {
@@ -1829,126 +1978,47 @@
         "additionalProperties": false
       },
       "ListeningQuestion": {
-        "required": [
-          "sectionId"
-        ],
         "type": "object",
         "properties": {
-          "questionId": {
+          "id": {
             "type": "string",
             "nullable": true
           },
-          "sectionId": {
-            "minLength": 1,
-            "type": "string"
+          "listeningSectionId": {
+            "type": "string",
+            "nullable": true
+          },
+          "listeningSection": {
+            "$ref": "#/components/schemas/ListeningSection"
           },
           "questionNumber": {
             "type": "integer",
             "format": "int32"
           },
           "questionText": {
-            "maxLength": 1000,
             "type": "string",
             "nullable": true
           },
           "label": {
-            "maxLength": 200,
             "type": "string",
             "nullable": true
           },
           "value": {
-            "maxLength": 200,
             "type": "string",
             "nullable": true
           },
           "isInput": {
-            "type": "boolean"
-          },
-          "wordLimit": {
-            "maxLength": 100,
-            "type": "string",
+            "type": "boolean",
             "nullable": true
           },
-          "section": {
-            "$ref": "#/components/schemas/ListeningSection"
+          "wordLimit": {
+            "type": "string",
+            "nullable": true
           },
           "answers": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ListeningAnswer"
-            },
-            "nullable": true
-          },
-          "questionOptions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ListeningOption"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "ListeningSection": {
-        "required": [
-          "questionType"
-        ],
-        "type": "object",
-        "properties": {
-          "sectionId": {
-            "type": "string",
-            "nullable": true
-          },
-          "partId": {
-            "type": "string",
-            "nullable": true
-          },
-          "sectionNumber": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "sectionRange": {
-            "maxLength": 50,
-            "type": "string",
-            "nullable": true
-          },
-          "sectionTitle": {
-            "maxLength": 300,
-            "type": "string",
-            "nullable": true
-          },
-          "questionType": {
-            "maxLength": 100,
-            "minLength": 1,
-            "type": "string"
-          },
-          "instructions": {
-            "maxLength": 500,
-            "type": "string",
-            "nullable": true
-          },
-          "wordLimit": {
-            "maxLength": 100,
-            "type": "string",
-            "nullable": true
-          },
-          "maxAnswers": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "mapImageUrl": {
-            "maxLength": 500,
-            "type": "string",
-            "nullable": true
-          },
-          "testPart": {
-            "$ref": "#/components/schemas/ListeningPart"
-          },
-          "questions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ListeningQuestion"
             },
             "nullable": true
           },
@@ -1962,19 +2032,80 @@
         },
         "additionalProperties": false
       },
+      "ListeningSection": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "listeningPartId": {
+            "type": "string",
+            "nullable": true
+          },
+          "listeningPart": {
+            "$ref": "#/components/schemas/ListeningPart"
+          },
+          "sectionNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sectionRange": {
+            "type": "string",
+            "nullable": true
+          },
+          "sectionTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "questionType": {
+            "type": "string",
+            "nullable": true
+          },
+          "instructions": {
+            "type": "string",
+            "nullable": true
+          },
+          "wordLimit": {
+            "type": "string",
+            "nullable": true
+          },
+          "mapImageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "maxAnswers": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ListeningQuestion"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ListeningTest": {
         "required": [
           "title"
         ],
         "type": "object",
         "properties": {
-          "testId": {
-            "type": "integer",
-            "format": "int32"
+          "id": {
+            "type": "string",
+            "nullable": true
           },
           "title": {
             "minLength": 1,
             "type": "string"
+          },
+          "subTitle": {
+            "type": "string",
+            "nullable": true
           },
           "testType": {
             "type": "string",
@@ -1988,19 +2119,11 @@
             "type": "string",
             "nullable": true
           },
-          "questionRange": {
-            "type": "string",
-            "nullable": true
-          },
           "imageUrl": {
             "type": "string",
             "nullable": true
           },
-          "subTitle": {
-            "type": "string",
-            "nullable": true
-          },
-          "button": {
+          "questionRange": {
             "type": "string",
             "nullable": true
           },
@@ -2008,16 +2131,63 @@
             "type": "integer",
             "format": "int32"
           },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
           "parts": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ListeningPart"
             },
             "nullable": true
-          },
-          "jsonFileUrl": {
+          }
+        },
+        "additionalProperties": false
+      },
+      "ListeningTestResult": {
+        "type": "object",
+        "properties": {
+          "id": {
             "type": "string",
             "nullable": true
+          },
+          "takenDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "finishDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "score": {
+            "type": "number",
+            "format": "double"
+          },
+          "isCompleted": {
+            "type": "boolean"
+          },
+          "skill": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "testId": {
+            "type": "string",
+            "nullable": true
+          },
+          "listeningTest": {
+            "$ref": "#/components/schemas/ListeningTest"
           }
         },
         "additionalProperties": false
@@ -2071,6 +2241,31 @@
             "maxLength": 500,
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NotificationDto": {
+        "type": "object",
+        "properties": {
+          "submissionId": {
+            "type": "string",
+            "nullable": true
+          },
+          "testTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "score": {
+            "type": "number",
+            "format": "double"
+          },
+          "gradedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isRead": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -2614,6 +2809,13 @@
               "$ref": "#/components/schemas/ReadingTestResult"
             },
             "nullable": true
+          },
+          "listeningResults": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ListeningTestResult"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2777,6 +2979,9 @@
           },
           "result": {
             "$ref": "#/components/schemas/WritingResult"
+          },
+          "isRead": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -2805,6 +3010,10 @@
             "format": "date-time"
           },
           "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrl": {
             "type": "string",
             "nullable": true
           }

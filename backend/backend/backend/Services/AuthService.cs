@@ -59,11 +59,11 @@ namespace backend.Services
         public async Task<TokenResponseDto?> LoginAsync(UserDto request)
         {
             var user = await context.Users.FirstOrDefaultAsync(u => u.UserName == request.UserName);
-
             if (user is null)
             {
                 return null;
             }
+            if(user.IsActive == false) { return null; }
             if (new PasswordHasher<User>().VerifyHashedPassword(user, user.PasswordHash, request.Password)
                 == PasswordVerificationResult.Failed)
             {
@@ -138,7 +138,7 @@ namespace backend.Services
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Role, user.Role)
-
+                
             };
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(configuration.GetValue<string>("AppSettings:Token")!));
@@ -212,7 +212,5 @@ namespace backend.Services
             await context.SaveChangesAsync();
             return true;
         }
-
-       
     }
 }

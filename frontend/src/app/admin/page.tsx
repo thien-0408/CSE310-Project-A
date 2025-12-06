@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Shield,
   Users,
@@ -8,9 +8,16 @@ import {
   UserPlus,
   Plus,
   Trash2,
-  Bell,
   UserMinus,
 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,15 +27,17 @@ import {
 import { TbLivePhoto } from "react-icons/tb";
 import { LiaBanSolid } from "react-icons/lia";
 import { GoAlertFill } from "react-icons/go";
-import Image from "next/image";
 import { IoLogOut } from "react-icons/io5";
 import CreateReadingTest from "../add-reading/page";
 import AdminTestManager from "../manage-test/page";
 import { useToast } from "@/components/ui/ToastNotification";
 import AdminWritingGrading from "@/components/ui/WritingManagement";
 import { FaPenAlt } from "react-icons/fa";
-import { Button } from "@/components/ui/button";
 import CreateWritingTest from "@/components/ui/AddWritingTest";
+import AdminDailyManager from "../grading/page";
+import { Button } from "@/components/ui/button";
+import CreateListeningTest from "../add-lis/page";
+
 //---------------------------------------
 interface User {
   id: string;
@@ -36,55 +45,15 @@ interface User {
   userRole: "User" | "Admin";
   isActived: boolean;
 }
-interface ConfirmModalProps {
+
+// Interface cho state quản lý confirm dialog
+interface ConfirmState {
   message: string;
   onConfirm: () => void;
   onCancel: () => void;
   isVisible: boolean;
 }
-//-------------------------------------------------
-//Confirm modal
-const ConfirmModal: React.FC<ConfirmModalProps> = ({
-  message,
-  onConfirm,
-  onCancel,
-  isVisible,
-}) => {
-  if (!isVisible) return null;
-  return (
-    <div
-      data-aos="fade"
-      data-aos-duration="300"
-      className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-md z-50"
-    >
-      <div className="bg-white rounded-2xl px-8 py-8 max-w-md w-full shadow-2xl border border-gray-200">
-        <div className="flex flex-col items-center justify-center gap-5 border-b-2 border-gray-300 pb-2 ">
-          <div className="p-4 bg-red-500 rounded-full">
-            <GoAlertFill className="text-4xl text-white" />
-          </div>
-          <p className="font-semibold text-lg text-gray-600">Are you sure?</p>
-        </div>
-        <p className="text-center text-gray-700 mb-6 text-lg mt-5">{message}</p>
-        <div className="flex justify-center gap-4">
-          <button
-            className="px-6 py-3 rounded-3xl bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 border-2 border-gray-500"
-            onClick={onCancel}
-          >
-            Cancel
-          </button>
 
-
-          <button
-            className="px-6 py-3 rounded-3xl bg-red-500 text-white font-medium hover:bg-red-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-            onClick={onConfirm}
-          >
-            Confirm
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
 //-----------------------------------------------
 // --- ADD TEST TAB ---
 
@@ -107,13 +76,13 @@ const AdminDashboard = () => {
   const [addUserRole, setAddUserRole] = useState<string>("");
   const [isAddUserLoading, setIsAddUserLoading] = useState<boolean>(false);
 
-  const [confirmModal, setConfirmModal] = useState<ConfirmModalProps>({
+  // State quản lý Dialog Confirm
+  const [confirmModal, setConfirmModal] = useState<ConfirmState>({
     isVisible: false,
     message: "",
     onConfirm: () => {},
     onCancel: () => {},
   });
-  // ... (System Config State - Keeping as placeholder)
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 800);
@@ -121,6 +90,7 @@ const AdminDashboard = () => {
   }, []);
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5151";
+  
   //Get user array
   const getAllUsers: string = `${apiUrl}/api/Admin/fetch-users`;
   const fetchUsers = async () => {
@@ -140,12 +110,12 @@ const AdminDashboard = () => {
       }
 
       const userData: User[] = await response.json();
-      console.log(userData);
       setUsers(userData);
-    } catch (err) {
+    } catch {
       showToast("Error fetching users", "error");
     }
   };
+
   const createAccount: string = `${apiUrl}/api/Admin/create-account`;
   const createUser = async (userData: {
     username: string;
@@ -182,74 +152,55 @@ const AdminDashboard = () => {
 
   //Deactivate user
   const handleDeactivateUser = async (userName: string) => {
-    setConfirmModal({
-      isVisible: true,
-      message: `Deactivate user ${userName}?`,
-      onConfirm: async () => {
-        try {
-          const token = localStorage.getItem("accessToken");
-
-          const response = await fetch(
-            `http://localhost:5151/api/Admin/deactivate-user/${userName}/`,
-            {
-              method: "PATCH",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          showToast(`User ${userName} deactivated successfully`, "success");
-          if (!response.ok) {
-            showToast(`Error deactivating user ${userName}`, "error");
-            const error = await response.text();
-            throw new Error(error || "Failed to deactivate User");
-          }
-          fetchUsers();
-          setConfirmModal((prev) => ({ ...prev, isVisible: false }));
-        } catch (error) {
-          console.error(error);
+    try {
+      const token = localStorage.getItem("accessToken");
+      const response = await fetch(
+        `http://localhost:5151/api/Admin/deactivate-user/${userName}/`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
-      },
-      onCancel: () =>
-        setConfirmModal((prev) => ({ ...prev, isVisible: false })),
-    });
+      );
+      showToast(`User ${userName} deactivated successfully`, "success");
+      if (!response.ok) {
+        showToast(`Error deactivating user ${userName}`, "error");
+        const error = await response.text();
+        throw new Error(error || "Failed to deactivate User");
+      }
+      fetchUsers();
+      setConfirmModal((prev) => ({ ...prev, isVisible: false }));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   //Activate user
   const handleActivateUser = async (userName: string) => {
-    setConfirmModal({
-      isVisible: true,
-      message: `Activate user ${userName}?`,
-      onConfirm: async () => {
-        try {
-          const token = localStorage.getItem("accessToken");
-          const response = await fetch(
-            `http://localhost:5151/api/Admin/activate-user/${userName}/`,
-            {
-              method: "PATCH",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          if (!response.ok) {
-            showToast(`Error activating user ${userName}`, "error");
-            const error = await response.text();
-            throw new Error(error || "Failed to activate User");
-          }
-          showToast(`User ${userName} activated successfully`, "success");
-          fetchUsers(); //fetch again to render
-        } catch (error) {
-          console.error(error);
-        } finally {
-          setConfirmModal((prev) => ({ ...prev, isVisible: false }));
+    try {
+      const token = localStorage.getItem("accessToken");
+      const response = await fetch(
+        `http://localhost:5151/api/Admin/activate-user/${userName}/`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
-      },
-      onCancel: () =>
-        setConfirmModal((prev) => ({ ...prev, isVisible: false })),
-    });
+      );
+      if (!response.ok) {
+        showToast(`Error activating user ${userName}`, "error");
+        const error = await response.text();
+        throw new Error(error || "Failed to activate User");
+      }
+      showToast(`User ${userName} activated successfully`, "success");
+      fetchUsers(); //fetch again to render
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   //Logout and remove token
@@ -267,7 +218,7 @@ const AdminDashboard = () => {
                 Authorization: `Bearer ${token}`,
               },
             });
-          } catch (error) {
+          } catch {
             console.error("There're something wrong");
           }
         }
@@ -286,7 +237,7 @@ const AdminDashboard = () => {
 
     setConfirmModal({
       isVisible: true,
-      message: `This action cannot be undone. This will permanently remove "${userToRemove.userName}"`,
+      message: `This action cannot be undone. This will permanently remove user "${userToRemove.userName}"`,
       onConfirm: async () => {
         try {
           const token = localStorage.getItem("accessToken");
@@ -313,7 +264,7 @@ const AdminDashboard = () => {
             `User ${userToRemove.userName} deleted successfully`,
             "success"
           );
-        } catch (error) {
+        } catch {
           showToast(`Error deleting user`, "error");
         } finally {
           setConfirmModal((prev) => ({ ...prev, isVisible: false }));
@@ -359,7 +310,7 @@ const AdminDashboard = () => {
       setAddUserRole("");
 
       showToast(`User ${addUserName} created successfully!`, "success");
-    } catch (error) {
+    } catch {
       showToast(`Error creating user: error`, "error");
     } finally {
     }
@@ -372,6 +323,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchUsers();
   }, []);
+
   const handleToggleUserStatus = (userName: string) => {
     const triggeredUser = users.find((user) => user.userName === userName);
     if (!triggeredUser) return;
@@ -382,6 +334,7 @@ const AdminDashboard = () => {
       handleActivateUser(userName);
     }
   };
+  
   // ----------------------------------------------------------------
   const renderContent = () => {
     switch (activeTab) {
@@ -442,7 +395,7 @@ const AdminDashboard = () => {
                 </div>
               </div>
             </div>
-
+            <AdminDailyManager></AdminDailyManager>
             <AdminTestManager></AdminTestManager>
           </>
         );
@@ -506,12 +459,7 @@ const AdminDashboard = () => {
                 </button>
               </form>
             </div>
-            <ConfirmModal
-              isVisible={confirmModal.isVisible}
-              message={confirmModal.message}
-              onConfirm={confirmModal.onConfirm}
-              onCancel={confirmModal.onCancel}
-            />
+            
             {/* Simple Table placeholder */}
             <div className="p-6">
               <table className="w-full border-collapse">
@@ -621,10 +569,12 @@ const AdminDashboard = () => {
       // --- ADD TEST ---
       case "add-test":
         return <AddTestTab />;
+      case "add-lis":
+        return <CreateListeningTest></CreateListeningTest>
       case "grading":
         return <AdminWritingGrading></AdminWritingGrading>;
       case "add-writing":
-        return <CreateWritingTest/>
+        return <CreateWritingTest />;
       case "settings":
         return (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -646,30 +596,55 @@ const AdminDashboard = () => {
   // Left sidebar
   return (
     <>
-      <ConfirmModal
-        isVisible={confirmModal.isVisible}
-        message={confirmModal.message}
-        onConfirm={confirmModal.onConfirm}
-        onCancel={confirmModal.onCancel}
-      />
+      {/* GLOBAL CONFIRM DIALOG */}
+      <Dialog 
+        open={confirmModal.isVisible} 
+        onOpenChange={(open) => {
+          if (!open) confirmModal.onCancel();
+        }}
+      >
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-red-100 rounded-full">
+                <GoAlertFill className="text-xl text-red-600" />
+              </div>
+              <div>
+                <DialogTitle>Are you sure?</DialogTitle>
+                <DialogDescription className="mt-1">
+                  {confirmModal.message}
+                </DialogDescription>
+              </div>
+            </div>
+          </DialogHeader>
+          <DialogFooter className="mt-4 gap-2 sm:gap-0">
+            <Button variant="outline" onClick={confirmModal.onCancel}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={confirmModal.onConfirm}>
+              Confirm
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <div className="min-h-screen bg-gray-50 flex font-sans text-gray-900">
         {/* Sidebar */}
         <aside className="w-72 bg-white border-r border-gray-200 fixed h-full z-10 transition-all duration-300 hidden lg:block">
           <div className="p-6 flex items-center gap-3 border-b border-gray-100">
             <div className="h-10 flex items-center justify-center rounded-full bg-indigo-100 text-indigo-600 font-bold">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger>
-                        <span className="p-4">A</span>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        <DropdownMenuItem onClick={handleLogout}>
-                          <IoLogOut />
-                          Log out
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <span className="p-4">A</span>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem onClick={handleLogout}>
+                    <IoLogOut />
+                    Log out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
             <div>
               <h1 className="text-md font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
                 Admin Dashboard
@@ -754,6 +729,26 @@ const AdminDashboard = () => {
                 }
               />
               Add Writing Test
+            </button>
+
+            {/* Add Listening Button*/}
+            <button
+              onClick={() => setActiveTab("add-lis")}
+              className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 group ${
+                activeTab === "add-lis"
+                  ? "bg-blue-50 text-blue-600 font-semibold shadow-sm"
+                  : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+              }`}
+            >
+              <Plus
+                size={20}
+                className={
+                  activeTab === "add-lis"
+                    ? "text-blue-600"
+                    : "text-gray-400 group-hover:text-gray-600"
+                }
+              />
+              Add Listening Test
             </button>
 
             {/* Grading test*/}

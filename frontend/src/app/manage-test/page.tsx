@@ -31,6 +31,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
+import { FaPen } from "react-icons/fa";
 
 interface TestSummaryDto {
   testId: string;
@@ -209,6 +210,8 @@ export default function AdminTestManager() {
       return <BookOpen className="w-4 h-4 mr-1" />;
     if (skill.toLowerCase() === "listening")
       return <Headphones className="w-4 h-4 mr-1" />;
+    if (skill.toLowerCase() === "writing")
+      return <FaPen className="w-4 h-4 mr-1" />
     return null;
   };
 
@@ -217,6 +220,8 @@ export default function AdminTestManager() {
       return "bg-green-100 text-green-700 hover:bg-green-200 border-green-200";
     if (skill.toLowerCase() === "listening")
       return "bg-blue-100 text-blue-700 hover:bg-blue-200 border-blue-200";
+    if (skill.toLowerCase() === "writing")
+      return "bg-yellow-100 text-yellow-700 hover:bg-blue-200 border-blue-200";
     return "bg-gray-100 text-gray-700";
   };
 

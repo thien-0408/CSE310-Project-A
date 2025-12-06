@@ -1,143 +1,154 @@
-'use client';
+"use client";
 import React, { useEffect, useState } from "react";
-import { DiagramStep } from "@/types/listening";
-
+import Image from "next/image";
+import { ListeningQuestion, ListeningOption } from "@/types/listening";
 
 interface Props {
-  sectionId: number;
+  sectionId: string; // GUID
   title: string;
   instruction: string;
-  wordLimit: string;
-  options?: Array<{ key: string; text: string }>; // For matching from list
-  steps: DiagramStep[];
-  onAnswerChange?: (sectionId: number, questionId: number, answer: string) => void;
+  mapImageUrl?: string | null; // Diagram có thể là ảnh
+  options?: ListeningOption[]; 
+  questions: ListeningQuestion[]; // Danh sách các bước/câu hỏi trong diagram
+  onAnswerChange?: (questionId: string, answer: string) => void;
 }
 
 const ListeningDiagramLabeling: React.FC<Props> = ({
   sectionId,
   title,
   instruction,
-  wordLimit,
+  mapImageUrl,
   options,
-  steps,
+  questions,
   onAnswerChange,
 }) => {
-  const [answers, setAnswers] = useState<Record<number, string>>({});
+  const [answers, setAnswers] = useState<Record<string, string>>({});
 
-  // Load từ localStorage
   useEffect(() => {
     const storageKey = `listening-diagram-${sectionId}`;
-    const saved = localStorage.getItem(storageKey);
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      setAnswers(parsed);
-      Object.entries(parsed).forEach(([qId, answer]) => {
-        if (onAnswerChange) {
-          onAnswerChange(sectionId, parseInt(qId), answer as string);
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          setAnswers(parsed);
+          Object.entries(parsed).forEach(([qId, val]) => {
+            if (onAnswerChange) onAnswerChange(qId, val as string);
+          });
+        } catch (e) {
+          console.error(e);
         }
-      });
+      }
     }
   }, [sectionId]);
 
-  const handleChange = (stepId: number, value: string) => {
-    const updated = { ...answers, [stepId]: value };
+  const handleChange = (questionId: string, value: string) => {
+    const updated = { ...answers, [questionId]: value };
     setAnswers(updated);
     
-    const storageKey = `listening-diagram-${sectionId}`;
-    localStorage.setItem(storageKey, JSON.stringify(updated));
-    
+    localStorage.setItem(`listening-diagram-${sectionId}`, JSON.stringify(updated));
     if (onAnswerChange) {
-      onAnswerChange(sectionId, stepId, value);
+      onAnswerChange(questionId, value);
     }
   };
 
   return (
-    <div className="p-6 mb-6 bg-white border border-gray-200 rounded-lg">
+    <div className="p-6 mb-6 bg-white border border-gray-200 rounded-lg shadow-sm">
       {/* Header */}
-      <div className="mb-4">
-        <h3 className="text-lg font-bold text-gray-800 mb-2">{title}</h3>
-        <p className="text-gray-700 mb-2">{instruction}</p>
-        <p className="text-sm font-medium">
-          Choose <span className="font-bold">FIVE</span> letters from{" "}
-          <span className="text-red-600 font-bold">{wordLimit}</span>, next to questions.
-        </p>
+      <div className="mb-4 text-center">
+        <h3 className="text-xl font-bold text-gray-800 mb-2">{title}</h3>
+        <p className="text-gray-600 text-sm">{instruction}</p>
       </div>
 
-      {/* Options List (if provided) */}
+      {/* Optional: Diagram Image */}
+      {mapImageUrl && (
+         <div className="mb-6 flex justify-center">
+            <div className="relative w-full max-w-xl h-64 border border-gray-100 rounded">
+               <Image 
+                  src={mapImageUrl.startsWith("http") ? mapImageUrl : `http://localhost:5151${mapImageUrl}`}
+                  alt="Diagram"
+                  fill
+                  className="object-contain"
+               />
+            </div>
+         </div>
+      )}
+
+      {/* Options Box (If matching) */}
       {options && options.length > 0 && (
-        <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div className="mb-8 mx-auto max-w-3xl bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {options.map((option) => (
-              <div key={option.key} className="flex items-start gap-2">
-                <span className="font-bold text-blue-700">{option.key}</span>
-                <span className="text-gray-800">{option.text}</span>
+              <div key={option.id} className="flex items-center gap-2 bg-white px-2 py-1.5 rounded border border-blue-100 shadow-sm">
+                <span className="font-bold text-blue-700 bg-blue-100 px-1.5 rounded text-xs">{option.key}</span>
+                <span className="text-sm text-gray-700 truncate" title={option.text}>{option.text}</span>
               </div>
             ))}
           </div>
         </div>
       )}
 
-      {/* Diagram/Flowchart */}
-      <div className="bg-gray-50 p-6 rounded-lg border-2 border-gray-300">
-        <h4 className="text-center font-bold text-gray-800 mb-6">{title}</h4>
-        
-        <div className="space-y-4 max-w-2xl mx-auto">
-          {steps.map((step, index) => (
-            <React.Fragment key={step.id}>
-              {/* Step */}
-              <div className="bg-white p-4 rounded-lg border-2 border-gray-300 shadow-sm">
-                <div className="flex items-center gap-3">
-                  {/* Question number */}
-                  <div className="flex items-center justify-center w-10 h-10 bg-blue-500 text-white rounded-full text-sm font-bold flex-shrink-0">
-                    {step.id}
-                  </div>
-                  
-                  {/* Text and input */}
-                  <div className="flex-1">
-                    {options ? (
-                      // Dropdown for matching
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-gray-800">{step.text}</span>
+      {/* Flowchart Layout */}
+      <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 max-w-2xl mx-auto">
+        <div className="space-y-2 relative">
+          
+          {/* Vertical Line Connector (Background) */}
+          <div className="absolute left-[27px] top-4 bottom-4 w-0.5 bg-gray-300 z-0 hidden sm:block"></div>
+
+          {questions.map((q, index) => (
+            <div key={q.id} className="relative z-10">
+              <div className="bg-white p-4 rounded-lg border-2 border-gray-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center gap-4 transition-all hover:border-blue-300">
+                
+                {/* Number */}
+                <div className="flex items-center justify-center w-10 h-10 bg-blue-600 text-white rounded-full text-sm font-bold flex-shrink-0 shadow-md">
+                  {q.questionNumber}
+                </div>
+                
+                {/* Content */}
+                <div className="flex-1 w-full">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="text-gray-800 font-medium">{q.questionText}</span>
+                    
+                    {/* Input Area */}
+                    <div className="flex-1 min-w-[150px]">
+                      {options && options.length > 0 ? (
                         <select
-                          value={answers[step.id] || ""}
-                          onChange={(e) => handleChange(step.id, e.target.value)}
-                          className="px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                          value={answers[q.id] || ""}
+                          onChange={(e) => handleChange(q.id, e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 outline-none text-sm bg-gray-50"
                         >
-                          <option value="">Select</option>
+                          <option value="">Select...</option>
                           {options.map((opt) => (
-                            <option key={opt.key} value={opt.key}>
-                              {opt.key}
-                            </option>
+                            <option key={opt.id} value={opt.key}>{opt.key}</option>
                           ))}
                         </select>
-                      </div>
-                    ) : (
-                      // Text input
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-gray-800">{step.text}</span>
+                      ) : (
                         <input
                           type="text"
-                          value={answers[step.id] || ""}
-                          onChange={(e) => handleChange(step.id, e.target.value)}
-                          className="flex-1 min-w-[200px] px-3 py-2 border-b-2 border-gray-400 focus:outline-none focus:border-blue-500"
-                          placeholder="Type answer..."
+                          value={answers[q.id] || ""}
+                          onChange={(e) => handleChange(q.id, e.target.value)}
+                          className="w-full border-b-2 border-gray-300 focus:border-blue-600 outline-none px-2 py-1 text-blue-800 font-semibold bg-transparent transition-colors"
+                          placeholder="Answer..."
                         />
-                      </div>
-                    )}
-                    {step.wordLimit && (
-                      <p className="text-xs text-gray-500 mt-1">{step.wordLimit}</p>
-                    )}
+                      )}
+                    </div>
                   </div>
+                  
+                  {q.wordLimit && (
+                    <p className="text-[10px] text-red-500 mt-1 uppercase font-bold tracking-wide">
+                      {q.wordLimit}
+                    </p>
+                  )}
                 </div>
               </div>
 
-              {/* Arrow between steps */}
-              {index < steps.length - 1 && (
-                <div className="flex justify-baseline ml-8">
-                  <div className="text-3xl text-gray-400">↓</div>
+              {/* Arrow Down Icon (between steps) */}
+              {index < questions.length - 1 && (
+                <div className="flex justify-start sm:pl-[18px] py-2 text-gray-400">
+                  <span className="text-xl">↓</span>
                 </div>
               )}
-            </React.Fragment>
+            </div>
           ))}
         </div>
       </div>

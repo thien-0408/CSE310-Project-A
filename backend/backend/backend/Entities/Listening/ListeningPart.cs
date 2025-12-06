@@ -1,26 +1,26 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static System.Collections.Specialized.BitVector32;
 
 namespace backend.Entities.Listening
 {
     public class ListeningPart
     {
         [Key]
-        public string PartId { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string ListeningTestId { get; set; } = string.Empty;
+        [ForeignKey("ListeningTestId")]
+        public ListeningTest? ListeningTest { get; set; }
 
-        [ForeignKey(nameof(TestId))]
-        public int TestId { get; set; } //FK 
+        public int PartNumber { get; set; } // 1,2,3
 
-        public int PartNumber { get; set; } // 1, 2 , 3, 4
-        public string PartTitle { get; set; } = string.Empty;
-        public string Context { get; set; } = string.Empty;
-        public string QuestionRange { get; set; } = string.Empty; // 1- 10 
-        public string PartAudioUrl { get; set; } = string.Empty;
+        public string PartTitle { get; set; } = string.Empty; 
 
-        public virtual ListeningTest? ListeningTest { get; set; }
-        public virtual ICollection<ListeningSection> Sections { get; set; } = new List<ListeningSection>();
+        public string? Context { get; set; }
 
+        public string QuestionRange { get; set; } = string.Empty; // 1-10
 
+        public string? PartAudioUrl { get; set; } 
+
+        public ICollection<ListeningSection> Sections { get; set; } = new List<ListeningSection>();
     }
 }

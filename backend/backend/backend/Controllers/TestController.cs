@@ -46,18 +46,18 @@ namespace backend.Controllers
 
             var listeningQuery = _context.ListeningTests.Select(t => new TestSummaryDto
             {
-                TestId = t.TestId.ToString(),
+                TestId = t.Id.ToString(),
                 Title = t.Title,
                 TestType = t.TestType,
                 Skill = "listening",
                 ImageUrl = t.ImageUrl,
                 SubTitle = t.SubTitle ?? "",
                 Button = "Try Now",
-                TestTaken = 150000
+                TestTaken = GetRandomNumber(),
             });
 
             var allTests = await readingQuery
-                        .Concat(writingQuery) 
+                        .Concat(writingQuery).Concat(listeningQuery) 
                         .ToListAsync();
             return Ok(allTests);
         }
@@ -72,20 +72,19 @@ namespace backend.Controllers
                 await _context.SaveChangesAsync();
                 return Ok("Reading test deleted successfully");
             }
-
-            var listeningTest = await _context.ListeningTests.FindAsync(testId.ToString());
-            if (listeningTest != null)
-            {
-                _context.ListeningTests.Remove(listeningTest);
-                await _context.SaveChangesAsync();
-                return Ok("Listening test deleted successfully");
-            }
             var writingTest = await _context.WritingTests.FindAsync(testId.ToString());
             if (writingTest != null)
             {
                 _context.WritingTests.Remove(writingTest);
                 await _context.SaveChangesAsync();
                 return Ok("Writing test deleted successfully");
+            }
+            var listeningTest = await _context.ListeningTests.FindAsync(testId.ToString());
+            if (listeningTest != null)
+            {
+                _context.ListeningTests.Remove(listeningTest);
+                await _context.SaveChangesAsync();
+                return Ok("Listening test deleted successfully");
             }
             return NotFound("Test not found");
         }

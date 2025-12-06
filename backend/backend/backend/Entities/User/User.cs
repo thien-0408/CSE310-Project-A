@@ -11,5 +11,6 @@
         public Profile Profile { get; set; } = null!; //User's profile
         public bool IsActive { get; set; } = true;
         public virtual ICollection<ReadingTestResult> Results { get; set; } = new List<ReadingTestResult>();
+        public virtual ICollection<ListeningTestResult> ListeningResults { get; set; } = new List<ListeningTestResult>();
     }
 }

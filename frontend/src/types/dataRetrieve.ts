@@ -15,3 +15,17 @@ export interface MilestoneResponse {
   eventDetail: string;
   userId: string;
 }
+export interface DailyWord {
+  id: string;
+  word: string;
+  phonetic: string;
+  type: string; 
+  definition: string;
+  example: string;
+}
+export interface DailyTip {
+  id: string;
+  title: string;
+  content: string;
+  category: "Grammar" | "Vocabulary" | "Exam Tip";
+}

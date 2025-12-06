@@ -65,9 +65,10 @@ namespace backend.Controllers
         public async Task<ActionResult<string>> Login(UserDto request)
         {
             var token = await authService.LoginAsync(request);
+            
             if (token is null)
             {
-                return BadRequest("Invalid Username or Password");
+                return BadRequest("Invalid Username or Password or Account has been banned");
             }
             return Ok(token);
         }

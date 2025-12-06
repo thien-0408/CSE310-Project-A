@@ -1,5 +1,6 @@
 ﻿using backend.Entities;
 using backend.Entities.Listening;
+using backend.Entities.Notification;
 using backend.Entities.Reading;
 using backend.Entities.User;
 using backend.Entities.Writing;
@@ -16,12 +17,13 @@ namespace backend.Data
         //--------------------------------------------------------------------------
         //Listening
         public DbSet<ListeningTest> ListeningTests { get; set; }
-        public DbSet<ListeningSection> ListeningSections { get; set; }
+        public DbSet<ListeningTestResult> ListeningTestResults { get; set; }
         public DbSet<ListeningPart> ListeningParts { get; set; }
+        public DbSet<ListeningSection> ListeningSections { get; set; }
         public DbSet<ListeningQuestion> ListeningQuestions { get; set; }
-        public DbSet<ListeningOption> ListeningOptionChoices { get; set; }
+        public DbSet<ListeningOption> ListeningOptions { get; set; }
         public DbSet<ListeningAnswer> ListeningAnswers { get; set; }
-        public DbSet<ReadingTestResult> ReadingTestResults { get; set; } 
+        
         //--------------------------------------------------------------------------
         //Reading
         public DbSet<ReadingTest> ReadingTests { get; set; }
@@ -30,6 +32,7 @@ namespace backend.Data
         public DbSet<ReadingQuestion> ReadingQuestions { get; set; }
         public DbSet<SectionOption> SectionOptions { get; set; }
         public DbSet<QuestionOption> QuestionOptions { get; set; }
+        public DbSet<ReadingTestResult> ReadingTestResults { get; set; }
 
         //--------------------------------------------------------------------------
         //Writing
@@ -37,18 +40,29 @@ namespace backend.Data
         public DbSet<WritingSubmission> WritingSubmissions { get; set; }
         public DbSet<WritingResult> WritingResults { get; set; }
 
+        //--------------------------------------------------------------------------
+        //Notifications
+        public DbSet<DailyTip> DailyTips { get; set; } 
+        public DbSet<DailyWord> DailyWords { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ListeningTest>()
-                .HasMany(t => t.Parts)
-                .WithOne(p => p.ListeningTest)
-                .HasForeignKey(p => p.TestId)
+            modelBuilder.Entity<ListeningPart>()
+              .HasOne(p => p.ListeningTest)
+              .WithMany(t => t.Parts)
+              .HasForeignKey(p => p.ListeningTestId)
+              .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ListeningSection>()
+                .HasOne(s => s.ListeningPart)
+                .WithMany(p => p.Sections)
+                .HasForeignKey(s => s.ListeningPartId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-           modelBuilder.Entity<ReadingPart>()
+            modelBuilder.Entity<ReadingPart>()
                 .HasMany(p => p.Sections)
                 .WithOne(s => s.Part)
                 .HasForeignKey(s => s.PartId)
@@ -59,11 +73,15 @@ namespace backend.Data
                 .WithOne(q => q.Section)
                 .HasForeignKey(q => q.SectionId)
                 .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<WritingSubmission>()
                 .HasOne(s => s.Result) 
                 .WithOne(r => r.Submission) 
                 .HasForeignKey<WritingResult>(r => r.SubmissionId) 
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<DailyTip>().HasKey(x => x.Id);
+            modelBuilder.Entity<DailyWord>().HasKey(x => x.Id);
         }
     }
 }

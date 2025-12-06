@@ -10,6 +10,7 @@ import FooterUser from "@/components/ui/footeruser";
 import ScrollTop from "@/components/ui/scroll-top";
 import AuthGuard from "@/components/auth/AuthGuard";
 import { CreateMilestoneDto } from "@/types/createDto"; 
+import { DailyTip, DailyWord } from "@/types/dataRetrieve";
 import {
   Plus,
   Calendar,
@@ -27,36 +28,6 @@ import { MilestoneResponse } from "@/types/dataRetrieve";
 // --- Interfaces ---
 
 
-interface DailyWord {
-  id: string;
-  word: string;
-  phonetic: string;
-  type: string; 
-  definition: string;
-  example: string;
-}
-interface DailyTip {
-  id: string;
-  title: string;
-  content: string;
-  category: "Grammar" | "Vocabulary" | "Exam Tip";
-}
-const mockDailyWords: DailyWord = 
-  {
-    id: "1",
-    word: "Ubiquitous",
-    phonetic: "/juːˈbɪk.wɪ.təs/",
-    type: "adjective",
-    definition: "Present, appearing, or found everywhere.",
-    example: "The mobile phone, that most ubiquitous of consumer-electronic appliances, is about to enter a new age.",
-  }
-;
-const mockDailyTip: DailyTip = {
-  id: "101",
-  category: "Grammar",
-  title: "Passive Voice in Reporting",
-  content: "Use passive voice (e.g., 'It is believed that...') in Writing Task 2 to sound more objective and academic."
-};
 
 const modules = [
   {
@@ -263,11 +234,42 @@ export default function UserDashBoard() {
     }
   }
 
-  // New function to fetch Daily Content
+  // function to fetch Daily word
   async function fetchDailyContent(token: string) {
-   //add later
-    setDailyWord(mockDailyWords);
-    setDailyTip(mockDailyTip);
+   try{
+    const response = await fetch(`${apiUrl}/api/user/daily-word`,{
+      headers : {
+        "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+      },
+    });
+    if(response.ok){
+      const data : DailyWord = await response.json();
+      setDailyWord(data);
+    }
+   }
+   catch{
+    console.error("Error");
+   }
+  }
+
+  // function to get daily tip
+  async function fetchDailyTip(token: string){
+   try{
+    const response = await fetch(`${apiUrl}/api/user/daily-tip`,{
+      headers : {
+        "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+      },
+    });
+    if(response.ok){
+      const data : DailyTip = await response.json();
+      setDailyTip(data);
+    }
+   }
+   catch{
+    console.error("Error");
+   }
   }
 
   async function createMilestone() {
@@ -314,7 +316,8 @@ export default function UserDashBoard() {
       if (userProfile) setProfile(userProfile);
       
       await fetchMilestones(token);
-      await fetchDailyContent(token); // Load the new WOTD
+      await fetchDailyContent(token);
+      await fetchDailyTip(token);
 
       try {
         const historyRes = await fetch(`${apiUrl}/api/user/test-history`, {
@@ -378,14 +381,7 @@ export default function UserDashBoard() {
                   >
                     <Link href="/tests">Start Practicing</Link>
                   </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="lg"
-                    className="rounded-full border-gray-300 hover:bg-gray-50 text-gray-700"
-                  >
-                    <Link href="/analytics">View Reports</Link>
-                  </Button>
+                  
                 </div>
               </div>
               <div className="relative h-[300px] w-full hidden lg:block">
@@ -443,13 +439,12 @@ export default function UserDashBoard() {
             </div>
           </section>
 
-          {/* 3. NEW: Daily Knowledge Section (Replaces Charts/History) */}
           <section
             data-aos="fade-up"
             data-aos-duration="500"
             className="grid grid-cols-1 lg:grid-cols-3 gap-8"
           >
-            {/* Left: Word of the Day (Takes 2/3 space) */}
+            {/* Left: Word of the Day*/}
             <div className="lg:col-span-2">
               <Card className="border-none shadow-md h-full bg-gradient-to-br from-indigo-600 to-violet-700 text-white overflow-hidden relative">
                  {/* Decorative Background */}
@@ -467,12 +462,12 @@ export default function UserDashBoard() {
                                  <span className="text-xs font-bold uppercase tracking-widest">Word of the Day</span>
                               </div>
                               <h2 className="text-4xl md:text-5xl font-serif font-bold mb-2 tracking-wide">
-                                 {dailyWord.word}
+                                 {dailyWord.word || ""}
                               </h2>
                               <div className="flex items-center gap-3 text-indigo-200">
-                                 <span className="text-lg italic">{dailyWord.phonetic}</span>
+                                 <span className="text-lg italic">{dailyWord.phonetic || ""}</span>
                                  <span className="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
-                                 <span className="italic">{dailyWord.type}</span>
+                                 <span className="italic">{dailyWord.type || ""}</span>
                                  <button className="p-2 hover:bg-white/10 rounded-full transition-colors" aria-label="Play pronunciation">
                                     <Volume2 className="w-5 h-5" />
                                  </button>
@@ -483,12 +478,12 @@ export default function UserDashBoard() {
                         <div className="mt-8 space-y-6">
                            <div>
                               <p className="text-lg md:text-xl font-medium leading-relaxed text-indigo-50">
-                                 {dailyWord.definition}
+                                 {dailyWord.definition || ""}
                               </p>
                            </div>
                            <div className="bg-white/10 p-4 rounded-xl border border-white/10">
                               <p className="text-indigo-100 italic">
-                                 &quot;{dailyWord.example}&quot;
+                                 &quot;{dailyWord.example || ""}&quot;
                               </p>
                            </div>
                         </div>
@@ -732,7 +727,7 @@ export default function UserDashBoard() {
               <Button
                 onClick={createMilestone}
                 disabled={isSubmitting}
-                className="flex-1 bg-blue-500 text-white hover:bg-blue-700 text-white"
+                className="flex-1 bg-blue-500 text-white hover:bg-blue-700"
               >
                 {isSubmitting ? "Saving..." : "Save Event"}
               </Button>

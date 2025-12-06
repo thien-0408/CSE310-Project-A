@@ -1,5 +1,4 @@
-﻿using backend.Entities.Listening;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend.Entities.Listening
@@ -7,17 +6,12 @@ namespace backend.Entities.Listening
     public class ListeningAnswer
     {
         [Key]
-        public string AnswerId { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString();
 
-        [Required]
-        public string QuestionId { get; set; }
+        public string ListeningQuestionId { get; set; } = string.Empty;
+        [ForeignKey("ListeningQuestionId")]
+        public ListeningQuestion? ListeningQuestion { get; set; }
 
-        [Required]
-        [MaxLength(500)]
-        public string AnswerText { get; set; } = string.Empty;
-
-        // Foreign key
-        [ForeignKey(nameof(QuestionId))]
-        public virtual ListeningQuestion Question { get; set; }
+        public string AnswerText { get; set; } = string.Empty; // Correct answer
     }
 }

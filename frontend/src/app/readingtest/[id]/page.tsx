@@ -271,7 +271,6 @@ export default function ReadingTest() {
   const handleSubmit = async () => {
     // 1. Calculate Score Client-side
     if (readingData) {
-        // Hàm tính điểm (đã có ở trên)
         const resultStats = calculateReadingScore(readingData.sections, userAnswers);
         console.log("Calculated Accuracy:", resultStats.accuracy); // Log để debug
 

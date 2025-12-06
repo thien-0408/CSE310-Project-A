@@ -1,62 +1,63 @@
-'use client';
+"use client";
 import React, { useEffect, useState } from "react";
 
+// Định nghĩa Type cho Option object từ API
+interface ListeningOption {
+  id?: string;
+  key: string;  // "A", "B", "C"
+  text: string; // Nội dung option
+}
+
 interface Props {
-  id: number;
-  question:  string | undefined;
-  options: string[];
-  instructions?: string;
-  onAnswerChange?: (answer: number | null) => void;
+  id: string; // GUID
+  questionNumber: number;
+  question: string;
+  options: ListeningOption[]; // <--- SỬA: Nhận mảng Object thay vì mảng String
+  onAnswerChange?: (questionId: string, answer: string) => void;
 }
 
 const ListeningMultipleChoice: React.FC<Props> = ({
   id,
+  questionNumber,
   question,
   options,
-  instructions,
   onAnswerChange,
 }) => {
-  const [selectedOption, setSelectedOption] = useState<number | null>(null);
+  const [selectedKey, setSelectedKey] = useState<string | null>(null);
 
-  // Load từ localStorage
+  // Load saved answer từ LocalStorage
   useEffect(() => {
     const storageKey = `listening-mc-${id}`;
-    const saved = localStorage.getItem(storageKey);
-    if (saved) {
-      const parsed = parseInt(saved);
-      setSelectedOption(parsed);
-      if (onAnswerChange) onAnswerChange(parsed);
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        setSelectedKey(saved);
+        if (onAnswerChange) onAnswerChange(id, saved);
+      }
     }
   }, [id]);
 
-  const handleSelect = (optionIndex: number) => {
-    setSelectedOption(optionIndex);
-    
-    const storageKey = `listening-mc-${id}`;
-    localStorage.setItem(storageKey, optionIndex.toString());
-    
-    if (onAnswerChange) onAnswerChange(optionIndex);
-  };
-
-  // Convert index to letter (0 -> A, 1 -> B, etc.)
-  const getOptionLetter = (index: number) => {
-    return String.fromCharCode(65 + index);
+  const handleSelect = (key: string) => {
+    setSelectedKey(key);
+    localStorage.setItem(`listening-mc-${id}`, key);
+    if (onAnswerChange) onAnswerChange(id, key);
   };
 
   return (
-    
-    <>
-    <div className="p-6 mb-4 bg-white border border-gray-200 rounded-lg">
-      <h4 className="font-bold text-gray-800 mb-4">
-        {id}. {question}
+    <div className="p-6 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+      <h4 className="font-bold text-gray-800 mb-4 flex gap-2">
+        <span className="bg-blue-600 text-white w-6 h-6 flex items-center justify-center rounded-full text-xs shrink-0">
+          {questionNumber}
+        </span>
+        <span>{question}</span>
       </h4>
 
       <div className="space-y-3">
-        {options.map((option, index) => (
+        {options.map((opt) => (
           <label
-            key={index}
+            key={opt.key} // Dùng Key "A", "B" làm unique key cho React
             className={`flex items-start gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
-              selectedOption === index
+              selectedKey === opt.key
                 ? "border-blue-500 bg-blue-50"
                 : "border-gray-200 hover:border-blue-300 hover:bg-gray-50"
             }`}
@@ -64,18 +65,19 @@ const ListeningMultipleChoice: React.FC<Props> = ({
             <input
               type="radio"
               name={`question-${id}`}
-              checked={selectedOption === index}
-              onChange={() => handleSelect(index)}
-              className="mt-1 w-4 h-4 text-blue-600 focus:ring-blue-500"
+              checked={selectedKey === opt.key}
+              onChange={() => handleSelect(opt.key)}
+              className="mt-1 w-4 h-4 text-blue-600 focus:ring-blue-500 shrink-0"
             />
-            <span className="flex-1 text-gray-700">
-              <span className="font-medium">{getOptionLetter(index)}.</span> {option}
+            <span className="flex-1 text-gray-700 text-sm">
+              <span className="font-bold mr-2">{opt.key}.</span> 
+              {/* Render opt.text (string) thay vì opt (object) */}
+              {opt.text} 
             </span>
           </label>
         ))}
       </div>
     </div>
-    </>
   );
 };
 

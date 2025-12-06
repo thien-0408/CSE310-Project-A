@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import { Plus, Trash2, Save, Image as ImageIcon, Type, Grid } from "lucide-react";
+import { FaBookOpen } from "react-icons/fa";
+import { useToast } from "@/components/ui/ToastNotification";
 
 // --- TYPES ---
 type Question = {
@@ -39,7 +41,7 @@ export default function CreateReadingTest() {
   // --- STATE ---
   const [isLoading, setIsLoading] = useState(false);
   const [title, setTitle] = useState("New Reading Test");
-  
+  const { showToast, ToastComponent } = useToast();
   // 1. ADD SUBTITLE STATE
   const [subtitle, setSubtitle] = useState(""); 
   
@@ -240,7 +242,7 @@ export default function CreateReadingTest() {
 
       if (!res.ok) throw new Error(await res.text());
       const data = await res.json();
-      alert(`Test created successfully! ID: ${data.testId}`);
+      showToast(`Test created successfully! ID: ${data.testId}`, "success");
       
     } catch (err: unknown) {
       console.error(err);
@@ -297,11 +299,11 @@ export default function CreateReadingTest() {
   return (
     <div className="min-h-screen bg-gray-50  pb-24 font-sans text-gray-800 mt-5">
       <div className=" mx-auto space-y-6">
-        
+        <ToastComponent></ToastComponent>
         {/* HEADER */}
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row justify-between items-start gap-4">
             <div className="space-y-4 flex-1 w-full">
-                <h1 className="text-2xl font-bold flex items-center gap-2"> Create Reading Test</h1>
+                <h1 className="text-2xl font-bold flex items-center gap-2"><FaBookOpen className="w-8 h-8 text-blue-500" />Create Reading Test</h1>
                 
                 {/* 3. UI FOR TITLE & SUBTITLE */}
                 <div className="space-y-2">
@@ -449,7 +451,7 @@ export default function CreateReadingTest() {
                                 {/* 4. Table Completion */}
                                 {section.questionType === 'table_completion' && (
                                     <div className="mb-4 overflow-x-auto bg-white p-2 rounded border">
-                                        <label className="text-xs font-bold text-gray-500 mb-2 block flex gap-2">
+                                        <label className="text-xs font-bold text-gray-500 mb-2  flex gap-2"> {/*block */}
                                             <Grid size={14}/> Table Structure
                                         </label>
                                         <div className="flex gap-2 mb-2">

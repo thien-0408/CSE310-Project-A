@@ -1,5 +1,6 @@
 ﻿using backend.Data;
 using backend.Entities;
+using backend.Entities.Notification;
 using backend.Entities.User;
 using backend.Models;
 using backend.Models.ReadingDto;
@@ -60,7 +61,6 @@ namespace backend.Controllers
         }
 
 
-        //Call api to take the test 
         [Authorize]
         [HttpPost("attempt-test/{id}")]
         public async Task<ActionResult<object>> AttemptTest(string id)
@@ -68,7 +68,6 @@ namespace backend.Controllers
             var userId = GetUserIdFromToken();
             if (userId == Guid.Empty) return Unauthorized();
 
-            // --- CHECK 1: Có phải READING TEST không? ---
             var readingTest = await _context.ReadingTests.FindAsync(id);
             if (readingTest != null)
             {
@@ -87,15 +86,30 @@ namespace backend.Controllers
                 _context.ReadingTestResults.Add(readingAttempt);
                 await _context.SaveChangesAsync();
 
-                return Ok(new
-                {
-                    id = readingAttempt.Id,
-                    skill = "Reading",
-                    message = "Reading attempt started"
-                });
+                return Ok(new { id = readingAttempt.Id, skill = "Reading", message = "Reading attempt started" });
             }
 
-            
+            var listeningTest = await _context.ListeningTests.FindAsync(id); 
+            if (listeningTest != null)
+            {
+                var listeningAttempt = new ListeningTestResult
+                {
+                    Id = Guid.NewGuid().ToString(), 
+                    UserId = userId,
+                    TestId = id,
+                    Skill = "Listening",
+                    IsCompleted = false,
+                    TakenDate = DateTime.UtcNow,
+                    FinishDate = DateTime.UtcNow,
+                    Title = listeningTest.Title,
+                    Score = 0
+                };
+                _context.ListeningTestResults.Add(listeningAttempt);
+                await _context.SaveChangesAsync();
+
+                return Ok(new { id = listeningAttempt.Id, skill = "Listening", message = "Listening attempt started" });
+            }
+
             if (Guid.TryParse(id, out var writingTestId))
             {
                 var writingTest = await _context.WritingTests.FindAsync(writingTestId);
@@ -106,82 +120,97 @@ namespace backend.Controllers
                         Id = Guid.NewGuid().ToString(),
                         UserId = userId,
                         TestId = writingTestId.ToString(),
-                        Content = "", // Chưa làm gì
+                        Content = "",
                         WordCount = 0,
                         SubmittedDate = DateTime.UtcNow,
-                        Status = "Draft" 
+                        Status = "Draft"
                     };
-
                     _context.WritingSubmissions.Add(writingAttempt);
                     await _context.SaveChangesAsync();
 
-                    return Ok(new
-                    {
-                        id = writingAttempt.Id,
-                        skill = "Writing",
-                        message = "Writing attempt started"
-                    });
+                    return Ok(new { id = writingAttempt.Id, skill = "Writing", message = "Writing attempt started" });
                 }
             }
-            return NotFound(new { message = "Test ID not found in any skill category" });
+
+            return NotFound(new { message = "Test ID not found" });
         }
 
-        //Submit
         [Authorize]
         [HttpPost("submit-test/{resultId}")]
-        public async Task<ActionResult<ReadingTestResult>> SubmitTest(string resultId, [FromQuery] double accuracy)
+        public async Task<ActionResult<object>> SubmitTest(string resultId, [FromQuery] double accuracy)
         {
             var userId = GetUserIdFromToken();
             if (userId == Guid.Empty) return Unauthorized();
-            if (!Guid.TryParse(resultId, out var parsedResultId))
+
+            if (!Guid.TryParse(resultId, out var parsedResultId)) return BadRequest("Invalid Result ID");
+
+            var readingAttempt = await _context.ReadingTestResults
+                .FirstOrDefaultAsync(r => r.Id == parsedResultId && r.UserId == userId);
+
+            if (readingAttempt != null)
             {
-                return BadRequest("Invalid Result ID");
+                readingAttempt.Score = accuracy;
+                readingAttempt.IsCompleted = true;
+                readingAttempt.FinishDate = DateTime.UtcNow;
+                await _context.SaveChangesAsync();
+                return Ok(readingAttempt);
             }
-            var testAttempt = await _context.ReadingTestResults
-                                           .FirstOrDefaultAsync(r => r.Id == parsedResultId && r.UserId == userId);
 
-            if (testAttempt == null)
+            
+            var listeningAttempt = await _context.ListeningTestResults
+                .FirstOrDefaultAsync(r => r.Id == resultId && r.UserId == userId);
+
+            if (listeningAttempt != null)
             {
-                return NotFound("Test attempt not found");
+                listeningAttempt.Score = accuracy;
+                listeningAttempt.IsCompleted = true;
+                listeningAttempt.FinishDate = DateTime.UtcNow;
+                await _context.SaveChangesAsync();
+                return Ok(listeningAttempt);
             }
 
-            testAttempt.Score = accuracy;
-            testAttempt.IsCompleted = true;
-            testAttempt.FinishDate = DateTime.UtcNow; 
-
-            await _context.SaveChangesAsync();
-            return Ok(testAttempt);
+            return NotFound("Test attempt not found in Reading or Listening records");
         }
+
         [Authorize]
         [HttpPost("drop-test/{resultId}")]
-        public async Task<ActionResult<ReadingTestResult>> DropTest(string resultId)
+        public async Task<ActionResult<object>> DropTest(string resultId)
         {
             var userId = GetUserIdFromToken();
             if (userId == Guid.Empty) return Unauthorized();
-            if (!Guid.TryParse(resultId, out var parsedResultId))
-            {
-                return BadRequest("Invalid Result ID");
-            }
-            var testAttempt = await _context.ReadingTestResults
-                                           .FirstOrDefaultAsync(r => r.Id == parsedResultId && r.UserId == userId);
 
-            if (testAttempt == null)
+            if (!Guid.TryParse(resultId, out var parsedResultId)) return BadRequest("Invalid Result ID");
+
+            var readingAttempt = await _context.ReadingTestResults
+                .FirstOrDefaultAsync(r => r.Id == parsedResultId && r.UserId == userId);
+
+            if (readingAttempt != null)
             {
-                return NotFound("Test attempt not found");
+                _context.ReadingTestResults.Remove(readingAttempt); 
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "Reading test dropped" });
             }
-            testAttempt.FinishDate = DateTime.UtcNow;
-            testAttempt.Score = 0;
-            testAttempt.IsCompleted = false;
-            await _context.SaveChangesAsync();
-            return Ok(testAttempt);
+
+            var listeningAttempt = await _context.ListeningTestResults
+                .FirstOrDefaultAsync(r => r.Id == resultId && r.UserId == userId);
+
+            if (listeningAttempt != null)
+            {
+                _context.ListeningTestResults.Remove(listeningAttempt);
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "Listening test dropped" });
+            }
+
+            return NotFound("Test attempt not found");
         }
-        //Get history
+
         [Authorize]
         [HttpGet("test-history")]
         public async Task<ActionResult<IEnumerable<GetResultDto>>> GetTestHistory()
         {
             var userId = GetUserIdFromToken();
             if (userId == Guid.Empty) return Unauthorized();
+
             var readingList = await _context.ReadingTestResults
                 .Where(r => r.UserId == userId)
                 .Select(r => new GetResultDto
@@ -195,6 +224,21 @@ namespace backend.Controllers
                     FinishDate = (DateTime)(r.FinishDate == DateTime.MinValue ? r.TakenDate : r.FinishDate)
                 })
                 .ToListAsync();
+
+            var listeningList = await _context.ListeningTestResults
+                .Where(r => r.UserId == userId)
+                .Select(r => new GetResultDto
+                {
+                    TestId = Guid.Parse(r.TestId),
+                    Accuracy = r.Score,
+                    IsCompleted = r.IsCompleted,
+                    Skill = "Listening",
+                    Title = r.Title,
+                    TakenDate = r.TakenDate,
+                    FinishDate = (DateTime)(r.FinishDate == DateTime.MinValue ? r.TakenDate : r.FinishDate)
+                })
+                .ToListAsync();
+
             var writingList = await _context.WritingSubmissions
                 .Include(s => s.WritingTest)
                 .Include(s => s.Result)
@@ -210,7 +254,9 @@ namespace backend.Controllers
                     FinishDate = s.Result != null ? s.Result.GradedDate : s.SubmittedDate
                 })
                 .ToListAsync();
+
             var combinedHistory = readingList
+                .Concat(listeningList)
                 .Concat(writingList)
                 .OrderByDescending(r => r.TakenDate)
                 .ToList();
@@ -266,6 +312,20 @@ namespace backend.Controllers
                 .ToListAsync();
 
             return Ok(notifications);
+        }
+        [Authorize]
+        [HttpGet("daily-word")]
+        public async Task<ActionResult<DailyWord>> GetDailyWord()
+        {
+            var word = await _context.DailyWords.FirstOrDefaultAsync();
+            return Ok(word);
+        }
+        [Authorize]
+        [HttpGet("daily-tip")]
+        public async Task<ActionResult<DailyWord>> GetDailyTip()
+        {
+            var tip = await _context.DailyTips.FirstOrDefaultAsync();
+            return Ok(tip);
         }
         private Guid GetUserIdFromToken()
         {

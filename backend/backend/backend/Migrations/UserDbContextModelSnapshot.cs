@@ -24,70 +24,61 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Entities.Listening.ListeningAnswer", b =>
                 {
-                    b.Property<string>("AnswerId")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AnswerText")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("QuestionId")
+                    b.Property<string>("ListeningQuestionId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("AnswerId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("QuestionId");
+                    b.HasIndex("ListeningQuestionId");
 
                     b.ToTable("ListeningAnswers");
                 });
 
             modelBuilder.Entity("backend.Entities.Listening.ListeningOption", b =>
                 {
-                    b.Property<int>("OptionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OptionId"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Key")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ListeningSectionSectionId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("QuestionId")
+                    b.Property<string>("ListeningQuestionId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("OptionId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("ListeningSectionSectionId");
+                    b.HasIndex("ListeningQuestionId");
 
-                    b.HasIndex("QuestionId");
-
-                    b.ToTable("ListeningOptionChoices");
+                    b.ToTable("ListeningOptions");
                 });
 
             modelBuilder.Entity("backend.Entities.Listening.ListeningPart", b =>
                 {
-                    b.Property<string>("PartId")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Context")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PartAudioUrl")
+                    b.Property<string>("ListeningTestId")
                         .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PartAudioUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PartNumber")
@@ -101,112 +92,96 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TestId")
-                        .HasColumnType("int");
+                    b.HasKey("Id");
 
-                    b.HasKey("PartId");
-
-                    b.HasIndex("TestId");
+                    b.HasIndex("ListeningTestId");
 
                     b.ToTable("ListeningParts");
                 });
 
             modelBuilder.Entity("backend.Entities.Listening.ListeningQuestion", b =>
                 {
-                    b.Property<string>("QuestionId")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool>("IsInput")
+                    b.Property<bool?>("IsInput")
                         .HasColumnType("bit");
 
                     b.Property<string>("Label")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ListeningSectionId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("QuestionNumber")
                         .HasColumnType("int");
 
                     b.Property<string>("QuestionText")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<string>("SectionId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Value")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("WordLimit")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("QuestionId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("SectionId");
+                    b.HasIndex("ListeningSectionId");
 
                     b.ToTable("ListeningQuestions");
                 });
 
             modelBuilder.Entity("backend.Entities.Listening.ListeningSection", b =>
                 {
-                    b.Property<string>("SectionId")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Instructions")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ListeningPartId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("MapImageUrl")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("MaxAnswers")
                         .HasColumnType("int");
 
-                    b.Property<string>("PartId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("QuestionType")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SectionNumber")
                         .HasColumnType("int");
 
                     b.Property<string>("SectionRange")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SectionTitle")
                         .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("WordLimit")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("SectionId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("PartId");
+                    b.HasIndex("ListeningPartId");
 
                     b.ToTable("ListeningSections");
                 });
 
             modelBuilder.Entity("backend.Entities.Listening.ListeningTest", b =>
                 {
-                    b.Property<int>("TestId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TestId"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AudioDuration")
                         .HasColumnType("int");
@@ -214,16 +189,14 @@ namespace backend.Migrations
                     b.Property<string>("AudioUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Button")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("JsonFileUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("QuestionRange")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Skill")
@@ -231,6 +204,7 @@ namespace backend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SubTitle")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TestType")
@@ -241,9 +215,61 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("TestId");
+                    b.HasKey("Id");
 
                     b.ToTable("ListeningTests");
+                });
+
+            modelBuilder.Entity("backend.Entities.Notification.DailyTip", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DailyTips");
+                });
+
+            modelBuilder.Entity("backend.Entities.Notification.DailyWord", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Definition")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Example")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phonetic")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Word")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DailyWords");
                 });
 
             modelBuilder.Entity("backend.Entities.Reading.QuestionAnswer", b =>
@@ -471,6 +497,47 @@ namespace backend.Migrations
                     b.HasIndex("SectionId");
 
                     b.ToTable("SectionOptions");
+                });
+
+            modelBuilder.Entity("backend.Entities.User.ListeningTestResult", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("FinishDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("Score")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Skill")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("TakenDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TestId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TestId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ListeningTestResults");
                 });
 
             modelBuilder.Entity("backend.Entities.User.MileStone", b =>
@@ -741,35 +808,31 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Entities.Listening.ListeningAnswer", b =>
                 {
-                    b.HasOne("backend.Entities.Listening.ListeningQuestion", "Question")
+                    b.HasOne("backend.Entities.Listening.ListeningQuestion", "ListeningQuestion")
                         .WithMany("Answers")
-                        .HasForeignKey("QuestionId")
+                        .HasForeignKey("ListeningQuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Question");
+                    b.Navigation("ListeningQuestion");
                 });
 
             modelBuilder.Entity("backend.Entities.Listening.ListeningOption", b =>
                 {
-                    b.HasOne("backend.Entities.Listening.ListeningSection", null)
+                    b.HasOne("backend.Entities.Listening.ListeningQuestion", "ListeningQuestion")
                         .WithMany("Options")
-                        .HasForeignKey("ListeningSectionSectionId");
-
-                    b.HasOne("backend.Entities.Listening.ListeningQuestion", "Question")
-                        .WithMany("QuestionOptions")
-                        .HasForeignKey("QuestionId")
+                        .HasForeignKey("ListeningQuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Question");
+                    b.Navigation("ListeningQuestion");
                 });
 
             modelBuilder.Entity("backend.Entities.Listening.ListeningPart", b =>
                 {
                     b.HasOne("backend.Entities.Listening.ListeningTest", "ListeningTest")
                         .WithMany("Parts")
-                        .HasForeignKey("TestId")
+                        .HasForeignKey("ListeningTestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -778,24 +841,24 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Entities.Listening.ListeningQuestion", b =>
                 {
-                    b.HasOne("backend.Entities.Listening.ListeningSection", "Section")
+                    b.HasOne("backend.Entities.Listening.ListeningSection", "ListeningSection")
                         .WithMany("Questions")
-                        .HasForeignKey("SectionId")
+                        .HasForeignKey("ListeningSectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Section");
+                    b.Navigation("ListeningSection");
                 });
 
             modelBuilder.Entity("backend.Entities.Listening.ListeningSection", b =>
                 {
-                    b.HasOne("backend.Entities.Listening.ListeningPart", "TestPart")
+                    b.HasOne("backend.Entities.Listening.ListeningPart", "ListeningPart")
                         .WithMany("Sections")
-                        .HasForeignKey("PartId")
+                        .HasForeignKey("ListeningPartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("TestPart");
+                    b.Navigation("ListeningPart");
                 });
 
             modelBuilder.Entity("backend.Entities.Reading.QuestionAnswer", b =>
@@ -862,6 +925,25 @@ namespace backend.Migrations
                         .IsRequired();
 
                     b.Navigation("Section");
+                });
+
+            modelBuilder.Entity("backend.Entities.User.ListeningTestResult", b =>
+                {
+                    b.HasOne("backend.Entities.Listening.ListeningTest", "ListeningTest")
+                        .WithMany()
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backend.Entities.User.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ListeningTest");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("backend.Entities.User.MileStone", b =>
@@ -944,13 +1026,11 @@ namespace backend.Migrations
                 {
                     b.Navigation("Answers");
 
-                    b.Navigation("QuestionOptions");
+                    b.Navigation("Options");
                 });
 
             modelBuilder.Entity("backend.Entities.Listening.ListeningSection", b =>
                 {
-                    b.Navigation("Options");
-
                     b.Navigation("Questions");
                 });
 
