@@ -90,7 +90,7 @@ const AdminDashboard = () => {
   }, []);
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5151";
-  
+
   //Get user array
   const getAllUsers: string = `${apiUrl}/api/Admin/fetch-users`;
   const fetchUsers = async () => {
@@ -334,7 +334,7 @@ const AdminDashboard = () => {
       handleActivateUser(userName);
     }
   };
-  
+
   // ----------------------------------------------------------------
   const renderContent = () => {
     switch (activeTab) {
@@ -459,7 +459,7 @@ const AdminDashboard = () => {
                 </button>
               </form>
             </div>
-            
+
             {/* Simple Table placeholder */}
             <div className="p-6">
               <table className="w-full border-collapse">
@@ -570,24 +570,12 @@ const AdminDashboard = () => {
       case "add-test":
         return <AddTestTab />;
       case "add-lis":
-        return <CreateListeningTest></CreateListeningTest>
+        return <CreateListeningTest></CreateListeningTest>;
       case "grading":
         return <AdminWritingGrading></AdminWritingGrading>;
       case "add-writing":
         return <CreateWritingTest />;
-      case "settings":
-        return (
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-            <div className="p-6 border-b border-gray-100">
-              <h2 className="text-xl font-bold text-gray-800">
-                System Settings
-              </h2>
-            </div>
-            <div className="p-6">
-              <p className="text-gray-500">Settings form goes here...</p>
-            </div>
-          </div>
-        );
+      
       default:
         return null;
     }
@@ -597,8 +585,8 @@ const AdminDashboard = () => {
   return (
     <>
       {/* GLOBAL CONFIRM DIALOG */}
-      <Dialog 
-        open={confirmModal.isVisible} 
+      <Dialog
+        open={confirmModal.isVisible}
         onOpenChange={(open) => {
           if (!open) confirmModal.onCancel();
         }}
@@ -769,25 +757,6 @@ const AdminDashboard = () => {
                 }
               />
               Grading
-            </button>
-
-            <button
-              onClick={() => setActiveTab("settings")}
-              className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 group ${
-                activeTab === "settings"
-                  ? "bg-blue-50 text-blue-600 font-semibold shadow-sm"
-                  : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-              }`}
-            >
-              <Settings
-                size={20}
-                className={
-                  activeTab === "settings"
-                    ? "text-blue-600"
-                    : "text-gray-400 group-hover:text-gray-600"
-                }
-              />
-              Settings
             </button>
           </nav>
         </aside>

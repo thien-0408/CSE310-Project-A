@@ -1,29 +1,22 @@
 "use client";
-import { useRef, useState, FC, useMemo, useEffect } from "react";
+import { useRef, useState, useMemo, useEffect } from "react";
 import QuestionRenderer from "@/components/QuestionRenderer";
 import QuestionScoring from "@/components/QuestionScoring";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
-import { IoExit } from "react-icons/io5";
 import Image from "next/image";
 import FullScreenButton from "@/components/ui/fullscreen";
 import { Button } from "@/components/ui/button";
-import { GrNext } from "react-icons/gr";
-import { GrPrevious } from "react-icons/gr";
 import Loader from "@/components/ui/Loader";
 import TextHighlighter from "@/components/ui/highlighter";
 import IELTSCountdownTimer from "@/components/ui/coutdownTimer";
-import { IoIosSettings } from "react-icons/io";
 import { useRouter, useParams } from "next/navigation";
 import type {
   ReadingData,
   ReadingTestResponse,
 } from "@/types/ReadingInterfaces";
 import { calculateReadingScore } from "@/utils/readingScoringUtils";
-
+import { ChevronLeft, Eye, Home, LogOut } from "lucide-react";
+import ConfirmModal, { ConfirmStatus } from "@/components/ui/ConfirmModal";
+import Link from "next/link";
 // --- UTILITY FOR SCORING (Inline or imported) ---
 interface UserAnswer {
   questionId: string;
@@ -37,11 +30,24 @@ export default function ReadingTest() {
   const hasFetched = useRef(false);
   const [readingData, setReadingData] = useState<ReadingData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [dataResponse, setDataResponse] = useState<ReadingTestResponse | null>(
     null
   );
-
+  const [modalConfig, setModalConfig] = useState<{
+    isOpen: boolean;
+    status: ConfirmStatus;
+    title: string;
+    message: string;
+    onConfirm: () => void;
+  }>({
+    isOpen: false,
+    status: "ask",
+    title: "",
+    message: "",
+    onConfirm: () => {},
+  });
   // --- LOGIC FETCH API ---
   useEffect(() => {
     if (!testId) return;
@@ -109,7 +115,7 @@ export default function ReadingTest() {
         } else {
           setError("Test data is empty or invalid structure");
         }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         console.error("Fetch Error:", err);
         setError(err.message || "Error loading test data");
@@ -120,26 +126,13 @@ export default function ReadingTest() {
 
     fetchTest();
   }, [testId]);
-
-  //Confirm modal logic
-  const [confirmModal, setConfirmModal] = useState<ConfirmModalProps>({
-    isVisible: false,
-    message: "",
-    onConfirm: () => {},
-    onCancel: () => {},
-  });
-  interface ConfirmModalProps {
-    message: string;
-    onConfirm: () => void;
-    onCancel: () => void;
-    isVisible: boolean;
-  }
-
-  // --- HANDLE EXIT (DROP TEST) ---
   const handleExit = () => {
-    setConfirmModal({
-      isVisible: true,
-      message: "Are you sure you want to drop the test?",
+    setModalConfig({
+      isOpen: true,
+      status: "warning",
+      title: "Quit Assesment?",
+      message:
+        "Are you sure you want to drop the test? If you leave now, your task will be marked as undone",
       onConfirm: async () => {
         try {
           const resultId = localStorage.getItem("currentResultId");
@@ -149,9 +142,9 @@ export default function ReadingTest() {
             console.error("Missing Data:", { resultId, hasToken: !!token });
           } else {
             console.log("alling API Drop Test with ID:", resultId);
-            
+
             const response = await fetch(
-              `http://localhost:5151/api/user/drop-test/${resultId}`, 
+              `http://localhost:5151/api/user/drop-test/${resultId}`,
               {
                 method: "POST",
                 headers: {
@@ -160,12 +153,10 @@ export default function ReadingTest() {
                 },
               }
             );
-
             console.log(response.status);
-
             if (response.ok) {
               console.log("Drop Test Success!");
-              localStorage.removeItem("currentResultId"); 
+              localStorage.removeItem("currentResultId");
             } else {
               const errorText = await response.text();
               console.error("Drop Test Failed:", errorText);
@@ -177,50 +168,8 @@ export default function ReadingTest() {
         setExit(true);
         window.location.href = "/tests";
       },
-      onCancel: () =>
-        setConfirmModal({
-          isVisible: false,
-          message: "",
-          onConfirm: () => {},
-          onCancel: () => {},
-        }),
     });
   };
-
-  const ConfirmModal: FC<ConfirmModalProps> = ({
-    message,
-    onConfirm,
-    onCancel,
-    isVisible,
-  }) => {
-    if (!isVisible) return null;
-    return (
-      <div
-        data-aos="fade"
-        data-aos-duration="300"
-        className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600/50 backdrop-blur-sm transition-opacity duration-300"
-      >
-        <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl border border-gray-200">
-          <p className="text-center text-gray-700 mb-6 text-lg">{message}</p>
-          <div className="flex justify-center gap-4">
-            <button
-              className="px-6 py-3 rounded-full bg-red-500 text-white font-medium hover:bg-red-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
-              onClick={onConfirm}
-            >
-              Confirm
-            </button>
-            <button
-              className="px-6 py-3 rounded-full bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
-              onClick={onCancel}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   const [isExit, setExit] = useState(false);
   const [leftWidth, setLeftWidth] = useState(50);
   const isDragging = useRef(false);
@@ -249,7 +198,9 @@ export default function ReadingTest() {
       }
     });
   };
-
+  const handleBackToTest = () => {
+    window.location.href = "/tests";
+  };
   const handleMouseDown = () => {
     isDragging.current = true;
   };
@@ -267,48 +218,64 @@ export default function ReadingTest() {
     window.addEventListener("mouseup", handleMouseUp);
   }
 
+  const handleSubmit = () => {
+    setModalConfig({
+      isOpen: true,
+      status: "ask",
+      title: "Submit Reading Test",
+      message:
+        "Are you sure you want to submit your test? You cannot edit it after submission.",
+      onConfirm: async () => {
+        await submitProcess();
+      },
+    });
+  };
   // --- HANDLE SUBMIT TEST ---
-  const handleSubmit = async () => {
-    // 1. Calculate Score Client-side
+  const submitProcess = async () => {
     if (readingData) {
-        const resultStats = calculateReadingScore(readingData.sections, userAnswers);
-        console.log("Calculated Accuracy:", resultStats.accuracy); // Log để debug
+      const resultStats = calculateReadingScore(
+        readingData.sections,
+        userAnswers
+      );
+      console.log("Calculated Accuracy:", resultStats.accuracy);
 
-        try {
-            const resultId = localStorage.getItem("currentResultId");
-            const token = localStorage.getItem("accessToken");
-            
-            if (!resultId) {
-                console.warn("No Result ID found to submit.");
-            }
+      try {
+        const resultId = localStorage.getItem("currentResultId");
+        const token = localStorage.getItem("accessToken");
 
-            if (resultId && token) {
-                const response = await fetch(
-                    `http://localhost:5151/api/user/submit-test/${resultId}?accuracy=${resultStats.accuracy}`,
-                    {
-                        method: "POST",
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log("Submit success:", data);
-                    localStorage.removeItem("currentResultId"); 
-                } else {
-                    console.error("Submit failed with status:", response.status);
-                    const errorText = await response.text();
-                    console.error("Error details:", errorText);
-                }
-            }
-        } catch (e) {
-            console.error("Network error submitting test:", e);
+        if (!resultId) {
+          console.warn("No Result ID found to submit.");
         }
-    }
 
+        if (resultId && token) {
+          const response = await fetch(
+            `http://localhost:5151/api/user/submit-test/${resultId}?accuracy=${resultStats.accuracy}`,
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          if (response.ok) {
+            const data = await response.json();
+            console.log("Submit success:", data);
+            localStorage.removeItem("currentResultId");
+            setModalConfig((prev) => ({ ...prev, isOpen: false }));
+          } else {
+            console.error("Submit failed with status:", response.status);
+            const errorText = await response.text();
+            console.error("Error details:", errorText);
+            setModalConfig((prev) => ({ ...prev, isOpen: false }));
+          }
+        }
+      } catch (e) {
+        setModalConfig((prev) => ({ ...prev, isOpen: false }));
+        console.error("Network error submitting test:", e);
+      }
+    }
+    setModalConfig((prev) => ({ ...prev, isOpen: false }));
     setShowScoring(true);
-    setConfirmModal({ ...confirmModal, isVisible: false });
   };
 
   if (isExit) return <Loader />;
@@ -337,6 +304,22 @@ export default function ReadingTest() {
           userAnswers={userAnswers}
           onClose={() => setShowScoring(false)}
         />
+        <div className="text-center flex justify-center gap-4 mt-8">
+          <button
+            onClick={() => router.push("/tests")}
+            className="px-6 py-3 bg-[#407db9] text-white rounded-full font-bold hover:bg-[#336699] shadow-md shadow-blue-500/30 transition-all duration-300 flex items-center gap-2"
+          >
+            <Home className="w-5 h-5" />
+            Back to Library
+          </button>
+          <button
+            onClick={() => setShowScoring(false)}
+            className="px-6 py-3 bg-white border border-gray-300 text-gray-700 rounded-full font-bold hover:bg-gray-100 transition-colors duration-300 flex items-center gap-2"
+          >
+            <Eye className="w-5 h-5" />
+            Review Test
+          </button>
+        </div>
       </>
     );
   }
@@ -344,61 +327,65 @@ export default function ReadingTest() {
   return (
     <>
       <ConfirmModal
-        isVisible={confirmModal.isVisible}
-        message={confirmModal.message}
-        onConfirm={confirmModal.onConfirm}
-        onCancel={confirmModal.onCancel}
+        isOpen={modalConfig.isOpen}
+        onClose={() => setModalConfig((prev) => ({ ...prev, isOpen: false }))}
+        onConfirm={modalConfig.onConfirm}
+        status={modalConfig.status}
+        title={modalConfig.title}
+        message={modalConfig.message}
+        isLoading={isSubmitting}
+        confirmText={modalConfig.status === "alert" ? "Okay" : "Confirm"}
       />
 
       {/* Header */}
-      <header className="w-full bg-white shadow-sm border-b top-0 z-9 sticky">
-        <div className="mx-auto px-4 py-3">
-          <div className="grid grid-cols-3 items-center">
-            <div className="flex items-center space-x-8 justify-self-start">
-              <Button className="rounded-4xl bg-gray-200 text-gray-800 hover:bg-gray-300">
-                <GrPrevious />
-              </Button>
+      <header className="sticky top-0 z-5 w-full h-[72px] bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 border-b border-slate-200 shadow-sm">
+        <div className="relative mx-auto h-full px-6 flex items-center justify-between">
+          {/* --- LEFT: Back & Progress Info --- */}
+          <div className="flex items-center gap-4 min-w-fit z-10 relative">
+            <Link
+              href="/tests"
+              className="flex items-center justify-center w-10 h-10 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-full transition-all"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </Link>
 
-              <h3 className="text-gray-800 text-md">
-                Question {userAnswers.length} of {totalQuestions}
-              </h3>
-              <Button className="rounded-4xl bg-gray-200 text-gray-800 hover:bg-gray-300">
-                <GrNext />
-              </Button>
+            <div className="flex flex-col">
+              <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                Progress
+              </span>
+              <div className="flex items-baseline gap-1">
+                <span className="text-lg font-bold text-slate-800 leading-none">
+                  Question {userAnswers.length}
+                </span>
+                <span className="text-sm font-medium text-slate-400 leading-none">
+                  / {totalQuestions}
+                </span>
+              </div>
             </div>
-
-            <div className="justify-self-center">
+          </div>
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0">
+            <div className="flex items-center justify-center px-4 py-1.5 rounded-full ">
               <IELTSCountdownTimer />
             </div>
-
-            <div className="flex items-center justify-self-end rounded-2xl shadow-2xl bg-gray-100 px-5 py-3 hover:bg-gray-200 transition-all duration-300">
-              <NavigationMenu className="hidden md:flex">
-                <NavigationMenuList className="flex space-x-5 text-sm">
-                  <NavigationMenuItem>
-                    <FullScreenButton />
-                  </NavigationMenuItem>
-                  <NavigationMenuList className="flex gap-2">
-                    <NavigationMenuItem>
-                      <IoIosSettings className="text-2xl" />
-                    </NavigationMenuItem>
-                    <NavigationMenuItem>
-                      <IoExit
-                        className="text-2xl cursor-pointer"
-                        onClick={handleExit}
-                      />
-                    </NavigationMenuItem>
-                    <NavigationMenuItem>
-                      <Button
-                        className="rounded-3xl bg-[#407db9] hover:bg-[#336699] transition-all duration-300"
-                        onClick={handleSubmit}
-                      >
-                        Submit
-                      </Button>
-                    </NavigationMenuItem>
-                  </NavigationMenuList>
-                </NavigationMenuList>
-              </NavigationMenu>
-            </div>
+          </div>
+          {/* --- RIGHT: Tools & Actions --- */}
+          <div className="flex items-center gap-2 min-w-fit z-10 relative justify-end">
+            <FullScreenButton />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleExit}
+              className="text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-full"
+            >
+              <LogOut className="w-5 h-5" />
+            </Button>
+            <div className="h-6 w-px bg-slate-200 mx-2"></div>
+            <Button
+              onClick={handleSubmit}
+              className="rounded-full bg-[#407db9] hover:bg-[#336699] text-white px-6 shadow-md shadow-blue-500/20 transition-all active:scale-95"
+            >
+              Submit
+            </Button>
           </div>
         </div>
       </header>
@@ -406,7 +393,7 @@ export default function ReadingTest() {
       {/* Main Content */}
       <div className="flex h-screen overflow-hidden font-roboto">
         {/* Passage Column */}
-        <div 
+        <div
           className="overflow-y-auto border-r custom-scrollbar"
           style={{ width: `${leftWidth}%` }}
         >
@@ -455,7 +442,7 @@ export default function ReadingTest() {
           />
         </div>
       </div>
-     <style jsx global>{`
+      <style jsx global>{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 6px;
         }
@@ -468,6 +455,5 @@ export default function ReadingTest() {
         }
       `}</style>
     </>
-    
   );
 }

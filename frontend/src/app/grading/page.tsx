@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Plus, Lightbulb, BookOpen, Loader2, Save } from "lucide-react";
+import { Lightbulb, BookOpen, Loader2, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -131,8 +131,24 @@ export default function AdminDailyManager() {
       <ToastComponent></ToastComponent>
       <Dialog open={isWordOpen} onOpenChange={setIsWordOpen}>
         <DialogTrigger asChild>
-          <Button className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white gap-2 h-12 text-base">
-            <BookOpen className="w-5 h-5" /> Update Daily Word
+          <Button
+            className="group flex-1 h-24 text-lg rounded-3xl 
+      bg-gradient-to-br from-indigo-500/85 via-purple-500/85 to-indigo-600/85 
+      backdrop-blur-md border border-white/30 
+      shadow-lg shadow-indigo-500/30 
+      hover:shadow-indigo-500/50 hover:scale-[1.02] hover:bg-indigo-500/95
+      transition-all duration-300 ease-out 
+      text-white font-bold tracking-wide gap-3"
+          >
+            <div className="p-2 bg-white/20 rounded-full group-hover:rotate-12 transition-transform duration-300">
+              <BookOpen className="w-6 h-6 text-white" />
+            </div>
+            <div className="flex flex-col items-start">
+              <span>Update Daily Word</span>
+              <span className="text-xs font-normal text-indigo-100/80">
+                Vocabulary Management
+              </span>
+            </div>
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[500px]">
@@ -236,8 +252,24 @@ export default function AdminDailyManager() {
       {/* --- BUTTON 2: ADD TIP --- */}
       <Dialog open={isTipOpen} onOpenChange={setIsTipOpen}>
         <DialogTrigger asChild>
-          <Button className="flex-1 bg-orange-600 hover:bg-orange-700 text-white gap-2 h-12 text-base">
-            <Lightbulb className="w-5 h-5" /> Update Daily Tip
+          <Button
+            className="group flex-1 h-24 text-lg rounded-3xl 
+      bg-gradient-to-br from-orange-400/85 via-pink-500/85 to-red-500/85 
+      backdrop-blur-md border border-white/30 
+      shadow-lg shadow-orange-500/30 
+      hover:shadow-orange-500/50 hover:scale-[1.02] hover:bg-orange-500/95
+      transition-all duration-300 ease-out 
+      text-white font-bold tracking-wide gap-3"
+          >
+            <div className="p-2 bg-white/20 rounded-full group-hover:rotate-12 transition-transform duration-300">
+              <Lightbulb className="w-6 h-6 text-white" />
+            </div>
+            <div className="flex flex-col items-start">
+              <span>Update Daily Tip</span>
+              <span className="text-xs font-normal text-orange-100/80">
+                Knowledge Sharing
+              </span>
+            </div>
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[500px]">

@@ -244,18 +244,6 @@ const QuestionScoring: React.FC<ScoringProps> = ({
           </div>
         ))}
       </div>
-
-      {/* Footer */}
-      {onClose && (
-        <div className="p-4 border-t border-gray-200 bg-white flex justify-end sticky bottom-0 z-10">
-          <button
-            onClick={onClose}
-            className="px-8 py-2.5 bg-gray-900 text-white rounded-lg font-medium hover:bg-black hover:shadow-lg active:transform active:scale-95 transition-all duration-200"
-          >
-            Close Results
-          </button>
-        </div>
-      )}
     </div>
   );
 };

@@ -596,7 +596,7 @@ export default function UserDashBoard() {
           </section>
 
           {/* 5. Recommended Modules */}
-          <section
+          {/* <section
             data-aos="fade-left"
             data-aos-duration="500"
             className="pb-10"
@@ -646,7 +646,7 @@ export default function UserDashBoard() {
                 </div>
               ))}
             </div>
-          </section>
+          </section> */}
         </main>
       </AuthGuard>
 

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import { useRouter } from "next/navigation";
 import { useToast } from "./ToastNotification";
 import { 
   PenTool, 
@@ -16,7 +15,6 @@ import {
 import Image from "next/image";
 
 export default function CreateWritingTest() {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const { showToast, ToastComponent } = useToast();
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);

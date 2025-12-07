@@ -10,12 +10,17 @@ import {
   ArrowLeft,
   Sparkles,
   Hourglass,
+  LogOut,
+  ChevronLeft,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import Loader from "@/components/ui/Loader";
 import ConfirmModal, { ConfirmStatus } from "@/components/ui/ConfirmModal";
+import FullScreenButton from "@/components/ui/fullscreen";
+import Link from "next/link";
+
 
 // --- Interfaces ---
 interface WritingTest {
@@ -235,39 +240,39 @@ export default function WritingTestPage() {
 
       {/* --- HEADER --- */}
       <header className="relative flex-shrink-0 h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between z-20 shadow-sm">
-        <div className="flex items-center gap-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleExit}
-            className="text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </Button>
-
-          <div className="flex flex-col">
+        <div className="flex items-center gap-4 min-w-0 flex-1 mr-4">
+          {" "}
+          <Link
+              href="/tests"
+              className="flex items-center justify-center w-10 h-10 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-full transition-all"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </Link>
+          <div className="flex flex-col min-w-0">
             <div className="flex items-center gap-2">
               <Badge
                 variant="secondary"
-                className="bg-blue-100 text-blue-700 hover:bg-blue-200 text-[10px] px-2 h-5"
+                className="bg-blue-50 text-blue-700 border-blue-100 hover:bg-blue-100 text-[10px] px-2 h-5 flex-shrink-0"
               >
                 {testData.testType}
               </Badge>
               {testData.subtitle && (
-                <span className="text-[10px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
+                <span className="text-[10px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full flex-shrink-0 border border-slate-200">
                   {testData.subtitle}
                 </span>
               )}
             </div>
-            <h1 className="font-bold text-slate-800 text-sm md:text-base truncate max-w-xs md:max-w-md">
+            <h1
+              className="font-bold text-slate-800 text-sm md:text-base truncate max-w-xs md:max-w-md "
+              title={testData.title}
+            >
               {testData.title}
             </h1>
           </div>
         </div>
 
-        {/* Timer Pill */}
         <div
-          className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2.5 px-4 py-1.5 rounded-full border shadow-sm font-mono font-bold transition-all duration-500 ${getTimerColor()}`}
+          className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2.5 px-4 py-1.5 rounded-full border shadow-sm font-mono font-bold transition-all duration-500 bg-white/90 backdrop-blur-sm z-10 ${getTimerColor()}`}
         >
           <Clock className="w-4 h-4" />
           <span className="text-lg tracking-widest">
@@ -275,24 +280,35 @@ export default function WritingTestPage() {
           </span>
         </div>
 
-        <div className="">
+        <div className="flex items-center gap-2 flex-1 justify-end min-w-fit ml-4">
+          {" "}
+          <FullScreenButton />
           <Button
-            onClick={handleSubmit} // Gọi hàm mở modal
+            variant="ghost"
+            size="icon"
+            onClick={handleExit}
+            className="text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors"
+            title="Exit Test"
+          >
+            <LogOut className="w-5 h-5" />
+          </Button>
+          <Button
+            className="ml-2 rounded-full bg-[#407db9] hover:bg-[#336699] transition-all duration-300 px-6 shadow-sm"
+            onClick={handleSubmit}
             disabled={isSubmitting || wordCount === 0}
-            className="bg-blue-500 hover:bg-blue-700 text-white p-4 rounded-xl shadow-lg shadow-blue-500/25 transition-all transform active:scale-95 text-base font-semibold group"
           >
             {isSubmitting ? (
               <span className="flex items-center gap-2">
-                <Hourglass className="w-5 h-5 animate-spin" /> Submitting...
+                <Hourglass className="w-4 h-4 animate-spin" />
+                <span>Submitting...</span>
               </span>
             ) : (
-              <span className="flex items-center gap-2">Submit</span>
+              <span className="font-medium">Submit</span>
             )}
           </Button>
         </div>
       </header>
 
-      {/* --- MAIN CONTENT GRID (Giữ nguyên UI) --- */}
       <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-hidden">
         <div className="h-full max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* === LEFT CARD: Prompt === */}
@@ -302,7 +318,7 @@ export default function WritingTestPage() {
                 <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-3">
                   <AlignLeft className="w-5 h-5 text-slate-400" /> Topic
                 </h3>
-                <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100 text-slate-800 text-base leading-relaxed font-medium whitespace-pre-line shadow-inner">
+                <div className="p-6  bg-slate-50 rounded-2xl border border-slate-100 text-slate-800 text-base leading-relaxed font-medium whitespace-pre-line shadow-inner">
                   {testData.topic}
                 </div>
               </div>
@@ -330,6 +346,7 @@ export default function WritingTestPage() {
                       <Image
                         src={`http://localhost:5151${testData.imageUrl}`}
                         alt="Task Prompt"
+
                         fill
                         className="object-contain p-2 transition-transform duration-500 group-hover:scale-105"
                       />

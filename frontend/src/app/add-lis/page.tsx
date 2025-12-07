@@ -328,9 +328,15 @@ export default function CreateListeningTest() {
         <ToastComponent></ToastComponent>
         {/* HEADER */}
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-          <h1 className="text-2xl font-bold flex items-center gap-2 mb-6 text-blue-700">
-            <Music className="w-8 h-8" /> Create Listening Test
-          </h1>
+          <div className="flex gap-2 ">
+            <div>
+            <Music className="w-8 h-8 text-2xl font-bold flex items-center gap-2 mb-6 text-blue-700" />
+            </div>
+
+            <div className="text-2xl font-bold">
+              <h1>Create Listening Test</h1>
+            </div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
