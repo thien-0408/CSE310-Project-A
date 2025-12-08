@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import {
   BarChart,
@@ -10,6 +10,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Cell
 } from "recharts";
 import { 
   BookOpen, 
@@ -39,6 +40,17 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { TestHistoryItem } from "@/types/dataRetrieve"; 
+
+type TestData = {
+  testId: string;
+  testType: string;
+  skill: string;
+  imageUrl: string;
+  testTaken: number;
+  title: string;
+  subTitle: string[];
+  button: string;
+};
 
 // --- Helper Functions  ---
 const formatDate = (dateString: string) => {
@@ -123,47 +135,86 @@ const HistoryItemRow = ({ test }: { test: TestHistoryItem }) => (
 
 export default function PracticePage() {
   const [history, setHistory] = useState<TestHistoryItem[]>([]);
+  const [availableTests, setAvailableTests] = useState<TestData[]>([]);
   const [loading, setLoading] = useState(true);
   const [isViewAllOpen, setIsViewAllOpen] = useState(false); 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5151";
-  const avgReadingAccuracy = history.length > 0 
-                                ? Math.round(history.reduce((a, b) => a + b.accuracy, 0) / history.length) 
-                                : 0;
-  const accuracyData = [
-  { name: "Listening", accuracy: 65, fill: "#3b82f6" }, // Blue
-  { name: "Reading", accuracy: avgReadingAccuracy, fill: "#10b981" },   // Green
-  { name: "Writing", accuracy: 55, fill: "#f59e0b" },   // Amber
-];
 
   // --- API Fetching ---
   useEffect(() => {
-    const fetchHistory = async () => {
+    const fetchData = async () => {
       try {
         const token = localStorage.getItem("accessToken");
         if (!token) return;
 
-        const response = await fetch(`${apiUrl}/api/user/test-history`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+        const historyRes = await fetch(`${apiUrl}/api/user/test-history`, {
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         });
 
-        if (response.ok) {
-          const data = await response.json();
-          setHistory(data);
+        const testsRes = await fetch(`${apiUrl}/api/test/fetch-tests`, {
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        });
+
+        if (historyRes.ok) {
+          const historyData = await historyRes.json();
+          setHistory(historyData);
         }
+
+        if (testsRes.ok) {
+          const testsData = await testsRes.json();
+          setAvailableTests(testsData);
+        }
+
       } catch (error) {
-        console.error("Failed to fetch history", error);
+        console.error("Failed to fetch data", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchHistory();
+    fetchData();
   }, [apiUrl]);
 
-  // Logic cắt chuỗi: Chỉ lấy 5 phần tử đầu
+  const skillStats = useMemo(() => {
+    const skills = ["listening", "reading", "writing"];
+    
+    const stats: Record<string, { progress: number, accuracy: number, totalTests: number, completedCount: number }> = {};
+
+    skills.forEach(skill => {
+      const totalAvailable = availableTests.filter(t => t.skill?.toLowerCase() === skill).length;
+      
+      const completedTestIds = history
+        .filter(h => h.skill?.toLowerCase() === skill && h.isCompleted)
+        .map(h => h.testId);
+      const uniqueCompletedCount = new Set(completedTestIds).size;
+
+      const progress = totalAvailable > 0 
+        ? Math.round((uniqueCompletedCount / totalAvailable) * 100) 
+        : 0;
+      const validScoreTests = history.filter(h => h.skill?.toLowerCase() === skill && h.accuracy > 0);
+      const totalAccuracy = validScoreTests.reduce((sum, item) => sum + item.accuracy, 0);
+      
+      const accuracy = validScoreTests.length > 0 
+        ? Math.round(totalAccuracy / validScoreTests.length) 
+        : 0;
+
+      stats[skill] = { 
+        progress, 
+        accuracy,
+        totalTests: totalAvailable,
+        completedCount: uniqueCompletedCount
+      };
+    });
+
+    return stats;
+  }, [history, availableTests]);
+
+  const accuracyChartData = [
+    { name: "Listening", accuracy: skillStats["listening"]?.accuracy || 0, fill: "#3b82f6" }, // Blue
+    { name: "Reading", accuracy: skillStats["reading"]?.accuracy || 0, fill: "#10b981" },   // Green
+    { name: "Writing", accuracy: skillStats["writing"]?.accuracy || 0, fill: "#f59e0b" },   // Amber
+  ];
+
   const recentHistory = history.slice(0, 5);
 
   return (
@@ -201,10 +252,10 @@ export default function PracticePage() {
                 </p>
                 <div className="w-full space-y-4">
                   <div className="flex justify-between text-xs font-semibold text-gray-600">
-                    <span>Progress</span>
-                    <span>70%</span>
+                    <span>Progress ({skillStats["listening"]?.completedCount}/{skillStats["listening"]?.totalTests})</span>
+                    <span>{skillStats["listening"]?.progress || 0}%</span>
                   </div>
-                  <Progress value={70} className="h-2 bg-blue-100" /> 
+                  <Progress value={skillStats["listening"]?.progress || 0} className="h-2 bg-blue-100" /> 
                   <Button className="w-full bg-white text-blue-600 border border-blue-200 hover:bg-blue-50 hover:border-blue-300">
                     Start Listening
                   </Button>
@@ -224,10 +275,10 @@ export default function PracticePage() {
                 </p>
                 <div className="w-full space-y-4">
                   <div className="flex justify-between text-xs font-semibold text-gray-600">
-                    <span>Progress</span>
-                    <span>45%</span>
+                    <span>Progress ({skillStats["reading"]?.completedCount}/{skillStats["reading"]?.totalTests})</span>
+                    <span>{skillStats["reading"]?.progress || 0}%</span>
                   </div>
-                  <Progress value={45} className="h-2 bg-green-100" /> 
+                  <Progress value={skillStats["reading"]?.progress || 0} className="h-2 bg-green-100" /> 
                   <Button className="w-full bg-white text-green-600 border border-green-200 hover:bg-green-50 hover:border-green-300">
                     <Link href="/tests">Start Reading</Link>
                   </Button>
@@ -247,10 +298,10 @@ export default function PracticePage() {
                 </p>
                 <div className="w-full space-y-4">
                   <div className="flex justify-between text-xs font-semibold text-gray-600">
-                    <span>Progress</span>
-                    <span>30%</span>
+                    <span>Progress ({skillStats["writing"]?.completedCount}/{skillStats["writing"]?.totalTests})</span>
+                    <span>{skillStats["writing"]?.progress || 0}%</span>
                   </div>
-                  <Progress value={30} className="h-2 bg-amber-100" />
+                  <Progress value={skillStats["writing"]?.progress || 0} className="h-2 bg-amber-100" />
                   <Button className="w-full bg-white text-amber-600 border border-amber-200 hover:bg-amber-50 hover:border-amber-300">
                     Start Writing
                   </Button>
@@ -270,12 +321,12 @@ export default function PracticePage() {
                     <TrendingUp className="w-5 h-5 text-blue-600" />
                     Accuracy Overview
                   </CardTitle>
-                  <CardDescription>Average accuracy per skill module.</CardDescription>
+                  <CardDescription>Average accuracy per skill (attempts &gt; 0%).</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="h-[300px] w-full mt-4">
                     <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={accuracyData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                      <BarChart data={accuracyChartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                         <XAxis 
                           dataKey="name" 
@@ -300,7 +351,11 @@ export default function PracticePage() {
                           name="Accuracy" 
                           radius={[4, 4, 0, 0]}
                           barSize={40}
-                        />
+                        >
+                          {accuracyChartData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.fill} />
+                          ))}
+                        </Bar>
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
@@ -308,13 +363,15 @@ export default function PracticePage() {
                   {/* Summary Stats */}
                   <div className="mt-6 grid grid-cols-2 gap-4">
                     <div className="p-4 bg-gray-50 rounded-xl text-center">
-                        <p className="text-xs text-gray-500 uppercase font-semibold">Tests Taken</p>
+                        <p className="text-xs text-gray-500 uppercase font-semibold">Attempts</p>
                         <p className="text-2xl font-bold text-gray-900">{history.length}</p>
                     </div>
                     <div className="p-4 bg-gray-50 rounded-xl text-center">
                         <p className="text-xs text-gray-500 uppercase font-semibold">Avg. Accuracy</p>
                         <p className="text-2xl font-bold text-blue-600">
-                             {avgReadingAccuracy}%
+                             {history.filter(h=>h.accuracy>0).length > 0 
+                               ? Math.round(history.filter(h=>h.accuracy>0).reduce((a,b)=>a+b.accuracy,0) / history.filter(h=>h.accuracy>0).length) 
+                               : 0}%
                         </p>
                     </div>
                   </div>
@@ -334,7 +391,6 @@ export default function PracticePage() {
                     <CardDescription>Your latest practice attempts.</CardDescription>
                   </div>
                   
-                  {/* Nút View All: Chỉ hiện nếu history > 5 */}
                   {history.length > 5 && (
                     <Button 
                       variant="ghost" 
@@ -373,9 +429,7 @@ export default function PracticePage() {
                  <History className="w-5 h-5" /> Full Test History
               </DialogTitle>
             </DialogHeader>
-            
-            {/* Scroll Area cho danh sách dài */}
-            <div className="flex-1 overflow-y-auto pr-2 mt-4 space-y-4 p-1">
+                        <div className="flex-1 overflow-y-auto pr-2 mt-4 space-y-4 p-1">
                {history.map((test) => (
                   <HistoryItemRow key={`modal-${test.testId}-${test.takenDate}`} test={test} />
                ))}

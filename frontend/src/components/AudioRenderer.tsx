@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import Link from "next/link";
 import { ChevronLeft, LogOut } from "lucide-react";
 // --- IMPORT COMPONENTS ---
@@ -10,11 +11,7 @@ import ListeningNoteCompletion from "./ListeningTypes/NoteCompletion";
 import ListeningDiagramLabeling from "./ListeningTypes/DiagramLabeling";
 import ListeningMapLabeling from "./ListeningTypes/Map";
 import MatchingInformation from "./ListeningTypes/MatchingInformation";
-import IELTSTimer from "@/components/ui/coutdownTimer";
-import CustomAudioPlayer from "./ui/CustomAudioPlayer";
 import { ListeningPart } from "@/types/listening";
-import FullScreenButton from "./ui/fullscreen";
-import { Button } from "./ui/button";
 
 interface Props {
   listeningData: ListeningPart;
@@ -28,7 +25,6 @@ const ListeningRenderer: React.FC<Props> = ({
   onAnswerChange,
 }) => {
   const currentAudioSrc = listeningData.partAudioUrl || audioUrl || "";
-  console.log(currentAudioSrc);
 
   return (
     <>
@@ -51,48 +47,64 @@ const ListeningRenderer: React.FC<Props> = ({
         <div className="space-y-12">
           {listeningData.sections.map((section) => {
             const { questionType } = section;
+            
+            // Xử lý Map Image URL nếu có
+            const sectionMapUrl = section.mapImageUrl 
+              ? (section.mapImageUrl.startsWith("http") ? section.mapImageUrl : `http://localhost:5151${section.mapImageUrl}`)
+              : null;
 
             // --- 1. FORM COMPLETION ---
-            if (
-              questionType === "form_completion" ||
-              questionType === "note_completion"
-            ) {
+            if (questionType === "form_completion") {
               return (
                 <FormCompletion
                   key={section.id}
-                  id={section.id} // GUID
+                  id={section.id}
                   title={section.sectionTitle}
                   instruction={section.instructions}
                   wordLimit={section.wordLimit || ""}
                   questions={section.questions}
-                  onAnswerChange={(qId, ans) => onAnswerChange(qId, ans)}
+                  onAnswerChange={onAnswerChange}
                 />
               );
             }
 
-            // --- 2. MULTIPLE CHOICE ---
+            // --- 2. NOTE COMPLETION (Đã tách riêng) ---
+            // if (questionType === "note_completion") {
+            //   return (
+            //     <ListeningNoteCompletion
+            //       key={section.id}
+            //       id={section.id}
+            //       title={section.sectionTitle}
+            //       instruction={section.instructions}
+            //       wordLimit={section.wordLimit || ""}
+            //       questions={section.questions}
+            //       onAnswerChange={onAnswerChange}
+            //     />
+            //   );
+            // }
+
+            // --- 3. MULTIPLE CHOICE ---
             if (questionType === "multiple_choice") {
               return (
                 <div key={section.id} className="space-y-6">
                   <h3 className="font-bold text-gray-700 border-b pb-2">
                     {section.sectionTitle}
                   </h3>
-
                   {section.questions.map((q) => (
                     <ListeningMultipleChoice
                       key={q.id}
-                      id={q.id} // GUID
+                      id={q.id}
                       questionNumber={q.questionNumber}
                       question={q.questionText}
                       options={q.options}
-                      onAnswerChange={(qId, ans) => onAnswerChange(qId, ans)}
+                      onAnswerChange={onAnswerChange}
                     />
                   ))}
                 </div>
               );
             }
 
-            // --- 3. SHORT ANSWER (Đã sửa) ---
+            // --- 4. SHORT ANSWER / SENTENCE COMPLETION ---
             if (
               questionType === "short_answer" ||
               questionType === "sentence_completion"
@@ -100,7 +112,7 @@ const ListeningRenderer: React.FC<Props> = ({
               return (
                 <ListeningShortAnswer
                   key={section.id}
-                  sectionId={section.id} // GUID
+                  sectionId={section.id}
                   instruction={section.instructions}
                   questions={section.questions.map((q) => ({
                     id: q.id,
@@ -108,12 +120,12 @@ const ListeningRenderer: React.FC<Props> = ({
                     questionText: q.questionText,
                     wordLimit: section.wordLimit,
                   }))}
-                  onAnswerChange={(qId, ans) => onAnswerChange(qId, ans)}
+                  onAnswerChange={onAnswerChange}
                 />
               );
             }
 
-            // --- 4. MULTIPLE ANSWER (Pick 2/5) ---
+            // --- 5. MULTIPLE ANSWER (Pick N from List) ---
             if (questionType === "multiple_answers") {
               return (
                 <div key={section.id} className="space-y-6">
@@ -125,27 +137,58 @@ const ListeningRenderer: React.FC<Props> = ({
                       instruction={section.instructions}
                       options={q.options || []}
                       maxAnswers={section.maxAnswers || 2}
-                      onAnswerChange={(qId, ans) => onAnswerChange(qId, ans)}
+                      onAnswerChange={onAnswerChange}
                     />
                   ))}
                 </div>
               );
             }
 
-            // --- 5. DIAGRAM / MAP ---
-            if (
-              questionType === "map_labeling" ||
-              questionType === "diagram_labeling"
-            ) {
+            // --- 6. DIAGRAM LABELING (Đã tách riêng) ---
+            if (questionType === "diagram_labeling") {
+              return (
+                <ListeningDiagramLabeling
+                  key={section.id}
+                  sectionId={section.id}
+                  title={section.sectionTitle}
+                  instruction={section.instructions}
+                  mapImageUrl={sectionMapUrl}
+                  options={section.questions[0]?.options || []} 
+                  questions={section.questions}
+                  onAnswerChange={onAnswerChange}
+                />
+              );
+            }
+
+            // --- 7. MAP LABELING ---
+            if (questionType === "map_labeling") {
               return (
                 <ListeningMapLabeling
                   key={section.id}
                   sectionId={section.id}
                   title={section.sectionTitle}
                   instruction={section.instructions}
-                  mapImageUrl={"http://localhost:5151/" + section.mapImageUrl}
+                  mapImageUrl={sectionMapUrl}
+                  // Map labeling đôi khi cũng có Options Box (A, B, C...)
+                  options={section.questions[0]?.options || []}
                   questions={section.questions}
-                  onAnswerChange={(qId, ans) => onAnswerChange(qId, ans)}
+                  onAnswerChange={onAnswerChange}
+                />
+              );
+            }
+
+            // --- 8. MATCHING (Mới thêm) ---
+            if (questionType === "matching" || questionType === "matching_information") {
+              return (
+                <MatchingInformation
+                  key={section.id}
+                  sectionId={section.id}
+                  title={section.sectionTitle}
+                  instruction={section.instructions}
+                  // Matching luôn cần danh sách Options chung
+                  options={section.questions[0]?.options || []}
+                  questions={section.questions}
+                  onAnswerChange={onAnswerChange}
                 />
               );
             }
@@ -156,7 +199,7 @@ const ListeningRenderer: React.FC<Props> = ({
                 key={section.id}
                 className="p-4 border border-red-200 bg-red-50 text-red-600 rounded"
               >
-                Unknown type: {questionType}
+                Unknown Question Type: <strong>{questionType}</strong>
               </div>
             );
           })}

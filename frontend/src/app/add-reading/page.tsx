@@ -1,11 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import React, { useState } from "react";
-import { Plus, Trash2, Save, Image as ImageIcon, Type, Grid } from "lucide-react";
+import { Plus, Trash2, Save, Image as ImageIcon, Type, Grid, FileText, List, CheckCircle2 } from "lucide-react";
 import { FaBookOpen } from "react-icons/fa";
 import { useToast } from "@/components/ui/ToastNotification";
 
-// --- TYPES ---
 type Question = {
   tempId: number; 
   question: string;
@@ -42,7 +42,6 @@ export default function CreateReadingTest() {
   const [isLoading, setIsLoading] = useState(false);
   const [title, setTitle] = useState("New Reading Test");
   const { showToast, ToastComponent } = useToast();
-  // 1. ADD SUBTITLE STATE
   const [subtitle, setSubtitle] = useState(""); 
   
   const [testType, setTestType] = useState("full_test");
@@ -53,7 +52,7 @@ export default function CreateReadingTest() {
     { partNumber: 1, partTitle: "Reading Passage 1", passageTitle: "", text: "", sections: [] }
   ]);
 
-  // --- HANDLERS: CORE ---
+  // --- HANDLERS (Giữ nguyên logic cũ) ---
   const addPart = () => {
     setParts([...parts, {
       partNumber: parts.length + 1,
@@ -91,15 +90,11 @@ export default function CreateReadingTest() {
     const newParts = [...parts];
     newParts[pIdx].sections[sIdx] = { ...newParts[pIdx].sections[sIdx], [field]: value };
     
-    // reset data when switch question type
     if (field === 'questionType') {
         const section = newParts[pIdx].sections[sIdx];
-        
-        // Init table nếu chọn table
         if (value === 'table_completion' && !section.table) {
             section.table = { columns: ["Column 1", "Column 2"], rows: [["", ""]] };
         }
-
         section.questions.forEach(q => {
             if (value === 'multiple_choice') {
                 if (!q.options || q.options.length === 0) q.options = ["", "", "", ""];
@@ -145,7 +140,6 @@ export default function CreateReadingTest() {
     setParts(newParts);
   };
 
-  // --- HANDLERS: SPECIAL UI HELPERS ---
   const handleListUpdate = (pIdx: number, sIdx: number, listField: 'headings' | 'matchingOptions', val: string) => {
       const newParts = [...parts];
       newParts[pIdx].sections[sIdx][listField] = val.split('\n');
@@ -220,20 +214,15 @@ export default function CreateReadingTest() {
 
       const formData = new FormData();
       formData.append("Title", title);
-      
-      // APPEND SUBTITLE TO REQUEST
       formData.append("Subtitle", subtitle); 
-      
       formData.append("TestType", testType);
       formData.append("Skill", "Reading");
       formData.append("TotalDuration", totalDuration.toString());
       formData.append("Parts", JSON.stringify(formattedParts));
-      console.log(formData);
 
       if (imageFile) formData.append("Image", imageFile);
 
       const token = localStorage.getItem("accessToken");
-      
       const res = await fetch("http://localhost:5151/api/reading-test/add-reading-test", {
         method: "POST",
         body: formData,
@@ -244,23 +233,24 @@ export default function CreateReadingTest() {
       const data = await res.json();
       showToast(`Test created successfully! ID: ${data.testId}`, "success");
       
-    } catch (err: unknown) {
+    } catch (err: any) {
       console.error(err);
+      showToast(err.message || "Error", "error");
     } finally {
       setIsLoading(false);
     }
   };
 
-  // --- RENDER INPUT HELPER ---
+  // --- UI HELPER: Answer Input ---
   const renderAnswerInput = (section: Section, q: Question, pIdx: number, sIdx: number, qIdx: number) => {
       if (section.questionType === 'multiple_choice') {
           return (
             <div className="flex items-center gap-2 mt-1">
-                <span className="text-xs font-bold text-green-600">Ans:</span>
-                <select className="border border-green-200 bg-white text-xs rounded p-1"
+                <CheckCircle2 size={14} className="text-green-600" />
+                <select className="border border-green-200 bg-green-50 text-xs rounded px-2 py-1 font-bold text-green-700 outline-none"
                     value={q.answer as string}
                     onChange={e => updateQuestion(pIdx, sIdx, qIdx, "answer", e.target.value)}>
-                    <option value="">Select</option>
+                    <option value="">Select Answer</option>
                     <option value="A">A</option>
                     <option value="B">B</option>
                     <option value="C">C</option>
@@ -274,11 +264,11 @@ export default function CreateReadingTest() {
           const isYesNo = section.questionType === 'yes_no_not_given';
           return (
             <div className="flex items-center gap-2 mt-1">
-                <span className="text-xs font-bold text-green-600">Ans:</span>
-                <select className="border border-green-200 bg-white text-xs rounded p-1 w-full"
+                <CheckCircle2 size={14} className="text-green-600" />
+                <select className="border border-green-200 bg-green-50 text-xs rounded px-2 py-1 font-bold text-green-700 outline-none w-full"
                     value={q.answer as string}
                     onChange={e => updateQuestion(pIdx, sIdx, qIdx, "answer", e.target.value)}>
-                    <option value="">Select</option>
+                    <option value="">Select Answer</option>
                     <option value={isYesNo ? "Yes" : "True"}>{isYesNo ? "Yes" : "True"}</option>
                     <option value={isYesNo ? "No" : "False"}>{isYesNo ? "No" : "False"}</option>
                     <option value="Not Given">Not Given</option>
@@ -288,255 +278,333 @@ export default function CreateReadingTest() {
       }
 
       return (
-        <input className="w-full bg-green-50 border border-green-200 rounded p-2 text-sm text-green-800 placeholder-green-700/50"
-            placeholder="Correct Answer"
-            value={Array.isArray(q.answer) ? q.answer.join(',') : q.answer}
-            onChange={e => updateQuestion(pIdx, sIdx, qIdx, "answer", e.target.value)}
-        />
+        <div className="flex items-center gap-2 mt-1 w-full">
+            <CheckCircle2 size={14} className="text-green-600" />
+            <input className="flex-1 bg-green-50 border border-green-200 rounded px-2 py-1 text-xs text-green-800 placeholder-green-700/50 font-semibold outline-none focus:ring-1 focus:ring-green-500"
+                placeholder="Correct Answer..."
+                value={Array.isArray(q.answer) ? q.answer.join(',') : q.answer}
+                onChange={e => updateQuestion(pIdx, sIdx, qIdx, "answer", e.target.value)}
+            />
+        </div>
       );
   }
 
+  // --- RENDER MAIN UI ---
   return (
-    <div className="min-h-screen bg-gray-50  pb-24 font-sans text-gray-800 mt-5">
-      <div className=" mx-auto space-y-6">
-        <ToastComponent></ToastComponent>
-        {/* HEADER */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row justify-between items-start gap-4">
-            <div className="space-y-4 flex-1 w-full">
-                <h1 className="text-2xl font-bold flex items-center gap-2"><FaBookOpen className="w-8 h-8 text-blue-500" />Create Reading Test</h1>
-                
-                {/* 3. UI FOR TITLE & SUBTITLE */}
-                <div className="space-y-2">
-                    <input 
-                        className="w-full text-lg font-semibold border-b border-gray-300 focus:border-blue-500 outline-none pb-1" 
-                        value={title} 
-                        onChange={e => setTitle(e.target.value)} 
-                        placeholder="Enter Test Title..."
-                    />
-                    <input 
-                        className="w-full text-sm border-b border-gray-300 focus:border-blue-500 outline-none pb-1 text-gray-600" 
-                        value={subtitle} 
-                        onChange={e => setSubtitle(e.target.value)} 
-                        placeholder="Enter Question Types (Subtitle)... e.g. True/False, Multiple Choice"
-                    />
+    <div className="min-h-screen bg-gray-50 font-sans text-gray-800 mt-5 pb-24">
+      <div className="mx-auto space-y-8 px-4">
+        <ToastComponent />
+        
+        {/* --- PAGE HEADER --- */}
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+          <div className="flex gap-3 mb-6">
+            <FaBookOpen className="w-8 h-8 text-blue-700" />
+            <h1 className="text-2xl font-bold text-gray-900">Create Reading Test</h1>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
+              <div>
+                <label className="text-xs font-bold text-gray-500 uppercase">Test Title</label>
+                <input
+                  className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-200 outline-none"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="e.g. Cambridge 18 Test 1"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-bold text-gray-500 uppercase">Subtitle / Tags</label>
+                <input
+                  className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-200 outline-none"
+                  value={subtitle}
+                  onChange={(e) => setSubtitle(e.target.value)}
+                  placeholder="e.g. Academic Reading"
+                />
+              </div>
+              <div className="flex gap-4">
+                <div className="flex-1">
+                  <label className="text-xs font-bold text-gray-500 uppercase">Test Type</label>
+                  <select 
+                    value={testType} 
+                    onChange={e => setTestType(e.target.value)} 
+                    className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-200 outline-none bg-white"
+                  >
+                    <option value="full_test">Full Test</option>
+                    <option value="separated_test">Separated Test</option>
+                  </select>
                 </div>
-                
-                <div className="flex gap-4">
-                     <select value={testType} onChange={e => setTestType(e.target.value)} className="border rounded p-2 text-sm bg-gray-50">
-                        <option value="full_test">Full Test</option>
-                        <option value="separated_test">Separated Test</option>
-                     </select>
-                     <div className="flex items-center gap-2 text-sm">
-                        <span className="text-gray-500">Duration (mins):</span>
-                        <input type="number" value={totalDuration} onChange={e => setTotalDuration(Number(e.target.value))} className="w-20 border rounded p-1"/>
-                     </div>
+                <div className="flex-1">
+                  <label className="text-xs font-bold text-gray-500 uppercase">Duration (min)</label>
+                  <input
+                    type="number"
+                    className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-200 outline-none"
+                    value={totalDuration}
+                    onChange={(e) => setTotalDuration(Number(e.target.value))}
+                  />
                 </div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+               <div className="bg-gray-50 p-4 rounded border border-dashed border-gray-300 h-full flex flex-col justify-center">
+                  <label className="flex items-center gap-2 text-sm font-semibold text-gray-600 mb-2 cursor-pointer">
+                    <ImageIcon size={16} /> {imageFile ? "Change Cover Image" : "Upload Cover Image"}
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+                        className="hidden"
+                    />
+                  </label>
+                  <div className="text-xs text-gray-400 italic">
+                      {imageFile ? <span className="text-green-600 font-bold">{imageFile.name}</span> : "No file selected"}
+                  </div>
+               </div>
             </div>
             
-            <div className="flex flex-col gap-3 w-full md:w-auto">
-                 <button onClick={handleSubmit} disabled={isLoading} className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium flex items-center justify-center gap-2 transition shadow-sm">
-                    <Save size={18}/> {isLoading ? "Saving..." : "Save Test"}
-                 </button>
-                 <label className="cursor-pointer border border-dashed border-gray-300 rounded-lg p-3 hover:bg-gray-50 text-center transition">
-                    <input type="file" className="hidden" onChange={e => setImageFile(e.target.files?.[0] || null)} accept="image/*"/>
-                    <div className="flex flex-col items-center gap-1 text-gray-500 text-xs">
-                        <ImageIcon size={20}/>
-                        <span>{imageFile ? "Image Selected" : "Upload Cover"}</span>
-                    </div>
-                 </label>
+            <div className="md:col-span-2">
+              <button
+                onClick={handleSubmit}
+                disabled={isLoading}
+                className="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-bold flex items-center justify-center gap-2 transition shadow-sm disabled:opacity-50"
+              >
+                <Save size={18} /> {isLoading ? "Saving..." : "Save Reading Test"}
+              </button>
             </div>
+          </div>
         </div>
 
-        {/* PARTS LOOP */}
+        {/* --- PARTS LOOP --- */}
         {parts.map((part, pIdx) => (
-            <div key={pIdx} className="bg-white rounded-xl shadow overflow-hidden">
-                <div className="bg-emerald-50 p-4 border-b border-emerald-100 flex justify-between items-center">
+            <div key={pIdx} className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
+                {/* Part Header */}
+                <div className="bg-gradient-to-r from-purple-50 to-white p-4 border-b border-purple-100 flex justify-between items-center">
                     <div className="flex gap-4 items-center flex-1">
-                        <span className="font-bold text-emerald-800 whitespace-nowrap">PART {pIdx + 1}</span>
-                        <input className="flex-1 bg-transparent border-b border-transparent focus:border-emerald-400 outline-none font-medium text-emerald-900" 
+                        <span className="font-bold text-purple-800 whitespace-nowrap bg-purple-100 px-2 py-1 rounded text-xs">
+                            PASSAGE {pIdx + 1}
+                        </span>
+                        <input className="flex-1 bg-transparent border-b border-transparent hover:border-purple-200 focus:border-purple-500 outline-none font-semibold text-gray-800 text-sm py-1 transition-colors" 
                             value={part.passageTitle} 
                             onChange={e => updatePart(pIdx, "passageTitle", e.target.value)} 
-                            placeholder="Passage Title (e.g. Can Coral Reefs be Saved?)"
+                            placeholder="Enter Passage Title (e.g. The Future of AI)..."
                         />
                     </div>
-                    <button onClick={() => removePart(pIdx)} className="text-gray-400 hover:text-red-500 ml-4"><Trash2 size={18}/></button>
+                    <button onClick={() => removePart(pIdx)} className="text-gray-400 hover:text-red-500 ml-4 p-2"><Trash2 size={18}/></button>
                 </div>
                 
-                <div className="p-4 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* 2-Column Layout */}
+                <div className="p-4 grid grid-cols-1 lg:grid-cols-2 gap-6 bg-slate-50/30">
+                    
                     {/* LEFT: READING TEXT */}
-                    <div className="space-y-2">
-                        <label className="text-xs font-bold text-gray-500 uppercase flex items-center gap-1"><Type size={14}/> Passage Content</label>
-                        <textarea className="w-full h-96 border border-gray-300 rounded-lg p-3 text-sm font-serif leading-relaxed focus:ring-2 focus:ring-emerald-500 outline-none resize-none"
+                    <div className="flex flex-col h-full">
+                        <label className="text-[10px] font-bold text-gray-500 uppercase flex items-center gap-1 mb-2">
+                            <FileText size={12}/> Passage Content
+                        </label>
+                        <textarea 
+                            className="flex-1 w-full min-h-[500px] border border-gray-300 rounded-lg p-4 text-sm font-serif leading-7 focus:ring-2 focus:ring-purple-200 focus:border-purple-400 outline-none resize-none shadow-inner"
                             value={part.text}
                             onChange={e => updatePart(pIdx, "text", e.target.value)}
-                            placeholder="Paste the full reading passage here..."
+                            placeholder="Paste the full reading text here..."
                         />
                     </div>
 
                     {/* RIGHT: SECTIONS & QUESTIONS */}
-                    <div className="space-y-6 h-96 overflow-y-auto pr-2 custom-scrollbar">
-                        {part.sections.map((section, sIdx) => (
-                            <div key={sIdx} className="border border-gray-200 rounded-lg bg-gray-50 p-4 relative">
-                                <div className="absolute top-2 right-2">
-                                     <button onClick={() => removeSection(pIdx, sIdx)} className="text-gray-300 hover:text-red-500"><Trash2 size={16}/></button>
-                                </div>
+                    <div className="flex flex-col h-full max-h-[600px] overflow-y-auto custom-scrollbar pr-2 pb-10">
+                        <div className="space-y-6">
+                            {part.sections.map((section, sIdx) => (
+                                <div key={sIdx} className="border border-gray-300 bg-white rounded-lg p-5 relative shadow-sm">
+                                    <button
+                                        onClick={() => removeSection(pIdx, sIdx)}
+                                        className="absolute top-3 right-3 text-gray-300 hover:text-red-500 transition-colors"
+                                        title="Remove Section"
+                                    >
+                                        <Trash2 size={16}/>
+                                    </button>
 
-                                <div className="flex flex-col gap-3 mb-3">
-                                    <div className="flex gap-2">
-                                        <select className="bg-white border border-gray-300 rounded p-1 text-sm font-semibold text-blue-700 flex-1"
-                                            value={section.questionType}
-                                            onChange={e => updateSection(pIdx, sIdx, "questionType", e.target.value)}>
-                                            <optgroup label="Common">
-                                                <option value="multiple_choice">Multiple Choice</option>
-                                                <option value="true_false_not_given">True/False/Not Given</option>
-                                                <option value="yes_no_not_given">Yes/No/Not Given</option>
-                                            </optgroup>
-                                            <optgroup label="Completion">
-                                                <option value="gap_filling">Gap Filling / Summary (Text)</option>
-                                                <option value="sentence_completion">Sentence Completion</option>
-                                                <option value="short_answer">Short Answer</option>
-                                                <option value="summary_completion">Summary Completion (Options)</option>
-                                            </optgroup>
-                                            <optgroup label="Matching & Labeling">
-                                                <option value="matching_headings">Matching Headings</option>
-                                                <option value="matching_names">Matching Names</option>
-                                                <option value="table_completion">Table Completion</option>
-                                                <option value="diagram_labeling">Diagram Labeling</option>
-                                            </optgroup>
-                                        </select>
-                                        <input className="border border-gray-300 rounded p-1 text-xs w-24 text-center" value={section.sectionRange} onChange={e => updateSection(pIdx, sIdx, "sectionRange", e.target.value)} placeholder="Q 1-5"/>
-                                    </div>
-                                    <input className="w-full border border-gray-300 rounded p-2 text-sm" value={section.sectionTitle} onChange={e => updateSection(pIdx, sIdx, "sectionTitle", e.target.value)} placeholder="Section Title..."/>
-                                    <input className="w-full border border-gray-300 rounded p-2 text-sm" value={section.instructions} onChange={e => updateSection(pIdx, sIdx, "instructions", e.target.value)} placeholder="Instructions..."/>
-                                </div>
-
-                                {/* --- SPECIAL UI BLOCKS --- */}
-                                
-                                {/* 1. Matching Headings */}
-                                {section.questionType === 'matching_headings' && (
-                                    <div className="mb-4">
-                                        <label className="text-xs font-bold text-gray-500 mb-1 block">List of Headings (One per line)</label>
-                                        <textarea className="w-full border rounded p-2 text-sm h-24"
-                                            placeholder="i. Introduction&#10;ii. History..."
-                                            onChange={e => handleListUpdate(pIdx, sIdx, 'headings', e.target.value)}
-                                            defaultValue={section.headings?.join('\n')}
-                                        />
-                                    </div>
-                                )}
-
-                                {/* 2. Matching Names */}
-                                {section.questionType === 'matching_names' && (
-                                    <div className="mb-4">
-                                        <label className="text-xs font-bold text-gray-500 mb-1 block">List of Names/Options (One per line)</label>
-                                        <textarea className="w-full border rounded p-2 text-sm h-24"
-                                            placeholder="A. David Attenborough&#10;B. Paul Pearce-Kelly..."
-                                            onChange={e => handleListUpdate(pIdx, sIdx, 'matchingOptions', e.target.value)}
-                                            defaultValue={section.matchingOptions?.join('\n')}
-                                        />
-                                    </div>
-                                )}
-
-                                {/* 3. Diagram Labeling */}
-                                {section.questionType === 'diagram_labeling' && (
-                                    <div className="mb-4 bg-blue-50 p-2 rounded border border-blue-100">
-                                        <label className="text-xs font-bold text-blue-600 mb-1 flex items-center gap-1"><ImageIcon size={14}/> Diagram Image URL</label>
-                                        <input className="w-full border border-blue-200 rounded p-2 text-sm"
-                                            placeholder="/images/diagram1.jpg"
-                                            value={section.diagramImageUrl || ""}
-                                            onChange={e => updateSection(pIdx, sIdx, "diagramImageUrl", e.target.value)}
-                                        />
-                                    </div>
-                                )}
-
-                                {/* 4. Table Completion */}
-                                {section.questionType === 'table_completion' && (
-                                    <div className="mb-4 overflow-x-auto bg-white p-2 rounded border">
-                                        <label className="text-xs font-bold text-gray-500 mb-2  flex gap-2"> {/*block */}
-                                            <Grid size={14}/> Table Structure
-                                        </label>
-                                        <div className="flex gap-2 mb-2">
-                                            <button onClick={() => handleTableStructure(pIdx, sIdx, 'col', 'add')} className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">+ Add Column</button>
-                                            <button onClick={() => handleTableStructure(pIdx, sIdx, 'row', 'add')} className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">+ Add Row</button>
+                                    {/* Section Controls */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                                        <div className="md:col-span-2">
+                                            <label className="text-[10px] font-bold text-gray-500 uppercase block mb-1">Question Type</label>
+                                            <select className="w-full bg-slate-50 border border-gray-300 rounded p-2 text-sm font-semibold text-blue-700 outline-none focus:border-blue-500"
+                                                value={section.questionType}
+                                                onChange={e => updateSection(pIdx, sIdx, "questionType", e.target.value)}>
+                                                <optgroup label="Common">
+                                                    <option value="multiple_choice">Multiple Choice</option>
+                                                    <option value="true_false_not_given">True/False/Not Given</option>
+                                                    <option value="yes_no_not_given">Yes/No/Not Given</option>
+                                                </optgroup>
+                                                <optgroup label="Completion">
+                                                    <option value="gap_filling">Gap Filling / Summary (Text)</option>
+                                                    <option value="sentence_completion">Sentence Completion</option>
+                                                    <option value="short_answer">Short Answer</option>
+                                                    <option value="summary_completion">Summary Completion (Options)</option>
+                                                </optgroup>
+                                                <optgroup label="Matching & Labeling">
+                                                    <option value="matching_headings">Matching Headings</option>
+                                                    <option value="matching_names">Matching Names</option>
+                                                    <option value="table_completion">Table Completion</option>
+                                                    <option value="diagram_labeling">Diagram Labeling</option>
+                                                </optgroup>
+                                            </select>
                                         </div>
-                                        <table className="w-full text-xs border-collapse">
-                                            <thead>
-                                                <tr>
-                                                    {section.table?.columns.map((col, cIdx) => (
-                                                        <th key={cIdx} className="border p-1 bg-gray-100 min-w-[100px]">
-                                                            <input className="bg-transparent w-full font-bold outline-none" value={col} onChange={e => handleTableStructure(pIdx, sIdx, 'col', 'update', cIdx, e.target.value)} />
-                                                        </th>
-                                                    ))}
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {section.table?.rows.map((row, rIdx) => (
-                                                    <tr key={rIdx}>
-                                                        {row.map((cell, cIdx) => (
-                                                            <td key={cIdx} className="border p-1">
-                                                                <input className="w-full outline-none" value={cell} onChange={e => handleTableCell(pIdx, sIdx, rIdx, cIdx, e.target.value)} placeholder="Text or __gap__"/>
-                                                            </td>
+                                        <div>
+                                            <label className="text-[10px] font-bold text-gray-500 uppercase block mb-1">Range</label>
+                                            <input className="w-full border border-gray-300 rounded p-2 text-sm outline-none focus:border-blue-400" 
+                                                value={section.sectionRange} 
+                                                onChange={e => updateSection(pIdx, sIdx, "sectionRange", e.target.value)} 
+                                                placeholder="Q 1-5"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="text-[10px] font-bold text-gray-500 uppercase block mb-1">Title</label>
+                                            <input className="w-full border border-gray-300 rounded p-2 text-sm outline-none focus:border-blue-400" 
+                                                value={section.sectionTitle} 
+                                                onChange={e => updateSection(pIdx, sIdx, "sectionTitle", e.target.value)} 
+                                                placeholder="e.g. Questions 1-5"
+                                            />
+                                        </div>
+                                        <div className="md:col-span-2">
+                                            <label className="text-[10px] font-bold text-gray-500 uppercase block mb-1">Instructions</label>
+                                            <input className="w-full border border-gray-300 rounded p-2 text-sm outline-none focus:border-blue-400" 
+                                                value={section.instructions} 
+                                                onChange={e => updateSection(pIdx, sIdx, "instructions", e.target.value)} 
+                                                placeholder="e.g. Choose the correct letter..."
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* --- SPECIAL UI BLOCKS (Technical Boxes) --- */}
+                                    
+                                    {/* 1. Matching Headings */}
+                                    {section.questionType === 'matching_headings' && (
+                                        <div className="mb-6 bg-indigo-50 p-3 rounded border border-indigo-200">
+                                            <label className="text-[10px] font-bold text-indigo-800 uppercase mb-2 flex items-center gap-1"><List size={12}/> List of Headings (One per line)</label>
+                                            <textarea className="w-full border border-indigo-200 rounded p-2 text-xs h-24 focus:ring-1 focus:ring-indigo-300 outline-none"
+                                                placeholder="i. Introduction&#10;ii. History..."
+                                                onChange={e => handleListUpdate(pIdx, sIdx, 'headings', e.target.value)}
+                                                defaultValue={section.headings?.join('\n')}
+                                            />
+                                        </div>
+                                    )}
+
+                                    {/* 2. Matching Names */}
+                                    {section.questionType === 'matching_names' && (
+                                        <div className="mb-6 bg-indigo-50 p-3 rounded border border-indigo-200">
+                                            <label className="text-[10px] font-bold text-indigo-800 uppercase mb-2 flex items-center gap-1"><List size={12}/> List of Names (One per line)</label>
+                                            <textarea className="w-full border border-indigo-200 rounded p-2 text-xs h-24 focus:ring-1 focus:ring-indigo-300 outline-none"
+                                                placeholder="A. David Attenborough&#10;B. Paul Pearce-Kelly..."
+                                                onChange={e => handleListUpdate(pIdx, sIdx, 'matchingOptions', e.target.value)}
+                                                defaultValue={section.matchingOptions?.join('\n')}
+                                            />
+                                        </div>
+                                    )}
+
+                                    {/* 3. Diagram Labeling */}
+                                    {section.questionType === 'diagram_labeling' && (
+                                        <div className="mb-6 bg-yellow-50 p-3 rounded border border-yellow-200">
+                                            <label className="text-[10px] font-bold text-yellow-800 uppercase mb-2 flex items-center gap-1"><ImageIcon size={12}/> Diagram Image URL</label>
+                                            <input className="w-full border border-yellow-300 rounded p-2 text-xs focus:ring-1 focus:ring-yellow-400 outline-none"
+                                                placeholder="/images/diagram1.jpg"
+                                                value={section.diagramImageUrl || ""}
+                                                onChange={e => updateSection(pIdx, sIdx, "diagramImageUrl", e.target.value)}
+                                            />
+                                        </div>
+                                    )}
+
+                                    {/* 4. Table Completion */}
+                                    {section.questionType === 'table_completion' && (
+                                        <div className="mb-6 overflow-x-auto bg-white p-3 rounded border border-gray-200 shadow-inner">
+                                            <label className="text-[10px] font-bold text-gray-500 uppercase mb-2 flex gap-1"><Grid size={12}/> Table Structure</label>
+                                            <div className="flex gap-2 mb-2">
+                                                <button onClick={() => handleTableStructure(pIdx, sIdx, 'col', 'add')} className="text-[10px] bg-blue-100 text-blue-700 px-2 py-1 rounded hover:bg-blue-200">+ Add Column</button>
+                                                <button onClick={() => handleTableStructure(pIdx, sIdx, 'row', 'add')} className="text-[10px] bg-blue-100 text-blue-700 px-2 py-1 rounded hover:bg-blue-200">+ Add Row</button>
+                                            </div>
+                                            <table className="w-full text-xs border-collapse">
+                                                <thead>
+                                                    <tr>
+                                                        {section.table?.columns.map((col, cIdx) => (
+                                                            <th key={cIdx} className="border p-1 bg-gray-100 min-w-[100px]">
+                                                                <input className="bg-transparent w-full font-bold outline-none text-center" value={col} onChange={e => handleTableStructure(pIdx, sIdx, 'col', 'update', cIdx, e.target.value)} />
+                                                            </th>
                                                         ))}
                                                     </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                )}
-
-                                {/* QUESTIONS LIST */}
-                                <div className="space-y-4 pl-3 border-l-2 border-gray-300">
-                                    {section.questions.map((q, qIdx) => (
-                                        <div key={q.tempId} className="flex gap-2 items-start group">
-                                            <div className="text-xs font-bold pt-2 w-6 text-gray-400">Q</div>
-                                            <div className="flex-1 space-y-2">
-                                                <input className="w-full border border-gray-300 rounded p-2 text-sm focus:border-blue-500 outline-none" 
-                                                    placeholder="Question text..."
-                                                    value={q.question}
-                                                    onChange={e => updateQuestion(pIdx, sIdx, qIdx, "question", e.target.value)}
-                                                />
-                                                
-                                                {/* Logic Multiple Choice Options */}
-                                                {section.questionType === 'multiple_choice' && (
-                                                     <div className="grid grid-cols-1 gap-2 bg-slate-50 p-2 rounded border border-slate-200">
-                                                        {q.options?.map((opt, oIdx) => (
-                                                            <div key={oIdx} className="flex items-center gap-2">
-                                                                <span className="font-bold text-xs w-4">{String.fromCharCode(65+oIdx)}</span>
-                                                                <input className="flex-1 border border-gray-300 rounded p-1 text-xs"
-                                                                    value={opt}
-                                                                    placeholder={`Option ${String.fromCharCode(65+oIdx)}`}
-                                                                    onChange={e => {
-                                                                        const newOpts = [...(q.options || [])];
-                                                                        newOpts[oIdx] = e.target.value;
-                                                                        updateQuestion(pIdx, sIdx, qIdx, "options", newOpts);
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                        ))}
-                                                     </div>
-                                                )}
-
-                                                {renderAnswerInput(section, q, pIdx, sIdx, qIdx)}
-                                            </div>
-                                            <button onClick={() => removeQuestion(pIdx, sIdx, qIdx)} className="text-gray-300 hover:text-red-500 pt-2"><Trash2 size={16}/></button>
+                                                </thead>
+                                                <tbody>
+                                                    {section.table?.rows.map((row, rIdx) => (
+                                                        <tr key={rIdx}>
+                                                            {row.map((cell, cIdx) => (
+                                                                <td key={cIdx} className="border p-1">
+                                                                    <input className="w-full outline-none p-1" value={cell} onChange={e => handleTableCell(pIdx, sIdx, rIdx, cIdx, e.target.value)} placeholder="Text or __gap__"/>
+                                                                </td>
+                                                            ))}
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
                                         </div>
-                                    ))}
-                                    <button onClick={() => addQuestion(pIdx, sIdx)} className="text-xs text-blue-600 font-semibold flex items-center gap-1 mt-2">
-                                        <Plus size={14}/> Add Question
-                                    </button>
+                                    )}
+
+                                    {/* QUESTIONS LIST */}
+                                    <div className="space-y-3 pl-4 border-l-4 border-gray-100">
+                                        <h5 className="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-2">Questions</h5>
+                                        {section.questions.map((q, qIdx) => (
+                                            <div key={q.tempId} className="flex gap-3 items-start group p-2 rounded hover:bg-gray-50 transition border border-transparent hover:border-gray-100">
+                                                <div className="mt-2 text-xs font-bold text-gray-400 w-6">Q{qIdx + 1}</div>
+                                                <div className="flex-1 space-y-2">
+                                                    <div className="flex items-center gap-2">
+                                                        <Type size={14} className="text-gray-400"/>
+                                                        <input className="w-full border-b border-gray-300 bg-transparent focus:border-blue-500 outline-none text-sm py-1 font-medium text-gray-800 placeholder-gray-300" 
+                                                            placeholder="Question text..."
+                                                            value={q.question}
+                                                            onChange={e => updateQuestion(pIdx, sIdx, qIdx, "question", e.target.value)}
+                                                        />
+                                                    </div>
+                                                    
+                                                    {/* MCQ Options */}
+                                                    {section.questionType === 'multiple_choice' && (
+                                                         <div className="grid grid-cols-2 gap-2 pl-6 mt-1">
+                                                            {q.options?.map((opt, oIdx) => (
+                                                                <div key={oIdx} className="flex items-center gap-1">
+                                                                    <span className="font-bold text-[10px] w-3 text-gray-500">{String.fromCharCode(65+oIdx)}</span>
+                                                                    <input className="flex-1 border border-gray-200 rounded px-2 py-1 text-xs outline-none focus:border-blue-300"
+                                                                        value={opt}
+                                                                        placeholder={`Option`}
+                                                                        onChange={e => {
+                                                                            const newOpts = [...(q.options || [])];
+                                                                            newOpts[oIdx] = e.target.value;
+                                                                            updateQuestion(pIdx, sIdx, qIdx, "options", newOpts);
+                                                                        }}
+                                                                    />
+                                                                </div>
+                                                            ))}
+                                                         </div>
+                                                    )}
+
+                                                    {renderAnswerInput(section, q, pIdx, sIdx, qIdx)}
+                                                </div>
+                                                <button onClick={() => removeQuestion(pIdx, sIdx, qIdx)} className="text-gray-300 hover:text-red-500 pt-1 opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 size={14}/></button>
+                                            </div>
+                                        ))}
+                                        
+                                        <button onClick={() => addQuestion(pIdx, sIdx)} className="text-xs text-blue-600 font-bold flex items-center gap-1 mt-3 px-2 py-1 rounded hover:bg-blue-50 transition w-fit">
+                                            <Plus size={14}/> Add Question
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
-                        
-                        <button onClick={() => addSection(pIdx)} className="w-full py-2 border border-dashed border-gray-400 text-gray-500 rounded hover:bg-gray-100 text-sm font-medium">
-                            + Add New Section
-                        </button>
+                            ))}
+                            
+                            <button onClick={() => addSection(pIdx)} className="w-full py-3 border-2 border-dashed border-gray-300 text-gray-500 rounded-lg hover:border-blue-400 hover:text-blue-600 font-medium transition flex justify-center items-center gap-2 text-sm">
+                                <Plus size={16} /> Add Section to Passage {pIdx + 1}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         ))}
 
-        <div className="text-center pt-6">
-            <button onClick={addPart} className="bg-gray-800 text-white px-6 py-3 rounded-full shadow-lg hover:scale-105 transition flex items-center gap-2 mx-auto">
+        <div className="flex justify-center pt-8">
+            <button onClick={addPart} className="bg-gray-800 text-white px-8 py-3 rounded-full hover:bg-black shadow-lg flex items-center gap-2 transition transform hover:scale-105 font-bold">
                 <Plus size={20}/> Add New Passage
             </button>
         </div>

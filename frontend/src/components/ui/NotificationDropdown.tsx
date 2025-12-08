@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { Bell, CheckCircle2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
-import { useRouter } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,

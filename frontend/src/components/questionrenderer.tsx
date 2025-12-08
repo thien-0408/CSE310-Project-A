@@ -13,6 +13,7 @@ import GapFilling from "@/components/QuestionTypes/GapFilling";
 import MatchingNames from "@/components/QuestionTypes/MatchingNames";
 
 import { ReadingSection } from "@/types/ReadingInterfaces";
+import MatchingInformation from "./QuestionTypes/MatchingInformation";
 
 interface Props {
   sections: ReadingSection[];
@@ -106,17 +107,32 @@ const QuestionRenderer: React.FC<Props> = ({ sections, onAnswerChange }) => {
           />
         );
 
-      case "sentence_completion":
-        return questions.map((q) => (
+     case "sentence_completion":
+        return (
           <SentenceCompletion
-            key={q.id}
-            id={q.id}
-            question={q.questionText}
+            key={section.sectionId} 
+            title={section.sectionTitle}
+            instructions={section.instructions}
             wordLimit={section.wordLimit || ""}
-            onAnswerChange={(answer) => onAnswerChange(q.id, answer)}
+            questions={questions.map((q) => ({
+              id: q.id,
+              questionNumber: q.questionNumber,
+              questionText: q.questionText,
+            }))}
+            onAnswerChange={onAnswerChange}
           />
-        ));
-
+        );
+        case "matching_information":
+        return (
+          <MatchingInformation
+            key={section.sectionId}
+            section={section}
+            onAnswerChange={(questionId, value) => {
+              // Ép kiểu value về string nếu cần, vì onAnswerChange gốc nhận unknown
+              onAnswerChange(questionId, value);
+            }}
+          />
+        );
       case "summary_completion":
         let summaryOptions: string[] = [];
         if (section.optionRange) {
@@ -196,6 +212,7 @@ const QuestionRenderer: React.FC<Props> = ({ sections, onAnswerChange }) => {
           <GapFilling
             key={section.sectionId}
             id={section.sectionId}
+            sectionTitle={section.sectionTitle}
             question={section.instructions}
             text={finalText}
             questions={questions}

@@ -1,18 +1,17 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
-// Định nghĩa Type cho Option object từ API
 interface ListeningOption {
   id?: string;
-  key: string;  // "A", "B", "C"
-  text: string; // Nội dung option
+  key: string;  
+  text: string; 
 }
 
 interface Props {
   id: string; // GUID
   questionNumber: number;
   question: string;
-  options: ListeningOption[]; // <--- SỬA: Nhận mảng Object thay vì mảng String
+  options: ListeningOption[]; 
   onAnswerChange?: (questionId: string, answer: string) => void;
 }
 
@@ -25,7 +24,6 @@ const ListeningMultipleChoice: React.FC<Props> = ({
 }) => {
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
 
-  // Load saved answer từ LocalStorage
   useEffect(() => {
     const storageKey = `listening-mc-${id}`;
     if (typeof window !== "undefined") {
@@ -35,6 +33,7 @@ const ListeningMultipleChoice: React.FC<Props> = ({
         if (onAnswerChange) onAnswerChange(id, saved);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const handleSelect = (key: string) => {
@@ -44,38 +43,72 @@ const ListeningMultipleChoice: React.FC<Props> = ({
   };
 
   return (
-    <div className="p-6 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm">
-      <h4 className="font-bold text-gray-800 mb-4 flex gap-2">
-        <span className="bg-blue-600 text-white w-6 h-6 flex items-center justify-center rounded-full text-xs shrink-0">
-          {questionNumber}
-        </span>
-        <span>{question}</span>
-      </h4>
+    <div className="group p-5 mb-6 bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all duration-200">
+      {/* --- Question Header --- */}
+      <div className="flex items-start gap-4 mb-5">
+        <div className="flex-shrink-0 mt-0.5">
+          <span className="flex h-7 w-7 items-center justify-center rounded bg-slate-100 text-sm font-bold text-slate-600 ring-1 ring-inset ring-slate-300 group-hover:bg-indigo-600 group-hover:text-white group-hover:ring-indigo-600 transition-all">
+            {questionNumber}
+          </span>
+        </div>
 
-      <div className="space-y-3">
-        {options.map((opt) => (
-          <label
-            key={opt.key} // Dùng Key "A", "B" làm unique key cho React
-            className={`flex items-start gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
-              selectedKey === opt.key
-                ? "border-blue-500 bg-blue-50"
-                : "border-gray-200 hover:border-blue-300 hover:bg-gray-50"
-            }`}
-          >
-            <input
-              type="radio"
-              name={`question-${id}`}
-              checked={selectedKey === opt.key}
-              onChange={() => handleSelect(opt.key)}
-              className="mt-1 w-4 h-4 text-blue-600 focus:ring-blue-500 shrink-0"
-            />
-            <span className="flex-1 text-gray-700 text-sm">
-              <span className="font-bold mr-2">{opt.key}.</span> 
-              {/* Render opt.text (string) thay vì opt (object) */}
-              {opt.text} 
-            </span>
-          </label>
-        ))}
+        {/* Question Text */}
+        <div className="flex-1">
+          <h4 className="font-medium text-slate-800 text-lg leading-relaxed">
+            {question}
+          </h4>
+        </div>
+      </div>
+
+      {/* --- Options List --- */}
+      <div className="space-y-3 pl-1 md:pl-11">
+        {options.map((opt) => {
+          const isSelected = selectedKey === opt.key;
+
+          return (
+            <label
+              key={opt.key}
+              className={`relative flex items-start gap-3 p-3 rounded-lg cursor-pointer border transition-all duration-200 group/option ${
+                isSelected
+                  ? "bg-indigo-50 border-indigo-200 shadow-sm z-10"
+                  : "bg-white border-slate-200 hover:bg-slate-50 hover:border-slate-300"
+              }`}
+            >
+              {/* Radio Input */}
+              <div className="flex items-center h-5 mt-0.5">
+                <input
+                  type="radio"
+                  name={`question-${id}`}
+                  checked={isSelected}
+                  onChange={() => handleSelect(opt.key)}
+                  className="w-4 h-4 text-indigo-600 bg-gray-100 border-slate-300 focus:ring-indigo-600 focus:ring-2 cursor-pointer"
+                />
+              </div>
+
+              {/* Label Content */}
+              <div className="flex gap-2.5 text-slate-700 leading-snug flex-1">
+                <span 
+                  className={`font-bold min-w-[20px] transition-colors ${
+                    isSelected 
+                      ? "text-indigo-700" 
+                      : "text-slate-500 group-hover/option:text-slate-700"
+                  }`}
+                >
+                  {opt.key}.
+                </span>
+                <span 
+                  className={`transition-colors ${
+                    isSelected 
+                      ? "text-slate-900 font-medium" 
+                      : "text-slate-700"
+                  }`}
+                >
+                  {opt.text}
+                </span>
+              </div>
+            </label>
+          );
+        })}
       </div>
     </div>
   );

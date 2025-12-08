@@ -27,6 +27,7 @@ const MultipleChoice: React.FC<Props> = ({
         if (onAnswerChange) onAnswerChange(id, saved);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, storageKey]);
 
   const handleChange = (index: number) => {
@@ -37,18 +38,26 @@ const MultipleChoice: React.FC<Props> = ({
   };
 
   return (
-    <div className="p-4 mb-4 bg-white rounded-lg border border-gray-100 shadow-sm">
-      <div className="flex items-start gap-3 w-full">
-        <div className="flex-shrink-0 flex items-center justify-center w-8 h-8 bg-blue-600 text-white rounded-full font-bold text-sm mt-0.5">
-          {questionNumber}
+    <div className="group p-5 mb-4 bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+      {/* --- Question Header --- */}
+      <div className="flex items-start gap-4 mb-4">
+        {/* Number Badge: Style giống SentenceCompletion */}
+        <div className="flex-shrink-0 mt-0.5">
+          <span className="flex h-7 w-7 items-center justify-center rounded bg-slate-100 text-sm font-bold text-slate-600 ring-1 ring-inset ring-slate-300 group-hover:bg-indigo-600 group-hover:text-white group-hover:ring-indigo-600 transition-all">
+            {questionNumber}
+          </span>
         </div>
-        <div className="flex-1 mt-1">
-          <p className="font-semibold text-gray-800 text-lg leading-snug">
+        
+        {/* Question Text */}
+        <div className="flex-1">
+          <p className="font-medium text-slate-800 text-lg leading-relaxed">
             {question}
           </p>
         </div>
       </div>
-      <div className="space-y-3">
+
+      {/* --- Options List --- */}
+      <div className="space-y-2.5 pl-1 md:pl-11"> 
         {options.map((opt, i) => {
           const label = String.fromCharCode(65 + i); // A, B, C, D
           const isSelected = selected === label;
@@ -56,27 +65,37 @@ const MultipleChoice: React.FC<Props> = ({
           return (
             <label
               key={i}
-              className={`flex items-start gap-3 p-3 rounded-lg cursor-pointer transition-all border ${
+              className={`relative flex items-start gap-3 p-3 rounded-lg cursor-pointer border transition-all duration-200 ${
                 isSelected
-                  ? "bg-blue-50 border-blue-200"
-                  : "hover:bg-gray-50 border-transparent hover:border-gray-200"
+                  ? "bg-indigo-50 border-indigo-200 shadow-sm z-10"
+                  : "bg-white border-slate-200 hover:bg-slate-50 hover:border-slate-300"
               }`}
             >
               <div className="flex items-center h-5 mt-0.5">
                 <input
                   type="radio"
                   name={`q-${id}`} // Unique name group per question
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+                  className="w-4 h-4 text-indigo-600 bg-gray-100 border-slate-300 focus:ring-indigo-600 focus:ring-2"
                   checked={isSelected}
                   onChange={() => handleChange(i)}
                 />
               </div>
-              <div className="flex gap-2 text-gray-700">
-                <span className="font-bold text-gray-900 min-w-[20px]">
+              
+              <div className="flex gap-2.5 text-slate-700 leading-snug">
+                <span className={`font-bold min-w-[20px] ${isSelected ? "text-indigo-700" : "text-slate-500"}`}>
                   {label}.
                 </span>
-                <span>{opt}</span>
+                <span className={`${isSelected ? "text-slate-900 font-medium" : "text-slate-700"}`}>
+                  {opt}
+                </span>
               </div>
+              
+              {/* Optional: Checkmark icon khi selected để tăng tính visual feedback */}
+              {isSelected && (
+                 <div className="absolute right-3 top-3 text-indigo-600 opacity-20 pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-check"><path d="M20 6 9 17l-5-5"/></svg>
+                 </div>
+              )}
             </label>
           );
         })}

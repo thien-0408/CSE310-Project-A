@@ -100,10 +100,10 @@ const WritingFeedbackModal: React.FC<Props> = ({ isOpen, onClose, data, loading 
             <div className="w-full md:w-1/3 bg-blue-50/30 border-r border-gray-100 overflow-y-auto p-6 space-y-6 custom-scrollbar">
               {/* Score Badge */}
               <div className="bg-white p-5 rounded-xl border border-blue-100 shadow-sm text-center">
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Overall Band Score</p>
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Overall Score</p>
                 <div className="flex justify-center items-baseline gap-1">
                   <span className="text-5xl font-extrabold text-blue-600">{data.overallScore}</span>
-                  <span className="text-gray-400 text-lg">/9.0</span>
+                  <span className="text-gray-400 text-lg">/100.0</span>
                 </div>
               </div>
 

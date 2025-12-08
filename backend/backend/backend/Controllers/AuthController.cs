@@ -32,7 +32,7 @@ namespace backend.Controllers
                 return BadRequest("User Already Exist!");
             }
             var user = new User
-            {
+            { 
                 Role = "User",
                 UserName = request.UserName,
             };

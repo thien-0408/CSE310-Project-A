@@ -57,7 +57,6 @@ type TestData = {
   button: string;
 };
 
-// API URL (Nên đưa vào env)
 const API_URL = "http://localhost:5151";
 
 export const fetchTestsData = async (): Promise<TestData[]> => {
@@ -84,7 +83,6 @@ export const fetchTestsData = async (): Promise<TestData[]> => {
               .filter((s: string) => s.length > 0)
         : [];
       
-      // Fallback skill mặc định nếu null
       const skill = item.skill ? item.skill.toLowerCase() : "reading";
 
       return {
@@ -174,7 +172,7 @@ export default function ViewTests() {
     );
   };
 
-  // --- LOGIC MỚI: Xử lý điều hướng theo Skill ---
+  // --- Navigate base on skill ---
   const handleTest = (testId: string, skill: string) => {
     const normalizedSkill = skill.toLowerCase().trim();
 
@@ -192,7 +190,6 @@ export default function ViewTests() {
         router.push(`/speakingtest/${testId}`);
         break;
       default:
-        // Mặc định fallback nếu không xác định được skill
         console.warn("Unknown skill, fallback to reading");
         router.push(`/reading-test/${testId}`);
         break;
@@ -214,9 +211,7 @@ export default function ViewTests() {
     setCurrentPage(1);
   };
 
-  // --- LOGIC MỚI: Xử lý tìm kiếm thực sự ---
   const filteredTests = tests.filter((test) => {
-    // Sửa lỗi logic cũ: phải dùng .includes() để so sánh
     const matchesTitle = test.title.toLowerCase().includes(appliedSearch.toLowerCase());
     
     const matchesSkill =
@@ -390,7 +385,7 @@ export default function ViewTests() {
 
                   {/* Grid Display */}
                   {isLoading ? (
-                     <Loader /> // Hiển thị Loader khi chuyển trang
+                     <Loader /> 
                   ) : currentItems.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
                       {currentItems.map((test) => (
@@ -400,8 +395,7 @@ export default function ViewTests() {
                         >
                           <div className="relative h-40 w-full bg-gray-100 ">
                             <Image
-                              // Xử lý ảnh mặc định nếu API trả về đường dẫn không hợp lệ
-                              src={test.imageUrl ? (test.imageUrl.startsWith("http") ? test.imageUrl : `${API_URL}${test.imageUrl}`) : "/placeholder.jpg"}
+                              src={"http://localhost:5151/"+test.imageUrl }
                               fill
                               className="object-cover rounded-t-xl group-hover:scale-105 transition-transform duration-300 "
                               sizes="20"

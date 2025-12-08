@@ -1,6 +1,7 @@
 ﻿using backend.Data;
 using backend.Models;
 using backend.Models.ReadingDto;
+using backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,9 +14,11 @@ namespace backend.Controllers
     public class TestController : ControllerBase
     {
         private readonly UserDbContext _context;
-        public TestController(UserDbContext context)
+        private readonly IFileService _fileService;
+        public TestController(UserDbContext context, IFileService service)
         {
             _context = context;
+            _fileService = service;
         }
         [HttpGet("fetch-tests")]
         public async Task<ActionResult<IEnumerable<TestSummaryDto>>> GetAllTests()
@@ -87,6 +90,47 @@ namespace backend.Controllers
                 return Ok("Listening test deleted successfully");
             }
             return NotFound("Test not found");
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpPatch("modify/{testId}")]
+        public async Task<ActionResult<TestSummaryDto>> ModifyTitleAndCover(string testId, ModifyTestDto request)
+        {
+            var readingTest = await _context.ReadingTests.FindAsync(testId);
+            if(readingTest != null)
+            {
+                readingTest.Title = request.Title;
+                if(request.CoverImage != null)
+                {
+                    _fileService.DeleteFile(readingTest.ImageUrl);
+                    var newImageUrl = _fileService.UploadFile(request.CoverImage, "reading_images");
+                    readingTest.ImageUrl = await newImageUrl;
+                }
+            }
+
+            var listeningTest = await _context.ListeningTests.FindAsync(testId);
+            if (listeningTest != null)
+            {
+                listeningTest.Title = request.Title;
+                if(request.CoverImage != null)
+                {
+                    _fileService.DeleteFile(listeningTest.ImageUrl);
+                    var newImageUrl = _fileService.UploadFile(request.CoverImage, "listening_images");
+                    listeningTest.ImageUrl = await newImageUrl;
+                }
+            }
+
+            var writingTest = await _context.WritingTests.FindAsync(testId);
+            if (writingTest != null)
+            {
+                writingTest.Title = request.Title;
+                if (request.CoverImage != null)
+                {
+                    _fileService.DeleteFile(writingTest.ImageUrl);
+                    var newImageUrl = _fileService.UploadFile(request.CoverImage, "writing_images");
+                    writingTest.ImageUrl = await newImageUrl;
+                }
+            }
+            return Ok();
         }
         private int GetRandomNumber()
         {

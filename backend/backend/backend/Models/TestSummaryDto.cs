@@ -13,4 +13,9 @@
         public long TestTaken { get; set; }
         //public List<int> Passage { get; set; } = new List<int>();
     }
+    public class ModifyTestDto
+    {
+        public string Title { get; set;} = string.Empty;
+        public IFormFile? CoverImage { get; set; } 
+    }
 }

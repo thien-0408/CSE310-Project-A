@@ -44,10 +44,10 @@ namespace backend.Controllers
             string testImageUrl = string.Empty;
             string testAudioUrl = string.Empty;
 
-            if (request.TestImageFile != null)
+            if (request.TestImageFile != null && request.TestImageFile.Length > 0)
                 testImageUrl = await _fileService.UploadFile(request.TestImageFile, "listening_images");
 
-            if (request.TestAudioFile != null)
+            if (request.TestAudioFile != null && request.TestAudioFile.Length > 0)
                 testAudioUrl = await _fileService.UploadFile(request.TestAudioFile, "listening_audios");
 
             using var transaction = await _context.Database.BeginTransactionAsync();
@@ -67,12 +67,14 @@ namespace backend.Controllers
                     CreatedAt = DateTime.UtcNow,
                     Parts = new List<ListeningPart>()
                 };
+
+                int sectionMapImageIndex = 0;
+
                 for (int i = 0; i < partsData.Count; i++)
                 {
                     var partDto = partsData[i];
                     string partAudioUrl = string.Empty;
 
-                    // Upload Part Audio (Mapping by Index)
                     if (request.PartAudioFiles != null && i < request.PartAudioFiles.Count)
                     {
                         var audioFile = request.PartAudioFiles[i];
@@ -92,15 +94,23 @@ namespace backend.Controllers
                         PartAudioUrl = partAudioUrl,
                         Sections = new List<ListeningSection>()
                     };
+
                     if (partDto.Sections != null)
                     {
                         foreach (var secDto in partDto.Sections)
                         {
                             string mapUrl = null;
-                            if(secDto.MapImage != null)
+                            if (request.SectionMapImages != null && sectionMapImageIndex < request.SectionMapImages.Count)
                             {
-                                  mapUrl = await _fileService.UploadFile(secDto.MapImage, "listening_images/map_images");
+                                var mapFile = request.SectionMapImages[sectionMapImageIndex];
+                                if (mapFile != null && mapFile.Length > 0 && secDto.QuestionType == "map_labeling")
+                                {
+                                    mapUrl = await _fileService.UploadFile(mapFile, "map_images");
+                                }
                             }
+
+                            sectionMapImageIndex++;
+
                             var sectionEntity = new ListeningSection
                             {
                                 Id = Guid.NewGuid().ToString(),
@@ -111,11 +121,10 @@ namespace backend.Controllers
                                 Instructions = secDto.Instructions,
                                 WordLimit = secDto.WordLimit,
                                 MaxAnswers = secDto.MaxAnswers,
-                                MapImageUrl = mapUrl ?? "",
+                                MapImageUrl = mapUrl ?? "", // Gán URL (hoặc rỗng)
                                 Questions = new List<ListeningQuestion>()
                             };
 
-                            // 6. Map Questions
                             if (secDto.Questions != null)
                             {
                                 foreach (var qDto in secDto.Questions)
@@ -133,7 +142,6 @@ namespace backend.Controllers
                                         Answers = new List<ListeningAnswer>()
                                     };
 
-                                    // Map Options
                                     if (qDto.Options != null)
                                     {
                                         foreach (var opt in qDto.Options)
@@ -147,7 +155,6 @@ namespace backend.Controllers
                                         }
                                     }
 
-                                    // Map Answers
                                     if (qDto.Answers != null)
                                     {
                                         foreach (var ans in qDto.Answers)
@@ -159,7 +166,6 @@ namespace backend.Controllers
                                             });
                                         }
                                     }
-
                                     sectionEntity.Questions.Add(questionEntity);
                                 }
                             }
