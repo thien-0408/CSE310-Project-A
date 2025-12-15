@@ -6,7 +6,7 @@
 
         public string Title { get; set; } = string.Empty;
         public string TestType { get; set; } = string.Empty;
-        public string Skill { get; set; } = string.Empty; // "reading" hoặc "listening"
+        public string Skill { get; set; } = string.Empty; 
         public string ImageUrl { get; set; } = string.Empty;
         public string SubTitle { get; set; } = string.Empty;
         public string Button { get; set; } = "Start Now";

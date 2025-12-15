@@ -9,7 +9,7 @@ namespace backend.Data
     {
         public static async Task SeedAdminUserAsync(IServiceProvider serviceProvider)
         {
-            // Use CreateScope to get a new instance of our DbContext
+            // Use CreateScope 
             using (var scope = serviceProvider.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<UserDbContext>();
@@ -31,9 +31,9 @@ namespace backend.Data
                     };
                     var adminProfile = new Profile 
                     {
-                        Id = Guid.NewGuid(), // PK
-                        UserId = adminUser.Id, // FK to userAmdin
-                        User = adminUser,     // Optional
+                        Id = Guid.NewGuid(), 
+                        UserId = adminUser.Id, 
+                        User = adminUser,    
 
                         FullName = "Admin",
                         Email = "admin@example.com",

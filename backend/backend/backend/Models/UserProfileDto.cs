@@ -2,11 +2,10 @@
 {
     public class UserProfileDto
     {
-        public Guid Id { get; set; } // Từ User
-        public string UserName { get; set; } = string.Empty; // Từ User
-        public string Role { get; set; } = string.Empty; // Từ User
+        public Guid Id { get; set; } 
+        public string UserName { get; set; } = string.Empty; 
+        public string Role { get; set; } = string.Empty; 
 
-        // --- Thông tin từ Profile ---
         public string FullName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string? Bio { get; set; }

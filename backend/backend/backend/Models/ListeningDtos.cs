@@ -17,7 +17,6 @@ namespace backend.Models
         public IFormFile? Image { get; set; }
         public IFormFile? JsonFile { get; set; }
 
-        // ĐỔI CÁI NÀY: Nhận JSON String thay vì List object
         public string Parts { get; set; } = string.Empty;
     }
     public class CreateListeningPartDto
@@ -43,9 +42,6 @@ namespace backend.Models
 
         public List<CreateListeningQuestionDto> Questions { get; set; } = new();
 
-        // Note: Based on your entity 'ListeningOption', options require a QuestionId. 
-        // If you have section-level options (like matching), your Entity needs a SectionId FK. 
-        // For now, we will handle Question-level options.
     }
     public class CreateListeningQuestionDto
     {
