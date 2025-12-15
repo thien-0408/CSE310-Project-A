@@ -13,7 +13,6 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/ToastNotification";
-
 // --- Interfaces ---
 interface DailyWordData {
   word: string;
@@ -47,7 +46,6 @@ export default function AdminDailyManager() {
     category: "Grammar",
     content: "",
   });
-
   // --- API URL ---
   const API_BASE_URL = "http://localhost:5151/api/admin";
 
@@ -132,12 +130,12 @@ export default function AdminDailyManager() {
       <Dialog open={isWordOpen} onOpenChange={setIsWordOpen}>
         <DialogTrigger asChild>
           <Button
-            className="group flex-1 h-24 text-lg rounded-3xl 
-      bg-gradient-to-br from-indigo-500/85 via-purple-500/85 to-indigo-600/85 
-      backdrop-blur-md border border-white/30 
-      shadow-lg shadow-indigo-500/30 
+            className="group flex-1 h-24 text-lg rounded-3xl
+      bg-gradient-to-br from-indigo-500/85 via-purple-500/85 to-indigo-600/85
+      backdrop-blur-md border border-white/30
+      shadow-lg shadow-indigo-500/30
       hover:shadow-indigo-500/50 hover:scale-[1.02] hover:bg-indigo-500/95
-      transition-all duration-300 ease-out 
+      transition-all duration-300 ease-out
       text-white font-bold tracking-wide gap-3"
           >
             <div className="p-2 bg-white/20 rounded-full group-hover:rotate-12 transition-transform duration-300">
@@ -158,7 +156,6 @@ export default function AdminDailyManager() {
               This will update the single daily word record in the database.
             </DialogDescription>
           </DialogHeader>
-
           <div className="space-y-4 py-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
@@ -253,12 +250,12 @@ export default function AdminDailyManager() {
       <Dialog open={isTipOpen} onOpenChange={setIsTipOpen}>
         <DialogTrigger asChild>
           <Button
-            className="group flex-1 h-24 text-lg rounded-3xl 
-      bg-gradient-to-br from-orange-400/85 via-pink-500/85 to-red-500/85 
-      backdrop-blur-md border border-white/30 
-      shadow-lg shadow-orange-500/30 
+            className="group flex-1 h-24 text-lg rounded-3xl
+      bg-gradient-to-br from-orange-400/85 via-pink-500/85 to-red-500/85
+      backdrop-blur-md border border-white/30
+      shadow-lg shadow-orange-500/30
       hover:shadow-orange-500/50 hover:scale-[1.02] hover:bg-orange-500/95
-      transition-all duration-300 ease-out 
+      transition-all duration-300 ease-out
       text-white font-bold tracking-wide gap-3"
           >
             <div className="p-2 bg-white/20 rounded-full group-hover:rotate-12 transition-transform duration-300">

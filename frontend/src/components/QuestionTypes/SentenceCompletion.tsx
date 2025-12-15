@@ -125,7 +125,6 @@ const SentenceCompletion: React.FC<Props> = ({
             </p>
           </div>
           
-          {/* Word Limit Badge: Nghiêm túc, cảnh báo rõ ràng */}
           {wordLimit && (
             <div className="flex-shrink-0 flex items-center gap-2 px-3 py-1.5 bg-amber-50 border border-amber-200 rounded-md text-amber-800 text-xs font-bold uppercase tracking-wide">
               <Info className="w-3.5 h-3.5" />

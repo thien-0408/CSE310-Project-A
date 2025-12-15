@@ -25,37 +25,52 @@ namespace backend.Services
             this.configuration = configuration;
             this.fileService = fileService;
         }
-
-        //Register
-        public async Task<User?> RegisterAsync(RegisterDto request)
+        public async Task<UserProfileDto?> RegisterAsync(RegisterDto request)
         {
             if (await context.Users.AnyAsync(u => u.UserName == request.UserName))
             {
                 return null;
             }
-            
 
             var user = new User
             {
                 Role = "User",
                 UserName = request.UserName,
+                IsActive = true 
             };
-            
-            var HashedPassword = new PasswordHasher<User>().HashPassword(user, request.Password);
-            user.PasswordHash = HashedPassword;
+
+            var hashedPassword = new PasswordHasher<User>().HashPassword(user, request.Password);
+            user.PasswordHash = hashedPassword;
 
             var profile = new Profile
             {
                 FullName = request.FullName,
                 Email = request.Email,
                 User = user,
+                AvatarUrl = "/user_avatars/default_avatar.jpg" 
             };
-            context.Users.Add(user); //add to db
+
+            context.Users.Add(user);
             await context.Profiles.AddAsync(profile);
             await context.SaveChangesAsync();
 
-            return user;
+            return new UserProfileDto
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                FullName = profile.FullName,
+                Email = profile.Email,
+                AvatarUrl = profile.AvatarUrl,
+                Role = user.Role,
+                Bio = profile.Bio,
+                TargetScore = profile.TargetScore,
+                PhoneNumber = profile.PhoneNumber,
+                DateOfBirth = profile.DateOfBirth
+            };
         }
+
+
+
         public async Task<TokenResponseDto?> LoginAsync(UserDto request)
         {
             var user = await context.Users.FirstOrDefaultAsync(u => u.UserName == request.UserName);
@@ -72,6 +87,8 @@ namespace backend.Services
             
             return await CreateTokenResponse(user);
         }
+
+
         public async Task<bool> ChangePasswordAsync(Guid userId, ChangePasswordDto requestDto )
         {
             var user = await context.Users.FindAsync(userId);
@@ -92,6 +109,8 @@ namespace backend.Services
             return true;
         }
 
+
+
         private async Task<TokenResponseDto> CreateTokenResponse(User user)
         {
             return new TokenResponseDto
@@ -100,12 +119,16 @@ namespace backend.Services
                 RefreshToken = await GenerateAndRefreshToken(user),
             };
         }
+
+
         public async Task<TokenResponseDto?> RefreshTokenAsync(RefreshTokenRequestDto request)
         {
             var user = await ValidateRefreshTokenAsync(request.UserId, request.RefreshToken);
             if(user is null) { return null; }
             return await CreateTokenResponse(user);
         }
+
+
         private async Task<User?> ValidateRefreshTokenAsync(Guid userId, string refeshToken)
         {
             var user = await context.Users.FindAsync(userId);
@@ -116,6 +139,8 @@ namespace backend.Services
             }
             return user;
         }
+
+
         private string GenerateRefreshToken()
         {
             var RandomNumber = new byte[64];
@@ -123,6 +148,8 @@ namespace backend.Services
             randomNumberGenerator.GetBytes(RandomNumber);
             return Convert.ToBase64String(RandomNumber);
         }
+
+
         private async Task<string> GenerateAndRefreshToken(User user)
         {
             var refreshToken = GenerateRefreshToken();
@@ -131,6 +158,9 @@ namespace backend.Services
             await context.SaveChangesAsync();
             return refreshToken;
         }
+
+
+
         private string CreateToken(User user)
         {
             var claims = new List<Claim>
@@ -151,6 +181,8 @@ namespace backend.Services
                 signingCredentials: creds);
             return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
         }
+
+
         public async Task<UserProfileDto?> GetProfileAsync(Guid userId)
         {
             var user = await context.Users
@@ -162,8 +194,6 @@ namespace backend.Services
             {
                 return null;
             }
-
-            // Map sang DTO
             return new UserProfileDto
             {
                 Id = user.Id,

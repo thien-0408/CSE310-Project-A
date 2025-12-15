@@ -53,4 +53,23 @@ namespace backend.Models.WritingDto
         public DateTime GradedDate { get; set; }
         public bool IsRead { get; set; } 
     }
+    public class WritingSubmissionDetailDto
+    {
+        public string Id { get; set; }
+        public string TestTitle { get; set; }
+        public string Topic { get; set; }
+        public string TestImage { get; set; }
+        public string StudentName { get; set; }
+        public string Content { get; set; }
+        public int WordCount { get; set; }
+        public DateTime SubmittedDate { get; set; }
+
+        // Result Info
+        public bool HasResult { get; set; }
+        public double OverallScore { get; set; }
+        public string? GeneralFeedback { get; set; }
+        public string? GrammarFeedback { get; set; }
+        public string? VocabularyFeedback { get; set; }
+        public DateTime? GradedDate { get; set; }
+    }
 }

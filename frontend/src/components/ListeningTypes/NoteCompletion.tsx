@@ -66,10 +66,7 @@ const ListeningNoteCompletion: React.FC<Props> = ({
       {/* Notes List */}
       <div className="space-y-4 bg-gray-50 p-5 rounded-lg border border-gray-200">
         {questions.map((q) => {
-          // Xử lý hiển thị text: Nếu có placeholder ___ thì split, không thì hiện input cuối
-          // Giả sử questionText chứa "___" hoặc backend trả về cấu trúc
-          // Ở đây ta dùng logic đơn giản: hiển thị input bên cạnh text
-          
+        
           return (
             <div key={q.id} className="flex items-start gap-3">
               {/* Badge Number */}

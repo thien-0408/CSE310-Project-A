@@ -6,14 +6,13 @@ namespace backend.Services
 {
     public interface IAuthService
     {
-        Task<User?> RegisterAsync(RegisterDto request);
+        Task<UserProfileDto?> RegisterAsync(RegisterDto request);
+
         Task<TokenResponseDto?> LoginAsync(UserDto request);
-        Task<bool> ChangePasswordAsync(Guid userId, ChangePasswordDto requestDto);
-
         Task<TokenResponseDto?> RefreshTokenAsync(RefreshTokenRequestDto request);
-
-        Task<UserProfileDto?> GetProfileAsync(Guid userId);
+        Task<UserProfileDto?> GetProfileAsync(Guid userId); 
         Task<UserProfileDto?> UpdateProfileAsync(Guid userId, UpdateProfileDto request);
         Task<bool> LogoutAsync(Guid userId);
+        Task<bool> ChangePasswordAsync(Guid userId, ChangePasswordDto requestDto);
     }
 }

@@ -760,7 +760,6 @@ const AdminDashboard = () => {
             </button>
           </nav>
         </aside>
-
         {/* Main Content */}
         <main className="lg:ml-72 px-3  flex-1 overflow-y-auto h-screen">
           {/* Content Render */}

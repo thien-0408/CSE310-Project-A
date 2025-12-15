@@ -23,44 +23,22 @@ namespace backend.Controllers
             authService = sv;
         }
 
+
+        // Register
         [HttpPost("register")]
         public async Task<ActionResult<UserProfileDto>> Register(RegisterDto request)
         {
-            var userName = await context.Users.FirstOrDefaultAsync(u => u.UserName == request.UserName);
-            if (userName is not null)
+            var result = await authService.RegisterAsync(request);
+
+            if (result == null)
             {
                 return BadRequest("User Already Exist!");
             }
-            var user = new User
-            { 
-                Role = "User",
-                UserName = request.UserName,
-            };
-            
-            var HashedPassword = new PasswordHasher<User>().HashPassword(user, request.Password);
-            user.PasswordHash = HashedPassword;
 
-            var profile = new Profile
-            {
-                FullName = request.FullName,
-                Email = request.Email,
-                User = user,
-                AvatarUrl = "/user_avatars/default_avatar.jpg"
-            };
-            context.Users.Add(user); //add to db
-            await context.Profiles.AddAsync(profile);
-            await context.SaveChangesAsync();
-            var userProfileDto = new UserProfileDto
-            {
-                Id = user.Id,
-                UserName = user.UserName,
-                FullName = profile.FullName,
-                Email = profile.Email,
-                AvatarUrl = profile.AvatarUrl,
-                Role = user.Role
-            };
-            return Ok(userProfileDto);
+            return Ok(result);
         }
+
+        //Login 
         [HttpPost("login")]
         public async Task<ActionResult<string>> Login(UserDto request)
         {
@@ -72,6 +50,8 @@ namespace backend.Controllers
             }
             return Ok(token);
         }
+
+
         [HttpPost("refresh-token")]
         public async Task<ActionResult<TokenResponseDto>> RefreshToken(RefreshTokenRequestDto request)
         {
@@ -111,6 +91,9 @@ namespace backend.Controllers
             await authService.LogoutAsync(userId);
             return Ok("Logged out successfully");
         }
+
+
+        //Change pass
         [Authorize]
         [HttpPatch("change-password")]
         public async Task<ActionResult> ChangePassword(ChangePasswordDto request)

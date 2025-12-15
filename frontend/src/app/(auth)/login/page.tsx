@@ -22,7 +22,9 @@ import { Loader2, Mail, Lock, Github } from "lucide-react"; // Import Icons
 
 // Define the interface for the decoded token
 interface DecodedToken {
-  "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"?: string | string[];
+  "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"?:
+    | string
+    | string[];
   role?: string | string[];
   sub?: string;
 }
@@ -78,7 +80,10 @@ export default function LoginPage() {
 
       try {
         const decoded: DecodedToken = jwtDecode(tokens.accessToken);
-        const roleClaim = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] || decoded.role;
+        const roleClaim =
+          decoded[
+            "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+          ] || decoded.role;
         const userRole = Array.isArray(roleClaim) ? roleClaim[0] : roleClaim;
 
         if (userRole === "Admin") {
@@ -100,28 +105,33 @@ export default function LoginPage() {
   return (
     <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2">
       {/* Left side*/}
-      <div data-aos = "fade-down" data-aos-duration = "500" className="hidden bg-slate-900 lg:block relative overflow-hidden">
+      <div
+        data-aos="fade-down"
+        data-aos-duration="500"
+        className="hidden bg-slate-900 lg:block relative overflow-hidden"
+      >
         {/* Abstract Background Gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-900 to-slate-900 opacity-90" />
-        
+
         {/* Content Overlay */}
         <div className="relative z-20 flex h-full flex-col justify-between p-12 text-white">
           <div className="flex items-center gap-2 text-lg font-medium">
-             <Image
-                src="/assets/logo.png"
-                alt="Logo"
-                width={30}
-                height={30}
-                className="brightness-0 invert" // make logo white 
-              />
-             <span>IELTSSprint Inc.</span>
+            <Image
+              src="/assets/logo.png"
+              alt="Logo"
+              width={30}
+              height={30}
+              className="brightness-0 invert" // make logo white
+            />
+            <span>IELTSSprint Inc.</span>
           </div>
           <div className="space-y-4">
             <h1 className="text-4xl font-bold leading-tight tracking-tighter">
-              &quot;Mastering IELTS <br/> has never been easier.&quot;
+              &quot;Mastering IELTS <br /> has never been easier.&quot;
             </h1>
             <p className="text-blue-200 text-lg">
-              Join thousands of students achieving their dream scores with our platform.
+              Join thousands of students achieving their dream scores with our
+              platform.
             </p>
           </div>
           <div className="flex items-center gap-2 text-sm text-blue-200">
@@ -131,12 +141,15 @@ export default function LoginPage() {
       </div>
 
       {/* Right side*/}
-      <div data-aos = "fade-down" data-aos-duration = "500" className="flex items-center justify-center py-12 px-4 sm:px-6 bg-white">
+      <div
+        data-aos="fade-down"
+        data-aos-duration="500"
+        className="flex items-center justify-center py-12 px-4 sm:px-6 bg-white"
+      >
         <div className="mx-auto grid w-full max-w-[450px] gap-6">
-          
           <div className="flex flex-col space-y-2 text-center">
             <div className="lg:hidden flex justify-center mb-4">
-               <Image src="/assets/logo.png" alt="Logo" width={48} height={48} />
+              <Image src="/assets/logo.png" alt="Logo" width={48} height={48} />
             </div>
             <h1 className="text-3xl font-bold tracking-tight text-gray-900">
               Welcome back
@@ -148,7 +161,6 @@ export default function LoginPage() {
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              
               <FormField
                 control={form.control}
                 name="username"
@@ -158,9 +170,9 @@ export default function LoginPage() {
                     <FormControl>
                       <div className="relative">
                         <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                        <Input 
-                          placeholder="skibidi" 
-                          {...field} 
+                        <Input
+                          placeholder="skibidi"
+                          {...field}
                           className="pl-10 h-11 bg-gray-50 border-gray-200 focus:bg-white transition-all"
                         />
                       </div>
@@ -180,10 +192,10 @@ export default function LoginPage() {
                     <FormControl>
                       <div className="relative">
                         <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                        <Input 
-                          type="password" 
-                          placeholder="••••••••" 
-                          {...field} 
+                        <Input
+                          type="password"
+                          placeholder="••••••••"
+                          {...field}
                           className="pl-10 h-11 bg-gray-50 border-gray-200 focus:bg-white transition-all"
                         />
                       </div>
@@ -220,9 +232,9 @@ export default function LoginPage() {
               )}
 
               {/* Submit Button */}
-              <Button 
-                type="submit" 
-                disabled={isLoading} 
+              <Button
+                type="submit"
+                disabled={isLoading}
                 className="w-full h-11 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 shadow-md transition-all"
               >
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -237,16 +249,22 @@ export default function LoginPage() {
               <span className="w-full border-t border-gray-200" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white px-2 text-gray-500">Or continue with</span>
+              <span className="bg-white px-2 text-gray-500"></span>
             </div>
           </div>
 
           {/* Social Buttons (Visual Only) */}
           <div className="grid grid-cols-2 gap-4">
-            <Button variant="outline" className="h-11 bg-white border-gray-200 hover:bg-gray-50">
+            <Button
+              variant="outline"
+              className="h-11 bg-white border-gray-200 hover:bg-gray-50"
+            >
               <Github className="mr-2 h-4 w-4" /> Github
             </Button>
-            <Button variant="outline" className="h-11 bg-white border-gray-200 hover:bg-gray-50">
+            <Button
+              variant="outline"
+              className="h-11 bg-white border-gray-200 hover:bg-gray-50"
+            >
               <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                 <path
                   d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"

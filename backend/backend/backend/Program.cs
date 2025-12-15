@@ -11,7 +11,6 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllers();
 
 //Add CORS
@@ -19,7 +18,6 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
-        // Dòng này giúp bỏ qua vòng lặp tham chiếu
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     });
 builder.Services.AddCors(options =>
@@ -57,7 +55,14 @@ builder.Services
     });
 //add services
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IFileService, FileService>();    
+builder.Services.AddScoped<IAdminService, AdminService>(); 
+builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IWritingService, WritingService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITestService, TestService>();
+builder.Services.AddScoped<IReadingService, ReadingService>();
+builder.Services.AddScoped<IListeningService, ListeningService>();
+
 
 // Add Swagger/OpenAPI support
 builder.Services.AddEndpointsApiExplorer();
@@ -70,14 +75,13 @@ builder.Services.AddSwaggerGen(c =>
         Description = "API Documentation for Backend"
     });
 
-    // --- ADD THIS BLOCK TO ENABLE JWT AUTH IN SWAGGER ---
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
-        Type = SecuritySchemeType.Http, // We are using Http auth
-        Scheme = "Bearer", // The scheme is "Bearer"
+        Type = SecuritySchemeType.Http, 
+        Scheme = "Bearer", 
         BearerFormat = "JWT",
-        In = ParameterLocation.Header, // The token is in the header
+        In = ParameterLocation.Header, 
         Description = "Please enter a valid JWT token."
     });
 
@@ -89,13 +93,12 @@ builder.Services.AddSwaggerGen(c =>
                 Reference = new OpenApiReference
                 {
                     Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer" // This Id must match the "Bearer" string above
+                    Id = "Bearer" 
                 }
             },
             new string[] {}
         }
     });
-    // --- END OF BLOCK ---
 });
 
 var app = builder.Build();
