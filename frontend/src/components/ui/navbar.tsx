@@ -65,6 +65,11 @@ export default function NavBar() {
                   Listening
                 </Link>
               </li>
+              <li>
+                <Link href="/speaking" className={getLinkClassName('/speaking')}>
+                  Speaking
+                </Link>
+              </li>
 
               <li>
                 <Link href="/view-test" className={getLinkClassName('/view-test')}>
