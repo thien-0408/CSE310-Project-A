@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import Groq from "groq-sdk";
 
-const GROQ_API_KEY = "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";
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 export async function POST(req: Request) {

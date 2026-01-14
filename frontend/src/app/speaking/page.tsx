@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Mic, Square, Clock, Lightbulb, ChevronRight, Volume2, RotateCcw, GraduationCap, Brain, Target, Zap, Check, Circle, Loader2 } from "lucide-react";
 import NavBar from "@/components/ui/navbar";
+import { ur } from "zod/v4/locales";
 
 // --- Types & Data ---
 type AcademicTopic = {
@@ -72,15 +73,54 @@ const AcademicSpeakingPage = () => {
 
   // --- Timer Logic ---
   useEffect(() => {
+    // --- Khi bắt đầu ghi ---
     if (isRecording) {
-      timerRef.current = setInterval(() => setTimer((p) => p + 1), 1000);
-    } else {
-      if (timerRef.current) clearInterval(timerRef.current);
+      timerRef.current = setInterval(() => {
+        setTimer((prev) => prev + 1);
+      }, 1000);
+
+      return () => {
+        if (timerRef.current) {
+          clearInterval(timerRef.current);
+          timerRef.current = null;
+        }
+      };
     }
+
+    // --- Khi dừng ghi ---
+    if (!isRecording && audioChunksRef.current.length > 0) {
+      const audioBlob = new Blob(audioChunksRef.current, {
+        type: "audio/wav",
+      });
+
+      (async () => {
+        try {
+          setIsLoading(true);
+
+          const result = await postAudioToBackend(audioBlob);
+          console.log("Upload success:", result);
+
+          setTranscript("Upload audio thành công!");
+          setShowFeedback(true);
+        } catch (error) {
+          console.error(error);
+          alert("Lỗi khi gửi audio lên backend");
+        } finally {
+          setIsLoading(false);
+        }
+      })();
+    }
+
+    // --- Cleanup ---
     return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
     };
   }, [isRecording]);
+
+  const formData = new FormData();
 
   // --- Recording Logic ---
   const startRecording = async () => {
@@ -98,6 +138,9 @@ const AcademicSpeakingPage = () => {
         const audioBlob = new Blob(audioChunksRef.current, { type: "audio/wav" });
         const url = URL.createObjectURL(audioBlob);
         setAudioUrl(url);
+        formData.append("audio", audioBlob, "speech.wav");
+        formData.append("question", currentTopic.question);
+        console.log(url);
         await handleEvaluation(audioBlob);
       };
 
@@ -105,10 +148,26 @@ const AcademicSpeakingPage = () => {
       setIsRecording(true);
       setShowFeedback(false);
       setTranscript("");
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       alert("Vui lòng cấp quyền truy cập Micro!");
     }
+  };
+  const postAudioToBackend = async (audioBlob: Blob) => {
+    const formData = new FormData();
+    formData.append("audio", audioBlob, "speech.wav");
+    formData.append("question", "Test speaking upload from useEffect");
+
+    const response = await fetch("https://localhost:5151/api/speaking/test-upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error("Upload audio failed");
+    }
+
+    return await response.json();
   };
 
   const stopRecording = () => {
