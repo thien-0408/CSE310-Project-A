@@ -936,7 +936,7 @@ namespace backend.Migrations
                         .IsRequired();
 
                     b.HasOne("backend.Entities.User.User", "User")
-                        .WithMany()
+                        .WithMany("ListeningResults")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1065,6 +1065,8 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Entities.User.User", b =>
                 {
+                    b.Navigation("ListeningResults");
+
                     b.Navigation("Profile")
                         .IsRequired();
 

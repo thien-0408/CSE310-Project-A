@@ -62,6 +62,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITestService, TestService>();
 builder.Services.AddScoped<IReadingService, ReadingService>();
 builder.Services.AddScoped<IListeningService, ListeningService>();
+builder.Services.AddHttpClient<GeminiService>(); //Gemini service
 
 
 // Add Swagger/OpenAPI support

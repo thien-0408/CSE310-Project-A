@@ -13,10 +13,12 @@ namespace backend.Controllers
     public class WritingTestController : ControllerBase
     {
         private readonly IWritingService _writingService;
+        private readonly GeminiService _geminiService;
 
-        public WritingTestController(IWritingService writingService)
+        public WritingTestController(IWritingService writingService, GeminiService geminiService)
         {
             _writingService = writingService;
+            _geminiService = geminiService;
         }
 
         [Authorize(Roles = "Admin")]
@@ -112,6 +114,51 @@ namespace backend.Controllers
             var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             Guid.TryParse(userIdString, out var userId);
             return userId;
+        }
+
+        [HttpPost("evaluate")]
+        public async Task<IActionResult> EvaluateWriting([FromForm] ScoringDto input)
+        {
+            if (string.IsNullOrWhiteSpace(input.Essay))
+            {
+                return BadRequest(new { error = "Essay content is required." });
+            }
+
+            try
+            {
+                byte[]? imageBytes = null;
+
+                if (input.Image != null && input.Image.Length > 0)
+                {
+                    using var memoryStream = new MemoryStream();
+                    await input.Image.CopyToAsync(memoryStream);
+                    imageBytes = memoryStream.ToArray();
+                }
+                else if (input.TaskType.ToLower().Contains("task 1"))
+                {
+                    return BadRequest("IELTS Writing Task 1 requires an image/chart.");
+                }
+
+                var jsonResult = await _geminiService.EvaluateWritingAsync(
+                    imageBytes,
+                    input.Question,
+                    input.Essay,
+                    input.TaskType
+                );
+                try
+                {
+                    var parsedResult = System.Text.Json.JsonSerializer.Deserialize<object>(jsonResult);
+                    return Ok(parsedResult);
+                }
+                catch
+                {
+                    return Ok(new { raw_response = jsonResult });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
     }
 }

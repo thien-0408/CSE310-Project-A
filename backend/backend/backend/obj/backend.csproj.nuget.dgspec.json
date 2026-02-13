@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "D:\\EIU Subjects\\Studying\\CSE310-Project\\backend\\backend\\backend\\backend.csproj": {}
+    "C:\\Users\\nguye\\OneDrive\\Máy tính\\Thien-0408\\CSE310Project\\CSE310-Project-A\\backend\\backend\\backend\\backend.csproj": {}
   },
   "projects": {
-    "D:\\EIU Subjects\\Studying\\CSE310-Project\\backend\\backend\\backend\\backend.csproj": {
+    "C:\\Users\\nguye\\OneDrive\\Máy tính\\Thien-0408\\CSE310Project\\CSE310-Project-A\\backend\\backend\\backend\\backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\EIU Subjects\\Studying\\CSE310-Project\\backend\\backend\\backend\\backend.csproj",
+        "projectUniqueName": "C:\\Users\\nguye\\OneDrive\\Máy tính\\Thien-0408\\CSE310Project\\CSE310-Project-A\\backend\\backend\\backend\\backend.csproj",
         "projectName": "backend",
-        "projectPath": "D:\\EIU Subjects\\Studying\\CSE310-Project\\backend\\backend\\backend\\backend.csproj",
-        "packagesPath": "C:\\Users\\nhatt\\.nuget\\packages\\",
-        "outputPath": "D:\\EIU Subjects\\Studying\\CSE310-Project\\backend\\backend\\backend\\obj\\",
+        "projectPath": "C:\\Users\\nguye\\OneDrive\\Máy tính\\Thien-0408\\CSE310Project\\CSE310-Project-A\\backend\\backend\\backend\\backend.csproj",
+        "packagesPath": "C:\\Users\\nguye\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\nguye\\OneDrive\\Máy tính\\Thien-0408\\CSE310Project\\CSE310-Project-A\\backend\\backend\\backend\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\nhatt\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\nguye\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -37,7 +43,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -46,6 +53,10 @@
             "AutoMapper.Extensions.Microsoft.DependencyInjection": {
               "target": "Package",
               "version": "[12.0.1, )"
+            },
+            "Google.Apis.Auth": {
+              "target": "Package",
+              "version": "[1.73.0, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
@@ -109,7 +120,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.415/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

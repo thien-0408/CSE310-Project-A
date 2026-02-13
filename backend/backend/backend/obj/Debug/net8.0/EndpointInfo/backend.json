@@ -212,18 +212,6 @@
         }
       }
     },
-    "/api/admin/admin-only": {
-      "get": {
-        "tags": [
-          "Admin"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
     "/api/admin/profile": {
       "get": {
         "tags": [
@@ -599,6 +587,37 @@
         "tags": [
           "Auth"
         ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/auth/signin-google": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GoogleLoginRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GoogleLoginRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GoogleLoginRequest"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Success"
@@ -1014,6 +1033,102 @@
         }
       }
     },
+    "/api/speaking/test-upload": {
+      "post": {
+        "tags": [
+          "Speaking"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "Audio",
+                  "Question"
+                ],
+                "type": "object",
+                "properties": {
+                  "Audio": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "Question": {
+                    "type": "string"
+                  }
+                }
+              },
+              "encoding": {
+                "Audio": {
+                  "style": "form"
+                },
+                "Question": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/speaking/convert-file": {
+      "post": {
+        "tags": [
+          "Speaking"
+        ],
+        "parameters": [
+          {
+            "name": "question",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "audio": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "audio": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/speaking/get-models": {
+      "post": {
+        "tags": [
+          "Speaking"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/test/fetch-tests": {
       "get": {
         "tags": [
@@ -1069,6 +1184,55 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/test/modify/{testId}": {
+      "patch": {
+        "tags": [
+          "Test"
+        ],
+        "parameters": [
+          {
+            "name": "testId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Title": {
+                    "type": "string"
+                  },
+                  "CoverImage": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "Title": {
+                  "style": "form"
+                },
+                "CoverImage": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Success"
@@ -1279,44 +1443,6 @@
         }
       }
     },
-    "/api/user/test-best-results": {
-      "get": {
-        "tags": [
-          "User"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GetResultDto"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GetResultDto"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GetResultDto"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/user/notifications": {
       "get": {
         "tags": [
@@ -1395,17 +1521,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/DailyWord"
+                  "$ref": "#/components/schemas/DailyTip"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DailyWord"
+                  "$ref": "#/components/schemas/DailyTip"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DailyWord"
+                  "$ref": "#/components/schemas/DailyTip"
                 }
               }
             }
@@ -1702,24 +1828,61 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/WritingSubmission"
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/writing-test/evaluate": {
+      "post": {
+        "tags": [
+          "WritingTest"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "Essay",
+                  "Question"
+                ],
+                "type": "object",
+                "properties": {
+                  "Image": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "Question": {
+                    "type": "string"
+                  },
+                  "Essay": {
+                    "type": "string"
+                  },
+                  "TaskType": {
+                    "type": "string"
+                  }
                 }
               },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WritingSubmission"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WritingSubmission"
+              "encoding": {
+                "Image": {
+                  "style": "form"
+                },
+                "Question": {
+                  "style": "form"
+                },
+                "Essay": {
+                  "style": "form"
+                },
+                "TaskType": {
+                  "style": "form"
                 }
               }
             }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
           }
         }
       }
@@ -1839,6 +2002,16 @@
             "format": "date-time"
           },
           "title": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GoogleLoginRequest": {
+        "type": "object",
+        "properties": {
+          "idToken": {
             "type": "string",
             "nullable": true
           }

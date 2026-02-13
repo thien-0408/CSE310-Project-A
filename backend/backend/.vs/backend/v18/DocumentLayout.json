@@ -1,0 +1,117 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\nguye\\OneDrive\\M\u00E1y t\u00EDnh\\Thien-0408\\CSE310Project\\CSE310-Project-A\\backend\\backend\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\nguye\\onedrive\\m\u00E1y t\u00EDnh\\thien-0408\\cse310project\\cse310-project-a\\backend\\backend\\backend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\nguye\\onedrive\\m\u00E1y t\u00EDnh\\thien-0408\\cse310project\\cse310-project-a\\backend\\backend\\backend\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\nguye\\onedrive\\m\u00E1y t\u00EDnh\\thien-0408\\cse310project\\cse310-project-a\\backend\\backend\\backend\\models\\googleauth.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\models\\googleauth.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\nguye\\onedrive\\m\u00E1y t\u00EDnh\\thien-0408\\cse310project\\cse310-project-a\\backend\\backend\\backend\\entities\\user\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\entities\\user\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\nguye\\onedrive\\m\u00E1y t\u00EDnh\\thien-0408\\cse310project\\cse310-project-a\\backend\\backend\\backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|c:\\users\\nguye\\onedrive\\m\u00E1y t\u00EDnh\\thien-0408\\cse310project\\cse310-project-a\\backend\\backend\\backend\\migrations\\20260119102929_initdb.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1220A0CA-3375-4428-BFE1-8F28340F48B3}|backend\\backend.csproj|solutionrelative:backend\\migrations\\20260119102929_initdb.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "20260119102929_initDb.cs",
+              "DocumentMoniker": "C:\\Users\\nguye\\OneDrive\\M\u00E1y t\u00EDnh\\Thien-0408\\CSE310Project\\CSE310-Project-A\\backend\\backend\\backend\\Migrations\\20260119102929_initDb.cs",
+              "RelativeDocumentMoniker": "backend\\Migrations\\20260119102929_initDb.cs",
+              "ToolTip": "C:\\Users\\nguye\\OneDrive\\M\u00E1y t\u00EDnh\\Thien-0408\\CSE310Project\\CSE310-Project-A\\backend\\backend\\backend\\Migrations\\20260119102929_initDb.cs",
+              "RelativeToolTip": "backend\\Migrations\\20260119102929_initDb.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-19T10:29:29.655Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\nguye\\OneDrive\\M\u00E1y t\u00EDnh\\Thien-0408\\CSE310Project\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\User\\User.cs",
+              "RelativeDocumentMoniker": "backend\\Entities\\User\\User.cs",
+              "ToolTip": "C:\\Users\\nguye\\OneDrive\\M\u00E1y t\u00EDnh\\Thien-0408\\CSE310Project\\CSE310-Project-A\\backend\\backend\\backend\\Entities\\User\\User.cs",
+              "RelativeToolTip": "backend\\Entities\\User\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAB5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-19T08:22:44.79Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Users\\nguye\\OneDrive\\M\u00E1y t\u00EDnh\\Thien-0408\\CSE310Project\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "backend\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\nguye\\OneDrive\\M\u00E1y t\u00EDnh\\Thien-0408\\CSE310Project\\CSE310-Project-A\\backend\\backend\\backend\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "backend\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAAIUAAAAAAAAAAAAkwJAAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-19T08:16:34.023Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "GoogleAuth.cs",
+              "DocumentMoniker": "C:\\Users\\nguye\\OneDrive\\M\u00E1y t\u00EDnh\\Thien-0408\\CSE310Project\\CSE310-Project-A\\backend\\backend\\backend\\Models\\GoogleAuth.cs",
+              "RelativeDocumentMoniker": "backend\\Models\\GoogleAuth.cs",
+              "ToolTip": "C:\\Users\\nguye\\OneDrive\\M\u00E1y t\u00EDnh\\Thien-0408\\CSE310Project\\CSE310-Project-A\\backend\\backend\\backend\\Models\\GoogleAuth.cs",
+              "RelativeToolTip": "backend\\Models\\GoogleAuth.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-19T08:15:51.134Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\nguye\\OneDrive\\M\u00E1y t\u00EDnh\\Thien-0408\\CSE310Project\\CSE310-Project-A\\backend\\backend\\backend\\appsettings.json",
+              "RelativeDocumentMoniker": "backend\\appsettings.json",
+              "ToolTip": "C:\\Users\\nguye\\OneDrive\\M\u00E1y t\u00EDnh\\Thien-0408\\CSE310Project\\CSE310-Project-A\\backend\\backend\\backend\\appsettings.json",
+              "RelativeToolTip": "backend\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-01-19T07:47:26.05Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\nguye\\OneDrive\\M\u00E1y t\u00EDnh\\Thien-0408\\CSE310Project\\CSE310-Project-A\\backend\\backend\\backend\\Program.cs",
+              "RelativeDocumentMoniker": "backend\\Program.cs",
+              "ToolTip": "C:\\Users\\nguye\\OneDrive\\M\u00E1y t\u00EDnh\\Thien-0408\\CSE310Project\\CSE310-Project-A\\backend\\backend\\backend\\Program.cs",
+              "RelativeToolTip": "backend\\Program.cs",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAAAEMAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-18T16:08:36.057Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

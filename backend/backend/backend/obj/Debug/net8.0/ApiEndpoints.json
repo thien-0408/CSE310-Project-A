@@ -79,16 +79,6 @@
   },
   {
     "ContainingType": "backend.Controllers.AdminController",
-    "Method": "AdminOnlyEndPoint",
-    "RelativePath": "api/admin/admin-only",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backend.Controllers.AdminController",
     "Method": "CreateAccount",
     "RelativePath": "api/admin/create-account",
     "HttpMethod": "POST",
@@ -360,6 +350,22 @@
     ]
   },
   {
+    "ContainingType": "backend.Controllers.AuthController",
+    "Method": "GoogleLogin",
+    "RelativePath": "api/auth/signin-google",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "backend.Models.GoogleLoginRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "backend.Controllers.ListeningController",
     "Method": "CreateListeningTest",
     "RelativePath": "api/listening/create-listening",
@@ -605,6 +611,58 @@
     ]
   },
   {
+    "ContainingType": "backend.Controllers.SpeakingController",
+    "Method": "UploadSpeakingTest",
+    "RelativePath": "api/speaking/convert-file",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "audio",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "question",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend.Controllers.SpeakingController",
+    "Method": "GetModels",
+    "RelativePath": "api/speaking/get-models",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend.Controllers.SpeakingController",
+    "Method": "TestUpload",
+    "RelativePath": "api/speaking/test-upload",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Audio",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "Question",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "backend.Controllers.TestController",
     "Method": "DeleteTest",
     "RelativePath": "api/test/delete-test/{testId}",
@@ -641,6 +699,32 @@
     ]
   },
   {
+    "ContainingType": "backend.Controllers.TestController",
+    "Method": "ModifyTitleAndCover",
+    "RelativePath": "api/test/modify/{testId}",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "testId",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "Title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "CoverImage",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "backend.Controllers.UserController",
     "Method": "AttemptTest",
     "RelativePath": "api/user/attempt-test/{id}",
@@ -666,7 +750,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "backend.Entities.Notification.DailyWord",
+        "Type": "backend.Entities.Notification.DailyTip",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -752,26 +836,6 @@
       }
     ],
     "ReturnTypes": []
-  },
-  {
-    "ContainingType": "backend.Controllers.UserController",
-    "Method": "GetUserBestResults",
-    "RelativePath": "api/user/test-best-results",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[backend.Models.ReadingDto.GetResultDto, backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
   },
   {
     "ContainingType": "backend.Controllers.UserController",
@@ -919,17 +983,38 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend.Controllers.WritingTestController",
+    "Method": "EvaluateWriting",
+    "RelativePath": "api/writing-test/evaluate",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
       {
-        "Type": "backend.Entities.User.WritingSubmission",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
+        "Name": "Image",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "Question",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Essay",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "TaskType",
+        "Type": "System.String",
+        "IsRequired": false
       }
-    ]
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "backend.Controllers.WritingTestController",
